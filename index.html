@@ -390,6 +390,11 @@ function varEuros(a, b) {
   return (d > 0 ? "▲ +" : "▼ −") + euros(Math.abs(d));
 }
 
+// Suma dels capítols 1 a 7 (operacions no financeres).
+function suma17(capitols) {
+  return (capitols || []).filter(c => /^[1-7]$/.test(c.codi)).reduce((s, c) => s + (c.imp || 0), 0);
+}
+
 function xifra(etiqueta, valor, detall) {
   return `<div class="xifra"><div class="etq">${etiqueta}</div><div class="val">${valor}</div>` +
     (detall ? `<div class="det">${detall}</div>` : "") + "</div>";
@@ -444,11 +449,17 @@ function fitxaMunicipi(m) {
     ? xifra(`Pressupost ${pres.any} (despeses)`, euros(pres.totalDE),
         ["Ingressos: " + euros(pres.totalIN), pres.totalDEant ? varPct(pres.totalDE, pres.totalDEant) + " respecte al " + (pres.any - 1) : ""].filter(Boolean).join("<br>"))
     : xifra("Pressupost", "—", "Sense dades");
-  h += liq
-    ? xifra(`Liquidació ${liq.any} (ingressos − despeses)`,
-        (liq.totalIN - liq.totalDE > 0 ? "+" : "") + euros(liq.totalIN - liq.totalDE),
-        "Ingressos: " + euros(liq.totalIN) + "<br>Despeses: " + euros(liq.totalDE))
-    : xifra("Liquidació", "—", "Sense dades");
+  if (liq) {
+    // Resultat no financer: capítols 1 a 7 (sense préstecs ni actius financers).
+    const nf = suma17(liq.ingressos) - suma17(liq.despeses);
+    h += xifra(`Liquidació ${liq.any}: resultat no financer`,
+      (nf > 0 ? "+" : "") + euros(nf),
+      "Ingressos − despeses dels capítols 1 a 7" +
+      "<br>Resultat pressupostari (cap. 1 a 9): " + (liq.totalIN - liq.totalDE > 0 ? "+" : "") + euros(liq.totalIN - liq.totalDE) +
+      "<br>Ingressos: " + euros(liq.totalIN) + " · Despeses: " + euros(liq.totalDE));
+  } else {
+    h += xifra("Liquidació", "—", "Sense dades");
+  }
   h += "</div>";
 
   // Evolució del deute
@@ -491,7 +502,7 @@ function pintaDadesMunicipals(s, generat) {
     (peu.length ? `<p class="font">${peu.join(" · ")}</p>` : "") +
     (s.nota ? `<p class="buit">${esc(s.nota)}</p>` : "") +
     s.dades.municipis.map(fitxaMunicipi).join("") +
-    '<p class="nota" style="color:#6b6b66;font-size:.85rem">El pressupost és l\'inicial aprovat; la liquidació, el que realment s\'ha ingressat i gastat aquell any. ▲ ▼ variació respecte a l\'any anterior.</p>';
+    '<p class="nota" style="color:#6b6b66;font-size:.85rem">El pressupost és l\'inicial aprovat; la liquidació, el que realment s\'ha ingressat i gastat aquell any. El resultat no financer (capítols 1 a 7) deixa fora els préstecs i els actius financers: si és positiu, l\'ajuntament ha ingressat més del que ha gastat en la seva activitat i inversions. ▲ ▼ variació respecte a l\'any anterior.</p>';
 }
 
 async function inicia() {

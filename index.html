@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>La TdG · Redacció</title>
+<style>
+  :root {
+    --fons: #f4f4f1; --paper: #ffffff; --text: #1f1f1f; --suau: #6b6b6b;
+    --linia: #e2e2dc; --accent: #b3261e; --enllac: #0b57d0;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fons); color: var(--text); font: 16px/1.5 Helvetica, Arial, sans-serif; }
+  header { position: sticky; top: 0; z-index: 5; background: #111; color: #fff; }
+  .cap { max-width: 1000px; margin: 0 auto; padding: 10px 16px 6px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .cap h1 { font-size: 18px; margin: 0; }
+  .cap span { color: #bbb; font-size: 13px; }
+  nav { max-width: 1000px; margin: 0 auto; padding: 0 16px 10px; display: flex; gap: 6px; overflow-x: auto; }
+  nav a { color: #fff; text-decoration: none; font-size: 14px; padding: 3px 10px; border: 1px solid #444; border-radius: 999px; white-space: nowrap; }
+  nav a:hover { background: #333; }
+  main { max-width: 1000px; margin: 0 auto; padding: 16px; }
+  section { background: var(--paper); border: 1px solid var(--linia); border-radius: 8px; padding: 16px; margin-bottom: 18px; scroll-margin-top: 100px; overflow-wrap: anywhere; }
+  section > h2 { margin: 0 0 2px; font-size: 20px; }
+  .meta { color: var(--suau); font-size: 13px; margin-bottom: 10px; }
+  .targeta { border-top: 1px solid var(--linia); padding: 10px 0; white-space: pre-wrap; }
+  .targeta:first-of-type { border-top: 0; }
+  .alerta { border-left: 4px solid var(--accent); padding-left: 10px; }
+  .nota { color: var(--suau); font-style: italic; }
+  a { color: var(--enllac); }
+  #resum .cos table { display: block; overflow-x: auto; max-width: 100%; }
+  #resum .cos img { max-width: 100%; height: auto; }
+  @keyframes tdgPulsacioAvui { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .25; transform: scale(.72); } }
+  .tdg-boleta-avui { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #e53935; margin-right: 5px; vertical-align: middle; animation: tdgPulsacioAvui 1.2s infinite; }
+</style>
+</head>
+<body>
+<header>
+  <div class="cap">
+    <h1>La TdG · Panell de la redacció</h1>
+    <span id="estat">Carregant…</span>
+  </div>
+  <nav>
+    <a href="#resum">Resum</a>
+    <a href="#actes-ple">Actes del Ple</a>
+    <a href="#aigua-sinac">Aigua SINAC</a>
+    <a href="#aigua-mancomunitat">Mancomunitat</a>
+    <a href="#dades-municipals">Dades municipals</a>
+    <a href="#congres">Congrés</a>
+    <a href="#parlament">Parlament</a>
+    <a href="#loteries">Loteries</a>
+    <a href="https://latdg.github.io/tauler/" target="_blank" rel="noopener">La TdG ampliada ↗</a>
+  </nav>
+</header>
+
+<main>
+  <section id="resum"><h2>Resum informatiu</h2><div class="meta"></div><div class="cos">Carregant…</div></section>
+  <section id="actes-ple"><h2>Actes del Ple</h2><p class="nota">Carregant…</p></section>
+  <section id="aigua-sinac"><h2>Aigua potable — SINAC</h2><p class="nota">Carregant…</p></section>
+  <section id="aigua-mancomunitat"><h2>Aigua potable — Mancomunitat</h2><p class="nota">Carregant…</p></section>
+  <section id="dades-municipals"><h2>Dades municipals</h2><p class="nota">Carregant…</p></section>
+  <section id="congres"><h2>Congrés dels Diputats</h2><p class="nota">Carregant…</p></section>
+  <section id="parlament"><h2>Parlament de Catalunya</h2><p class="nota">Carregant…</p></section>
+  <section id="loteries"><h2>Loteries</h2><p class="nota">Carregant…</p></section>
+</main>
+
+<script>
+  const nocache = "?t=" + Date.now();
+  const estat = {};
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  // Text pla (ja escapat) amb els enllaços clicables.
+  function linkify(text) {
+    return esc(text).replace(/https?:\/\/[^\s<]+/g, function (u) {
+      const net = u.replace(/[).,;:]+$/, "");
+      return '<a href="' + net + '" target="_blank" rel="noopener">' + net + "</a>" + u.slice(net.length);
+    });
+  }
+
+  // Al correu, molts enllaços van com a text; aquí es fan clicables.
+  function enllacarTextos(arrel) {
+    const walker = document.createTreeWalker(arrel, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) {
+      const n = walker.currentNode;
+      if (/https?:\/\//.test(n.nodeValue) && !n.parentElement.closest("a")) nodes.push(n);
+    }
+    nodes.forEach(function (n) {
+      const span = document.createElement("span");
+      span.innerHTML = linkify(n.nodeValue);
+      n.replaceWith(span);
+    });
+  }
+
+  function pintarEstat() {
+    document.getElementById("estat").textContent = Object.keys(estat)
+      .map(function (k) { return k + ": " + estat[k]; }).join(" · ");
+  }
+
+  function pintarSeccio(s, generat) {
+    let el = document.getElementById(s.id);
+    if (!el) {
+      el = document.createElement("section");
+      el.id = s.id;
+      document.querySelector("main").appendChild(el);
+    }
+
+    let html = "<h2>" + esc(s.titol) + "</h2><div class=\"meta\">Actualitzat: " + esc(generat || "—") +
+      (s.font && s.font.url ? ' · Font: <a href="' + esc(s.font.url) + '" target="_blank" rel="noopener">' + esc(s.font.nom) + "</a>" : "") +
+      "</div>";
+
+    if (s.nota) html += '<p class="nota">' + linkify(s.nota) + "</p>";
+    if ((!s.items || !s.items.length) && !s.nota) html += '<p class="nota">Res a mostrar.</p>';
+
+    (s.items || []).forEach(function (it) {
+      html += '<div class="targeta' + (it.alerta ? " alerta" : "") + '">' +
+        (it.data ? '<div class="meta">' + esc(it.data) + "</div>" : "") +
+        linkify(String(it.text || "").trim()) + "</div>";
+    });
+
+    el.innerHTML = html;
+  }
+
+  function senseDades(ids, motiu) {
+    ids.forEach(function (id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const nota = el.querySelector(".nota");
+      if (nota) nota.textContent = "Encara no hi ha dades publicades (" + motiu + ").";
+    });
+  }
+
+  async function carregarResum() {
+    const sec = document.getElementById("resum");
+    try {
+      const r = await fetch("resum.html" + nocache);
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const doc = new DOMParser().parseFromString(await r.text(), "text/html");
+      const cos = sec.querySelector(".cos");
+      cos.innerHTML = doc.body.innerHTML;
+      enllacarTextos(cos);
+      const generat = doc.body.getAttribute("data-generat") || "—";
+      sec.querySelector(".meta").textContent = "Actualitzat: " + generat;
+      estat["Resum"] = generat;
+    } catch (e) {
+      sec.querySelector(".cos").innerHTML = '<p class="nota">Encara no hi ha cap resum publicat (' + esc(e.message) + ").</p>";
+      estat["Resum"] = "sense dades";
+    }
+    pintarEstat();
+  }
+
+  async function carregarJSON(fitxer, etiqueta, ids) {
+    try {
+      const r = await fetch(fitxer + nocache);
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const d = await r.json();
+      (d.seccions || []).forEach(function (s) { pintarSeccio(s, d.generat); });
+      estat[etiqueta] = d.generat || "—";
+    } catch (e) {
+      senseDades(ids, e.message);
+      estat[etiqueta] = "sense dades";
+    }
+    pintarEstat();
+  }
+
+  carregarResum();
+  carregarJSON("extres.json", "Extres", ["actes-ple", "aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres"]);
+  carregarJSON("parlament.json", "Parlament", ["parlament"]);
+  carregarJSON("loteries.json", "Loteries", ["loteries"]);
+</script>
+</body>
+</html>

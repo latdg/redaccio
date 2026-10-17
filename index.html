@@ -42,6 +42,27 @@ section.resum a{color:#b4462c}
 section.resum .font{color:#6b6b66}
 section.resum .cos{overflow-x:auto}
 section.resum .cos img{max-width:100%;height:auto}
+/* Fitxes de dades municipals (bloc 14) */
+.fitxa{border:1px solid #e3e1db;border-radius:10px;padding:14px;margin-top:14px;background:#fcfbf9}
+.fitxa h3{margin:0;font-size:1.05rem}
+.fitxa .pob{color:#6b6b66;font-size:.85rem;margin:2px 0 10px}
+.xifres{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:12px}
+.xifra{background:#fff;border:1px solid #e3e1db;border-radius:8px;padding:10px}
+.xifra .etq{color:#6b6b66;font-size:.8rem}
+.xifra .val{font-size:1.35rem;font-weight:700;line-height:1.2;margin:2px 0}
+.xifra .det{color:#6b6b66;font-size:.8rem}
+.fitxa h4{margin:14px 0 6px;font-size:.92rem}
+.barres{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:center;font-size:.85rem}
+.barres .barra{height:12px;background:#b4462c;border-radius:3px;min-width:2px}
+.barres .num{text-align:right;white-space:nowrap}
+.fitxa .taula{overflow-x:auto}
+.fitxa table{width:100%;border-collapse:collapse;font-size:.88rem}
+.fitxa th,.fitxa td{text-align:left;padding:5px 8px;border-bottom:1px solid #e3e1db;white-space:nowrap}
+.fitxa th{color:#6b6b66;font-weight:600}
+.fitxa td.n,.fitxa th.n{text-align:right}
+.fitxa tr.total td{font-weight:700}
+.fitxa .var{color:#6b6b66;font-size:.8rem}
+.fitxa .nota{color:#6b6b66;font-size:.85rem;margin:8px 0 0}
 @keyframes tdgPulsacioAvui{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.72)}}
 .tdg-boleta-avui{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;margin-right:5px;vertical-align:middle;animation:tdgPulsacioAvui 1.2s infinite}
 </style>
@@ -71,7 +92,6 @@ section.resum .cos img{max-width:100%;height:auto}
     <span id="navResum" style="display:contents"><a href="#resum">Resum</a></span>
     <a href="#aigua-sinac">Aigua SINAC</a>
     <a href="#aigua-mancomunitat">Mancomunitat</a>
-    <a href="#dades-municipals">Dades municipals</a>
     <a href="#congres">Congrés</a>
     <a href="#parlament">Parlament</a>
     <a href="#loteries">Loteries</a>
@@ -141,6 +161,8 @@ function pintaSub(dia) {
 }
 
 function pintaSeccio(s, generat) {
+  if (s.id === "dades-municipals" && s.dades && s.dades.municipis) return pintaDadesMunicipals(s, generat);
+
   let el = document.getElementById(s.id);
   if (!el) {
     el = document.createElement("section");
@@ -231,10 +253,24 @@ async function carregaResum(dia) {
 
     if (!blocs.length) throw new Error("sense apartats");
 
-    cont.innerHTML = "";
+    // Es treuen els blocs del resum, però no el de dades municipals.
+    Array.from(cont.children).forEach(c => { if (c.id !== "dades-municipals") c.remove(); });
     nav.innerHTML = "";
 
     blocs.forEach((b, i) => {
+      // Bloc de l'atur (ja és a «La TdG ampliada»): al seu lloc, i amb el seu
+      // número, hi van les dades municipals dels quatre ajuntaments.
+      if (/^ATUR/i.test(b.titol)) {
+        const dm = document.getElementById("dades-municipals");
+        numeroDM = b.numero;
+        dm.classList.add("resum");
+        const h2 = dm.querySelector("h2");
+        if (h2) h2.textContent = numeroDM + " " + TITOL_DM;
+        cont.appendChild(dm);
+        nav.insertAdjacentHTML("beforeend", '<a href="#dades-municipals">Dades municipals</a>');
+        return;
+      }
+
       const id = "resum-" + (i + 1);
       const sec = document.createElement("section");
       sec.className = "resum";
@@ -254,6 +290,7 @@ async function carregaResum(dia) {
     afegeixActesAlResum();
   } catch (e) {
     cont.innerHTML = '<section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Aquest dia no hi ha cap resum desat.</p></section>';
+    nav.insertAdjacentHTML("beforeend", '<a href="#dades-municipals">Dades municipals</a>');
   }
   pintaSub(dia);
 }
@@ -323,6 +360,138 @@ function afegeixActesAlResum() {
   const frag = document.createRange().createContextualFragment(html);
   if (seguent) seguent.parentNode.insertBefore(frag, seguent);
   else cos.appendChild(frag);
+}
+
+// -----------------------------------------------------------------------------
+// DADES MUNICIPALS (bloc 14): una fitxa per ajuntament, una sota l'altra, amb
+// l'endeutament, el darrer pressupost i la darrera liquidació en taules.
+// -----------------------------------------------------------------------------
+const TITOL_DM = "DADES MUNICIPALS (ENDEUTAMENT, PRESSUPOST I LIQUIDACIÓ)";
+let numeroDM = "";
+
+// 6059877 -> "6.059.877 €"
+function euros(n) {
+  if (n === null || n === undefined || isNaN(n)) return "—";
+  return (n < 0 ? "−" : "") + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+}
+
+// Variació en percentatge: "▲ +3,6 %" / "▼ −12,0 %"
+function varPct(a, b) {
+  if (a === null || a === undefined || !b) return "";
+  const p = (a - b) / Math.abs(b) * 100;
+  if (Math.abs(p) < 0.05) return "= sense canvis";
+  return (p > 0 ? "▲ +" : "▼ −") + Math.abs(p).toFixed(1).replace(".", ",") + " %";
+}
+
+function varEuros(a, b) {
+  if (a === null || a === undefined || b === null || b === undefined) return "";
+  const d = a - b;
+  if (Math.abs(d) < 0.5) return "= sense canvis";
+  return (d > 0 ? "▲ +" : "▼ −") + euros(Math.abs(d));
+}
+
+function xifra(etiqueta, valor, detall) {
+  return `<div class="xifra"><div class="etq">${etiqueta}</div><div class="val">${valor}</div>` +
+    (detall ? `<div class="det">${detall}</div>` : "") + "</div>";
+}
+
+// Taula de capítols amb el pressupost i la liquidació un al costat de l'altre.
+function taulaCapitols(titol, pres, liq, camp, campTotal) {
+  const codis = [];
+  [pres, liq].forEach(d => (d && d[camp] || []).forEach(c => { if (!codis.includes(c.codi)) codis.push(c.codi); }));
+  if (!codis.length) return "";
+  codis.sort();
+
+  const busca = (d, codi) => (d && d[camp] || []).find(c => c.codi === codi) || null;
+  const cel = (c) => c
+    ? `<td class="n">${euros(c.imp)}</td><td class="n var">${varPct(c.imp, c.ant)}</td>`
+    : '<td class="n">—</td><td></td>';
+
+  let h = `<h4>${titol}</h4><div class="taula"><table><thead><tr><th>Capítol</th>` +
+    (pres ? `<th class="n">Pressupost ${pres.any}</th><th class="n">vs ${pres.any - 1}</th>` : "") +
+    (liq ? `<th class="n">Liquidació ${liq.any}</th><th class="n">vs ${liq.any - 1}</th>` : "") +
+    "</tr></thead><tbody>";
+
+  codis.forEach(codi => {
+    const p = busca(pres, codi), l = busca(liq, codi);
+    h += `<tr><td>${codi}. ${esc((p || l).nom)}</td>` + (pres ? cel(p) : "") + (liq ? cel(l) : "") + "</tr>";
+  });
+
+  const tot = d => ({ imp: d[campTotal], ant: d[campTotal + "ant"] });
+  h += '<tr class="total"><td>Total</td>' + (pres ? cel(tot(pres)) : "") + (liq ? cel(tot(liq)) : "") + "</tr>";
+
+  return h + "</tbody></table></div>";
+}
+
+function fitxaMunicipi(m) {
+  const pres = m.pressupost, liq = m.liquidacio;
+  const deute = m.deute || [];
+  const darrer = deute.length ? deute[deute.length - 1] : null;
+  const anterior = deute.length > 1 ? deute[deute.length - 2] : null;
+  const poblacio = (pres && pres.poblacio) || (liq && liq.poblacio) || (darrer && darrer.cens) || null;
+
+  let h = `<article class="fitxa"><h3>${esc(m.nom)}</h3>` +
+    (poblacio ? `<p class="pob">${String(poblacio).replace(/\B(?=(\d{3})+(?!\d))/g, ".")} habitants</p>` : '<p class="pob"></p>');
+
+  // Xifres principals
+  h += '<div class="xifres">';
+  h += darrer
+    ? xifra(`Deute viu a 31.12.${darrer.any}`, darrer.deute ? euros(darrer.deute) : "Sense deute",
+        [darrer.cens && darrer.deute / darrer.cens >= 1 ? euros(darrer.deute / darrer.cens) + " per habitant" : "",
+         anterior ? varEuros(darrer.deute, anterior.deute) + " respecte al " + anterior.any : ""].filter(Boolean).join("<br>"))
+    : xifra("Deute viu", "—", "Sense dades");
+  h += pres
+    ? xifra(`Pressupost ${pres.any} (despeses)`, euros(pres.totalDE),
+        ["Ingressos: " + euros(pres.totalIN), pres.totalDEant ? varPct(pres.totalDE, pres.totalDEant) + " respecte al " + (pres.any - 1) : ""].filter(Boolean).join("<br>"))
+    : xifra("Pressupost", "—", "Sense dades");
+  h += liq
+    ? xifra(`Liquidació ${liq.any} (ingressos − despeses)`,
+        (liq.totalIN - liq.totalDE > 0 ? "+" : "") + euros(liq.totalIN - liq.totalDE),
+        "Ingressos: " + euros(liq.totalIN) + "<br>Despeses: " + euros(liq.totalDE))
+    : xifra("Liquidació", "—", "Sense dades");
+  h += "</div>";
+
+  // Evolució del deute
+  if (deute.length) {
+    const max = Math.max(...deute.map(d => d.deute || 0), 1);
+    h += "<h4>Evolució del deute viu (a 31 de desembre)</h4><div class=\"barres\">" +
+      deute.map(d => `<span>${d.any}</span><div class="barra" style="width:${Math.max(0.5, (d.deute || 0) / max * 100)}%"></div><span class="num">${d.deute ? euros(d.deute) : "0 €"}</span>`).join("") +
+      "</div>";
+  }
+
+  h += taulaCapitols("Despeses per capítols", pres, liq, "despeses", "totalDE");
+  h += taulaCapitols("Ingressos per capítols", pres, liq, "ingressos", "totalIN");
+
+  // Principals tributs (del pressupost)
+  if (pres && pres.tributs && pres.tributs.length) {
+    h += `<h4>Principals tributs (pressupost ${pres.any})</h4><div class="taula"><table><thead><tr><th>Tribut</th><th class="n">Import</th><th class="n">vs ${pres.any - 1}</th></tr></thead><tbody>` +
+      pres.tributs.map(x => `<tr><td>${esc(x.nom)}</td><td class="n">${euros(x.imp)}</td><td class="n var">${varPct(x.imp, x.ant)}</td></tr>`).join("") +
+      "</tbody></table></div>";
+  }
+
+  const notes = [];
+  if (pres && pres.ibi) notes.push(`Tipus de l'IBI urbà: ${String(pres.ibi.tipus).replace(".", ",")} %${pres.ibi.any !== pres.any ? " (dada del " + pres.ibi.any + ")" : ""}.`);
+  if (liq && liq.inversions && liq.inversions.previst) {
+    const pct = liq.inversions.fet / liq.inversions.previst * 100;
+    notes.push(`Inversions fetes el ${liq.any}: ${euros(liq.inversions.fet)}; el pressupost inicial en preveia ${euros(liq.inversions.previst)}` +
+      (pct <= 100 ? ` (se n'ha fet el ${pct.toFixed(0)} %).` : " (s'hi van afegir diners durant l'any)."));
+  }
+  if (notes.length) h += notes.map(n => `<p class="nota">${n}</p>`).join("");
+
+  return h + "</article>";
+}
+
+function pintaDadesMunicipals(s, generat) {
+  const el = document.getElementById("dades-municipals");
+  const peu = [];
+  if (generat) peu.push("Actualitzat el " + esc(quan(generat)));
+  if (s.font && s.font.url) peu.push(`Font: <a href="${esc(s.font.url)}" target="_blank" rel="noopener">${esc(s.font.nom)}</a>`);
+
+  el.innerHTML = `<h2>${numeroDM ? numeroDM + " " + TITOL_DM : "🏦 " + TITOL_DM}</h2>` +
+    (peu.length ? `<p class="font">${peu.join(" · ")}</p>` : "") +
+    (s.nota ? `<p class="buit">${esc(s.nota)}</p>` : "") +
+    s.dades.municipis.map(fitxaMunicipi).join("") +
+    '<p class="nota" style="color:#6b6b66;font-size:.85rem">El pressupost és l\'inicial aprovat; la liquidació, el que realment s\'ha ingressat i gastat aquell any. ▲ ▼ variació respecte a l\'any anterior.</p>';
 }
 
 async function inicia() {

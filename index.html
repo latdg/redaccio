@@ -33,12 +33,15 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:32px}
 .capcalera{display:flex;align-items:center;gap:16px}
 .podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
 .podcast svg{display:block;width:50px;height:50px}
-/* El resum arriba amb els colors del correu: es manté sempre en clar. */
-#resum{background:#fff;color:#1d1d1b;color-scheme:light}
-#resum h2{color:#1d1d1b}
-#resum a{color:#b4462c}
-#resum .cos{overflow-x:auto}
-#resum .cos img{max-width:100%;height:auto}
+/* Cada apartat numerat del resum és un bloc. Arriben amb els colors del
+   correu, així que es mantenen sempre en clar. */
+#resum{display:grid;gap:16px;min-width:0}
+section.resum{background:#fff;color:#1d1d1b;color-scheme:light}
+section.resum h2{color:#1d1d1b}
+section.resum a{color:#b4462c}
+section.resum .font{color:#6b6b66}
+section.resum .cos{overflow-x:auto}
+section.resum .cos img{max-width:100%;height:auto}
 @keyframes tdgPulsacioAvui{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.72)}}
 .tdg-boleta-avui{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;margin-right:5px;vertical-align:middle;animation:tdgPulsacioAvui 1.2s infinite}
 </style>
@@ -65,7 +68,7 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:32px}
     <a href="https://latdg.github.io/tauler/" target="_blank" rel="noopener">La TdG ampliada ↗</a>
   </div>
   <nav>
-    <a href="#resum">Resum</a>
+    <span id="navResum" style="display:contents"><a href="#resum">Resum</a></span>
     <a href="#actes-ple">Actes del Ple</a>
     <a href="#aigua-sinac">Aigua SINAC</a>
     <a href="#aigua-mancomunitat">Mancomunitat</a>
@@ -77,7 +80,7 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:32px}
 </header>
 
 <main>
-  <section id="resum"><h2>📰 Resum informatiu</h2><p class="font"></p><div class="cos"><p class="buit">Carregant…</p></div></section>
+  <div id="resum"><section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Carregant…</p></section></div>
   <section id="actes-ple"><h2>🏛️ Actes del Ple</h2><p class="buit">Carregant…</p></section>
   <section id="aigua-sinac"><h2>💧 Aigua potable — SINAC</h2><p class="buit">Carregant…</p></section>
   <section id="aigua-mancomunitat"><h2>🧪 Aigua potable — Mancomunitat</h2><p class="buit">Carregant…</p></section>
@@ -173,18 +176,85 @@ function senseDades(ids, text) {
   });
 }
 
+// Capçalera numerada del correu: comença amb un o més números en forma de
+// tecla ("1️⃣ PREMSA LOCAL", "1️⃣0️⃣ PUOSC…").
+const RX_NUMERO = /^\s*((?:\d\uFE0F?\u20E3)+)\s*(.+)$/s;
+
+// Nom curt per a la barra de navegació.
+const NOMS_CURTS = [
+  [/^PREMSA LOCAL/i, "Premsa local"], [/^PREMSA GENERALISTA/i, "Premsa generalista"],
+  [/^ESPAIS? WEB/i, "Webs"], [/^TAULERS/i, "Taulers"], [/^GENERALITAT/i, "Generalitat"],
+  [/^CONTRACTACI/i, "Contractació"], [/^BASE DE DATOS NACIONAL/i, "BDNS"], [/RAISC/i, "RAISC"],
+  [/^C[ÀA]MERES/i, "Càmeres"], [/^INCID[ÈE]NCIES/i, "Incidències"], [/^ATUR/i, "Atur"], [/^AGENDA/i, "Agenda"]
+];
+
+function nomCurt(titol) {
+  const t = titol.replace(/\s*[(—].*$/, "").trim();
+  const trobat = NOMS_CURTS.find(([rx]) => rx.test(t));
+  if (trobat) return trobat[1];
+  if (/^[A-Z]{2,6}$/.test(t)) return t;                       // BOE, DOGC, BOP, PUOSC...
+  return t.charAt(0) + t.slice(1).toLowerCase();
+}
+
+// Separa el resum en un bloc per cada apartat numerat.
+function blocsDelResum(body) {
+  const blocs = [];
+  let actual = null;
+
+  Array.from(body.childNodes).forEach(node => {
+    const text = (node.textContent || "").trim();
+
+    if (node.nodeType === 1) {
+      const m = text.match(RX_NUMERO);
+      if (m && node.tagName === "DIV" && text.length < 200) {
+        actual = { numero: m[1], titol: m[2].replace(/\s+/g, " ").trim(), nodes: [] };
+        blocs.push(actual);
+        return;
+      }
+      // Línia separadora sota cada capçalera i peu final del correu: fora.
+      if (node.tagName === "DIV" && !text && /border-bottom/.test(node.getAttribute("style") || "")) return;
+      if (/^Generat per a La TdG/.test(text)) return;
+    }
+
+    if (actual) actual.nodes.push(node);
+  });
+
+  return blocs;
+}
+
 async function carregaResum(dia) {
-  const sec = document.getElementById("resum");
+  const cont = document.getElementById("resum");
+  const nav = document.getElementById("navResum");
+
   try {
     const doc = new DOMParser().parseFromString(await obtenir(`dades/${dia}/resum.html`, "text"), "text/html");
-    const cos = sec.querySelector(".cos");
-    cos.innerHTML = doc.body.innerHTML;
-    enllacarTextos(cos);
     const generat = doc.body.getAttribute("data-generat") || "";
-    sec.querySelector(".font").textContent = generat ? "Actualitzat el " + quan(generat) : "";
+    const blocs = blocsDelResum(doc.body);
+
+    if (!blocs.length) throw new Error("sense apartats");
+
+    cont.innerHTML = "";
+    nav.innerHTML = "";
+
+    blocs.forEach((b, i) => {
+      const id = "resum-" + (i + 1);
+      const sec = document.createElement("section");
+      sec.className = "resum";
+      sec.id = id;
+      sec.innerHTML = `<h2>${b.numero} ${esc(b.titol)}</h2>` +
+        (generat ? `<p class="font">Actualitzat el ${esc(quan(generat))}</p>` : "") +
+        '<div class="cos"></div>';
+      const cos = sec.querySelector(".cos");
+      b.nodes.forEach(n => cos.appendChild(document.importNode(n, true)));
+      enllacarTextos(cos);
+      cont.appendChild(sec);
+
+      nav.insertAdjacentHTML("beforeend", `<a href="#${id}">${esc(nomCurt(b.titol))}</a>`);
+    });
+
     estat.resum = hora(generat);
   } catch (e) {
-    sec.querySelector(".cos").innerHTML = '<p class="buit">Aquest dia no hi ha cap resum desat.</p>';
+    cont.innerHTML = '<section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Aquest dia no hi ha cap resum desat.</p></section>';
   }
   pintaSub(dia);
 }
@@ -216,8 +286,8 @@ async function inicia() {
 
   if (!dies.length) {
     document.getElementById("sub").textContent = "Encara no hi ha dades publicades.";
-    senseDades(["resum", "actes-ple", "aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres", "parlament", "loteries"], "");
-    document.querySelector("#resum .cos").innerHTML = "";
+    senseDades(["actes-ple", "aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres", "parlament", "loteries"], "");
+    document.getElementById("resum").innerHTML = "";
     return;
   }
 

@@ -63,6 +63,19 @@ section.resum .cos img{max-width:100%;height:auto}
 .fitxa tr.total td{font-weight:700}
 .fitxa .var{color:#6b6b66;font-size:.8rem}
 .fitxa .nota{color:#6b6b66;font-size:.85rem;margin:8px 0 0}
+/* Aigua potable (bloc unificat) */
+.fitxa .avis{border-left:4px solid #b4462c;background:#fff;padding:8px 10px;margin:0 0 10px;font-size:.9rem;white-space:pre-wrap}
+.xifra .val.noapta{color:#b4462c}
+.fitxa .punt{color:#6b6b66;font-size:.85rem;margin:0 0 6px}
+.fitxa tr.destacat td{font-weight:700;color:#b4462c}
+details.butlleti{border-bottom:1px solid #e3e1db;padding:4px 0}
+details.butlleti summary{cursor:pointer;color:#b4462c;list-style:none}
+details.butlleti summary::-webkit-details-marker{display:none}
+details.butlleti summary:hover{text-decoration:underline}
+details.butlleti[open] summary{font-weight:700}
+details.butlleti > div{padding:6px 0 8px 14px}
+.manc{margin-top:16px;padding-top:4px;border-top:2px solid #e3e1db}
+.manc ul{margin:4px 0 0;padding-left:20px;font-size:.88rem}
 @keyframes tdgPulsacioAvui{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.72)}}
 .tdg-boleta-avui{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;margin-right:5px;vertical-align:middle;animation:tdgPulsacioAvui 1.2s infinite}
 </style>
@@ -90,18 +103,13 @@ section.resum .cos img{max-width:100%;height:auto}
   </div>
   <nav>
     <span id="navResum" style="display:contents"><a href="#resum">Resum</a></span>
-    <a href="#aigua-sinac">Aigua SINAC</a>
-    <a href="#aigua-mancomunitat">Mancomunitat</a>
-    <a href="#congres">Congrés</a>
-    <a href="#parlament">Parlament</a>
     <a href="#loteries">Loteries</a>
   </nav>
 </header>
 
 <main>
   <div id="resum"><section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Carregant…</p></section></div>
-  <section id="aigua-sinac"><h2>💧 Aigua potable — SINAC</h2><p class="buit">Carregant…</p></section>
-  <section id="aigua-mancomunitat"><h2>🧪 Aigua potable — Mancomunitat</h2><p class="buit">Carregant…</p></section>
+  <section id="aigua"><h2>💧 Aigua potable</h2><p class="buit">Carregant…</p></section>
   <section id="dades-municipals"><h2>🏦 Dades municipals</h2><p class="buit">Carregant…</p></section>
   <section id="congres"><h2>🏛️ Congrés dels Diputats</h2><p class="buit">Carregant…</p></section>
   <section id="parlament"><h2>🏛️ Parlament de Catalunya</h2><p class="buit">Carregant…</p></section>
@@ -170,7 +178,10 @@ function pintaSeccio(s, generat) {
     document.querySelector("main").appendChild(el);
   }
 
-  let h = `<h2>${ICONES[s.id] ? ICONES[s.id] + " " : ""}${esc(s.titol)}</h2>`;
+  // Si el bloc ja és dins del resum, porta el número i el títol del resum.
+  let h = el.dataset.numero
+    ? `<h2>${el.dataset.numero} ${esc(el.dataset.titol || s.titol)}</h2>`
+    : `<h2>${ICONES[s.id] ? ICONES[s.id] + " " : ""}${esc(s.titol)}</h2>`;
   const peu = [];
   if (generat) peu.push("Actualitzat el " + esc(quan(generat)));
   if (s.font && s.font.url) peu.push(`Font: <a href="${esc(s.font.url)}" target="_blank" rel="noopener">${esc(s.font.nom)}</a>`);
@@ -216,6 +227,10 @@ function nomCurt(titol) {
   return t.charAt(0) + t.slice(1).toLowerCase();
 }
 
+// Apartats del correu que no surten al panell perquè ja són a «La TdG ampliada».
+// (L'atur no és aquí: el seu lloc l'ocupen les dades municipals.)
+const BLOCS_AMAGATS = [/^INCID[ÈE]NCIES VI[ÀA]RIES/i];
+
 // Separa el resum en un bloc per cada apartat numerat.
 function blocsDelResum(body) {
   const blocs = [];
@@ -242,9 +257,24 @@ function blocsDelResum(body) {
   return blocs;
 }
 
+// Número en forma de tecla: 13 -> "1️⃣3️⃣".
+const tecla = n => String(n).split("").map(d => d + "\uFE0F\u20E3").join("");
+
+// Blocs propis del panell que van dins del resum, amb el lloc on van:
+//   abans / despres: abans o després de l'apartat del correu que coincideixi;
+//   enLlocDe: ocupen el lloc d'aquell apartat, que deixa de sortir.
+// Si no es troba l'apartat de referència, van just abans de l'agenda.
+const BLOCS_PROPIS = [
+  { id: "congres", nom: "Congrés", titol: "CONGRÉS DELS DIPUTATS (ESMENTS DELS MUNICIPIS)", abans: /^GENERALITAT/i },
+  { id: "parlament", nom: "Parlament", titol: "PARLAMENT DE CATALUNYA (ESMENTS DELS MUNICIPIS)", despres: /^GENERALITAT/i },
+  { id: "dades-municipals", nom: "Dades municipals", titol: "DADES MUNICIPALS (ENDEUTAMENT, PRESSUPOST I LIQUIDACIÓ)", enLlocDe: /^ATUR/i },
+  { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i }
+];
+
 async function carregaResum(dia) {
   const cont = document.getElementById("resum");
   const nav = document.getElementById("navResum");
+  const propis = BLOCS_PROPIS.map(p => p.id);
 
   try {
     const doc = new DOMParser().parseFromString(await obtenir(`dades/${dia}/resum.html`, "text"), "text/html");
@@ -253,29 +283,55 @@ async function carregaResum(dia) {
 
     if (!blocs.length) throw new Error("sense apartats");
 
-    // Es treuen els blocs del resum, però no el de dades municipals.
-    Array.from(cont.children).forEach(c => { if (c.id !== "dades-municipals") c.remove(); });
+    // Es treuen els blocs del resum, però no els propis del panell.
+    Array.from(cont.children).forEach(c => { if (!propis.includes(c.id)) c.remove(); });
     nav.innerHTML = "";
 
-    blocs.forEach((b, i) => {
-      // Bloc de l'atur (ja és a «La TdG ampliada»): al seu lloc, i amb el seu
-      // número, hi van les dades municipals dels quatre ajuntaments.
-      if (/^ATUR/i.test(b.titol)) {
-        const dm = document.getElementById("dades-municipals");
-        numeroDM = b.numero;
-        dm.classList.add("resum");
-        const h2 = dm.querySelector("h2");
-        if (h2) h2.textContent = numeroDM + " " + TITOL_DM;
-        cont.appendChild(dm);
-        nav.insertAdjacentHTML("beforeend", '<a href="#dades-municipals">Dades municipals</a>');
+    // Ordre final: els apartats del correu, sense els amagats, i els blocs
+    // propis del panell al seu lloc (vegeu BLOCS_PROPIS).
+    const ordre = [];
+    const posats = new Set();
+    const posa = p => { ordre.push({ propi: p.id, nom: p.nom, titol: p.titol }); posats.add(p.id); };
+
+    blocs.forEach(b => {
+      BLOCS_PROPIS.filter(p => p.abans && p.abans.test(b.titol)).forEach(posa);
+
+      const enLloc = BLOCS_PROPIS.filter(p => p.enLlocDe && p.enLlocDe.test(b.titol));
+      if (enLloc.length) enLloc.forEach(posa);
+      else if (!BLOCS_AMAGATS.some(rx => rx.test(b.titol))) ordre.push({ bloc: b });
+
+      BLOCS_PROPIS.filter(p => p.despres && p.despres.test(b.titol)).forEach(posa);
+    });
+
+    const pendents = BLOCS_PROPIS.filter(p => !posats.has(p.id));
+    if (pendents.length) {
+      const iAgenda = ordre.findIndex(o => o.bloc && /^AGENDA/i.test(o.bloc.titol));
+      ordre.splice(iAgenda === -1 ? ordre.length : iAgenda, 0,
+        ...pendents.map(p => ({ propi: p.id, nom: p.nom, titol: p.titol })));
+    }
+
+    // Numeració seguida (1, 2, 3...), encara que s'hagin tret apartats.
+    ordre.forEach((o, i) => {
+      const numero = tecla(i + 1);
+
+      if (o.propi) {
+        const el = document.getElementById(o.propi);
+        el.classList.add("resum");
+        el.dataset.numero = numero;
+        el.dataset.titol = o.titol;
+        const h2 = el.querySelector("h2");
+        if (h2) h2.textContent = numero + " " + o.titol;
+        cont.appendChild(el);
+        nav.insertAdjacentHTML("beforeend", `<a href="#${o.propi}">${o.nom}</a>`);
         return;
       }
 
+      const b = o.bloc;
       const id = "resum-" + (i + 1);
       const sec = document.createElement("section");
       sec.className = "resum";
       sec.id = id;
-      sec.innerHTML = `<h2>${b.numero} ${esc(b.titol)}</h2>` +
+      sec.innerHTML = `<h2>${numero} ${esc(b.titol)}</h2>` +
         (generat ? `<p class="font">Actualitzat el ${esc(quan(generat))}</p>` : "") +
         '<div class="cos"></div>';
       const cos = sec.querySelector(".cos");
@@ -290,7 +346,7 @@ async function carregaResum(dia) {
     afegeixActesAlResum();
   } catch (e) {
     cont.innerHTML = '<section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Aquest dia no hi ha cap resum desat.</p></section>';
-    nav.insertAdjacentHTML("beforeend", '<a href="#dades-municipals">Dades municipals</a>');
+    BLOCS_PROPIS.forEach(p => nav.insertAdjacentHTML("beforeend", `<a href="#${p.id}">${p.nom}</a>`));
   }
   pintaSub(dia);
 }
@@ -301,10 +357,14 @@ async function carregaJSON(dia, fitxer, ids, clauEstat) {
     (d.seccions || []).forEach(s => {
       // Les actes del Ple no tenen bloc propi: van dins de l'apartat 3 del resum.
       if (s.id === "actes-ple") { actesPle = s; afegeixActesAlResum(); return; }
+      // SINAC i Mancomunitat: un sol bloc «Aigua potable».
+      if (s.id === "aigua-sinac") { aiguaSinac = s; return; }
+      if (s.id === "aigua-mancomunitat") { aiguaManc = s; return; }
       pintaSeccio(s, d.generat);
     });
+    if (aiguaSinac || aiguaManc) pintaAigua(d.generat);
     // Les seccions que no venen en aquest fitxer (dies antics, per exemple).
-    const pintades = (d.seccions || []).map(s => s.id);
+    const pintades = (d.seccions || []).map(s => /^aigua-/.test(s.id) ? "aigua" : s.id);
     senseDades(ids.filter(id => !pintades.includes(id)), "Aquest dia no hi ha dades desades.");
     if (clauEstat) estat[clauEstat] = hora(d.generat);
   } catch (e) {
@@ -367,7 +427,6 @@ function afegeixActesAlResum() {
 // l'endeutament, el darrer pressupost i la darrera liquidació en taules.
 // -----------------------------------------------------------------------------
 const TITOL_DM = "DADES MUNICIPALS (ENDEUTAMENT, PRESSUPOST I LIQUIDACIÓ)";
-let numeroDM = "";
 
 // 6059877 -> "6.059.877 €"
 function euros(n) {
@@ -498,11 +557,144 @@ function pintaDadesMunicipals(s, generat) {
   if (generat) peu.push("Actualitzat el " + esc(quan(generat)));
   if (s.font && s.font.url) peu.push(`Font: <a href="${esc(s.font.url)}" target="_blank" rel="noopener">${esc(s.font.nom)}</a>`);
 
-  el.innerHTML = `<h2>${numeroDM ? numeroDM + " " + TITOL_DM : "🏦 " + TITOL_DM}</h2>` +
+  el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🏦 ") + TITOL_DM}</h2>` +
     (peu.length ? `<p class="font">${peu.join(" · ")}</p>` : "") +
     (s.nota ? `<p class="buit">${esc(s.nota)}</p>` : "") +
     s.dades.municipis.map(fitxaMunicipi).join("") +
     '<p class="nota" style="color:#6b6b66;font-size:.85rem">El pressupost és l\'inicial aprovat; la liquidació, el que realment s\'ha ingressat i gastat aquell any. El resultat no financer (capítols 1 a 7) deixa fora els préstecs i els actius financers: si és positiu, l\'ajuntament ha ingressat més del que ha gastat en la seva activitat i inversions. ▲ ▼ variació respecte a l\'any anterior.</p>';
+}
+
+// -----------------------------------------------------------------------------
+// AIGUA POTABLE: un sol bloc amb una fitxa per municipi. Analítiques del SINAC
+// (el darrer butlletí amb tot el detall i els anteriors, que s'obren clicant-hi)
+// i, a Corçà i a Cruïlles, Monells i Sant Sadurní, les de la Mancomunitat.
+// -----------------------------------------------------------------------------
+const TITOL_AIGUA = "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)";
+let aiguaSinac = null;
+let aiguaManc = null;
+
+function textNitrats(valor, limit, avis) {
+  if (valor === null || valor === undefined || isNaN(valor)) return "";
+  if (valor > limit) return `⚠️ Per sobre del límit legal (${limit} mg/L)`;
+  if (valor >= avis) return `⚠️ A prop del límit legal (${limit} mg/L)`;
+  return `Límit legal: ${limit} mg/L`;
+}
+
+function taulaParametres(b, avis) {
+  if (b.errorDetall) return `<p class="nota">No s'ha pogut llegir el detall d'aquest butlletí.</p>`;
+  if (!b.parametres || !b.parametres.length) return '<p class="nota">El butlletí no porta paràmetres.</p>';
+
+  return '<div class="taula"><table><thead><tr><th>Paràmetre</th><th class="n">Valor</th><th>Unitat</th></tr></thead><tbody>' +
+    b.parametres.map(p => {
+      const v = parseFloat(String(p.valor).replace(/^[^\d]*/, "").replace(",", "."));
+      const destacat = /nitrat/i.test(p.nom) && !isNaN(v) && v >= avis;
+      return `<tr${destacat ? ' class="destacat"' : ""}><td>${esc(p.nom)}</td><td class="n">${esc(p.valor)}</td><td>${esc(p.unitat)}</td></tr>`;
+    }).join("") + "</tbody></table></div>";
+}
+
+function liniaButlleti(b) {
+  return `• ${esc(b.data)} · ${esc(b.tipusAnalisi)} · ${esc(b.qualificacio)}`;
+}
+
+function blocMancomunitat(m) {
+  const limit = m.limitNitrats || 50, avis = m.avisNitrats || 45;
+  const d = m.darrera;
+
+  let h = '<div class="manc"><h4>Analítiques de la Mancomunitat d\'Aigües del Baix Empordà</h4>' +
+    '<p class="punt">La Mancomunitat les publica conjuntament per a Corçà i per a Cruïlles, Monells i Sant Sadurní de l\'Heura: surten a totes dues fitxes.</p>';
+
+  if (!d) return h + `<p class="nota">${esc(aiguaManc.nota || "No s'ha trobat cap analítica.")}</p></div>`;
+
+  const a = d.analisi;
+
+  if (a) {
+    const nv = a.nitrats ? a.nitrats.valor : null;
+    h += '<div class="xifres">' +
+      xifra("Darrera analítica", esc(a.data || d.etiqueta), esc(a.tipus || "")) +
+      xifra("Qualificació", a.qualificacio ? `<span class="${a.qualificacio === "No apta" ? "noapta" : ""}">${esc(a.qualificacio)}</span>` : "—", "") +
+      xifra("Nitrats", a.nitrats ? esc(a.nitrats.text) + " mg/L" : "—", a.nitrats ? textNitrats(nv, limit, avis) : "No s'han pogut llegir") +
+      "</div>";
+    if (a.punt) h += `<p class="punt">Punt de mostreig: ${esc(a.punt)}</p>`;
+    if (a.observacions) h += `<p class="punt">Observacions: ${esc(a.observacions)}</p>`;
+    h += `<p class="nota">Dades llegides automàticament del PDF: comprova-les a l'analítica.</p>`;
+  } else {
+    h += `<p class="nota">No s'ha pogut llegir el PDF automàticament${d.errorOcr ? " (" + esc(d.errorOcr) + ")" : ""}.</p>`;
+  }
+
+  h += `<p style="margin:6px 0 0">📄 <a href="${esc(d.url)}" target="_blank" rel="noopener">${esc(d.etiqueta)}</a></p>`;
+
+  if (m.altres && m.altres.length) {
+    h += `<details class="butlleti"><summary>• Altres analítiques publicades (${m.altres.length})</summary><div><ul>` +
+      m.altres.map(x => `<li><a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.etiqueta)}</a></li>`).join("") +
+      "</ul></div></details>";
+  }
+
+  return h + "</div>";
+}
+
+function fitxaAigua(x, cfg, manc) {
+  const limit = cfg.limitNitrats || 50, avis = cfg.avisNitrats || 45;
+  const butlletins = x.butlletins || [];
+  const darrer = butlletins[0];
+
+  let h = `<article class="fitxa"><h3>${esc(x.municipi)}</h3>` +
+    `<p class="pob">${x.xarxa ? "Xarxa: " + esc(x.xarxa) : ""}</p>`;
+
+  (x.avisos || []).forEach(a => { h += `<div class="avis">⚠️ <b>${esc(a.tipus)}:</b> ${esc(a.text)}</div>`; });
+
+  if (!darrer) {
+    h += `<p class="nota">El SINAC no té cap butlletí d'aquesta xarxa als darrers ${cfg.mesos || 12} mesos.</p>`;
+  } else {
+    const nv = darrer.nitrats ? darrer.nitrats.valor : null;
+    h += '<div class="xifres">' +
+      xifra("Darrer butlletí del SINAC", esc(darrer.data), esc(darrer.tipusAnalisi)) +
+      xifra("Qualificació", `<span class="${darrer.noApta ? "noapta" : ""}">${esc(darrer.qualificacio)}</span>`, "") +
+      xifra("Nitrats", darrer.nitrats ? esc(darrer.nitrats.text) : "—", darrer.nitrats ? textNitrats(nv, limit, avis) : "") +
+      "</div>";
+
+    h += "<h4>Detall del darrer butlletí</h4>" +
+      (darrer.punt ? `<p class="punt">Punt de mostreig: ${esc(darrer.punt)}</p>` : "") +
+      taulaParametres(darrer, avis);
+
+    if (butlletins.length > 1) {
+      h += `<h4>Butlletins anteriors (darrers ${cfg.mesos || 12} mesos)</h4>` +
+        butlletins.slice(1).map(b =>
+          `<details class="butlleti"><summary>${liniaButlleti(b)}</summary><div>` +
+          (b.punt ? `<p class="punt">Punt de mostreig: ${esc(b.punt)}</p>` : "") +
+          taulaParametres(b, avis) + "</div></details>").join("");
+    }
+  }
+
+  if (manc) h += blocMancomunitat(manc);
+
+  return h + "</article>";
+}
+
+function pintaAigua(generat) {
+  const el = document.getElementById("aigua");
+  const s = aiguaSinac, m = aiguaManc;
+
+  const fonts = [s, m].filter(x => x && x.font && x.font.url)
+    .map(x => `<a href="${esc(x.font.url)}" target="_blank" rel="noopener">${esc(x.font.nom)}</a>`);
+
+  let h = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "💧 ") + TITOL_AIGUA}</h2>` +
+    `<p class="font">${generat ? "Actualitzat el " + esc(quan(generat)) : ""}${fonts.length ? (generat ? " · " : "") + "Fonts: " + fonts.join(" i ") : ""}</p>`;
+
+  [s, m].forEach(x => { if (x && x.nota) h += `<p class="buit">${esc(x.nota)}</p>`; });
+
+  if (s && s.dades && s.dades.xarxes) {
+    const md = m && m.dades;
+    h += s.dades.xarxes.map(x => fitxaAigua(x, s.dades,
+      md && (md.municipis || []).includes(x.municipi) ? md : null)).join("");
+    if (s.dades.xarxes.length) h += '<p class="nota" style="color:#6b6b66;font-size:.85rem">Clica cada butlletí anterior per veure\'n els paràmetres.</p>';
+  } else {
+    // Dies antics, desats abans del bloc unificat: el text tal com venia.
+    [s, m].filter(Boolean).forEach(x => (x.items || []).forEach(it => {
+      h += `<div class="targeta${it.alerta ? " alerta" : ""}">${linkify(String(it.text || "").trim())}</div>`;
+    }));
+  }
+
+  el.innerHTML = h;
 }
 
 async function inicia() {
@@ -516,7 +708,7 @@ async function inicia() {
 
   if (!dies.length) {
     document.getElementById("sub").textContent = "Encara no hi ha dades publicades.";
-    senseDades(["aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres", "parlament", "loteries"], "");
+    senseDades(["aigua", "dades-municipals", "congres", "parlament", "loteries"], "");
     document.getElementById("resum").innerHTML = "";
     return;
   }
@@ -530,7 +722,7 @@ async function inicia() {
   pintaSub(dia);
 
   carregaResum(dia);
-  carregaJSON(dia, "extres.json", ["aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres"], "extres");
+  carregaJSON(dia, "extres.json", ["aigua", "dades-municipals", "congres"], "extres");
   carregaJSON(dia, "parlament.json", ["parlament"]);
   carregaJSON(dia, "loteries.json", ["loteries"]);
 }

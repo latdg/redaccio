@@ -69,7 +69,6 @@ section.resum .cos img{max-width:100%;height:auto}
   </div>
   <nav>
     <span id="navResum" style="display:contents"><a href="#resum">Resum</a></span>
-    <a href="#actes-ple">Actes del Ple</a>
     <a href="#aigua-sinac">Aigua SINAC</a>
     <a href="#aigua-mancomunitat">Mancomunitat</a>
     <a href="#dades-municipals">Dades municipals</a>
@@ -81,7 +80,6 @@ section.resum .cos img{max-width:100%;height:auto}
 
 <main>
   <div id="resum"><section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Carregant…</p></section></div>
-  <section id="actes-ple"><h2>🏛️ Actes del Ple</h2><p class="buit">Carregant…</p></section>
   <section id="aigua-sinac"><h2>💧 Aigua potable — SINAC</h2><p class="buit">Carregant…</p></section>
   <section id="aigua-mancomunitat"><h2>🧪 Aigua potable — Mancomunitat</h2><p class="buit">Carregant…</p></section>
   <section id="dades-municipals"><h2>🏦 Dades municipals</h2><p class="buit">Carregant…</p></section>
@@ -253,6 +251,7 @@ async function carregaResum(dia) {
     });
 
     estat.resum = hora(generat);
+    afegeixActesAlResum();
   } catch (e) {
     cont.innerHTML = '<section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Aquest dia no hi ha cap resum desat.</p></section>';
   }
@@ -262,7 +261,11 @@ async function carregaResum(dia) {
 async function carregaJSON(dia, fitxer, ids, clauEstat) {
   try {
     const d = await obtenir(`dades/${dia}/${fitxer}`);
-    (d.seccions || []).forEach(s => pintaSeccio(s, d.generat));
+    (d.seccions || []).forEach(s => {
+      // Les actes del Ple no tenen bloc propi: van dins de l'apartat 3 del resum.
+      if (s.id === "actes-ple") { actesPle = s; afegeixActesAlResum(); return; }
+      pintaSeccio(s, d.generat);
+    });
     // Les seccions que no venen en aquest fitxer (dies antics, per exemple).
     const pintades = (d.seccions || []).map(s => s.id);
     senseDades(ids.filter(id => !pintades.includes(id)), "Aquest dia no hi ha dades desades.");
@@ -273,6 +276,53 @@ async function carregaJSON(dia, fitxer, ids, clauEstat) {
       : "Aquest dia no hi ha dades desades.");
   }
   pintaSub(dia);
+}
+
+// -----------------------------------------------------------------------------
+// ACTES DEL PLE DEL CONSELL COMARCAL dins de l'apartat 3 (Espai web de les
+// administracions), just després de les notícies del Consell Comarcal. El
+// resum i les actes arriben per separat: s'afegeixen quan hi ha totes dues coses.
+// -----------------------------------------------------------------------------
+const ACTES_PLE_A_MOSTRAR = 2;
+let actesPle = null;
+
+function afegeixActesAlResum() {
+  const bloc = Array.from(document.querySelectorAll("section.resum")).find(s =>
+    /^\S+\s+ESPAIS? WEB/i.test(s.querySelector("h2") ? s.querySelector("h2").textContent : ""));
+
+  if (!bloc || !actesPle || bloc.dataset.actes) return;
+  bloc.dataset.actes = "fet";
+
+  const cos = bloc.querySelector(".cos");
+
+  const linies = (actesPle.items || []).slice(0, ACTES_PLE_A_MOSTRAR).map(it => {
+    const text = String(it.text || "");
+    const data = (text.match(/Ple del (\d{2}\.\d{2}\.\d{4})/) || [])[1] || "";
+    const tipus = (text.match(/^•\s*(.+)$/m) || [])[1] || "";
+    const url = (text.match(/Acta:\s*(\S+)/) || [])[1] || "";
+    return "• " + (data ? esc(data) + " — " : "") + "Acta del Ple" +
+      (tipus ? " (sessió " + esc(tipus.toLowerCase()) + ")" : "") +
+      (url ? `<br><a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a>` : "") + "<br><br>";
+  });
+
+  const html = "▶ Consell Comarcal del Baix Empordà (actes del ple):<br><br>" + (linies.length
+    ? linies.join("")
+    : '<span class="buit">No s\'ha trobat cap acta del Ple.</span><br><br>');
+
+  // Es posa just abans del bloc següent (el Consorci de les Gavarres). Si no
+  // es troba, al final de l'apartat.
+  const walker = document.createTreeWalker(cos, NodeFilter.SHOW_TEXT);
+  let seguent = null;
+  let dinsConsell = false;
+  while (walker.nextNode()) {
+    const v = walker.currentNode.nodeValue;
+    if (/▶\s*Consell Comarcal del Baix Empord/.test(v)) { dinsConsell = true; continue; }
+    if (dinsConsell && /▶/.test(v)) { seguent = walker.currentNode; break; }
+  }
+
+  const frag = document.createRange().createContextualFragment(html);
+  if (seguent) seguent.parentNode.insertBefore(frag, seguent);
+  else cos.appendChild(frag);
 }
 
 async function inicia() {
@@ -286,7 +336,7 @@ async function inicia() {
 
   if (!dies.length) {
     document.getElementById("sub").textContent = "Encara no hi ha dades publicades.";
-    senseDades(["actes-ple", "aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres", "parlament", "loteries"], "");
+    senseDades(["aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres", "parlament", "loteries"], "");
     document.getElementById("resum").innerHTML = "";
     return;
   }
@@ -300,7 +350,7 @@ async function inicia() {
   pintaSub(dia);
 
   carregaResum(dia);
-  carregaJSON(dia, "extres.json", ["actes-ple", "aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres"], "extres");
+  carregaJSON(dia, "extres.json", ["aigua-sinac", "aigua-mancomunitat", "dades-municipals", "congres"], "extres");
   carregaJSON(dia, "parlament.json", ["parlament"]);
   carregaJSON(dia, "loteries.json", ["loteries"]);
 }

@@ -63,6 +63,8 @@ section.resum .cos img{max-width:100%;height:auto}
 .fitxa td.n,.fitxa th.n{text-align:right}
 .fitxa tr.total td{font-weight:700}
 .fitxa .var{color:var(--suau);font-size:.8rem}
+.amunt{color:#1e7b34}
+.avall{color:#c0392b}
 .fitxa .nota{color:var(--suau);font-size:.85rem;margin:8px 0 0}
 /* Aigua potable (bloc unificat) */
 .fitxa .avis{border-left:4px solid var(--accent);background:var(--targeta);padding:8px 10px;margin:0 0 10px;font-size:.9rem;white-space:pre-wrap}
@@ -504,19 +506,19 @@ function euros(n) {
   return (n < 0 ? "−" : "") + String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
 }
 
-// Variació en percentatge: "▲ +3,6 %" / "▼ −12,0 %"
+// Variació en percentatge: "▲ +3,6 %" / "▼ −12,0 %" (verd amunt, vermell avall)
 function varPct(a, b) {
   if (a === null || a === undefined || !b) return "";
   const p = (a - b) / Math.abs(b) * 100;
   if (Math.abs(p) < 0.05) return "= sense canvis";
-  return (p > 0 ? "▲ +" : "▼ −") + Math.abs(p).toFixed(1).replace(".", ",") + " %";
+  return (p > 0 ? '<span class="amunt">▲ +' : '<span class="avall">▼ −') + Math.abs(p).toFixed(1).replace(".", ",") + " %</span>";
 }
 
 function varEuros(a, b) {
   if (a === null || a === undefined || b === null || b === undefined) return "";
   const d = a - b;
   if (Math.abs(d) < 0.5) return "= sense canvis";
-  return (d > 0 ? "▲ +" : "▼ −") + euros(Math.abs(d));
+  return (d > 0 ? '<span class="amunt">▲ +' : '<span class="avall">▼ −') + euros(Math.abs(d)) + "</span>";
 }
 
 // Suma dels capítols 1 a 7 (operacions no financeres).

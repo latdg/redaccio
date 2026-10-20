@@ -225,12 +225,9 @@ function enllacarTextos(arrel) {
 }
 
 function pintaSub(dia) {
-  const parts = ["Dades del " + dataCa(dia)];
-  if (estat.resum) parts.push("resum de les " + estat.resum + " h");
-  if (estat.extres) parts.push("extres de les " + estat.extres + " h");
-  document.getElementById("sub").textContent = parts.join(" · ");
+  document.getElementById("sub").textContent = "Dades del " + dataCa(dia);
 }
-
+   
 function pintaSeccio(s, generat) {
   if (s.id === "dades-municipals" && s.dades && s.dades.municipis) return pintaDadesMunicipals(s, generat);
 

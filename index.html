@@ -31,7 +31,9 @@ a{color:var(--accent)}
 .alerta{border-left:4px solid var(--accent);padding-left:10px}
 .buit{color:var(--suau)}
 footer{color:var(--suau);font-size:.85rem;padding-bottom:32px}
-.capcalera{display:flex;align-items:center;gap:16px}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto}
+.sub:empty{display:none}
 .podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
 .podcast svg{display:block;width:50px;height:50px}
 /* Cada apartat numerat del resum és un bloc. Arriben amb els colors del
@@ -117,13 +119,13 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
       </svg>
     </a>
     <h1>La TdG redacció</h1>
+    <div class="eines dreta">
+      <label id="selector" hidden>Dia: <select id="dia"></select></label>
+      <a href="https://latdg.github.io/tauler/" target="_blank" rel="noopener">La TdG ampliada ↗</a>
+    </div>
   </div>
   <p class="sub" id="sub">Carregant…</p>
-  <div class="eines">
-    <label id="selector" hidden>Dia: <select id="dia"></select></label>
-    <a href="https://latdg.github.io/tauler/" target="_blank" rel="noopener">La TdG ampliada ↗</a>
-  </div>
-  <nav>
+   <nav>
     <span id="navResum" style="display:contents"><a href="#resum">Resum</a></span>
   </nav>
 </header>
@@ -225,7 +227,7 @@ function enllacarTextos(arrel) {
 }
 
 function pintaSub(dia) {
-  document.getElementById("sub").textContent = "Dades del " + dataCa(dia);
+  document.getElementById("sub").textContent = "";
 }
    
 function pintaSeccio(s, generat) {

@@ -424,7 +424,7 @@ function nomCurt(titol) {
 
 // Apartats del correu que no surten al panell perquè ja són a «La TdG ampliada».
 // (L'atur no és aquí: el seu lloc l'ocupen les dades municipals.)
-const BLOCS_AMAGATS = [/^INCID[ÈE]NCIES VI[ÀA]RIES/i];
+const BLOCS_AMAGATS = [/^INCID[ÈE]NCIES VI[ÀA]RIES/i, /^AGENDA/i];
 
 // Separa el resum en un bloc per cada apartat numerat.
 function blocsDelResum(body) {

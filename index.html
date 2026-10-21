@@ -546,25 +546,61 @@ function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
   }
   totes.sort((a, b) => (b.data ? b.data.getTime() : 0) - (a.data ? a.data.getTime() : 0));
 
-  const ESTAT = { mun: "", vista: "ultimes" };
-  const municipis = {};
+  // CANVI 21.10.2026: es distingeix què REP l'administració, què ATORGA ella
+  // mateixa (a associacions, clubs...) i què reben entitats del municipi d'altres
+  // administracions. Els totals no es barregen mai.
+  const nrm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  function esAdministracio(text, mun) {
+    const t = nrm(text), m = nrm(mun);
+    if (!t) return false;
+    if (/consell comarcal/.test(m)) return /consell comarcal/.test(t) && /baix emporda/.test(t);
+    if (/gavarres/.test(m)) return /consorci/.test(t) && /gavarres/.test(t);
+    if (!/ajuntament|ajunt\.|ayuntamiento/.test(t)) return false;
+    if (/bisbal/.test(m)) return /bisbal/.test(t);
+    if (/corca/.test(m)) return /corca/.test(t);
+    if (/forallac/.test(m)) return /forallac/.test(t);
+    if (/cruilles|monells|sadurni/.test(m)) return /cruilles|monells|sadurni/.test(t);
+    return t.includes(m);
+  }
   totes.forEach(x => {
-    const m = municipis[x.mun] || (municipis[x.mun] = { total: 0, n: 0, darrera: null });
-    m.total += x.imp; m.n++;
-    if (x.data && (!m.darrera || x.data > m.darrera)) m.darrera = x.data;
+    if (esAdministracio(x.atorgant, x.mun)) x.tipus = "atorga";
+    else if (!x.beneficiari || esAdministracio(x.beneficiari, x.mun)) x.tipus = "rep";
+    else x.tipus = "entitats";
   });
-  const ordreMun = Object.keys(municipis).sort((a, b) => municipis[b].total - municipis[a].total);
-  const totalAny = totes.reduce((s, x) => s + x.imp, 0);
+  const TIPUS = {
+    rep: { nom: "Rebudes per l'administració", curt: "Rebuda per l'administració", ico: "📥" },
+    atorga: { nom: "Atorgades per l'administració", curt: "Atorgada per l'administració", ico: "📤" },
+    entitats: { nom: "Rebudes per entitats del municipi", curt: "Rebuda per una entitat", ico: "🤝" }
+  };
 
-  cos.innerHTML = '<div class="sv-xifres"></div><div class="sv-eines"></div><div class="tg-llista"></div><p class="sv-nota"></p>';
-  const xifres = cos.querySelector(".sv-xifres"), eines = cos.querySelector(".sv-eines"),
+  const ESTAT = { tipus: "rep", mun: "", vista: "ultimes" };
+
+  cos.innerHTML = '<div class="sv-eines sv-tipus"></div><div class="sv-xifres"></div><div class="sv-eines sv-vista"></div><div class="tg-llista"></div><p class="sv-nota"></p>';
+  const tipusEl = cos.querySelector(".sv-tipus"), xifres = cos.querySelector(".sv-xifres"), eines = cos.querySelector(".sv-vista"),
         llista = cos.querySelector(".tg-llista"), nota = cos.querySelector(".sv-nota");
 
   function pinta() {
+    tipusEl.innerHTML = Object.keys(TIPUS).map(k => {
+      const n = totes.filter(x => x.tipus === k).length;
+      return `<button type="button" data-tipus="${k}" class="${ESTAT.tipus === k ? "actiu" : ""}">${TIPUS[k].ico} ${TIPUS[k].nom} · ${n}</button>`;
+    }).join("");
+
+    const delTipus = totes.filter(x => x.tipus === ESTAT.tipus);
+    const municipis = {};
+    delTipus.forEach(x => {
+      const m = municipis[x.mun] || (municipis[x.mun] = { total: 0, n: 0, darrera: null });
+      m.total += x.imp; m.n++;
+      if (x.data && (!m.darrera || x.data > m.darrera)) m.darrera = x.data;
+    });
+    if (ESTAT.mun && !municipis[ESTAT.mun]) ESTAT.mun = "";
+    const ordreMun = Object.keys(municipis).sort((a, b) => municipis[b].total - municipis[a].total);
+    const total = delTipus.reduce((s, x) => s + x.imp, 0);
+
     xifres.innerHTML =
-      `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Total de l'any</span><span class="val">${eurosCurt(totalAny)}</span><span class="det">${totes.length} subvencions</span></button>` +
+      `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Total de l'any</span><span class="val">${eurosCurt(total)}</span><span class="det">${delTipus.length} subvencions</span></button>` +
       ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${eurosCurt(municipis[m].total)}</span><span class="det">${municipis[m].n} · darrera ${fmtData(municipis[m].darrera)}</span></button>`).join("");
-    const filtrades = totes.filter(x => !ESTAT.mun || x.mun === ESTAT.mun);
+
+    const filtrades = delTipus.filter(x => !ESTAT.mun || x.mun === ESTAT.mun);
     const ultimes = filtrades.filter(x => diesDes(x.data) <= 30);
     eines.innerHTML =
       `<button type="button" data-vista="ultimes" class="${ESTAT.vista === "ultimes" ? "actiu" : ""}">Últimes (30 dies) · ${ultimes.length}</button>` +
@@ -574,15 +610,16 @@ function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
       `<article class="tg${diesDes(x.data) <= 7 ? " tg-nou" : ""}">` +
       `<div class="tg-cap"><span class="tg-quin">📍 ${esc(x.mun)}</span>${x.data ? `<span>📅 ${fmtData(x.data)}</span>` : ""}${x.fonts.map(f => `<span class="tg-font">${f}</span>`).join("")}</div>` +
       `<div class="tg-text">${esc(x.concepte || "Subvenció")}</div>` +
-      `<div class="tg-qui">🏛️ ${esc(x.atorgant)}${x.beneficiari ? `<br>👤 ${esc(x.beneficiari)}` : ""}</div>` +
+      `<div class="tg-qui">${TIPUS[x.tipus].ico} <b>${TIPUS[x.tipus].curt}</b><br>🏛️ Atorga: ${esc(x.atorgant)}${x.beneficiari ? `<br>👤 Rep: ${esc(x.beneficiari)}` : ""}</div>` +
       `<div class="tg-peu">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">Bases ↗</a>` : "<span></span>"}<span class="tg-import">${x.imp ? eurosTg(x.imp) : ""}</span></div></article>`).join("")
-      : '<p class="buit">Cap subvenció en els últims 30 dies' + (ESTAT.mun ? " per a " + esc(ESTAT.mun) : "") + '. Mira «Tot l\'any».</p>';
-    nota.textContent = "Fonts: Base de Datos Nacional de Subvenciones (BDNS) i Registre d'ajuts i subvencions de Catalunya (RAISC). Clica un municipi per filtrar.";
+      : '<p class="buit">Cap subvenció d\'aquest tipus en els últims 30 dies' + (ESTAT.mun ? " per a " + esc(ESTAT.mun) : "") + '. Mira «Tot l\'any».</p>';
+    nota.textContent = "Fonts: Base de Datos Nacional de Subvenciones (BDNS) i Registre d'ajuts i subvencions de Catalunya (RAISC). «Rebudes per l'administració»: l'ajuntament o l'ens les rep d'una altra administració. «Atorgades»: les dona ell mateix (a associacions, clubs, entitats...). «Entitats del municipi»: les reben entitats locals d'altres administracions. Clica un municipi per filtrar.";
   }
   cos.addEventListener("click", e => {
     const b = e.target.closest("button");
     if (!b) return;
-    if (b.dataset.vista) ESTAT.vista = b.dataset.vista;
+    if (b.dataset.tipus) { ESTAT.tipus = b.dataset.tipus; ESTAT.mun = ""; }
+    else if (b.dataset.vista) ESTAT.vista = b.dataset.vista;
     else if (b.dataset.mun !== undefined) ESTAT.mun = ESTAT.mun === b.dataset.mun ? "" : b.dataset.mun;
     pinta();
   });
@@ -694,7 +731,7 @@ const RX_NUMERO = /^\s*((?:\d\uFE0F?\u20E3)+)\s*(.+)$/s;
 const NOMS_CURTS = [
   [/^PREMSA LOCAL/i, "Premsa local"], [/^PREMSA GENERALISTA/i, "Premsa generalista"],
   [/^ESPAIS? WEB/i, "Webs"], [/^TAULERS/i, "Taulers"], [/^GENERALITAT/i, "Generalitat"],
-  [/^CONTRACTACI/i, "Contractació"], [/^BASE DE DATOS NACIONAL/i, "BDNS"], [/RAISC/i, "RAISC"], [/^SUBVENCIONS ATORGADES/i, "Subvencions"],
+  [/^CONTRACTACI/i, "Contractació"], [/^BASE DE DATOS NACIONAL/i, "BDNS"], [/RAISC/i, "RAISC"], [/^SUBVENCIONS/i, "Subvencions"],
   [/^C[ÀA]MERES/i, "Càmeres"], [/^INCID[ÈE]NCIES/i, "Incidències"], [/^ATUR/i, "Atur"], [/^AGENDA/i, "Agenda"]
 ];
 
@@ -779,7 +816,7 @@ async function carregaResum(dia) {
     const bBdns = blocs.find(b => /^BASE DE DATOS NACIONAL/i.test(b.titol));
     if (bBdns && bRaisc) {
       bBdns.subvencions = { bdns: bBdns.nodes, raisc: bRaisc.nodes };
-      bBdns.titol = "SUBVENCIONS ATORGADES (BDNS I RAISC)" + ((bBdns.titol.match(/\((\d{4})\)\s*$/) || [])[0] ? " " + bBdns.titol.match(/\((\d{4})\)\s*$/)[0] : "");
+      bBdns.titol = "SUBVENCIONS (BDNS I RAISC)" + ((bBdns.titol.match(/\((\d{4})\)\s*$/) || [])[0] ? " " + bBdns.titol.match(/\((\d{4})\)\s*$/)[0] : "");
       bRaisc.amagat = true;
     }
 

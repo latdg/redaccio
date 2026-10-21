@@ -115,6 +115,32 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
 .ag-avui{background:#fde8e6;color:#c0392b}
 .ag-dema{background:#efece6;color:#6b6b66}
 .ag-dia-avui .ag-acte{border-left-color:#e53935}
+/* TARGETES DE CONTRACTACIÓ I SUBVENCIONS (21.10.2026) */
+.tg-mun{margin:18px 0 8px;font-size:1rem;color:#1d1d1b}
+.tg-mun:first-child{margin-top:4px}
+.tg-llista{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.tg{background:#f6f5f2;border:1px solid #e3e1db;border-left:4px solid #b4462c;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.tg-cap{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:.82rem;color:#6b6b66}
+.tg-cap .tg-quin{font-weight:700;color:#1d1d1b}
+.tg-text{font-size:.95rem;line-height:1.45;color:#1d1d1b}
+.tg-text a{text-decoration:none}
+.tg-text a:hover{text-decoration:underline}
+.tg-peu{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 10px;font-size:.82rem;color:#6b6b66;margin-top:auto}
+.tg-import{font-size:1.15rem;font-weight:700;color:#b4462c;white-space:nowrap}
+.tg-qui{font-size:.82rem;color:#6b6b66;line-height:1.35}
+.tg-font{font-size:.68rem;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:999px;background:#efece6;color:#6b6b66}
+.tg-nou{border-left-color:#e53935}
+.sv-xifres{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:4px 0 14px}
+.sv-xifra{background:#f6f5f2;border:1px solid #e3e1db;border-radius:10px;padding:10px 12px;cursor:pointer;text-align:left;font:inherit;color:#1d1d1b}
+.sv-xifra:hover,.sv-xifra.actiu{border-color:#b4462c}
+.sv-xifra.actiu{box-shadow:inset 0 0 0 1px #b4462c}
+.sv-xifra .etq{font-size:.8rem;color:#6b6b66;display:block}
+.sv-xifra .val{font-size:1.25rem;font-weight:700;display:block;line-height:1.25}
+.sv-xifra .det{font-size:.78rem;color:#6b6b66;display:block}
+.sv-eines{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.sv-eines button{font:inherit;font-size:.85rem;padding:4px 12px;border:1px solid #e3e1db;border-radius:999px;background:#fff;color:#1d1d1b;cursor:pointer}
+.sv-eines button.actiu{background:#b4462c;border-color:#b4462c;color:#fff}
+.sv-nota{font-size:.82rem;color:#6b6b66;margin:10px 0 0}
 </style>
 </head>
 <body>
@@ -317,6 +343,154 @@ function agendaEnTargetes(cos) {
 }
    
 // -----------------------------------------------------------------------------
+// CONTRACTACIÓ EN TARGETES (21.10.2026): els apartats del correu (municipi en
+// negreta, organisme en cursiva i «▪ contracte — import (data)») es mostren
+// com a targetes agrupades per municipi. Si no s'hi reconeix res, es deixa igual.
+// -----------------------------------------------------------------------------
+const llegeixData = t => { const m = String(t || "").match(/(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})/); return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null; };
+const fmtData = d => d ? String(d.getDate()).padStart(2, "0") + "." + String(d.getMonth() + 1).padStart(2, "0") + "." + d.getFullYear() : "";
+const eurosTg = n => n.toLocaleString("ca-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
+const eurosCurt = n => n >= 1e6 ? (n / 1e6).toLocaleString("ca-ES", { maximumFractionDigits: 2 }) + " M€" : Math.round(n).toLocaleString("ca-ES") + " €";
+const diesDes = d => d ? Math.floor((Date.now() - d.getTime()) / 86400000) : 9999;
+
+function contractacioEnTargetes(cos) {
+  const files = Array.from(cos.querySelectorAll(":scope > div"));
+  if (!files.length) return;
+  const grups = [];
+  let mun = null, organ = "";
+  files.forEach(div => {
+    const st = div.getAttribute("style") || "";
+    const text = div.textContent.replace(/\s+/g, " ").trim();
+    if (/font-weight:\s*bold/.test(st)) { mun = { nom: text, items: [] }; grups.push(mun); organ = ""; return; }
+    if (/font-style:\s*italic/.test(st)) { organ = text; return; }
+    if (!mun || !/^▪/.test(text)) return;
+    const a = div.querySelector("a");
+    const titol = a ? a.textContent.trim() : text.replace(/^▪\s*/, "").replace(/\s*—\s*[^—]*€.*$/, "").replace(/\s*\(\d{2}\.\d{2}\.\d{4}\)\s*$/, "");
+    const imp = (text.match(/—\s*([^—]*€[^—(]*)/) || [])[1] || "";
+    mun.items.push({ organ, titol, link: a ? a.href : "", imp: imp.trim(), data: llegeixData((text.match(/\((\d{2}\.\d{2}\.\d{4})\)\s*$/) || [])[1]) });
+  });
+  if (!grups.some(g => g.items.length)) return;
+
+  const nou = document.createElement("div");
+  grups.filter(g => g.items.length).forEach(g => {
+    nou.insertAdjacentHTML("beforeend", `<h3 class="tg-mun">📍 ${esc(g.nom)} <span class="tg-font">${g.items.length}</span></h3>`);
+    const llista = document.createElement("div");
+    llista.className = "tg-llista";
+    g.items.forEach(it => {
+      llista.insertAdjacentHTML("beforeend", `<article class="tg${diesDes(it.data) <= 2 ? " tg-nou" : ""}">` +
+        `<div class="tg-cap">${it.data ? `<span>📅 ${fmtData(it.data)}</span>` : ""}${diesDes(it.data) <= 2 ? '<span class="ag-avui"><span class="tdg-boleta-avui"></span>Nou</span>' : ""}</div>` +
+        `<div class="tg-text">${it.link ? `<a href="${esc(it.link)}" target="_blank" rel="noopener">${esc(it.titol)}</a>` : esc(it.titol)}</div>` +
+        `<div class="tg-peu"><span class="tg-qui">🏢 ${esc(it.organ)}</span>${it.imp ? `<span class="tg-import">${esc(it.imp)}</span>` : ""}</div></article>`);
+    });
+    nou.appendChild(llista);
+  });
+  cos.innerHTML = "";
+  cos.appendChild(nou);
+}
+
+// -----------------------------------------------------------------------------
+// SUBVENCIONS (21.10.2026): els apartats BDNS i RAISC del correu en un sol
+// bloc, ordenats per data, amb el total de l'any per municipi (clicable per
+// filtrar) i la tria entre les últimes (30 dies) i tot l'any. Les que surten
+// a totes dues fonts (mateix municipi, import i data) es mostren una vegada.
+// -----------------------------------------------------------------------------
+const RX_TIPUS_BDNS = /^(SUBVENCI[ÓO]N Y ENTREGA|ENTREGA DINERARIA|PR[ÉE]STAMO|GARANT[ÍI]A|OTRAS? AYUDAS?|AYUDA EN ESPECIE)/i;
+
+function llegeixSubvencions(nodes, font) {
+  const tmp = document.createElement("div");
+  nodes.forEach(n => tmp.appendChild(document.importNode(n, true)));
+  return Array.from(tmp.querySelectorAll("li")).map(li => {
+    const mun = (li.querySelector("strong") || {}).textContent || "";
+    const a = li.querySelector("a[href]");
+    let t = li.textContent.replace(/\s+/g, " ").trim();
+    const data = llegeixData((t.match(/\((\d{2}\.\d{2}\.\d{4})\)/) || [])[1]);
+    t = t.replace(/^[^:]*:\s*/, "").replace(/^Atorgant:\s*/i, "")
+         .replace(/\s*\(\d{2}\.\d{2}\.\d{4}\)/, "").replace(/\s*—\s*enllaç\s*$/i, "");
+    let atorgant = "", beneficiari = "", segs;
+    const iBen = t.indexOf("→ Beneficiari:");
+    if (iBen > -1) {
+      atorgant = t.slice(0, iBen).trim();
+      segs = t.slice(iBen + 14).split(" — ").map(x => x.trim()).filter(Boolean);
+      beneficiari = segs.shift() || "";
+    } else {
+      segs = t.split(" — ").map(x => x.trim()).filter(Boolean);
+      atorgant = segs.shift() || "";
+      // A la BDNS l'atorgant surt dues vegades (DIPUTACIÓN PROV. … — DIPUTACIÓN PROVINCIAL …).
+      if (segs.length > 1 && segs[0] === segs[0].toUpperCase() && segs[0].split(" ")[0] === atorgant.split(" ")[0]) atorgant = segs.shift();
+    }
+    const iImp = segs.findIndex(x => /€/.test(x));
+    const impText = iImp > -1 ? segs.splice(iImp, 1)[0] : "";
+    const imp = impText ? Number(impText.replace(/[^\d,]/g, "").replace(",", ".")) || 0 : 0;
+    const concepte = segs.filter(x => !RX_TIPUS_BDNS.test(x)).join(" — ");
+    return { mun: mun.trim(), atorgant, beneficiari, concepte, imp, data, link: a ? a.href : "", fonts: [font] };
+  }).filter(x => x.mun && (x.concepte || x.imp));
+}
+
+function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
+  const totes = [];
+  const index = {};
+  llegeixSubvencions(nodesBdns, "BDNS").concat(llegeixSubvencions(nodesRaisc, "RAISC")).forEach(x => {
+    const clau = x.mun + "|" + x.imp.toFixed(2) + "|" + fmtData(x.data);
+    if (index[clau] && !index[clau].fonts.includes(x.fonts[0])) {
+      const y = index[clau];
+      y.fonts.push(x.fonts[0]);
+      if (!y.beneficiari) y.beneficiari = x.beneficiari;
+      if (!y.link) y.link = x.link;
+      return;
+    }
+    index[clau] = x;
+    totes.push(x);
+  });
+  if (!totes.length) {
+    nodesBdns.concat(nodesRaisc).forEach(n => cos.appendChild(document.importNode(n, true)));
+    return;
+  }
+  totes.sort((a, b) => (b.data ? b.data.getTime() : 0) - (a.data ? a.data.getTime() : 0));
+
+  const ESTAT = { mun: "", vista: "ultimes" };
+  const municipis = {};
+  totes.forEach(x => {
+    const m = municipis[x.mun] || (municipis[x.mun] = { total: 0, n: 0, darrera: null });
+    m.total += x.imp; m.n++;
+    if (x.data && (!m.darrera || x.data > m.darrera)) m.darrera = x.data;
+  });
+  const ordreMun = Object.keys(municipis).sort((a, b) => municipis[b].total - municipis[a].total);
+  const totalAny = totes.reduce((s, x) => s + x.imp, 0);
+
+  cos.innerHTML = '<div class="sv-xifres"></div><div class="sv-eines"></div><div class="tg-llista"></div><p class="sv-nota"></p>';
+  const xifres = cos.querySelector(".sv-xifres"), eines = cos.querySelector(".sv-eines"),
+        llista = cos.querySelector(".tg-llista"), nota = cos.querySelector(".sv-nota");
+
+  function pinta() {
+    xifres.innerHTML =
+      `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Total de l'any</span><span class="val">${eurosCurt(totalAny)}</span><span class="det">${totes.length} subvencions</span></button>` +
+      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${eurosCurt(municipis[m].total)}</span><span class="det">${municipis[m].n} · darrera ${fmtData(municipis[m].darrera)}</span></button>`).join("");
+    const filtrades = totes.filter(x => !ESTAT.mun || x.mun === ESTAT.mun);
+    const ultimes = filtrades.filter(x => diesDes(x.data) <= 30);
+    eines.innerHTML =
+      `<button type="button" data-vista="ultimes" class="${ESTAT.vista === "ultimes" ? "actiu" : ""}">Últimes (30 dies) · ${ultimes.length}</button>` +
+      `<button type="button" data-vista="any" class="${ESTAT.vista === "any" ? "actiu" : ""}">Tot l'any · ${filtrades.length}</button>`;
+    const mostrar = ESTAT.vista === "ultimes" ? ultimes : filtrades;
+    llista.innerHTML = mostrar.length ? mostrar.map(x =>
+      `<article class="tg${diesDes(x.data) <= 7 ? " tg-nou" : ""}">` +
+      `<div class="tg-cap"><span class="tg-quin">📍 ${esc(x.mun)}</span>${x.data ? `<span>📅 ${fmtData(x.data)}</span>` : ""}${x.fonts.map(f => `<span class="tg-font">${f}</span>`).join("")}</div>` +
+      `<div class="tg-text">${esc(x.concepte || "Subvenció")}</div>` +
+      `<div class="tg-qui">🏛️ ${esc(x.atorgant)}${x.beneficiari ? `<br>👤 ${esc(x.beneficiari)}` : ""}</div>` +
+      `<div class="tg-peu">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">Bases ↗</a>` : "<span></span>"}<span class="tg-import">${x.imp ? eurosTg(x.imp) : ""}</span></div></article>`).join("")
+      : '<p class="buit">Cap subvenció en els últims 30 dies' + (ESTAT.mun ? " per a " + esc(ESTAT.mun) : "") + '. Mira «Tot l\'any».</p>';
+    nota.textContent = "Fonts: Base de Datos Nacional de Subvenciones (BDNS) i Registre d'ajuts i subvencions de Catalunya (RAISC). Clica un municipi per filtrar.";
+  }
+  cos.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    if (b.dataset.vista) ESTAT.vista = b.dataset.vista;
+    else if (b.dataset.mun !== undefined) ESTAT.mun = ESTAT.mun === b.dataset.mun ? "" : b.dataset.mun;
+    pinta();
+  });
+  pinta();
+}
+
+// -----------------------------------------------------------------------------
 // DATES (CANVI, 20.10.2026): totes les dates que es veuen al panell surten en
 // format dd.mm.aaaa, arribin com arribin de les fonts (31/5/2026, 18-05-2026,
 // 2026-05-25, 14.10.26...). Només es toca el text que es llegeix: les adreces
@@ -385,7 +559,18 @@ function pintaSeccio(s, generat) {
   if (s.nota) h += `<p class="buit">${linkify(s.nota)}</p>`;
   if ((!s.items || !s.items.length) && !s.nota) h += '<p class="buit">Res a mostrar.</p>';
 
-  (s.items || []).forEach(it => {
+  // CANVI 21.10.2026: el Congrés només mostra el que és d'aquest any.
+  let items = s.items || [];
+  if (s.id === "congres") {
+    const any = String(new Date().getFullYear());
+    items = items.filter(it => {
+      const m = String(it.text || "").match(/Data:\s*\d{1,2}[.\/-]\d{1,2}[.\/-](\d{4})/) || String(it.data || "").match(/(\d{4})/);
+      return !m || m[1] === any;
+    });
+    if (!items.length && (s.items || []).length) h += '<p class="buit">Aquest any no hi ha cap esment nou.</p>';
+  }
+
+  items.forEach(it => {
     h += `<div class="targeta${it.alerta ? " alerta" : ""}">` +
       (it.data ? `<span class="data">${esc(it.data)}</span>` : "") +
       linkify(String(it.text || "").trim()) + "</div>";
@@ -410,7 +595,7 @@ const RX_NUMERO = /^\s*((?:\d\uFE0F?\u20E3)+)\s*(.+)$/s;
 const NOMS_CURTS = [
   [/^PREMSA LOCAL/i, "Premsa local"], [/^PREMSA GENERALISTA/i, "Premsa generalista"],
   [/^ESPAIS? WEB/i, "Webs"], [/^TAULERS/i, "Taulers"], [/^GENERALITAT/i, "Generalitat"],
-  [/^CONTRACTACI/i, "Contractació"], [/^BASE DE DATOS NACIONAL/i, "BDNS"], [/RAISC/i, "RAISC"],
+  [/^CONTRACTACI/i, "Contractació"], [/^BASE DE DATOS NACIONAL/i, "BDNS"], [/RAISC/i, "RAISC"], [/^SUBVENCIONS ATORGADES/i, "Subvencions"],
   [/^C[ÀA]MERES/i, "Càmeres"], [/^INCID[ÈE]NCIES/i, "Incidències"], [/^ATUR/i, "Atur"], [/^AGENDA/i, "Agenda"]
 ];
 
@@ -490,7 +675,17 @@ async function carregaResum(dia) {
     const posats = new Set();
     const posa = p => { ordre.push({ propi: p.id, nom: p.nom, titol: p.titol }); posats.add(p.id); };
 
+    // CANVI 21.10.2026: BDNS i RAISC van junts en un sol bloc de subvencions.
+    const bRaisc = blocs.find(b => /RAISC/i.test(b.titol));
+    const bBdns = blocs.find(b => /^BASE DE DATOS NACIONAL/i.test(b.titol));
+    if (bBdns && bRaisc) {
+      bBdns.subvencions = { bdns: bBdns.nodes, raisc: bRaisc.nodes };
+      bBdns.titol = "SUBVENCIONS ATORGADES (BDNS I RAISC)" + ((bBdns.titol.match(/\((\d{4})\)\s*$/) || [])[0] ? " " + bBdns.titol.match(/\((\d{4})\)\s*$/)[0] : "");
+      bRaisc.amagat = true;
+    }
+
     blocs.forEach(b => {
+      if (b.amagat) return;
       BLOCS_PROPIS.filter(p => p.abans && p.abans.test(b.titol)).forEach(posa);
 
       const enLloc = BLOCS_PROPIS.filter(p => p.enLlocDe && p.enLlocDe.test(b.titol));
@@ -539,9 +734,14 @@ async function carregaResum(dia) {
         (generat ? `<p class="font">Actualitzat el ${esc(quan(generat))}</p>` : "") +
         '<div class="cos"></div>';
       const cos = sec.querySelector(".cos");
-      b.nodes.forEach(n => cos.appendChild(document.importNode(n, true)));
-      enllacarTextos(cos);
-      if (/^AGENDA/i.test(b.titol)) agendaEnTargetes(cos);
+      if (b.subvencions) {
+        subvencionsEnTargetes(cos, b.subvencions.bdns, b.subvencions.raisc);
+      } else {
+        b.nodes.forEach(n => cos.appendChild(document.importNode(n, true)));
+        enllacarTextos(cos);
+        if (/^AGENDA/i.test(b.titol)) agendaEnTargetes(cos);
+        if (/^CONTRACTACI/i.test(b.titol)) contractacioEnTargetes(cos);
+      }
       cont.appendChild(sec);
 
       nav.insertAdjacentHTML("beforeend", `<a href="#${id}">${esc(nomCurt(b.titol))}</a>`);

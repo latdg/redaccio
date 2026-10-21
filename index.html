@@ -573,9 +573,14 @@ function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
     entitats: { nom: "Rebudes per entitats del municipi", curt: "Rebuda per una entitat", ico: "🤝" }
   };
 
-  const ESTAT = { tipus: "rep", mun: "", vista: "ultimes" };
+  const ESTAT = { tipus: "rep", mun: "", vista: "ultimes", text: "" };
 
-  cos.innerHTML = '<div class="sv-eines sv-tipus"></div><div class="sv-xifres"></div><div class="sv-eines sv-vista"></div><div class="tg-llista"></div><p class="sv-nota"></p>';
+  // CANVI 21.10.2026: cercador (concepte, qui atorga, qui rep). Va en un
+  // contenidor a part perquè no es redibuixi mentre s'hi escriu.
+  cos.innerHTML = '<div class="sv-eines sv-tipus"></div><div class="sv-xifres"></div><div class="sv-eines sv-vista"></div>' +
+    '<div class="sv-eines sv-cerca"><input type="search" placeholder="Cerca (concepte, qui atorga, qui rep…)" aria-label="Cerca"></div>' +
+    '<div class="tg-llista"></div><p class="sv-nota"></p>';
+  cos.querySelector(".sv-cerca input").addEventListener("input", e => { ESTAT.text = e.target.value; pinta(); });
   const tipusEl = cos.querySelector(".sv-tipus"), xifres = cos.querySelector(".sv-xifres"), eines = cos.querySelector(".sv-vista"),
         llista = cos.querySelector(".tg-llista"), nota = cos.querySelector(".sv-nota");
 
@@ -600,7 +605,9 @@ function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
       `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Total de l'any</span><span class="val">${eurosCurt(total)}</span><span class="det">${delTipus.length} subvencions</span></button>` +
       ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${eurosCurt(municipis[m].total)}</span><span class="det">${municipis[m].n} · darrera ${fmtData(municipis[m].darrera)}</span></button>`).join("");
 
-    const filtrades = delTipus.filter(x => !ESTAT.mun || x.mun === ESTAT.mun);
+    const cerca = nrm(ESTAT.text.trim());
+    const filtrades = delTipus.filter(x => (!ESTAT.mun || x.mun === ESTAT.mun) &&
+      (!cerca || nrm(x.concepte + " " + x.atorgant + " " + x.beneficiari + " " + x.mun).includes(cerca)));
     const ultimes = filtrades.filter(x => diesDes(x.data) <= 30);
     eines.innerHTML =
       `<button type="button" data-vista="ultimes" class="${ESTAT.vista === "ultimes" ? "actiu" : ""}">Últimes (30 dies) · ${ultimes.length}</button>` +
@@ -612,7 +619,8 @@ function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
       `<div class="tg-text">${esc(x.concepte || "Subvenció")}</div>` +
       `<div class="tg-qui">${TIPUS[x.tipus].ico} <b>${TIPUS[x.tipus].curt}</b><br>🏛️ Atorga: ${esc(x.atorgant)}${x.beneficiari ? `<br>👤 Rep: ${esc(x.beneficiari)}` : ""}</div>` +
       `<div class="tg-peu">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">Bases ↗</a>` : "<span></span>"}<span class="tg-import">${x.imp ? eurosTg(x.imp) : ""}</span></div></article>`).join("")
-      : '<p class="buit">Cap subvenció d\'aquest tipus en els últims 30 dies' + (ESTAT.mun ? " per a " + esc(ESTAT.mun) : "") + '. Mira «Tot l\'any».</p>';
+      : (cerca ? '<p class="buit">Cap subvenció d\'aquest tipus amb aquesta cerca' + (ESTAT.vista === "ultimes" ? " en els últims 30 dies. Mira «Tot l\'any»." : ".") + "</p>"
+         : '<p class="buit">Cap subvenció d\'aquest tipus en els últims 30 dies' + (ESTAT.mun ? " per a " + esc(ESTAT.mun) : "") + '. Mira «Tot l\'any».</p>');
     nota.textContent = "Fonts: Base de Datos Nacional de Subvenciones (BDNS) i Registre d'ajuts i subvencions de Catalunya (RAISC). «Rebudes per l'administració»: l'ajuntament o l'ens les rep d'una altra administració. «Atorgades»: les dona ell mateix (a associacions, clubs, entitats...). «Entitats del municipi»: les reben entitats locals d'altres administracions. Clica un municipi per filtrar.";
   }
   cos.addEventListener("click", e => {

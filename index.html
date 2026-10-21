@@ -119,7 +119,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
 .tg-mun{margin:18px 0 8px;font-size:1rem;color:#1d1d1b}
 .tg-mun:first-child{margin-top:4px}
 .tg-llista{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
-.tg{background:#f6f5f2;border:1px solid #e3e1db;border-left:4px solid #b4462c;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.tg{background:#fff;border:1px solid #e3e1db;border-left:4px solid #b4462c;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
 .tg-cap{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:.82rem;color:#6b6b66}
 .tg-cap .tg-quin{font-weight:700;color:#1d1d1b}
 .tg-text{font-size:.95rem;line-height:1.45;color:#1d1d1b}
@@ -130,8 +130,8 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
 .tg-qui{font-size:.82rem;color:#6b6b66;line-height:1.35}
 .tg-font{font-size:.68rem;font-weight:700;letter-spacing:.03em;padding:1px 7px;border-radius:999px;background:#efece6;color:#6b6b66}
 .tg-nou{border-left-color:#e53935}
-.sv-xifres{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:4px 0 14px}
-.sv-xifra{background:#f6f5f2;border:1px solid #e3e1db;border-radius:10px;padding:10px 12px;cursor:pointer;text-align:left;font:inherit;color:#1d1d1b}
+.sv-xifres{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:4px 0 14px}
+.sv-xifra{background:#fff;border:1px solid #e3e1db;border-radius:10px;padding:10px 12px;cursor:pointer;text-align:left;font:inherit;color:#1d1d1b}
 .sv-xifra:hover,.sv-xifra.actiu{border-color:#b4462c}
 .sv-xifra.actiu{box-shadow:inset 0 0 0 1px #b4462c}
 .sv-xifra .etq{font-size:.8rem;color:#6b6b66;display:block}
@@ -141,6 +141,9 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
 .sv-eines button{font:inherit;font-size:.85rem;padding:4px 12px;border:1px solid #e3e1db;border-radius:999px;background:#fff;color:#1d1d1b;cursor:pointer}
 .sv-eines button.actiu{background:#b4462c;border-color:#b4462c;color:#fff}
 .sv-nota{font-size:.82rem;color:#6b6b66;margin:10px 0 0}
+.sv-eines select{font:inherit;font-size:.85rem;padding:4px 10px;border:1px solid #e3e1db;border-radius:999px;background:#fff;color:#1d1d1b;max-width:100%}
+.sv-eines input{font:inherit;font-size:.85rem;padding:4px 12px;border:1px solid #e3e1db;border-radius:999px;background:#fff;color:#1d1d1b;min-width:0;flex:1 1 160px}
+.sv-mes{display:block;margin:12px auto 0;font:inherit;font-size:.85rem;padding:6px 16px;border:1px solid #b4462c;border-radius:999px;background:#fff;color:#b4462c;cursor:pointer}
 </style>
 </head>
 <body>
@@ -386,6 +389,102 @@ function contractacioEnTargetes(cos) {
   });
   cos.innerHTML = "";
   cos.appendChild(nou);
+}
+
+// -----------------------------------------------------------------------------
+// CONTRACTACIÓ DE TOT L'ANY (21.10.2026): si hi ha dades/contractacio-any.json
+// (el desen els bots a GitHub), el bloc mostra tota la contractació de l'any:
+// totals per municipi (clicables), filtre per administració, cerca, i la tria
+// entre els últims 15 dies i tot l'any. Si no hi és, queda el del correu.
+// -----------------------------------------------------------------------------
+async function contractacioAny(sec) {
+  let d;
+  try { d = await obtenir("dades/contractacio-any.json"); } catch (e) { return; }
+  if (!d || !Array.isArray(d.items) || !d.items.length) return;
+
+  const h2 = sec.querySelector("h2");
+  if (h2) h2.textContent = h2.textContent.replace(/\(.*\)\s*$/, "").trim() + " (" + d.any + ")";
+  const font = sec.querySelector(".font");
+  if (font) font.textContent = "Actualitzat el " + quan(d.generat);
+
+  const totes = d.items.map(x => Object.assign({}, x, { dataObj: llegeixData(dataCa(x.data)) }));
+  const ESTAT = { mun: "", organ: "", vista: "recents", text: "", limit: 60 };
+  const perMun = {};
+  totes.forEach(x => { const m = perMun[x.municipi] || (perMun[x.municipi] = { total: 0, n: 0 }); m.total += x.import || 0; m.n++; });
+  const ordreMun = Object.keys(perMun).sort((a, b) => perMun[b].n - perMun[a].n);
+  const totalAny = totes.reduce((s, x) => s + (x.import || 0), 0);
+  const norm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  const cos = sec.querySelector(".cos");
+  cos.innerHTML = '<div class="sv-xifres"></div><div class="sv-eines"></div><div class="tg-llista"></div><div class="sv-mesc"></div><p class="sv-nota"></p>';
+  const xifres = cos.querySelector(".sv-xifres"), eines = cos.querySelector(".sv-eines"),
+        llista = cos.querySelector(".tg-llista"), mesc = cos.querySelector(".sv-mesc"), nota = cos.querySelector(".sv-nota");
+
+  function filtra() {
+    const t = norm(ESTAT.text);
+    return totes.filter(x => (!ESTAT.mun || x.municipi === ESTAT.mun) && (!ESTAT.organ || x.organ === ESTAT.organ) &&
+      (!t || norm(x.titol + " " + x.organ + " " + x.adjudicatari).includes(t)));
+  }
+
+  function pintaEines() {
+    const delMun = totes.filter(x => !ESTAT.mun || x.municipi === ESTAT.mun);
+    const organs = {};
+    delMun.forEach(x => { organs[x.organ] = (organs[x.organ] || 0) + 1; });
+    const llistaOrg = Object.keys(organs).sort((a, b) => organs[b] - organs[a]);
+    if (ESTAT.organ && !organs[ESTAT.organ]) ESTAT.organ = "";
+    const f = filtra();
+    const recents = f.filter(x => diesDes(x.dataObj) <= 15);
+    eines.innerHTML =
+      `<button type="button" data-vista="recents" class="${ESTAT.vista === "recents" ? "actiu" : ""}">Últims 15 dies · ${recents.length}</button>` +
+      `<button type="button" data-vista="any" class="${ESTAT.vista === "any" ? "actiu" : ""}">Tot l'any · ${f.length}</button>` +
+      `<select aria-label="Administració"><option value="">Totes les administracions (${llistaOrg.length})</option>` +
+      llistaOrg.map(o => `<option value="${esc(o)}"${o === ESTAT.organ ? " selected" : ""}>${esc(o)} · ${organs[o]}</option>`).join("") + "</select>" +
+      `<input type="search" placeholder="Cerca (obra, servei, empresa…)" value="${esc(ESTAT.text)}">`;
+    eines.querySelector("select").onchange = e => { ESTAT.organ = e.target.value; ESTAT.limit = 60; pinta(false); };
+    const inp = eines.querySelector("input");
+    inp.oninput = e => { ESTAT.text = e.target.value; ESTAT.limit = 60; pintaLlista(); actualitzaComptes(); };
+  }
+
+  function actualitzaComptes() {
+    const f = filtra();
+    const b = eines.querySelectorAll("button");
+    b[0].textContent = "Últims 15 dies · " + f.filter(x => diesDes(x.dataObj) <= 15).length;
+    b[1].textContent = "Tot l'any · " + f.length;
+  }
+
+  function pintaLlista() {
+    let mostrar = filtra();
+    if (ESTAT.vista === "recents") mostrar = mostrar.filter(x => diesDes(x.dataObj) <= 15);
+    const total = mostrar.length;
+    llista.innerHTML = total ? mostrar.slice(0, ESTAT.limit).map(x =>
+      `<article class="tg${diesDes(x.dataObj) <= 2 ? " tg-nou" : ""}">` +
+      `<div class="tg-cap"><span class="tg-quin">📍 ${esc(x.municipi)}</span><span>📅 ${fmtData(x.dataObj)}</span>${x.fase ? `<span class="tg-font">${esc(x.fase)}</span>` : ""}</div>` +
+      `<div class="tg-text">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.titol)}</a>` : esc(x.titol)}</div>` +
+      `<div class="tg-qui">🏢 ${esc(x.organ)}${x.adjudicatari ? `<br>🤝 ${esc(x.adjudicatari)}` : ""}</div>` +
+      `<div class="tg-peu"><span>${esc([x.tipus, x.tipusImport].filter(Boolean).join(" · "))}</span><span class="tg-import">${x.import ? eurosTg(x.import) : ""}</span></div></article>`).join("")
+      : '<p class="buit">Cap contracte amb aquests filtres' + (ESTAT.vista === "recents" ? " en els últims 15 dies. Mira «Tot l'any»." : ".") + "</p>";
+    mesc.innerHTML = total > ESTAT.limit ? `<button type="button" class="sv-mes">Mostra'n més (${total - ESTAT.limit} més)</button>` : "";
+    const m = mesc.querySelector("button");
+    if (m) m.onclick = () => { ESTAT.limit += 60; pintaLlista(); };
+  }
+
+  function pinta(xif = true) {
+    if (xif) xifres.innerHTML =
+      `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Tot l'any</span><span class="val">${totes.length} contractes</span><span class="det">${eurosCurt(totalAny)}</span></button>` +
+      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${perMun[m].n} contractes</span><span class="det">${eurosCurt(perMun[m].total)}</span></button>`).join("");
+    pintaEines();
+    pintaLlista();
+    nota.textContent = "Font: Plataforma de Serveis de Contractació Pública (dades obertes de la Generalitat). Anuncis, adjudicacions, formalitzacions i contractes menors publicats des de l'1 de gener. Clica un municipi per filtrar." +
+      (d.complet === false ? " Atenció: a la darrera actualització alguna consulta va fallar i pot faltar algun contracte." : "");
+  }
+
+  cos.addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b || b.classList.contains("sv-mes")) return;
+    if (b.dataset.vista) { ESTAT.vista = b.dataset.vista; ESTAT.limit = 60; pinta(false); }
+    else if (b.dataset.mun !== undefined) { ESTAT.mun = ESTAT.mun === b.dataset.mun ? "" : b.dataset.mun; ESTAT.limit = 60; pinta(); }
+  });
+  pinta();
 }
 
 // -----------------------------------------------------------------------------
@@ -740,7 +839,7 @@ async function carregaResum(dia) {
         b.nodes.forEach(n => cos.appendChild(document.importNode(n, true)));
         enllacarTextos(cos);
         if (/^AGENDA/i.test(b.titol)) agendaEnTargetes(cos);
-        if (/^CONTRACTACI/i.test(b.titol)) contractacioEnTargetes(cos);
+        if (/^CONTRACTACI/i.test(b.titol)) { contractacioEnTargetes(cos); contractacioAny(sec); }
       }
       cont.appendChild(sec);
 

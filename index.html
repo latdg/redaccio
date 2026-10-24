@@ -102,19 +102,6 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   .botons .nom{font-size:.9rem}
   .botons .detall{font-size:.8rem}
 }
-/* AGENDA EN TARGETES (21.10.2026) */
-.agenda{display:grid;gap:20px}
-.ag-data{margin:0 0 8px;font-size:1rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#1d1d1b}
-.ag-llista{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.ag-acte{background:#f6f5f2;border:1px solid #e3e1db;border-left:4px solid #b4462c;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
-.ag-cap{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.88rem}
-.ag-hora{font-weight:700;color:#b4462c;white-space:nowrap}
-.ag-mun{font-weight:600;color:#1d1d1b}
-.ag-text{font-size:.95rem;line-height:1.45;color:#1d1d1b}
-.ag-avui,.ag-dema{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:2px 9px;border-radius:999px}
-.ag-avui{background:#fde8e6;color:#c0392b}
-.ag-dema{background:#efece6;color:#6b6b66}
-.ag-dia-avui .ag-acte{border-left-color:#e53935}
 /* TARGETES DE CONTRACTACIÓ I SUBVENCIONS (21.10.2026) */
 .tg-mun{margin:18px 0 8px;font-size:1rem;color:#1d1d1b}
 .tg-mun:first-child{margin-top:4px}
@@ -268,82 +255,6 @@ function enllacarTextos(arrel) {
   });
 }
 
-// -----------------------------------------------------------------------------
-// AGENDA EN TARGETES (21.10.2026): la taula del correu (Municipi, Data, Hora,
-// Activitat) es converteix en targetes agrupades per dia. Si no es troben les
-// columnes, la taula es deixa tal com és.
-// -----------------------------------------------------------------------------
-const DIES_SETMANA = ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"];
-
-function agendaEnTargetes(cos) {
-  cos.querySelectorAll("table").forEach(taula => {
-    const files = Array.from(taula.rows);
-    if (files.length < 2) return;
-
-    const cap = Array.from(files[0].cells).map(c => c.textContent.trim().toLowerCase());
-    const col = rx => cap.findIndex(t => rx.test(t));
-    const iMun = col(/^municipi/), iData = col(/^data/), iHora = col(/^hora/), iAct = col(/^activitat/);
-    if (iData === -1 || iAct === -1) return;
-
-    // Actes agrupats per dia, en l'ordre que vénen.
-    const grups = [];
-    files.slice(1).forEach(tr => {
-      const c = tr.cells;
-      if (c.length <= Math.max(iData, iAct)) return;
-      const data = c[iData].textContent.trim();
-      let g = grups[grups.length - 1];
-      if (!g || g.data !== data) { g = { data, actes: [] }; grups.push(g); }
-      g.actes.push({
-        municipi: iMun > -1 && c[iMun] ? c[iMun].textContent.trim() : "",
-        hora: iHora > -1 && c[iHora] ? c[iHora].textContent.trim() : "",
-        act: c[iAct]
-      });
-    });
-    if (!grups.length) return;
-
-    const avui = new Date();
-    avui.setHours(0, 0, 0, 0);
-
-    const agenda = document.createElement("div");
-    agenda.className = "agenda";
-
-    grups.forEach(g => {
-      let titol = g.data, etiqueta = "", esAvui = false;
-      const m = g.data.match(/(\d{1,2})\D(\d{1,2})\D(\d{2,4})/);
-      if (m) {
-        const any = Number(m[3]) < 100 ? 2000 + Number(m[3]) : Number(m[3]);
-        const d = new Date(any, Number(m[2]) - 1, Number(m[1]));
-        const dif = Math.round((d - avui) / 86400000);
-        titol = DIES_SETMANA[d.getDay()] + " " + String(d.getDate()).padStart(2, "0") + "." +
-          String(d.getMonth() + 1).padStart(2, "0") + "." + any;
-        if (dif === 0) { esAvui = true; etiqueta = '<span class="ag-avui"><span class="tdg-boleta-avui"></span>Avui</span>'; }
-        else if (dif === 1) etiqueta = '<span class="ag-dema">Demà</span>';
-      }
-
-      const dia = document.createElement("div");
-      dia.className = "ag-dia" + (esAvui ? " ag-dia-avui" : "");
-      dia.innerHTML = `<h3 class="ag-data">${esc(titol)} ${etiqueta}</h3><div class="ag-llista"></div>`;
-      const llista = dia.querySelector(".ag-llista");
-
-      g.actes.forEach(x => {
-        const acte = document.createElement("article");
-        acte.className = "ag-acte";
-        acte.innerHTML = '<div class="ag-cap">' +
-          (x.hora ? `<span class="ag-hora">🕒 ${esc(x.hora)}</span>` : "") +
-          (x.municipi ? `<span class="ag-mun">📍 ${esc(x.municipi)}</span>` : "") +
-          '</div><div class="ag-text"></div>';
-        // Es mou el contingut de la cel·la (amb els enllaços que porti).
-        const text = acte.querySelector(".ag-text");
-        Array.from(x.act.childNodes).forEach(n => text.appendChild(n));
-        llista.appendChild(acte);
-      });
-
-      agenda.appendChild(dia);
-    });
-
-    taula.replaceWith(agenda);
-  });
-}
    
 // -----------------------------------------------------------------------------
 // CONTRACTACIÓ EN TARGETES (21.10.2026): els apartats del correu (municipi en
@@ -740,7 +651,7 @@ const NOMS_CURTS = [
   [/^PREMSA LOCAL/i, "Premsa local"], [/^PREMSA GENERALISTA/i, "Premsa generalista"],
   [/^ESPAIS? WEB/i, "Webs"], [/^TAULERS/i, "Taulers"], [/^GENERALITAT/i, "Generalitat"],
   [/^CONTRACTACI/i, "Contractació"], [/^BASE DE DATOS NACIONAL/i, "BDNS"], [/RAISC/i, "RAISC"], [/^SUBVENCIONS/i, "Subvencions"],
-  [/^C[ÀA]MERES/i, "Càmeres"], [/^INCID[ÈE]NCIES/i, "Incidències"], [/^ATUR/i, "Atur"], [/^AGENDA/i, "Agenda"]
+  [/^C[ÀA]MERES/i, "Càmeres"], [/^INCID[ÈE]NCIES/i, "Incidències"], [/^ATUR/i, "Atur"]
 ];
 
 function nomCurt(titol) {
@@ -753,6 +664,8 @@ function nomCurt(titol) {
 
 // Apartats del correu que no surten al panell perquè ja són a «La TdG ampliada».
 // (L'atur no és aquí: el seu lloc l'ocupen les dades municipals.)
+// L'agenda (CANVI 24.10.2026) ja no és cosa de la redacció: és al tauler i s'hi edita.
+// Mentre el resum encara porti l'apartat, s'amaga aquí.
 const BLOCS_AMAGATS = [/^INCID[ÈE]NCIES VI[ÀA]RIES/i, /^AGENDA/i];
 
 // Separa el resum en un bloc per cada apartat numerat.
@@ -788,7 +701,7 @@ const tecla = n => String(n).split("").map(d => d + "\uFE0F\u20E3").join("");
 //   abans / despres: abans o després de l'apartat del correu que coincideixi;
 //   enLlocDe: ocupen el lloc d'aquell apartat, que deixa de sortir;
 //   primer: va al principi, amb el número 0.
-// Si no es troba l'apartat de referència, van just abans de l'agenda.
+// Si no es troba l'apartat de referència, van al final.
 const BLOCS_PROPIS = [
   { id: "loteries", nom: "Loteries", titol: "LOTERIES (PREMIS VENUTS A LA ZONA)", primer: true },
   { id: "congres", nom: "Congrés", titol: "CONGRÉS DELS DIPUTATS (ESMENTS DELS MUNICIPIS)", abans: /^GENERALITAT/i },
@@ -846,9 +759,7 @@ async function carregaResum(dia) {
 
     const pendents = BLOCS_PROPIS.filter(p => !posats.has(p.id));
     if (pendents.length) {
-      const iAgenda = ordre.findIndex(o => o.bloc && /^AGENDA/i.test(o.bloc.titol));
-      ordre.splice(iAgenda === -1 ? ordre.length : iAgenda, 0,
-        ...pendents.map(p => ({ propi: p.id, nom: p.nom, titol: p.titol })));
+      ordre.push(...pendents.map(p => ({ propi: p.id, nom: p.nom, titol: p.titol })));
     }
 
     // Numeració seguida (1, 2, 3...), encara que s'hagin tret apartats. Si hi
@@ -883,7 +794,6 @@ async function carregaResum(dia) {
       } else {
         b.nodes.forEach(n => cos.appendChild(document.importNode(n, true)));
         enllacarTextos(cos);
-        if (/^AGENDA/i.test(b.titol)) agendaEnTargetes(cos);
         if (/^CONTRACTACI/i.test(b.titol)) { contractacioEnTargetes(cos); contractacioAny(sec); }
       }
       cont.appendChild(sec);

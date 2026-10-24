@@ -293,7 +293,10 @@ async function simula() {
 
 // Treu la data i l'hora que Apps Script posa davant de cada línia del registre.
 function netejaRegistre(t) {
-  return String(t || "").split("\n").map(l => l.replace(/^\d{1,2}\/\d{1,2}\/\d{2,4},? [\d:]+(\s?[AP]M)?\s+INFO:\s?/i, "")
+  // Formats possibles: «Sat Oct 24 09:18:54 CEST 2026 INFO: …» o «24/10/2026 9:18:54 INFO: …».
+  return String(t || "").split("\n").map(l => l
+    .replace(/^[A-Z][a-z]{2} [A-Z][a-z]{2} \d{1,2} [\d:]+ \S+ \d{4} (INFO|WARNING|SEVERE|DEBUG): ?/, "")
+    .replace(/^\d{1,2}\/\d{1,2}\/\d{2,4},? [\d:]+(\s?[AP]M)?\s+INFO:\s?/i, "")
     .replace(/^\[[^\]]+\]\s?/, "")).join("\n").trim();
 }
 

@@ -39,7 +39,6 @@ button:disabled{opacity:.45;cursor:default}
 .noticia{border-left:4px solid var(--accent)}
 .noticia .cap{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .noticia .cap h2{margin-right:auto}
-.noticia .tema{width:100%;margin-bottom:8px}
 .peu{position:fixed;left:0;right:0;bottom:0;background:var(--targeta);border-top:1px solid var(--linia);padding:10px 16px;z-index:5}
 .peu .dins{max-width:900px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .peu #estat{flex:1 1 200px;font-size:.9rem;color:var(--suau)}
@@ -97,7 +96,7 @@ button:disabled{opacity:.45;cursor:default}
     <section>
       <button type="button" class="suau" id="afegeix">➕ Afegeix una notícia</button>
       <p class="font">Negreta (Ctrl+B), cursiva (Ctrl+I) i subratllat (Ctrl+U) surten igual al guió. Cada Intro és un paràgraf nou.
-        El que enganxis d'una web s'enganxa sense format. El tema és només per a tu: no surt al guió.</p>
+        El que enganxis d'una web s'enganxa sense format.</p>
     </section>
   </div>
 </main>
@@ -268,7 +267,6 @@ function afegeix(n = { id: nouId(), titol: "", text: "" }, focus = true) {
       <button type="button" class="icona" data-f="avall" title="Baixa">↓</button>
       <button type="button" class="icona" data-f="mou" title="Passa-la a un altre dia">📅</button>
       <button type="button" class="icona" data-f="treu" title="Esborra">🗑️</button></div>
-    <input type="text" class="tema" placeholder="Tema (només per a tu, opcional)" value="${esc(n.titol)}">
     <div class="eines">
       <button type="button" data-cmd="bold" title="Negreta (Ctrl+B)"><b>N</b></button>
       <button type="button" data-cmd="italic" title="Cursiva (Ctrl+I)"><i>C</i></button>
@@ -298,8 +296,8 @@ function compta(s) {
 
 function recull() {
   return Array.from(document.querySelectorAll(".noticia")).map(s => ({
-    id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: htmlAMarca(s.querySelector(".text"))
-  })).filter(n => n.text || n.titol);
+    id: s.dataset.id, text: htmlAMarca(s.querySelector(".text"))
+  })).filter(n => n.text);
 }
 
 async function desa() {
@@ -326,7 +324,7 @@ async function mou(s) {
   if (!m) { alert("Escriu la data com 27.10.2026."); return; }
   const dia = (m[3].length === 2 ? "20" + m[3] : m[3]) + "-" + dos(m[2]) + "-" + dos(m[1]);
   if (dia === DIA) return;
-  const n = { id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: htmlAMarca(s.querySelector(".text")) };
+  const n = { id: s.dataset.id, text: htmlAMarca(s.querySelector(".text")) };
   estat("Passant-la al " + dataCa(dia) + "…");
   try {
     const altre = await crida({ accio: "noticies-llegeix", dia });

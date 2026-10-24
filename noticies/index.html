@@ -165,7 +165,7 @@ function pintaDies() {
     const dt = new Date(d + "T00:00:00");
     const amb = DIES_AMB.includes(d);
     return `<button type="button" data-dia="${d}" class="${d === DIA ? "actiu" : amb && d >= avui ? "futur" : ""}">` +
-      `${d === avui ? "Avui" : DIES[dt.getDay()].slice(0, 2)} ${dataCa(d).slice(0, 5)}${amb ? " •" : ""}</button>`;
+      `${d === avui ? "Avui" : DIES[dt.getDay()].slice(0, 2)} ${dataCa(d)}${amb ? " •" : ""}</button>`;
   }).join("");
 }
 
@@ -402,5 +402,6 @@ const desada = llegeix(CLAU_DESADA);
 $("recorda").checked = !!desada;
 if (desada) { $("pin").value = desada; entra(); }
 </script>
+<script src="../dates-ca.js?v=1"></script>
 </body>
 </html>

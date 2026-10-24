@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>La TdG publicador</title>
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c;--ok:#2e7d32;--ko:#c0392b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:900px;margin:0 auto;padding:0 16px}
+header{padding-top:24px}
+h1{margin:0;font-size:1.6rem}
+h2{margin:0 0 10px;font-size:1.05rem}
+a{color:var(--accent)}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto;font-size:.9rem}
+.podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
+.podcast svg{display:block;width:50px;height:50px}
+.sub{color:var(--suau);margin:4px 0 16px;font-size:.9rem}
+main{display:grid;gap:16px;padding-bottom:40px}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;min-width:0}
+input,textarea,button,select{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text);max-width:100%}
+input[type=text],input[type=url],textarea{width:100%}
+textarea{min-height:150px;resize:vertical}
+button{background:var(--accent);color:#fff;border-color:var(--accent);cursor:pointer}
+button.suau{background:var(--targeta);color:var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+.fila{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.font{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+[hidden]{display:none !important}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modes button{background:var(--targeta);color:var(--text);border:2px solid var(--linia);border-radius:12px;padding:14px 8px;font-weight:700;font-size:1rem}
+.modes button span{display:block;font-size:1.6rem;line-height:1.2}
+.modes button.actiu{border-color:var(--accent);color:var(--accent);background:#fbf1ee}
+.camp{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.camp > span{font-size:.85rem;color:var(--suau)}
+.xarxes{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.xarxes label{display:flex;align-items:center;gap:8px;border:1px solid var(--linia);border-radius:10px;padding:8px 10px;cursor:pointer;background:var(--fons)}
+.xarxes label:has(input:checked){border-color:var(--accent);background:#fbf1ee}
+.xarxes input{width:18px;height:18px;accent-color:var(--accent)}
+.arxiu{display:grid;grid-template-columns:34px 1fr 1fr 36px;gap:8px;align-items:center;margin-bottom:8px}
+.arxiu .ico{font-size:1.4rem;text-align:center}
+.arxiu button{padding:6px;background:var(--targeta);color:var(--text);border-color:var(--linia)}
+@media (max-width:600px){.arxiu{grid-template-columns:34px 1fr 36px}.arxiu .titol{grid-column:2 / 3}}
+.accions{display:flex;gap:10px;flex-wrap:wrap}
+.accions button{flex:1 1 160px;padding:12px;font-size:1rem;font-weight:700}
+pre{white-space:pre-wrap;word-break:break-word;background:var(--fons);border:1px solid var(--linia);border-radius:8px;padding:12px;margin:8px 0 0;font-size:.82rem;max-height:480px;overflow:auto}
+#estat{margin:10px 0 0;font-size:.95rem}
+.resum{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:8px}
+.resum td{padding:6px 8px;border-bottom:1px solid var(--linia);vertical-align:top}
+.resum td:first-child{width:28px;font-weight:700;text-align:center}
+.ok{color:var(--ok)} .ko{color:var(--ko)} .no{color:var(--suau)}
+#clauBox{border-color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <a class="podcast" href="https://laguait.cat/latdg" target="_blank" rel="noopener" title="Visita el pòdcast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Visita el pòdcast">
+        <path d="M2 11a10 10 0 015-8.662" stroke="#e30613"/><path d="M22 11a10 10 0 00-5-8.662" stroke="#e30613"/>
+        <path d="M6 11a6 6 0 013-5.197" stroke="currentColor"/><path d="M18 11a6 6 0 00-3-5.197" stroke="currentColor"/>
+        <rect x="10" y="9" width="4" height="8" rx="2" stroke="currentColor"/><path d="M12 17v4" stroke="currentColor"/><path d="M9 21h6" stroke="currentColor"/>
+      </svg>
+    </a>
+    <h1>📣 La TdG publicador</h1>
+    <a class="dreta" href="../">← La TdG redacció</a>
+  </div>
+  <p class="sub">Publica un episodi o una actualitat a les xarxes de La TdG.</p>
+</header>
+
+<main>
+  <section id="clauBox">
+    <h2>🔒 Clau</h2>
+    <div class="fila">
+      <input type="password" id="pin" placeholder="Clau" autocomplete="current-password" size="10">
+      <button type="button" id="entra">Entra</button>
+      <label class="fila" style="gap:6px"><input type="checkbox" id="recorda"> Recorda-la en aquest navegador</label>
+    </div>
+    <p class="font" id="clauEstat"></p>
+  </section>
+
+  <div id="panell" hidden style="display:grid;gap:16px">
+    <section>
+      <div class="modes">
+        <button type="button" data-mode="EPISODI" class="actiu"><span>🎙️</span>EPISODI</button>
+        <button type="button" data-mode="ACTUALITAT"><span>🟠</span>ACTUALITAT</button>
+      </div>
+    </section>
+
+    <section id="secEpisodi">
+      <h2>🎙️ Episodi</h2>
+      <label class="camp"><span>Dia de l'episodi</span><input type="date" id="dia"></label>
+      <label class="camp"><span>Adreça de l'episodi a L'aguait</span><input type="url" id="urlEpisodi"></label>
+      <p class="font">L'adreça es fa sola amb el dia. Si algun dia és diferent, la pots canviar a mà.
+        <a href="#" id="obreEpisodi" target="_blank" rel="noopener">Obre l'episodi ↗</a></p>
+    </section>
+
+    <section id="secActualitat" hidden>
+      <h2>🟠 Actualitat</h2>
+      <label class="camp"><span>Text</span><textarea id="text" placeholder="Escriu la informació. Pots fer salts de línia i posar-hi emoticones."></textarea></label>
+      <label class="camp"><span>Enllaç (opcional)</span><input type="url" id="url" placeholder="https://…"></label>
+    </section>
+
+    <section>
+      <h2>📎 Arxius (opcional)</h2>
+      <div id="arxius"></div>
+      <button type="button" class="suau" id="afegeixArxiu">➕ Afegeix un arxiu</button>
+      <p class="font">El nom de l'arxiu tal com és al disc, dins de /xarxes/. La carpeta i el tipus es trien sols
+        per l'extensió: 🔊 àudio (declaracions), 🎥 vídeo (videos), 📷 foto (fotos). L'àudio i el vídeo es comprimeixen
+        com sempre. A l'àudio hi pots posar el nom de qui parla.</p>
+    </section>
+
+    <section>
+      <h2>📡 On es publica</h2>
+      <div class="xarxes" id="xarxes"></div>
+      <p class="font" id="notaCanal"></p>
+    </section>
+
+    <section>
+      <div class="accions">
+        <button type="button" class="suau" id="simula">👁 Previsualitza</button>
+        <button type="button" id="publica">🚀 Publica</button>
+      </div>
+      <p id="estat"></p>
+      <div id="sortida"></div>
+    </section>
+  </div>
+</main>
+
+<script>
+// Web App del publicador (la mateixa del proxy d'àudio). Sense la clau no serveix de res.
+const WEBAPP = "";
+const CLAU_DESADA = "llampsPin";        // la mateixa clau que es desa als llamps i a l'agenda
+const PREFS = "publicadorPrefs";
+
+const XARXES = [
+  ["TELEGRAM", "✈️ Telegram (canal)"],
+  ["WHATSAPP", "🟢 WhatsApp (canal)"],
+  ["X", "✖️ X (Buffer)"],
+  ["BLUESKY", "🦋 Bluesky"],
+  ["MASTODON", "🐘 Mastodon"],
+  ["WHATSAPP_PERSONAL", "👤 Estat personal de WhatsApp"],
+  ["PUBLICADOR_INSTAGRAM", "📸 Instagram (bot)"]
+];
+const PER_DEFECTE = {
+  EPISODI: XARXES.map(x => x[0]),
+  ACTUALITAT: ["TELEGRAM", "WHATSAPP", "X", "BLUESKY", "MASTODON"]
+};
+const EXT = {
+  AUDIO: ["mp3", "wav", "ogg", "oga", "m4a", "aac", "flac", "opus"],
+  VIDEO: ["mp4", "mov", "m4v", "webm", "mkv", "avi", "3gp"],
+  IMAGE: ["jpg", "jpeg", "png", "webp", "gif", "heic"]
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+const dos = n => String(n).padStart(2, "0");
+
+let PIN = "", MODE = "EPISODI", ESPERA = null;
+
+function prefs() { try { return JSON.parse(llegeix(PREFS)) || {}; } catch (e) { return {}; } }
+
+async function crida(cos) {
+  if (!WEBAPP) throw new Error("Falta l'adreça de la Web App del publicador a la pàgina.");
+  const r = await fetch(WEBAPP, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },   // sense «preflight»
+    body: JSON.stringify({ pin: PIN, ...cos })
+  });
+  const d = await r.json();
+  if (!d.ok) { const e = new Error(d.error || "Error"); e.clau = d.clau === false; throw e; }
+  return d;
+}
+
+// --- Clau ---
+async function entra() {
+  PIN = $("pin").value.trim();
+  if (!PIN) { $("clauEstat").textContent = "Escriu la clau."; return; }
+  $("clauEstat").textContent = "Comprovant…";
+  try {
+    await crida({ accio: "comprova" });
+    escriu(CLAU_DESADA, $("recorda").checked ? PIN : "");
+    $("clauBox").hidden = true;
+    $("panell").hidden = false;
+    reprenEstat();
+  } catch (e) {
+    PIN = "";
+    $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el publicador." : e.message);
+  }
+}
+
+// --- Formulari ---
+function urlDelDia(iso) {
+  const [a, m, d] = iso.split("-");
+  return `https://laguait.cat/podcast/la-tdg-${d}-${m}-${a}/`;
+}
+
+function posaMode(mode) {
+  MODE = mode;
+  document.querySelectorAll(".modes button").forEach(b => b.classList.toggle("actiu", b.dataset.mode === mode));
+  $("secEpisodi").hidden = mode !== "EPISODI";
+  $("secActualitat").hidden = mode !== "ACTUALITAT";
+  const desades = (prefs()[mode] || PER_DEFECTE[mode]);
+  $("xarxes").innerHTML = XARXES.map(([k, nom]) =>
+    `<label><input type="checkbox" value="${k}"${desades.includes(k) ? " checked" : ""}> ${nom}</label>`).join("");
+  notaCanal();
+}
+
+function xarxesMarcades() {
+  return Array.from(document.querySelectorAll("#xarxes input:checked")).map(i => i.value);
+}
+
+function notaCanal() {
+  const m = xarxesMarcades();
+  const via = ["X", "BLUESKY", "MASTODON"].filter(x => m.includes(x));
+  $("notaCanal").textContent = m.includes("TELEGRAM") && via.length
+    ? "📡 Com que Telegram és marcat, " + via.map(x => XARXES.find(y => y[0] === x)[1].replace(/^\S+\s/, "")).join(", ") +
+      " hi arribaran a través del canal de Telegram (en menys de 5 minuts), sense repetir-se."
+    : "";
+}
+
+function tipusArxiu(nom) {
+  const ext = (String(nom).split(".").pop() || "").toLowerCase();
+  if (EXT.AUDIO.includes(ext)) return "🔊";
+  if (EXT.VIDEO.includes(ext)) return "🎥";
+  if (EXT.IMAGE.includes(ext)) return "📷";
+  return nom.trim() ? "❔" : "📄";
+}
+
+function afegeixArxiu(nom = "", titol = "") {
+  const fila = document.createElement("div");
+  fila.className = "arxiu";
+  fila.innerHTML = `<span class="ico">📄</span>
+    <input type="text" class="nom" placeholder="nom-de-l-arxiu.mp3" value="${esc(nom)}" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <input type="text" class="titol" placeholder="Qui parla (només àudio)" value="${esc(titol)}">
+    <button type="button" title="Treu">✕</button>`;
+  const ico = fila.querySelector(".ico"), inp = fila.querySelector(".nom"), tit = fila.querySelector(".titol");
+  const actualitza = () => { ico.textContent = tipusArxiu(inp.value); tit.hidden = ico.textContent !== "🔊"; };
+  inp.oninput = actualitza;
+  fila.querySelector("button").onclick = () => fila.remove();
+  $("arxius").appendChild(fila);
+  actualitza();
+  if (!nom) inp.focus();
+}
+
+function peticio() {
+  const files = Array.from(document.querySelectorAll("#arxius .arxiu"))
+    .map(f => ({ nom: f.querySelector(".nom").value.trim(), titol: f.querySelector(".titol").value.trim() }))
+    .filter(f => f.nom);
+  const p = {
+    tipus: MODE,
+    plataformes: xarxesMarcades(),
+    arxius: files.map(f => f.nom),
+    titols: files.map(f => f.titol)
+  };
+  if (MODE === "EPISODI") p.urlEpisodi = $("urlEpisodi").value.trim();
+  else { p.text = $("text").value; p.url = $("url").value.trim(); }
+  return p;
+}
+
+function valida(p) {
+  if (!p.plataformes.length) return "Marca com a mínim una xarxa.";
+  if (p.tipus === "EPISODI" && !/^https:\/\/laguait\.cat\//.test(p.urlEpisodi)) return "Revisa l'adreça de l'episodi.";
+  if (p.tipus === "ACTUALITAT" && !p.text.trim()) return "Escriu el text de l'actualitat.";
+  const dolent = p.arxius.find(n => tipusArxiu(n) === "❔");
+  if (dolent) return "No reconec el tipus de l'arxiu «" + dolent + "». Revisa'n l'extensió.";
+  return "";
+}
+
+function bloqueja(si) { $("simula").disabled = si; $("publica").disabled = si; }
+
+// --- Previsualitzar ---
+async function simula() {
+  const p = peticio(), err = valida(p);
+  if (err) { $("estat").textContent = "⚠️ " + err; return; }
+  bloqueja(true);
+  $("estat").textContent = "Preparant la previsualització (no es publica res)…";
+  $("sortida").innerHTML = "";
+  try {
+    const d = await crida({ accio: "simula", ...p });
+    $("estat").textContent = "👁 Això és el que es publicaria. Encara no s'ha publicat res.";
+    $("sortida").innerHTML = `<pre>${esc(netejaRegistre(d.registre))}</pre>`;
+  } catch (e) {
+    $("estat").textContent = "❌ " + e.message;
+  } finally { bloqueja(false); }
+}
+
+// Treu la data i l'hora que Apps Script posa davant de cada línia del registre.
+function netejaRegistre(t) {
+  return String(t || "").split("\n").map(l => l.replace(/^\d{1,2}\/\d{1,2}\/\d{2,4},? [\d:]+(\s?[AP]M)?\s+INFO:\s?/i, "")
+    .replace(/^\[[^\]]+\]\s?/, "")).join("\n").trim();
+}
+
+// --- Publicar ---
+async function publica() {
+  const p = peticio(), err = valida(p);
+  if (err) { $("estat").textContent = "⚠️ " + err; return; }
+  const on = p.plataformes.map(x => XARXES.find(y => y[0] === x)[1]).join("\n");
+  const que = p.tipus === "EPISODI" ? "l'EPISODI\n" + p.urlEpisodi : "l'ACTUALITAT";
+  if (!confirm("Vols publicar " + que + "\n\na:\n" + on + (p.arxius.length ? "\n\namb " + p.arxius.length + " arxiu(s)" : "") + "?")) return;
+
+  const pr = prefs(); pr[MODE] = p.plataformes; escriu(PREFS, JSON.stringify(pr));
+  bloqueja(true);
+  $("estat").textContent = "Enviant…";
+  $("sortida").innerHTML = "";
+  try {
+    const d = await crida({ accio: "publica", ...p });
+    $("estat").textContent = "⏳ En cua. Es publica en segon pla (si hi ha vídeo o àudio per comprimir, pot trigar uns minuts).";
+    segueix(d.id);
+  } catch (e) {
+    bloqueja(false);
+    $("estat").textContent = "❌ " + e.message;
+  }
+}
+
+function segueix(id) {
+  clearInterval(ESPERA);
+  const inici = Date.now();
+  ESPERA = setInterval(async () => {
+    try {
+      const { estat } = await crida({ accio: "estat" });
+      if (!estat || (id && estat.id !== id)) return;
+      if (estat.estat === "en cua") $("estat").textContent = "⏳ En cua…";
+      else if (estat.estat === "publicant") $("estat").textContent = "📤 Publicant… (" + Math.round((Date.now() - estat.inici) / 1000) + " s)";
+      else { clearInterval(ESPERA); bloqueja(false); pintaFinal(estat); }
+    } catch (e) {}
+    if (Date.now() - inici > 15 * 60000) {
+      clearInterval(ESPERA); bloqueja(false);
+      $("estat").textContent = "No ha arribat la confirmació. Mira el canal de Telegram o torna a carregar la pàgina.";
+    }
+  }, 8000);
+}
+
+function pintaFinal(estat) {
+  const quan = new Date(estat.fi || Date.now());
+  const h = dos(quan.getHours()) + "." + dos(quan.getMinutes()) + " h";
+  if (estat.estat === "error") {
+    $("estat").innerHTML = `<span class="ko">❌ No s'ha publicat (${h}): ${esc(estat.error)}</span>`;
+  } else {
+    const errors = (estat.resum || []).filter(x => x.estat === "✗").length;
+    $("estat").innerHTML = errors
+      ? `<span class="ko">⚠️ Publicat amb ${errors} error(s) (${h})</span>`
+      : `<span class="ok">✅ Publicat (${h})</span>`;
+  }
+  const files = (estat.resum || []).map(x =>
+    `<tr><td class="${x.estat === "✓" ? "ok" : x.estat === "✗" ? "ko" : "no"}">${esc(x.estat)}</td><td>${esc(x.xarxa)}</td><td class="no">${esc(x.detall)}</td></tr>`).join("");
+  $("sortida").innerHTML = (files ? `<table class="resum">${files}</table>` : "") +
+    (estat.registre ? `<details style="margin-top:10px"><summary class="font">Registre complet</summary><pre>${esc(netejaRegistre(estat.registre))}</pre></details>` : "");
+}
+
+// Si en entrar hi ha una publicació en marxa (o acabada fa poc), es mostra.
+async function reprenEstat() {
+  try {
+    const { estat } = await crida({ accio: "estat" });
+    if (!estat) return;
+    if (estat.estat === "en cua" || estat.estat === "publicant") {
+      bloqueja(true);
+      $("estat").textContent = "⏳ Hi ha una publicació en marxa…";
+      segueix(estat.id);
+    } else if (Date.now() - (estat.fi || 0) < 30 * 60000) {
+      pintaFinal(estat);
+    }
+  } catch (e) {}
+}
+
+// --- Inici ---
+(function () {
+  const d = new Date();
+  const avui = d.getFullYear() + "-" + dos(d.getMonth() + 1) + "-" + dos(d.getDate());
+  $("dia").value = avui;
+  $("urlEpisodi").value = urlDelDia(avui);
+  $("obreEpisodi").href = $("urlEpisodi").value;
+  $("dia").onchange = () => { if ($("dia").value) { $("urlEpisodi").value = urlDelDia($("dia").value); $("obreEpisodi").href = $("urlEpisodi").value; } };
+  $("urlEpisodi").oninput = () => { $("obreEpisodi").href = $("urlEpisodi").value; };
+
+  document.querySelectorAll(".modes button").forEach(b => b.onclick = () => posaMode(b.dataset.mode));
+  $("xarxes").onchange = notaCanal;
+  $("afegeixArxiu").onclick = () => afegeixArxiu();
+  $("simula").onclick = simula;
+  $("publica").onclick = publica;
+  $("entra").onclick = entra;
+  $("pin").onkeydown = e => { if (e.key === "Enter") entra(); };
+  posaMode("EPISODI");
+
+  const desada = llegeix(CLAU_DESADA);
+  $("recorda").checked = !!desada;
+  if (desada) { $("pin").value = desada; entra(); }
+})();
+</script>
+</body>
+</html>

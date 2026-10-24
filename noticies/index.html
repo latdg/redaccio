@@ -45,6 +45,14 @@ button:disabled{opacity:.45;cursor:default}
 .peu #estat{flex:1 1 200px;font-size:.9rem;color:var(--suau)}
 .peu button{padding:10px 18px;font-weight:700}
 .compta{font-size:.8rem;color:var(--suau)}
+/* EDITOR AMB FORMAT (24.10.2026) */
+.eines{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.eines button{background:var(--targeta);color:var(--text);border-color:var(--linia);padding:3px 10px;min-width:34px}
+.eines button.on{background:#f8e6df;border-color:var(--accent);color:var(--accent)}
+.text{width:100%;min-height:180px;padding:10px 12px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);line-height:1.55;outline:none;overflow-wrap:anywhere;resize:vertical;overflow:auto}
+.text:focus{border-color:var(--text)}
+.text p{margin:0 0 .9em}
+.text:empty::before{content:attr(data-ph);color:var(--suau)}
 </style>
 </head>
 <body>
@@ -88,8 +96,8 @@ button:disabled{opacity:.45;cursor:default}
 
     <section>
       <button type="button" class="suau" id="afegeix">➕ Afegeix una notícia</button>
-      <p class="font">Paràgrafs separats per una línia en blanc. El que escriguis entre **dos asteriscos** sortirà en negreta
-        al guió (per exemple, els talls: **[3]**). El tema és només per a tu: no surt al guió.</p>
+      <p class="font">Negreta (Ctrl+B), cursiva (Ctrl+I) i subratllat (Ctrl+U) surten igual al guió. Cada Intro és un paràgraf nou.
+        El que enganxis d'una web s'enganxa sense format. El tema és només per a tu: no surt al guió.</p>
     </section>
   </div>
 </main>
@@ -186,6 +194,69 @@ async function carregaDia(dia) {
 
 function quan(s) { const d = new Date(s); return dos(d.getDate()) + "." + dos(d.getMonth() + 1) + "." + d.getFullYear() + " a les " + dos(d.getHours()) + "." + dos(d.getMinutes()) + " h"; }
 
+// --- Format (24.10.2026) ---
+// Es desa com a text amb marques: **negreta**, *cursiva*, __subratllat__ i una
+// línia en blanc entre paràgrafs. El guió (NoticiesPanell.gs) les converteix.
+function trossosMarca(t) {
+  const surt = [], estil = { b: false, i: false, u: false };
+  let buf = "";
+  const tanca = () => { if (buf) surt.push({ t: buf, ...estil }); buf = ""; };
+  for (let k = 0; k < t.length; k++) {
+    if (t.startsWith("**", k)) { tanca(); estil.b = !estil.b; k++; continue; }
+    if (t.startsWith("__", k)) { tanca(); estil.u = !estil.u; k++; continue; }
+    if (t[k] === "*") { tanca(); estil.i = !estil.i; continue; }
+    buf += t[k];
+  }
+  tanca();
+  return surt;
+}
+function marcaAHtml(text) {
+  const paragrafs = String(text || "").replace(/\r\n/g, "\n").split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
+  if (!paragrafs.length) return "";
+  return paragrafs.map(par => "<p>" + trossosMarca(par).map(x => {
+    let h = esc(x.t).replace(/\n/g, "<br>");
+    if (x.u) h = "<u>" + h + "</u>";
+    if (x.i) h = "<i>" + h + "</i>";
+    if (x.b) h = "<b>" + h + "</b>";
+    return h;
+  }).join("") + "</p>").join("");
+}
+function htmlAMarca(el) {
+  const paragrafs = [];
+  let trossos = [];
+  const tancaPar = () => {
+    let t = "";
+    trossos.forEach(x => {
+      if (x.t === "\n") { t += "\n"; return; }
+      const m = x.t.match(/^(\s*)([\s\S]*?)(\s*)$/);   // els espais de les vores, fora de les marques
+      if (!m[2]) { t += x.t; return; }
+      t += m[1] + (x.b ? "**" : "") + (x.i ? "*" : "") + (x.u ? "__" : "") + m[2] +
+        (x.u ? "__" : "") + (x.i ? "*" : "") + (x.b ? "**" : "") + m[3];
+    });
+    // Trossos seguits amb el mateix estil: «**a****b**» → «**ab**».
+    t = t.replace(/\*\*\*\*/g, "").replace(/____/g, "").replace(/ /g, " ").replace(/[ \t]+/g, " ").replace(/ *\n */g, "\n").trim();
+    if (t) paragrafs.push(t);
+    trossos = [];
+  };
+  const camina = (node, est) => {
+    if (node.nodeType === 3) { if (node.nodeValue) trossos.push({ t: node.nodeValue, ...est }); return; }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName, st = node.style || {};
+    if (tag === "BR") { trossos.push({ t: "\n" }); return; }
+    const e = { ...est };
+    if (tag === "B" || tag === "STRONG" || /^(bold|[6-9]00)$/.test(st.fontWeight || "")) e.b = true;
+    if (tag === "I" || tag === "EM" || st.fontStyle === "italic") e.i = true;
+    if (tag === "U" || /underline/.test((st.textDecoration || "") + (st.textDecorationLine || ""))) e.u = true;
+    const bloc = /^(P|DIV|LI|H\d)$/.test(tag);
+    if (bloc) tancaPar();
+    node.childNodes.forEach(c => camina(c, e));
+    if (bloc) tancaPar();
+  };
+  el.childNodes.forEach(c => camina(c, { b: false, i: false, u: false }));
+  tancaPar();
+  return paragrafs.join("\n\n");
+}
+
 // --- Caixes ---
 function afegeix(n = { id: nouId(), titol: "", text: "" }, focus = true) {
   const s = document.createElement("section");
@@ -198,7 +269,13 @@ function afegeix(n = { id: nouId(), titol: "", text: "" }, focus = true) {
       <button type="button" class="icona" data-f="mou" title="Passa-la a un altre dia">📅</button>
       <button type="button" class="icona" data-f="treu" title="Esborra">🗑️</button></div>
     <input type="text" class="tema" placeholder="Tema (només per a tu, opcional)" value="${esc(n.titol)}">
-    <textarea class="text" placeholder="Text de la notícia tal com l'has de llegir al guió…">${esc(n.text)}</textarea>`;
+    <div class="eines">
+      <button type="button" data-cmd="bold" title="Negreta (Ctrl+B)"><b>N</b></button>
+      <button type="button" data-cmd="italic" title="Cursiva (Ctrl+I)"><i>C</i></button>
+      <button type="button" data-cmd="underline" title="Subratllat (Ctrl+U)"><u>S</u></button>
+      <button type="button" data-cmd="removeFormat" title="Treu el format del que hagis seleccionat">✕ format</button>
+    </div>
+    <div class="text" contenteditable="true" spellcheck="true" lang="ca" data-ph="Text de la notícia tal com l'has de llegir al guió…">${marcaAHtml(n.text)}</div>`;
   $("noticies").appendChild(s);
   compta(s);
   if (focus) { numera(); s.querySelector(".text").focus(); marcaBrut(true); }
@@ -214,14 +291,14 @@ function numera() {
 }
 
 function compta(s) {
-  const t = s.querySelector(".text").value.trim();
+  const t = s.querySelector(".text").innerText.trim();
   const paraules = t ? t.split(/\s+/).length : 0;
   s.querySelector(".compta").textContent = paraules ? paraules + " paraules · ~" + Math.max(1, Math.round(paraules / 2.6)) + " s" : "";
 }
 
 function recull() {
   return Array.from(document.querySelectorAll(".noticia")).map(s => ({
-    id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: s.querySelector(".text").value.trim()
+    id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: htmlAMarca(s.querySelector(".text"))
   })).filter(n => n.text || n.titol);
 }
 
@@ -249,7 +326,7 @@ async function mou(s) {
   if (!m) { alert("Escriu la data com 27.10.2026."); return; }
   const dia = (m[3].length === 2 ? "20" + m[3] : m[3]) + "-" + dos(m[2]) + "-" + dos(m[1]);
   if (dia === DIA) return;
-  const n = { id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: s.querySelector(".text").value.trim() };
+  const n = { id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: htmlAMarca(s.querySelector(".text")) };
   estat("Passant-la al " + dataCa(dia) + "…");
   try {
     const altre = await crida({ accio: "noticies-llegeix", dia });
@@ -272,6 +349,32 @@ $("noticies").addEventListener("input", e => {
   if (s) compta(s);
   marcaBrut(true);
 });
+try { document.execCommand("defaultParagraphSeparator", false, "p"); document.execCommand("styleWithCSS", false, false); } catch (e) {}
+$("noticies").addEventListener("mousedown", e => { if (e.target.closest("button[data-cmd]")) e.preventDefault(); });   // no perdre la selecció
+$("noticies").addEventListener("click", e => {
+  const c = e.target.closest("button[data-cmd]");
+  if (c) {
+    const caixa = c.closest(".noticia").querySelector(".text");
+    if (!caixa.contains(document.getSelection().anchorNode)) caixa.focus();
+    document.execCommand(c.dataset.cmd, false, null);
+    marcaBrut(true); estatEines();
+  }
+});
+$("noticies").addEventListener("paste", e => {
+  if (!e.target.closest(".text")) return;
+  e.preventDefault();
+  const t = (e.clipboardData || window.clipboardData).getData("text/plain").replace(/\r\n/g, "\n");
+  document.execCommand("insertText", false, t);
+});
+function estatEines() {
+  const sel = document.getSelection(), caixa = sel.anchorNode && (sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement).closest(".text");
+  document.querySelectorAll(".eines button[data-cmd]").forEach(b => b.classList.remove("on"));
+  if (!caixa) return;
+  caixa.closest(".noticia").querySelectorAll(".eines button[data-cmd]").forEach(b => {
+    if (b.dataset.cmd !== "removeFormat") b.classList.toggle("on", document.queryCommandState(b.dataset.cmd));
+  });
+}
+document.addEventListener("selectionchange", estatEines);
 $("noticies").addEventListener("click", e => {
   const b = e.target.closest("button[data-f]");
   if (!b) return;
@@ -279,7 +382,7 @@ $("noticies").addEventListener("click", e => {
   if (b.dataset.f === "amunt" && s.previousElementSibling) { s.parentNode.insertBefore(s, s.previousElementSibling); marcaBrut(true); }
   if (b.dataset.f === "avall" && s.nextElementSibling) { s.parentNode.insertBefore(s.nextElementSibling, s); marcaBrut(true); }
   if (b.dataset.f === "treu") {
-    const t = s.querySelector(".text").value.trim();
+    const t = s.querySelector(".text").innerText.trim();
     if (t && !confirm("Vols esborrar aquesta notícia?")) return;
     s.remove();
     if (!document.querySelector(".noticia")) afegeix(undefined, false);

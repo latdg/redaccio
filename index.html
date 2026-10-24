@@ -325,7 +325,13 @@ async function contractacioAny(sec) {
   const ESTAT = { mun: "", organ: "", vista: "recents", text: "", limit: 60 };
   const perMun = {};
   totes.forEach(x => { const m = perMun[x.municipi] || (perMun[x.municipi] = { total: 0, n: 0 }); m.total += x.import || 0; m.n++; });
-  const ordreMun = Object.keys(perMun).sort((a, b) => perMun[b].n - perMun[a].n);
+  // 24.10.2026: el Consell Comarcal i el Consorci de les Gavarres tenen fitxa
+  // pròpia (ambit "organisme"), després dels municipis.
+  const esOrganisme = {};
+  totes.forEach(x => { if (x.ambit === "organisme") esOrganisme[x.municipi] = true; });
+  const icona = m => esOrganisme[m] ? "🏛️" : "📍";
+  const ordreMun = Object.keys(perMun).sort((a, b) =>
+    (esOrganisme[a] ? 1 : 0) - (esOrganisme[b] ? 1 : 0) || perMun[b].n - perMun[a].n);
   const totalAny = totes.reduce((s, x) => s + (x.import || 0), 0);
   const norm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
@@ -372,7 +378,7 @@ async function contractacioAny(sec) {
     const total = mostrar.length;
     llista.innerHTML = total ? mostrar.slice(0, ESTAT.limit).map(x =>
       `<article class="tg${diesDes(x.dataObj) <= 2 ? " tg-nou" : ""}">` +
-      `<div class="tg-cap"><span class="tg-quin">📍 ${esc(x.municipi)}</span><span>📅 ${fmtData(x.dataObj)}</span>${x.fase ? `<span class="tg-font">${esc(x.fase)}</span>` : ""}</div>` +
+      `<div class="tg-cap"><span class="tg-quin">${icona(x.municipi)} ${esc(x.municipi)}</span><span>📅 ${fmtData(x.dataObj)}</span>${x.fase ? `<span class="tg-font">${esc(x.fase)}</span>` : ""}</div>` +
       `<div class="tg-text">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.titol)}</a>` : esc(x.titol)}</div>` +
       `<div class="tg-qui">🏢 ${esc(x.organ)}${x.adjudicatari ? `<br>🤝 ${esc(x.adjudicatari)}` : ""}</div>` +
       `<div class="tg-peu"><span>${esc([x.tipus, x.tipusImport].filter(Boolean).join(" · "))}</span><span class="tg-import">${x.import ? eurosTg(x.import) : ""}</span></div></article>`).join("")
@@ -385,10 +391,10 @@ async function contractacioAny(sec) {
   function pinta(xif = true) {
     if (xif) xifres.innerHTML =
       `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Tot l'any</span><span class="val">${totes.length} contractes</span><span class="det">${eurosCurt(totalAny)}</span></button>` +
-      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${perMun[m].n} contractes</span><span class="det">${eurosCurt(perMun[m].total)}</span></button>`).join("");
+      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esOrganisme[m] ? "🏛️ " : ""}${esc(m)}</span><span class="val">${perMun[m].n} contractes</span><span class="det">${eurosCurt(perMun[m].total)}</span></button>`).join("");
     pintaEines();
     pintaLlista();
-    nota.textContent = "Font: Plataforma de Serveis de Contractació Pública (dades obertes de la Generalitat). Anuncis, adjudicacions, formalitzacions i contractes menors publicats des de l'1 de gener. Clica un municipi per filtrar." +
+    nota.textContent = "Font: Plataforma de Serveis de Contractació Pública (dades obertes de la Generalitat). Anuncis, adjudicacions, formalitzacions i contractes menors publicats des de l'1 de gener. Clica un municipi o un organisme per filtrar." +
       (d.complet === false ? " Atenció: a la darrera actualització alguna consulta va fallar i pot faltar algun contracte." : "");
   }
 

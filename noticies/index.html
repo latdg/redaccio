@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>Notícies del guió</title>
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c;--ok:#2e7d32;--ko:#c0392b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:900px;margin:0 auto;padding:0 16px}
+header{padding-top:24px}
+h1{margin:0;font-size:1.6rem}
+h2{margin:0;font-size:1.05rem}
+a{color:var(--accent)}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto;font-size:.9rem}
+.podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
+.podcast svg{display:block;width:50px;height:50px}
+.sub{color:var(--suau);margin:4px 0 16px;font-size:.9rem}
+main{display:grid;gap:16px;padding-bottom:120px}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;min-width:0}
+input,textarea,button{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text);max-width:100%}
+textarea{width:100%;min-height:180px;resize:vertical;line-height:1.55}
+button{background:var(--accent);color:#fff;border-color:var(--accent);cursor:pointer}
+button.suau{background:var(--targeta);color:var(--accent)}
+button.icona{background:var(--targeta);color:var(--text);border-color:var(--linia);padding:4px 9px}
+button:disabled{opacity:.45;cursor:default}
+.fila{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.font{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+[hidden]{display:none !important}
+#clauBox{border-color:var(--accent)}
+.dies{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.dies button{background:var(--targeta);color:var(--text);border-radius:999px;font-size:.85rem;padding:3px 12px;border-color:var(--linia)}
+.dies button.futur{border-color:var(--accent);color:var(--accent)}
+.dies button.actiu{background:var(--accent);color:#fff;border-color:var(--accent)}
+.noticia{border-left:4px solid var(--accent)}
+.noticia .cap{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.noticia .cap h2{margin-right:auto}
+.noticia .tema{width:100%;margin-bottom:8px}
+.peu{position:fixed;left:0;right:0;bottom:0;background:var(--targeta);border-top:1px solid var(--linia);padding:10px 16px;z-index:5}
+.peu .dins{max-width:900px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.peu #estat{flex:1 1 200px;font-size:.9rem;color:var(--suau)}
+.peu button{padding:10px 18px;font-weight:700}
+.compta{font-size:.8rem;color:var(--suau)}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <a class="podcast" href="https://laguait.cat/latdg" target="_blank" rel="noopener" title="Visita el pòdcast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Visita el pòdcast">
+        <path d="M2 11a10 10 0 015-8.662" stroke="#e30613"/><path d="M22 11a10 10 0 00-5-8.662" stroke="#e30613"/>
+        <path d="M6 11a6 6 0 013-5.197" stroke="currentColor"/><path d="M18 11a6 6 0 00-3-5.197" stroke="currentColor"/>
+        <rect x="10" y="9" width="4" height="8" rx="2" stroke="currentColor"/><path d="M12 17v4" stroke="currentColor"/><path d="M9 21h6" stroke="currentColor"/>
+      </svg>
+    </a>
+    <h1>📝 Notícies del guió</h1>
+    <a class="dreta" href="../">← La TdG redacció</a>
+  </div>
+  <p class="sub">Les notícies de cada dia van al guió d'aquell dia, i Gemini les resumeix a la sinopsi.</p>
+</header>
+
+<main>
+  <section id="clauBox">
+    <h2>🔒 Clau</h2>
+    <div class="fila" style="margin-top:10px">
+      <input type="password" id="pin" placeholder="Clau" autocomplete="current-password" size="10">
+      <button type="button" id="entra">Entra</button>
+      <label class="fila" style="gap:6px"><input type="checkbox" id="recorda"> Recorda-la en aquest navegador</label>
+    </div>
+    <p class="font" id="clauEstat"></p>
+  </section>
+
+  <div id="panell" hidden style="display:grid;gap:16px">
+    <section>
+      <div class="fila">
+        <label class="fila" style="gap:6px">📅 Guió del dia <input type="date" id="dia"></label>
+        <span class="font" id="infoDia" style="margin:0"></span>
+      </div>
+      <div class="dies" id="dies"></div>
+      <p class="font">En vermell, els dies que vénen amb notícies preparades.</p>
+    </section>
+
+    <div id="noticies" style="display:grid;gap:16px"></div>
+
+    <section>
+      <button type="button" class="suau" id="afegeix">➕ Afegeix una notícia</button>
+      <p class="font">Paràgrafs separats per una línia en blanc. El que escriguis entre **dos asteriscos** sortirà en negreta
+        al guió (per exemple, els talls: **[3]**). El tema és només per a tu: no surt al guió.</p>
+    </section>
+  </div>
+</main>
+
+<div class="peu" id="peu" hidden>
+  <div class="dins">
+    <span id="estat"></span>
+    <button type="button" id="desa">💾 Desa</button>
+  </div>
+</div>
+
+<script>
+const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
+const CLAU_DESADA = "llampsPin";   // la mateixa clau dels llamps, l'agenda i el publicador
+const DIES = ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"];
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+const dos = n => String(n).padStart(2, "0");
+const iso = d => d.getFullYear() + "-" + dos(d.getMonth() + 1) + "-" + dos(d.getDate());
+const dataCa = s => s.split("-").reverse().join(".");
+const nouId = () => Math.random().toString(36).slice(2, 12);
+
+let PIN = "", DIA = "", SHA = null, BRUT = false, DIES_AMB = [];
+
+async function crida(cos) {
+  const r = await fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: PIN, ...cos }) });
+  let d = {};
+  try { d = await r.json(); } catch (e) {}
+  if (!r.ok || !d.ok) { const e = new Error(d.error || ("HTTP " + r.status)); e.conflicte = d.conflicte; throw e; }
+  return d;
+}
+
+function estat(t) { $("estat").textContent = t; }
+function marcaBrut(si) {
+  BRUT = si;
+  $("desa").disabled = !si;
+  if (si) estat("✏️ Hi ha canvis sense desar.");
+}
+
+// --- Clau ---
+async function entra() {
+  PIN = $("pin").value.trim();
+  if (!PIN) { $("clauEstat").textContent = "Escriu la clau."; return; }
+  $("clauEstat").textContent = "Comprovant…";
+  try {
+    const d = await crida({ accio: "noticies-dies" });
+    DIES_AMB = d.dies;
+    escriu(CLAU_DESADA, $("recorda").checked ? PIN : "");
+    $("clauBox").hidden = true; $("panell").hidden = false; $("peu").hidden = false;
+    const demanat = (location.hash.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
+    carregaDia(demanat || iso(new Date()));
+  } catch (e) {
+    PIN = "";
+    $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message);
+  }
+}
+
+// --- Dies ---
+function pintaDies() {
+  const avui = iso(new Date());
+  const llista = Array.from(new Set(DIES_AMB.filter(d => d >= avui).concat([DIA]))).sort().slice(0, 30);
+  $("dies").innerHTML = llista.map(d => {
+    const dt = new Date(d + "T00:00:00");
+    const amb = DIES_AMB.includes(d);
+    return `<button type="button" data-dia="${d}" class="${d === DIA ? "actiu" : amb && d >= avui ? "futur" : ""}">` +
+      `${d === avui ? "Avui" : DIES[dt.getDay()].slice(0, 2)} ${dataCa(d).slice(0, 5)}${amb ? " •" : ""}</button>`;
+  }).join("");
+}
+
+async function carregaDia(dia) {
+  if (BRUT && !confirm("Hi ha canvis sense desar. Vols canviar de dia igualment?")) { $("dia").value = DIA; return; }
+  DIA = dia;
+  $("dia").value = dia;
+  history.replaceState(null, "", "#" + dia);
+  const dt = new Date(dia + "T00:00:00");
+  $("infoDia").textContent = DIES[dt.getDay()] + " " + dataCa(dia);
+  pintaDies();
+  $("noticies").innerHTML = '<section><p class="font" style="margin:0">Carregant…</p></section>';
+  try {
+    const d = await crida({ accio: "noticies-llegeix", dia });
+    SHA = d.sha;
+    $("noticies").innerHTML = "";
+    (d.noticies.length ? d.noticies : [{ id: nouId(), titol: "", text: "" }]).forEach(n => afegeix(n, false));
+    numera();
+    marcaBrut(false);
+    estat(d.actualitzat ? "Desat per darrer cop el " + quan(d.actualitzat) + "." : "Encara no hi ha notícies desades per a aquest dia.");
+  } catch (e) {
+    $("noticies").innerHTML = `<section><p class="font" style="margin:0">❌ ${esc(e.message)}</p></section>`;
+  }
+}
+
+function quan(s) { const d = new Date(s); return dos(d.getDate()) + "." + dos(d.getMonth() + 1) + "." + d.getFullYear() + " a les " + dos(d.getHours()) + "." + dos(d.getMinutes()) + " h"; }
+
+// --- Caixes ---
+function afegeix(n = { id: nouId(), titol: "", text: "" }, focus = true) {
+  const s = document.createElement("section");
+  s.className = "noticia";
+  s.dataset.id = n.id || nouId();
+  s.innerHTML = `<div class="cap"><h2>NOTÍCIA <span class="num"></span></h2>
+      <span class="compta"></span>
+      <button type="button" class="icona" data-f="amunt" title="Puja">↑</button>
+      <button type="button" class="icona" data-f="avall" title="Baixa">↓</button>
+      <button type="button" class="icona" data-f="mou" title="Passa-la a un altre dia">📅</button>
+      <button type="button" class="icona" data-f="treu" title="Esborra">🗑️</button></div>
+    <input type="text" class="tema" placeholder="Tema (només per a tu, opcional)" value="${esc(n.titol)}">
+    <textarea class="text" placeholder="Text de la notícia tal com l'has de llegir al guió…">${esc(n.text)}</textarea>`;
+  $("noticies").appendChild(s);
+  compta(s);
+  if (focus) { numera(); s.querySelector(".text").focus(); marcaBrut(true); }
+}
+
+function numera() {
+  const totes = Array.from(document.querySelectorAll(".noticia"));
+  totes.forEach((s, i) => {
+    s.querySelector(".num").textContent = i + 1;
+    s.querySelector('[data-f="amunt"]').disabled = i === 0;
+    s.querySelector('[data-f="avall"]').disabled = i === totes.length - 1;
+  });
+}
+
+function compta(s) {
+  const t = s.querySelector(".text").value.trim();
+  const paraules = t ? t.split(/\s+/).length : 0;
+  s.querySelector(".compta").textContent = paraules ? paraules + " paraules · ~" + Math.max(1, Math.round(paraules / 2.6)) + " s" : "";
+}
+
+function recull() {
+  return Array.from(document.querySelectorAll(".noticia")).map(s => ({
+    id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: s.querySelector(".text").value.trim()
+  })).filter(n => n.text || n.titol);
+}
+
+async function desa() {
+  $("desa").disabled = true;
+  estat("Desant…");
+  try {
+    const d = await crida({ accio: "noticies-desa", dia: DIA, noticies: recull(), sha: SHA });
+    SHA = d.sha;
+    DIES_AMB = DIES_AMB.filter(x => x !== DIA).concat(d.noticies.length ? [DIA] : []);
+    pintaDies();
+    marcaBrut(false);
+    estat("✅ Desat (" + d.noticies.length + " notícia" + (d.noticies.length === 1 ? "" : "es") + " per al " + dataCa(DIA) + ").");
+  } catch (e) {
+    $("desa").disabled = false;
+    estat("❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message));
+  }
+}
+
+async function mou(s) {
+  if (BRUT) { alert("Desa primer els canvis d'aquest dia."); return; }
+  const desti = prompt("A quin dia la vols passar? (dd.mm.aaaa)", "");
+  if (!desti) return;
+  const m = desti.trim().match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{2,4})$/);
+  if (!m) { alert("Escriu la data com 27.10.2026."); return; }
+  const dia = (m[3].length === 2 ? "20" + m[3] : m[3]) + "-" + dos(m[2]) + "-" + dos(m[1]);
+  if (dia === DIA) return;
+  const n = { id: s.dataset.id, titol: s.querySelector(".tema").value.trim(), text: s.querySelector(".text").value.trim() };
+  estat("Passant-la al " + dataCa(dia) + "…");
+  try {
+    const altre = await crida({ accio: "noticies-llegeix", dia });
+    await crida({ accio: "noticies-desa", dia, noticies: altre.noticies.concat([n]), sha: altre.sha });
+    s.remove(); numera();
+    const d = await crida({ accio: "noticies-desa", dia: DIA, noticies: recull(), sha: SHA });
+    SHA = d.sha;
+    DIES_AMB = DIES_AMB.filter(x => x !== DIA).concat(d.noticies.length ? [DIA] : []);
+    if (!DIES_AMB.includes(dia)) DIES_AMB.push(dia);
+    if (!document.querySelector(".noticia")) afegeix(undefined, false), numera();
+    pintaDies(); marcaBrut(false);
+    estat("✅ Passada al " + dataCa(dia) + ".");
+  } catch (e) {
+    estat("❌ " + e.message + " Torna a carregar el dia abans de continuar.");
+  }
+}
+
+$("noticies").addEventListener("input", e => {
+  const s = e.target.closest(".noticia");
+  if (s) compta(s);
+  marcaBrut(true);
+});
+$("noticies").addEventListener("click", e => {
+  const b = e.target.closest("button[data-f]");
+  if (!b) return;
+  const s = b.closest(".noticia");
+  if (b.dataset.f === "amunt" && s.previousElementSibling) { s.parentNode.insertBefore(s, s.previousElementSibling); marcaBrut(true); }
+  if (b.dataset.f === "avall" && s.nextElementSibling) { s.parentNode.insertBefore(s.nextElementSibling, s); marcaBrut(true); }
+  if (b.dataset.f === "treu") {
+    const t = s.querySelector(".text").value.trim();
+    if (t && !confirm("Vols esborrar aquesta notícia?")) return;
+    s.remove();
+    if (!document.querySelector(".noticia")) afegeix(undefined, false);
+    marcaBrut(true);
+  }
+  if (b.dataset.f === "mou") mou(s);
+  numera();
+});
+$("dies").onclick = e => { const b = e.target.closest("button[data-dia]"); if (b) carregaDia(b.dataset.dia); };
+$("dia").onchange = () => { if ($("dia").value) carregaDia($("dia").value); };
+$("afegeix").onclick = () => afegeix();
+$("desa").onclick = desa;
+$("entra").onclick = entra;
+$("pin").onkeydown = e => { if (e.key === "Enter") entra(); };
+document.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && PIN) { e.preventDefault(); if (BRUT) desa(); } });
+window.addEventListener("beforeunload", e => { if (BRUT) { e.preventDefault(); e.returnValue = ""; } });
+
+const desada = llegeix(CLAU_DESADA);
+$("recorda").checked = !!desada;
+if (desada) { $("pin").value = desada; entra(); }
+</script>
+</body>
+</html>

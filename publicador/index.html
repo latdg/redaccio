@@ -64,7 +64,7 @@ pre{white-space:pre-wrap;word-break:break-word;background:var(--fons);border:1px
 .editor:empty::before{content:attr(data-ph);color:var(--suau)}
 /* 25.10.2026: selector d'emoticones (totes les d'Unicode) per al text d'Actualitat */
 #capsaEmojis{margin-bottom:6px}
-emoji-picker{width:100%;--background:var(--targeta);--border-color:var(--linia);--indicator-color:var(--accent);--outline-color:var(--accent);--input-border-color:var(--linia);--emoji-size:1.6rem;height:340px}
+emoji-picker{width:100%;--background:var(--targeta);--border-color:var(--linia);--indicator-color:var(--accent);--outline-color:var(--accent);--input-border-color:var(--linia);--input-font-color:var(--text);--input-placeholder-color:var(--suau);--emoji-size:1.6rem;height:340px}
 </style>
 </head>
 <body>
@@ -542,6 +542,7 @@ boto.onclick = async () => {
           activities: "Activitats", objects: "Objectes", symbols: "Símbols", flags: "Banderes" }
       }
     });
+    picker.classList.add("light");   // sempre en clar, com la resta de la pàgina
     picker.addEventListener("emoji-click", e => insereix(e.detail.unicode));
     capsa.textContent = "";
     capsa.appendChild(picker);

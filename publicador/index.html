@@ -54,9 +54,16 @@ pre{white-space:pre-wrap;word-break:break-word;background:var(--fons);border:1px
 .resum td:first-child{width:28px;font-weight:700;text-align:center}
 .ok{color:var(--ok)} .ko{color:var(--ko)} .no{color:var(--suau)}
 #clauBox{border-color:var(--accent)}
+/* 25.10.2026: editor amb format (el mateix de les notícies) per al text d'Actualitat */
+.eines{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.eines button{background:var(--targeta);color:var(--text);border-color:var(--linia);padding:3px 10px;min-width:34px}
+.eines button.on{background:#f8e6df;border-color:var(--accent);color:var(--accent)}
+.editor{width:100%;min-height:150px;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);line-height:1.5;outline:none;overflow-wrap:anywhere;resize:vertical;overflow:auto}
+.editor:focus{border-color:var(--text)}
+.editor p,.editor div{margin:0}
+.editor:empty::before{content:attr(data-ph);color:var(--suau)}
 /* 25.10.2026: selector d'emoticones (totes les d'Unicode) per al text d'Actualitat */
-.emojis{margin:-4px 0 12px}
-#capsaEmojis{margin-top:8px}
+#capsaEmojis{margin-bottom:6px}
 emoji-picker{width:100%;--background:var(--targeta);--border-color:var(--linia);--indicator-color:var(--accent);--outline-color:var(--accent);--input-border-color:var(--linia);--emoji-size:1.6rem;height:340px}
 </style>
 </head>
@@ -105,10 +112,16 @@ emoji-picker{width:100%;--background:var(--targeta);--border-color:var(--linia);
 
     <section id="secActualitat" hidden>
       <h2>🟠 Actualitat</h2>
-      <label class="camp"><span>Text</span><textarea id="text" placeholder="Escriu la informació. Pots fer salts de línia i posar-hi emoticones."></textarea></label>
-      <div class="emojis">
-        <button type="button" class="suau" id="obreEmojis">😀 Emoticones</button>
+      <div class="camp"><span>Text</span>
+        <div class="eines" id="einesText">
+          <button type="button" data-cmd="bold" title="Negreta (Ctrl+B)"><b>N</b></button>
+          <button type="button" data-cmd="italic" title="Cursiva (Ctrl+I)"><i>C</i></button>
+          <button type="button" data-cmd="underline" title="Subratllat (Ctrl+U)"><u>S</u></button>
+          <button type="button" data-cmd="removeFormat" title="Treu el format del que hagis seleccionat">✕ format</button>
+          <button type="button" id="obreEmojis" title="Obre les emoticones">😀 Emoticones</button>
+        </div>
         <div id="capsaEmojis" hidden></div>
+        <div class="editor" id="text" contenteditable="true" spellcheck="true" lang="ca" data-ph="Escriu la informació. Pots fer salts de línia i posar-hi emoticones."></div>
       </div>
       <label class="camp"><span>Enllaç (opcional)</span><input type="url" id="url" placeholder="https://…"></label>
     </section>
@@ -268,7 +281,7 @@ function peticio() {
     titols: files.map(f => f.titol)
   };
   if (MODE === "EPISODI") p.urlEpisodi = $("urlEpisodi").value.trim();
-  else { p.text = $("text").value; p.url = $("url").value.trim(); }
+  else { p.text = textAmbFormat($("text")); p.url = $("url").value.trim(); }
   return p;
 }
 
@@ -404,6 +417,90 @@ async function reprenEstat() {
   if (desada) { $("pin").value = desada; entra(); }
 })();
 </script>
+<script>
+// 25.10.2026: EDITOR AMB FORMAT per al text d'Actualitat (el mateix de les notícies).
+// Les xarxes reben text pla, així que en enviar-lo la negreta i la cursiva es
+// converteixen en lletres Unicode (𝗻𝗲𝗴𝗿𝗲𝘁𝗮, 𝘤𝘶𝘳𝘴𝘪𝘷𝘢) i el subratllat en u̲n̲a̲ ̲r̲a̲t̲l̲l̲a̲.
+// Cada paràgraf de l'editor és una línia, com abans amb la caixa de text.
+function lletraUnicode(c, b, i) {
+  const n = c.codePointAt(0);
+  const majuscula = n >= 65 && n <= 90, minuscula = n >= 97 && n <= 122, xifra = n >= 48 && n <= 57;
+  if (b && i) {
+    if (majuscula) return String.fromCodePoint(0x1D63C + n - 65);
+    if (minuscula) return String.fromCodePoint(0x1D656 + n - 97);
+    if (xifra) return String.fromCodePoint(0x1D7EC + n - 48);
+  } else if (b) {
+    if (majuscula) return String.fromCodePoint(0x1D5D4 + n - 65);
+    if (minuscula) return String.fromCodePoint(0x1D5EE + n - 97);
+    if (xifra) return String.fromCodePoint(0x1D7EC + n - 48);
+  } else if (i) {
+    if (majuscula) return String.fromCodePoint(0x1D608 + n - 65);
+    if (minuscula) return String.fromCodePoint(0x1D622 + n - 97);
+  }
+  return c;
+}
+function trosAUnicode(t, b, i, u) {
+  if (!b && !i && !u) return t;
+  // Les lletres amb accent (à, é, ç...) es descomponen: lletra especial + accent.
+  return Array.from(t.normalize("NFD")).map(c => {
+    if (c === "\n") return c;
+    let s = lletraUnicode(c, b, i);
+    if (u && !/\s/.test(c) && !/[̀-ͯ]/.test(c)) s += "̲";
+    else if (u && c === " ") s += "̲";
+    return s;
+  }).join("");
+}
+function textAmbFormat(el) {
+  const linies = [];
+  let actual = "";
+  const tancaLinia = () => { linies.push(actual); actual = ""; };
+  const camina = (node, est) => {
+    if (node.nodeType === 3) { actual += trosAUnicode(node.nodeValue.replace(/ /g, " "), est.b, est.i, est.u); return; }
+    if (node.nodeType !== 1) return;
+    const tag = node.tagName, st = node.style || {};
+    if (tag === "BR") { tancaLinia(); return; }
+    const e = { ...est };
+    if (tag === "B" || tag === "STRONG" || /^(bold|[6-9]00)$/.test(st.fontWeight || "")) e.b = true;
+    if (tag === "I" || tag === "EM" || st.fontStyle === "italic") e.i = true;
+    if (tag === "U" || /underline/.test((st.textDecoration || "") + (st.textDecorationLine || ""))) e.u = true;
+    const bloc = /^(P|DIV|LI|H\d)$/.test(tag);
+    if (bloc && actual) tancaLinia();
+    const abans = linies.length;
+    node.childNodes.forEach(f => camina(f, e));
+    // Un paràgraf buit (<p><br></p>) ja ha tancat la seva línia amb el <br>.
+    if (bloc && (actual || linies.length === abans)) tancaLinia();
+  };
+  el.childNodes.forEach(f => camina(f, {}));
+  if (actual) tancaLinia();
+  return linies.join("\n").replace(/[ \t]+\n/g, "\n").trim();
+}
+(function () {
+  const caixa = document.getElementById("text"), eines = document.getElementById("einesText");
+  try { document.execCommand("defaultParagraphSeparator", false, "p"); document.execCommand("styleWithCSS", false, false); } catch (e) {}
+  eines.addEventListener("mousedown", e => { if (e.target.closest("button[data-cmd]")) e.preventDefault(); });   // no perdre la selecció
+  eines.addEventListener("click", e => {
+    const c = e.target.closest("button[data-cmd]");
+    if (!c) return;
+    if (!caixa.contains(document.getSelection().anchorNode)) caixa.focus();
+    document.execCommand(c.dataset.cmd, false, null);
+    estatEines();
+  });
+  caixa.addEventListener("paste", e => {
+    e.preventDefault();
+    const t = (e.clipboardData || window.clipboardData).getData("text/plain").replace(/\r\n/g, "\n");
+    document.execCommand("insertText", false, t);
+  });
+  function estatEines() {
+    const sel = document.getSelection();
+    const dins = sel.anchorNode && caixa.contains(sel.anchorNode);
+    eines.querySelectorAll("button[data-cmd]").forEach(b => {
+      b.classList.toggle("on", !!dins && b.dataset.cmd !== "removeFormat" && document.queryCommandState(b.dataset.cmd));
+    });
+    if (dins && sel.rangeCount) window.darreraSeleccioText = sel.getRangeAt(0).cloneRange();
+  }
+  document.addEventListener("selectionchange", estatEines);
+})();
+</script>
 <script type="module">
 // 25.10.2026: selector amb totes les emoticones d'Unicode (les mateixes que llista
 // emojiterra.com) per al text d'Actualitat. Es carrega només quan s'obre.
@@ -413,13 +510,11 @@ const camp = document.getElementById("text");
 let carregat = false;
 
 function insereix(emoji) {
-  const ini = camp.selectionStart ?? camp.value.length;
-  const fi = camp.selectionEnd ?? camp.value.length;
-  camp.value = camp.value.slice(0, ini) + emoji + camp.value.slice(fi);
-  const pos = ini + emoji.length;
   camp.focus();
-  camp.setSelectionRange(pos, pos);
-  camp.dispatchEvent(new Event("input", { bubbles: true }));
+  const sel = document.getSelection();
+  if (window.darreraSeleccioText) { sel.removeAllRanges(); sel.addRange(window.darreraSeleccioText); }
+  else { const r = document.createRange(); r.selectNodeContents(camp); r.collapse(false); sel.removeAllRanges(); sel.addRange(r); }
+  document.execCommand("insertText", false, emoji);
 }
 
 boto.onclick = async () => {
@@ -431,13 +526,15 @@ boto.onclick = async () => {
   try {
     const { Picker } = await import("https://cdn.jsdelivr.net/npm/emoji-picker-element@1.29.1/index.js");
     const picker = new Picker({
-      locale: "es",
-      dataSource: "https://cdn.jsdelivr.net/npm/emoji-picker-element-data@1/es/emojibase/data.json",
+      // Noms i paraules de cerca en català (els de l'Unicode CLDR, els mateixos que fa servir
+      // emojiterra.com), desats en aquest mateix repo: la cerca es fa al navegador.
+      locale: "ca",
+      dataSource: new URL("emojis-ca.json?v=1", location.href).href,
       i18n: {
         categoriesLabel: "Categories", emojiUnsupportedMessage: "El navegador no mostra les emoticones de color.",
         favoritesLabel: "Les més fetes servir", loadingMessage: "Carregant…", networkErrorMessage: "No s'han pogut carregar les emoticones.",
         regionLabel: "Selector d'emoticones", searchDescription: "Fes servir les fletxes amunt i avall i la tecla de retorn per triar.",
-        searchLabel: "Cerca (en castellà)", searchResultsLabel: "Resultats de la cerca", skinToneDescription: "Fes servir les fletxes amunt i avall i la tecla de retorn per triar.",
+        searchLabel: "Cerca", searchResultsLabel: "Resultats de la cerca", skinToneDescription: "Fes servir les fletxes amunt i avall i la tecla de retorn per triar.",
         skinToneLabel: "Tria el to de pell (ara: {skinTone})", skinTonesLabel: "Tons de pell",
         skinTones: ["Per defecte", "Clar", "Clar mitjà", "Mitjà", "Fosc mitjà", "Fosc"],
         categories: { custom: "Personalitzades", "smileys-emotion": "Cares i emocions", "people-body": "Persones i cos",

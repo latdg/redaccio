@@ -391,7 +391,7 @@ async function contractacioAny(sec) {
   function pinta(xif = true) {
     if (xif) xifres.innerHTML =
       `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Tot l'any</span><span class="val">${totes.length} contractes</span><span class="det">${eurosCurt(totalAny)}</span></button>` +
-      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esOrganisme[m] ? "🏛️ " : ""}${esc(m)}</span><span class="val">${perMun[m].n} contractes</span><span class="det">${eurosCurt(perMun[m].total)}</span></button>`).join("");
+      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${perMun[m].n} contractes</span><span class="det">${eurosCurt(perMun[m].total)}</span></button>`).join("");
     pintaEines();
     pintaLlista();
     nota.textContent = "Font: Plataforma de Serveis de Contractació Pública (dades obertes de la Generalitat). Anuncis, adjudicacions, formalitzacions i contractes menors publicats des de l'1 de gener. Clica un municipi o un organisme per filtrar." +

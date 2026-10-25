@@ -54,6 +54,10 @@ pre{white-space:pre-wrap;word-break:break-word;background:var(--fons);border:1px
 .resum td:first-child{width:28px;font-weight:700;text-align:center}
 .ok{color:var(--ok)} .ko{color:var(--ko)} .no{color:var(--suau)}
 #clauBox{border-color:var(--accent)}
+/* 25.10.2026: selector d'emoticones (totes les d'Unicode) per al text d'Actualitat */
+.emojis{margin:-4px 0 12px}
+#capsaEmojis{margin-top:8px}
+emoji-picker{width:100%;--background:var(--targeta);--border-color:var(--linia);--indicator-color:var(--accent);--outline-color:var(--accent);--input-border-color:var(--linia);--emoji-size:1.6rem;height:340px}
 </style>
 </head>
 <body>
@@ -102,6 +106,10 @@ pre{white-space:pre-wrap;word-break:break-word;background:var(--fons);border:1px
     <section id="secActualitat" hidden>
       <h2>🟠 Actualitat</h2>
       <label class="camp"><span>Text</span><textarea id="text" placeholder="Escriu la informació. Pots fer salts de línia i posar-hi emoticones."></textarea></label>
+      <div class="emojis">
+        <button type="button" class="suau" id="obreEmojis">😀 Emoticones</button>
+        <div id="capsaEmojis" hidden></div>
+      </div>
       <label class="camp"><span>Enllaç (opcional)</span><input type="url" id="url" placeholder="https://…"></label>
     </section>
 
@@ -395,6 +403,56 @@ async function reprenEstat() {
   $("recorda").checked = !!desada;
   if (desada) { $("pin").value = desada; entra(); }
 })();
+</script>
+<script type="module">
+// 25.10.2026: selector amb totes les emoticones d'Unicode (les mateixes que llista
+// emojiterra.com) per al text d'Actualitat. Es carrega només quan s'obre.
+const boto = document.getElementById("obreEmojis");
+const capsa = document.getElementById("capsaEmojis");
+const camp = document.getElementById("text");
+let carregat = false;
+
+function insereix(emoji) {
+  const ini = camp.selectionStart ?? camp.value.length;
+  const fi = camp.selectionEnd ?? camp.value.length;
+  camp.value = camp.value.slice(0, ini) + emoji + camp.value.slice(fi);
+  const pos = ini + emoji.length;
+  camp.focus();
+  camp.setSelectionRange(pos, pos);
+  camp.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
+boto.onclick = async () => {
+  capsa.hidden = !capsa.hidden;
+  boto.textContent = capsa.hidden ? "😀 Emoticones" : "✖️ Tanca les emoticones";
+  if (capsa.hidden || carregat) return;
+  carregat = true;
+  capsa.textContent = "Carregant les emoticones…";
+  try {
+    const { Picker } = await import("https://cdn.jsdelivr.net/npm/emoji-picker-element@1.29.1/index.js");
+    const picker = new Picker({
+      locale: "es",
+      dataSource: "https://cdn.jsdelivr.net/npm/emoji-picker-element-data@1/es/emojibase/data.json",
+      i18n: {
+        categoriesLabel: "Categories", emojiUnsupportedMessage: "El navegador no mostra les emoticones de color.",
+        favoritesLabel: "Les més fetes servir", loadingMessage: "Carregant…", networkErrorMessage: "No s'han pogut carregar les emoticones.",
+        regionLabel: "Selector d'emoticones", searchDescription: "Fes servir les fletxes amunt i avall i la tecla de retorn per triar.",
+        searchLabel: "Cerca (en castellà)", searchResultsLabel: "Resultats de la cerca", skinToneDescription: "Fes servir les fletxes amunt i avall i la tecla de retorn per triar.",
+        skinToneLabel: "Tria el to de pell (ara: {skinTone})", skinTonesLabel: "Tons de pell",
+        skinTones: ["Per defecte", "Clar", "Clar mitjà", "Mitjà", "Fosc mitjà", "Fosc"],
+        categories: { custom: "Personalitzades", "smileys-emotion": "Cares i emocions", "people-body": "Persones i cos",
+          "animals-nature": "Animals i natura", "food-drink": "Menjar i beure", "travel-places": "Viatges i llocs",
+          activities: "Activitats", objects: "Objectes", symbols: "Símbols", flags: "Banderes" }
+      }
+    });
+    picker.addEventListener("emoji-click", e => insereix(e.detail.unicode));
+    capsa.textContent = "";
+    capsa.appendChild(picker);
+  } catch (e) {
+    carregat = false;
+    capsa.textContent = "No s'han pogut carregar les emoticones. Torna-ho a provar.";
+  }
+};
 </script>
 <script src="../dates-ca.js?v=1"></script>
 </body>

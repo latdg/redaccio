@@ -82,13 +82,20 @@ button:disabled{opacity:.45;cursor:default}
   </section>
 
   <div id="panell" hidden style="display:grid;gap:16px">
-    <section>
-      <div class="fila">
-        <label class="fila" style="gap:6px">📅 Guió del dia <input type="date" id="dia"></label>
-        <span class="font" id="infoDia" style="margin:0"></span>
+        <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start">
+      <div>
+        <div class="fila">
+          <label class="fila" style="gap:6px">📅 Guió del dia <input type="date" id="dia"></label>
+          <span class="font" id="infoDia" style="margin:0"></span>
+        </div>
+        <div class="dies" id="dies"></div>
+        <p class="font">En vermell, els dies que vénen amb notícies preparades.</p>
       </div>
-      <div class="dies" id="dies"></div>
-      <p class="font">En vermell, els dies que vénen amb notícies preparades.</p>
+      <div>
+        <button type="button" class="suau" id="afegeix">➕ Afegeix una notícia</button>
+        <p class="font">Negreta (Ctrl+B), cursiva (Ctrl+I) i subratllat (Ctrl+U) surten igual al guió. Cada Intro és un paràgraf nou.
+          El que enganxis d'una web s'enganxa sense format.</p>
+      </div>
     </section>
 
     <div id="noticies" style="display:grid;gap:16px"></div>

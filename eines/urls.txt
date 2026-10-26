@@ -1,0 +1,16 @@
+# Cadastre (edificis INSPIRE)
+https://www.catastro.hacienda.gob.es/INSPIRE/buildings/17/ES.SDGC.bu.atom_17.xml
+http://www.catastro.minhap.es/INSPIRE/buildings/17/ES.SDGC.bu.atom_17.xml
+# Mobilitat (Ministeri de Transports)
+https://movilidad-opendata.mitma.es/
+https://movilidad-opendata.mitma.es/zonificacion/zonificacion_municipios/nombres_municipios.csv
+https://movilidad-opendata.mitma.es/zonificacion/relacion_ine_zonificacionMitma.csv
+https://movilidad-opendata.mitma.es/RSS.xml
+# Seguretat i emergències (Generalitat)
+https://analisi.transparenciacatalunya.cat/resource/qnyt-emjc.json?$select=rea_b_sica_policial_abp,regi_policial_rp,count(*)&$group=rea_b_sica_policial_abp,regi_policial_rp&$where=regi_policial_rp%20like%20'%25Girona%25'&$limit=50
+https://analisi.transparenciacatalunya.cat/resource/qnyt-emjc.json?$select=max(any)&$limit=1
+https://analisi.transparenciacatalunya.cat/resource/qnyt-emjc.json?$limit=3&$order=any%20DESC,mes%20DESC
+https://analisi.transparenciacatalunya.cat/resource/g2ay-3vnj.json?$where=codi_ine%20in('170222','170571','179020','179013','17022','17057','17902','17901')&$limit=5&$order=any%20DESC,mes%20DESC
+https://analisi.transparenciacatalunya.cat/resource/g2ay-3vnj.json?$select=municipi,codi_ine,count(*)&$where=upper(municipi)%20like%20'%25BISBAL%25'%20OR%20upper(municipi)%20like%20'%25FORALLAC%25'%20OR%20upper(municipi)%20like%20'%25COR%25A%25'%20OR%20upper(municipi)%20like%20'%25CRU%25LLES%25'&$group=municipi,codi_ine&$limit=20
+https://analisi.transparenciacatalunya.cat/resource/jq8m-d7cw.json?$where=upper(municipi)%20like%20'%25BISBAL%25'&$limit=5&$order=any%20DESC,mes%20DESC
+https://analisi.transparenciacatalunya.cat/resource/jq8m-d7cw.json?$select=municipi,count(*)&$where=comarca%20like%20'%25Baix%20Empord%25'&$group=municipi&$limit=60

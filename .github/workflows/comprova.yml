@@ -1,0 +1,41 @@
+# Comprova fonts — La TdG · 26.10.2026
+# Prova si les adreces d'eines/urls.txt es poden llegir des de GitHub.
+# S'engega sol quan es canvia eines/urls.txt, o a mà.
+name: Comprova fonts
+
+on:
+  push:
+    branches: [main]
+    paths: ["eines/urls.txt"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: comprova
+  cancel-in-progress: false
+
+jobs:
+  comprova:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Comprova i desa
+        run: |
+          python eines/comprova.py
+          git config user.name "La TdG (comprovació)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for intent in 1 2 3; do
+            git add eines/comprovacio.json
+            if git diff --cached --quiet; then break; fi
+            git commit -qm "Comprovació de fonts"
+            git push -q origin HEAD:main && break
+            git pull -q --rebase origin main
+            sleep 10
+          done

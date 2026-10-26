@@ -47,28 +47,56 @@ def enter(t):
     return int(t) if t.isdigit() else 0
 
 
-def llegeix(zf, prefix):
-    nom = next((n for n in zf.namelist() if Path(n).name.upper().startswith(prefix)), None)
-    if not nom:
-        return []
-    return zf.read(nom).decode("latin-1").splitlines()
+MIRALL = "https://raw.githubusercontent.com/JaimeObregon/infoelectoral/master/files/{carpeta}/{tipus}{any}{mes}_MESA/{fitxer}"
+CARPETES = {"04": "municipales", "02": "congreso", "07": "europeas"}
+ZIPS = ARREL / "eleccions" / "zips"   # ZIP baixats a mà del Ministeri (que no deixa connectar des de GitHub)
+
+
+def fitxers(tipus, any_, mes):
+    """Torna (font, funció que llegeix un fitxer .DAT pel prefix). Prova, per ordre:
+    el Ministeri, un ZIP pujat a eleccions/zips/ i el mirall de JaimeObregon/infoelectoral."""
+    nom_zip = f"{tipus}{any_}{mes}_MESA.zip"
+    local = ZIPS / nom_zip
+    zf = None
+    if local.exists():
+        zf, font = zipfile.ZipFile(local), "infoelectoral.interior.gob.es (" + nom_zip + ")"
+    else:
+        try:
+            r = requests.get(URL.format(tipus=tipus, any=any_, mes=mes), headers=CAPCALERES, timeout=(20, 300))
+            r.raise_for_status()
+            zf, font = zipfile.ZipFile(io.BytesIO(r.content)), "infoelectoral.interior.gob.es (" + nom_zip + ")"
+        except Exception as err:
+            print(f"Ministeri no disponible per a {nom_zip}: {type(err).__name__}")
+    if zf:
+        def llegeix(prefix):
+            nom = next((n for n in zf.namelist() if Path(n).name.upper().startswith(prefix)), None)
+            return zf.read(nom).decode("latin-1").splitlines() if nom else []
+        return font, llegeix
+
+    def llegeix_mirall(prefix):
+        r = requests.get(MIRALL.format(carpeta=CARPETES[tipus], tipus=tipus, any=any_, mes=mes, fitxer=prefix + ".DAT"),
+                         headers=CAPCALERES, timeout=300)
+        if r.status_code == 404:
+            return []
+        r.raise_for_status()
+        return r.content.decode("latin-1").splitlines()
+    if not llegeix_mirall("01" + f"{tipus}{any_[2:]}{mes}"):
+        raise RuntimeError(f"{nom_zip}: ni al Ministeri, ni a eleccions/zips/, ni al mirall")
+    return "github.com/JaimeObregon/infoelectoral (còpia de " + nom_zip + ")", llegeix_mirall
 
 
 def processa(tipus, any_, mes, nom):
-    url = URL.format(tipus=tipus, any=any_, mes=mes)
-    r = requests.get(url, headers=CAPCALERES, timeout=(20, 300))
-    r.raise_for_status()
-    zf = zipfile.ZipFile(io.BytesIO(r.content))
+    font, llegeix = fitxers(tipus, any_, mes)
     sufix = f"{tipus}{any_[2:]}{mes}"
 
     # 03: candidatures (codi -> sigles i nom)
     cands = {}
-    for l in llegeix(zf, "03" + sufix):
+    for l in llegeix("03" + sufix):
         cands[l[8:14]] = {"sigles": l[14:64].strip(), "nom": l[64:214].strip()}
 
     # 09: dades de cada mesa
     mesos = {}
-    for l in llegeix(zf, "09" + sufix):
+    for l in llegeix("09" + sufix):
         if l[11:13] != PROVINCIA or l[13:16] not in MUNICIPIS:
             continue
         clau = (l[13:16], l[16:18] + "-" + l[18:22].strip(), l[22])
@@ -78,7 +106,7 @@ def processa(tipus, any_, mes, nom):
             "vots": {},
         }
     # 10: vots de cada candidatura a cada mesa
-    for l in llegeix(zf, "10" + sufix):
+    for l in llegeix("10" + sufix):
         if l[11:13] != PROVINCIA or l[13:16] not in MUNICIPIS:
             continue
         clau = (l[13:16], l[16:18] + "-" + l[18:22].strip(), l[22])
@@ -88,7 +116,7 @@ def processa(tipus, any_, mes, nom):
     # 06 (només municipals): regidors de cada candidatura al municipi
     electes = {}
     if tipus == "04":
-        for l in llegeix(zf, "06" + sufix):
+        for l in llegeix("06" + sufix):
             if l[9:11] == PROVINCIA and l[11:14] in MUNICIPIS and l[14:16] == "99":
                 electes[(l[11:14], l[16:22])] = enter(l[30:33])
 
@@ -142,7 +170,7 @@ def processa(tipus, any_, mes, nom):
     print(nom, {m: (d["participacio"], d["resultats"][0]["sigles"]) for m, d in municipis.items()})
     return {
         "id": f"{tipus}{any_}{mes}", "tipus": TIPUS.get(tipus, tipus), "nom": nom,
-        "data": f"{any_}-{mes}", "font": url, "municipis": municipis,
+        "data": f"{any_}-{mes}", "font": font, "municipis": municipis,
     }
 
 

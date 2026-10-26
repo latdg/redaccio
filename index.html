@@ -67,6 +67,8 @@ section.resum .cos img{max-width:100%;height:auto}
 .fitxa tr.total td{font-weight:700}
 .fitxa .var{color:var(--suau);font-size:.8rem}
 .amunt{color:#1e7b34}
+/* Resultats electorals (26.10.2026): al mòbil, sense la barra */
+@media (max-width:600px){.elec-barra{display:none}}
 .avall{color:#c0392b}
 .fitxa .nota{color:var(--suau);font-size:.85rem;margin:8px 0 0}
 /* Aigua potable (bloc unificat) */
@@ -167,6 +169,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="aigua"><h2>💧 Aigua potable</h2><p class="buit">Carregant…</p></section>
   <section id="dades-municipals"><h2>🏦 Dades municipals</h2><p class="buit">Carregant…</p></section>
   <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
+  <section id="eleccions"><h2>🗳️ Resultats electorals</h2><p class="buit">Carregant…</p></section>
   <section id="congres"><h2>🏛️ Congrés dels Diputats</h2><p class="buit">Carregant…</p></section>
   <section id="parlament"><h2>🏛️ Parlament de Catalunya</h2><p class="buit">Carregant…</p></section>
   <section id="loteries"><h2>🍀 Loteries</h2><p class="buit">Carregant…</p></section>
@@ -719,6 +722,8 @@ const BLOCS_PROPIS = [
   { id: "dades-municipals", nom: "Dades municipals", titol: "DADES MUNICIPALS (ENDEUTAMENT, PRESSUPOST I LIQUIDACIÓ)", enLlocDe: /^ATUR/i },
   // 26.10.2026: just després de les dades municipals.
   { id: "hut", nom: "Habitatges turístics", titol: "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS", enLlocDe: /^ATUR/i },
+  // 26.10.2026: sense lloc de referència, perquè vagi sempre l'últim (cada quatre anys).
+  { id: "eleccions", nom: "Eleccions", titol: "RESULTATS ELECTORALS (MESA A MESA)" },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i }
 ];
 
@@ -1083,6 +1088,102 @@ async function carregaHut() {
 }
 
 // -----------------------------------------------------------------------------
+// RESULTATS ELECTORALS (26.10.2026): dades/eleccions.json, que desa el workflow
+// «Resultats electorals» (eleccions/eleccions.py) a partir de les microdades del
+// Ministeri de l'Interior. Una fitxa per municipi, amb l'escut (escuts/), la
+// participació, les candidatures, la comparació amb l'anterior elecció del
+// mateix tipus i el detall per secció censal.
+// -----------------------------------------------------------------------------
+const TITOL_ELEC = "RESULTATS ELECTORALS (MESA A MESA)";
+const ORDRE_MUN = ["17022", "17057", "17902", "17901"];
+const pctCa = (v, d = 1) => Number(v || 0).toLocaleString("ca-ES", { minimumFractionDigits: d, maximumFractionDigits: d }) + " %";
+let ELEC = null, ESCUTS = {};
+
+function escut(codi) {
+  return ESCUTS[codi]
+    ? `<img src="escuts/${codi}.svg" alt="" width="34" height="40" style="height:40px;width:auto;flex:none">`
+    : `<span style="width:34px;height:40px;flex:none;border:1px dashed var(--linia);border-radius:6px 6px 17px 17px"></span>`;
+}
+
+// Mateixa candidatura en una altra elecció: per sigles, o pel primer mot de les sigles.
+const clauCand = s => String(s || "").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Z0-9]+/g, " ").trim();
+function trobaAnterior(r, ant) {
+  if (!ant) return null;
+  const k = clauCand(r.sigles);
+  return ant.resultats.find(x => clauCand(x.sigles) === k) ||
+    ant.resultats.find(x => clauCand(x.sigles).split(" ")[0] === k.split(" ")[0] && k.split(" ")[0].length > 2) || null;
+}
+
+function fitxaEleccio(codi, m, e, ant) {
+  const max = Math.max(1, ...m.resultats.map(r => r.pct));
+  const mun = e.tipus === "municipals";
+  const files = m.resultats.map(r => {
+    const a = trobaAnterior(r, ant);
+    const dif = a ? r.pct - a.pct : null;
+    return `<tr><td style="white-space:normal">${esc(r.sigles)}</td>` +
+      `<td class="elec-barra" style="width:30%"><span class="barra" style="display:block;height:10px;background:var(--accent);border-radius:3px;width:${(r.pct / max * 100).toFixed(0)}%"></span></td>` +
+      `<td class="n">${nCa(r.vots)}</td><td class="n"><b>${pctCa(r.pct)}</b></td>` +
+      (mun ? `<td class="n"><b>${r.electes || 0}</b>${a && a.electes !== undefined && a.electes !== r.electes ? ` <span class="${r.electes > a.electes ? "amunt" : "avall"}">(${r.electes > a.electes ? "+" : "−"}${Math.abs(r.electes - a.electes)})</span>` : ""}</td>` : "") +
+      `<td class="n var">${dif === null ? "nova" : `<span class="${dif >= 0 ? "amunt" : "avall"}">${dif >= 0 ? "+" : "−"}${Math.abs(dif).toLocaleString("ca-ES", { maximumFractionDigits: 1 })}</span>`}</td></tr>`;
+  }).join("");
+  const difPart = ant ? m.participacio - ant.participacio : null;
+  const seccions = m.seccions.length > 1 ? `<details><summary style="cursor:pointer;margin-top:10px"><b>Per seccions censals (${m.seccions.length})</b></summary>` +
+    `<div class="taula"><table><thead><tr><th>Secció</th><th class="n">Participació</th><th>Primera força</th><th>Segona</th></tr></thead><tbody>` +
+    m.seccions.map(s => {
+      const v = Object.entries(s.vots), p = x => s.valids ? pctCa(x / s.valids * 100) : "—";
+      return `<tr><td>${esc(s.seccio)}${s.meses > 1 ? ` <span class="var">(${s.meses} meses)</span>` : ""}</td><td class="n">${pctCa(s.participacio)}</td>` +
+        `<td>${v[0] ? `${esc(v[0][0])} · ${p(v[0][1])}` : "—"}</td><td>${v[1] ? `${esc(v[1][0])} · ${p(v[1][1])}` : "—"}</td></tr>`;
+    }).join("") + `</tbody></table></div></details>` : "";
+  return `<article class="fitxa"><div style="display:flex;align-items:center;gap:10px">${escut(codi)}<h3>${esc(m.nom)}</h3></div>` +
+    `<div class="xifres" style="margin-top:10px">` +
+      `<div class="xifra"><div class="etq">Participació</div><div class="val">${pctCa(m.participacio)}</div>` +
+        `<div class="det">${nCa(m.votants)} de ${nCa(m.cens)} electors${difPart !== null ? ` · <span class="${difPart >= 0 ? "amunt" : "avall"}">${difPart >= 0 ? "+" : "−"}${Math.abs(difPart).toLocaleString("ca-ES", { maximumFractionDigits: 1 })} punts</span>` : ""}</div></div>` +
+      `<div class="xifra"><div class="etq">Guanyador</div><div class="val" style="font-size:1.1rem">${esc(m.resultats[0] ? m.resultats[0].sigles : "—")}</div>` +
+        `<div class="det">${m.resultats[0] ? pctCa(m.resultats[0].pct) + (mun ? ` · ${m.resultats[0].electes} de ${m.regidors} regidors` : "") : ""}</div></div>` +
+      `<div class="xifra"><div class="etq">Vots en blanc i nuls</div><div class="val">${nCa(m.blanc)} · ${nCa(m.nuls)}</div><div class="det">${pctCa(m.blanc / (m.valids || 1) * 100)} en blanc (sobre vots vàlids)</div></div>` +
+    `</div>` +
+    `<div class="taula"><table><thead><tr><th>Candidatura</th><th class="elec-barra"></th><th class="n">Vots</th><th class="n">%</th>${mun ? '<th class="n">Regidors</th>' : ""}<th class="n">Dif.</th></tr></thead><tbody>${files}</tbody></table></div>` +
+    seccions + `</article>`;
+}
+
+function pintaEleccio(id) {
+  const el = document.getElementById("eleccions");
+  const e = ELEC.eleccions.find(x => x.id === id) || ELEC.eleccions[0];
+  const ordre = ELEC.eleccions.filter(x => x.tipus === e.tipus).sort((a, b) => b.data.localeCompare(a.data));
+  const ant = ordre[ordre.indexOf(e) + 1] || null;
+  const titol = (el.dataset.numero ? el.dataset.numero + " " : "🗳️ ") + TITOL_ELEC;
+  const credEscuts = Object.values(ESCUTS).filter(c => c && c.pagina).map(c => `<a href="${esc(c.pagina)}" target="_blank" rel="noopener">${esc(c.llicencia || "Commons")}</a>`).join(", ");
+  el.innerHTML = `<h2>${titol}</h2>` +
+    `<p class="font">Font: <a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">Ministeri de l'Interior</a>, resultats oficials mesa a mesa</p>` +
+    `<div class="sv-eines" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">` +
+      `<select id="triaEleccio" aria-label="Elecció">${ELEC.eleccions.map(x => `<option value="${x.id}"${x.id === e.id ? " selected" : ""}>${esc(x.nom)}</option>`).join("")}</select>` +
+      (ant ? `<span class="var" style="color:#6b6b66;font-size:.85rem">Diferències respecte a: ${esc(ant.nom)}</span>` : "") +
+    `</div>` +
+    ORDRE_MUN.filter(c => e.municipis[c]).map(c => {
+      const a = ant && ant.municipis[c] ? ant.municipis[c] : null;
+      return fitxaEleccio(c, e.municipis[c], e, a);
+    }).join("") +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Percentatges sobre vots vàlids (candidatures i blanc). La participació no inclou el vot dels residents a l'estranger (CERA), que el Ministeri no reparteix per meses. ` +
+    `«Dif.» són punts percentuals respecte a l'elecció anterior del mateix tipus; «nova», candidatura que no s'hi va presentar amb les mateixes sigles. ` +
+    `Les eleccions al Parlament de Catalunya no hi són: les publica la Generalitat.` +
+    (credEscuts ? ` Escuts: Wikimedia Commons (${credEscuts}).` : "") + `</p>`;
+  document.getElementById("triaEleccio").onchange = ev => pintaEleccio(ev.target.value);
+}
+
+async function carregaEleccions() {
+  const el = document.getElementById("eleccions");
+  if (!el) return;
+  try { ESCUTS = await obtenir("escuts/credits.json"); } catch (e) { ESCUTS = {}; }
+  Object.keys(ESCUTS).forEach(k => { if (k.startsWith("_")) delete ESCUTS[k]; });
+  try { ELEC = await obtenir("dades/eleccions.json"); } catch (e) { ELEC = null; }
+  if (!ELEC || !ELEC.eleccions || !ELEC.eleccions.length) {
+    el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🗳️ ") + TITOL_ELEC}</h2><p class="buit">Encara no s'han baixat els resultats electorals.</p>`;
+    return;
+  }
+  pintaEleccio(ELEC.eleccions[0].id);
+}
+
+// -----------------------------------------------------------------------------
 // AIGUA POTABLE: un sol bloc amb una fitxa per municipi. Analítiques del SINAC
 // (el darrer butlletí amb tot el detall i els anteriors, que s'obren clicant-hi)
 // i, a Corçà i a Cruïlles, Monells i Sant Sadurní, les de la Mancomunitat.
@@ -1244,6 +1345,7 @@ async function inicia() {
   carregaJSON(dia, "parlament.json", ["parlament"]);
   carregaJSON(dia, "loteries.json", ["loteries"]);
   carregaHut();
+  carregaEleccions();
 }
 inicia();
 </script>

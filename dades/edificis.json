@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-26T22:59:39+00:00",
+ "generat": "2026-10-26T23:01:08+00:00",
  "font": "Direcció General del Cadastre (servei INSPIRE d'edificis)",
  "epoques": [
   "abans de 1900",
@@ -117,6 +117,113 @@
    "ultims10anys": 34,
    "ruina": 10,
    "plantesMax": 13
+  },
+  "17057": {
+   "nom": "Corçà",
+   "actualitzatCadastre": "2026-08-21",
+   "zip": "https://www.catastro.hacienda.gob.es/INSPIRE/Buildings/17/17062-COR A/A.ES.SDGC.BU.17062.zip",
+   "edificis": 871,
+   "ambAny": 870,
+   "habitatges": 699,
+   "mediana": 1974,
+   "epoques": [
+    {
+     "epoca": "abans de 1900",
+     "edificis": 4,
+     "habitatges": 3
+    },
+    {
+     "epoca": "1900-1939",
+     "edificis": 240,
+     "habitatges": 223
+    },
+    {
+     "epoca": "1940-1959",
+     "edificis": 60,
+     "habitatges": 47
+    },
+    {
+     "epoca": "1960-1979",
+     "edificis": 304,
+     "habitatges": 241
+    },
+    {
+     "epoca": "1980-1999",
+     "edificis": 147,
+     "habitatges": 97
+    },
+    {
+     "epoca": "2000-2009",
+     "edificis": 92,
+     "habitatges": 72
+    },
+    {
+     "epoca": "des de 2010",
+     "edificis": 23,
+     "habitatges": 16
+    }
+   ],
+   "usos": [
+    [
+     "Residencial",
+     726
+    ],
+    [
+     "Agrari",
+     71
+    ],
+    [
+     "Industrial",
+     44
+    ],
+    [
+     "Serveis públics",
+     21
+    ],
+    [
+     "Comercial",
+     7
+    ],
+    [
+     "Oficines",
+     1
+    ],
+    [
+     "Altres",
+     1
+    ]
+   ],
+   "mesAntics": [
+    {
+     "ref": "000600200EG04G",
+     "any": 1800,
+     "us": "Residencial"
+    },
+    {
+     "ref": "000900100EG04G",
+     "any": 1800,
+     "us": "Residencial"
+    },
+    {
+     "ref": "002000300EG95B",
+     "any": 1800,
+     "us": "Serveis públics"
+    },
+    {
+     "ref": "17062A00500067",
+     "any": 1890,
+     "us": "Residencial"
+    },
+    {
+     "ref": "000500500EG94H",
+     "any": 1900,
+     "us": "Residencial"
+    }
+   ],
+   "any1900": 187,
+   "ultims10anys": 13,
+   "ruina": 0,
+   "plantesMax": 5
   },
   "17902": {
    "nom": "Forallac",

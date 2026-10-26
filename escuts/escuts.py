@@ -47,7 +47,12 @@ def cerca(nom):
 
 def main():
     credits = {}
+    cf = CARPETA / "credits.json"
+    anteriors = json.loads(cf.read_text(encoding="utf-8")) if cf.exists() else {}
     for codi, titols in MUNICIPIS.items():
+        if (CARPETA / f"{codi}.svg").exists() and codi in anteriors:
+            credits[codi] = anteriors[codi]
+            continue
         trobat = None
         for t in titols + [cerca(NOMS[codi])]:
             if t and (ii := info(t)):
@@ -55,6 +60,11 @@ def main():
                 break
         if not trobat:
             print("No trobat:", NOMS[codi])
+            # Deixa a credits.json què hi ha a Commons, per triar-lo a mà.
+            r = requests.get(API, params={"action": "query", "format": "json", "list": "search", "srnamespace": 6,
+                                          "srsearch": NOMS[codi].split(",")[0] + " escut", "srlimit": 15},
+                             headers=CAPCALERES, timeout=60)
+            credits["_cercat_" + codi] = [x["title"] for x in r.json()["query"]["search"]]
             continue
         t, ii = trobat
         svg = requests.get(ii["url"], headers=CAPCALERES, timeout=60)

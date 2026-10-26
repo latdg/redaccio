@@ -155,7 +155,7 @@ def main():
         url = next((z for z in zips if clau in pla(unquote(z.split("/")[-2], encoding="latin-1"))
                     or clau in pla(unquote(z.split("/")[-2]))), None)
         if not url:
-            print("No trobat al feed:", nom, [z.split("/")[-2] for z in zips if "17057" in z or "CORC" in pla(z)])
+            print("No trobat al feed:", nom, [z.split("/")[-2] for z in zips if z.split("/")[-2].split("-", 1)[-1][:2].upper() == clau[:2]])
             continue
         actualitzat = None
         m = re.search(re.escape(url) + r".*?<updated>([^<]+)</updated>", text, re.S)

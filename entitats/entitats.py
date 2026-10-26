@@ -10,6 +10,7 @@
 # finalitats de l'entitat.
 # =============================================================================
 import json
+import re
 import time
 import unicodedata
 from collections import Counter
@@ -44,6 +45,7 @@ def pla(t):
 
 def municipi(x):
     p = pla(x.get("nom_poblacio"))
+    p = re.sub(r"^(.*), (la|el|les|els|l')$", lambda m: m.group(2) + ("" if m.group(2) == "l'" else " ") + m.group(1), p)   # «Bisbal d'Empordà, la» -> «la bisbal d'emporda»
     for codi, nuclis in NUCLIS.items():
         if p in nuclis:
             return codi

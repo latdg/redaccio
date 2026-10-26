@@ -331,13 +331,24 @@ async function publica() {
 
   const pr = prefs(); pr[MODE] = p.plataformes; escriu(PREFS, JSON.stringify(pr));
   bloqueja(true);
-  $("estat").textContent = "Enviant…";
   $("sortida").innerHTML = "";
+  // Canvi 26.10.2026: comptador mentre es publica (sense àudio ni vídeo es fa al moment).
+  const t0 = Date.now();
+  const rellotge = () => { $("estat").textContent = "📤 Publicant… (" + Math.round((Date.now() - t0) / 1000) + " s)"; };
+  rellotge();
+  const compta = setInterval(rellotge, 1000);
   try {
     const d = await crida({ accio: "publica", ...p });
-    $("estat").textContent = "⏳ En cua. Es publica en segon pla (si hi ha vídeo o àudio per comprimir, pot trigar uns minuts).";
+    clearInterval(compta);
+    if (d.estat && d.estat.id === d.id && (d.estat.estat === "fet" || d.estat.estat === "error")) {
+      bloqueja(false);
+      pintaFinal(d.estat);
+      return;
+    }
+    $("estat").textContent = "⏳ En cua. Hi ha àudio o vídeo per comprimir: pot trigar uns minuts.";
     segueix(d.id);
   } catch (e) {
+    clearInterval(compta);
     bloqueja(false);
     $("estat").textContent = "❌ " + e.message;
   }
@@ -375,7 +386,7 @@ function pintaFinal(estat) {
   const files = (estat.resum || []).map(x =>
     `<tr><td class="${x.estat === "✓" ? "ok" : x.estat === "✗" ? "ko" : "no"}">${esc(x.estat)}</td><td>${esc(x.xarxa)}</td><td class="no">${esc(x.detall)}</td></tr>`).join("");
   $("sortida").innerHTML = (files ? `<table class="resum">${files}</table>` : "") +
-    (estat.registre ? `<details style="margin-top:10px"><summary class="font">Registre complet</summary><pre>${esc(netejaRegistre(estat.registre))}</pre></details>` : "");
+    (estat.registre ? `<details open style="margin-top:10px"><summary class="font">Registre complet</summary><pre>${esc(netejaRegistre(estat.registre))}</pre></details>` : "");
 }
 
 // Si en entrar hi ha una publicació en marxa (o acabada fa poc), es mostra.

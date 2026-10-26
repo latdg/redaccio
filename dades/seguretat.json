@@ -1,0 +1,3275 @@
+{
+ "generat": "2026-10-26T23:04:25+00:00",
+ "municipis": {
+  "17022": "la Bisbal d'Empordà",
+  "17057": "Corçà",
+  "17902": "Forallac",
+  "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"
+ },
+ "fetsPenals": {
+  "abp": "ABP Baix Empordà - La Bisbal",
+  "actualitzat": "2026-10-16T11:10:28+00:00",
+  "serie": [
+   [
+    "2023-01",
+    294
+   ],
+   [
+    "2023-02",
+    294
+   ],
+   [
+    "2023-03",
+    315
+   ],
+   [
+    "2023-04",
+    311
+   ],
+   [
+    "2023-05",
+    332
+   ],
+   [
+    "2023-06",
+    366
+   ],
+   [
+    "2023-07",
+    475
+   ],
+   [
+    "2023-08",
+    503
+   ],
+   [
+    "2023-09",
+    364
+   ],
+   [
+    "2023-10",
+    372
+   ],
+   [
+    "2023-11",
+    328
+   ],
+   [
+    "2023-12",
+    318
+   ],
+   [
+    "2024-01",
+    335
+   ],
+   [
+    "2024-02",
+    310
+   ],
+   [
+    "2024-03",
+    369
+   ],
+   [
+    "2024-04",
+    360
+   ],
+   [
+    "2024-05",
+    376
+   ],
+   [
+    "2024-06",
+    431
+   ],
+   [
+    "2024-07",
+    504
+   ],
+   [
+    "2024-08",
+    545
+   ],
+   [
+    "2024-09",
+    416
+   ],
+   [
+    "2024-10",
+    357
+   ],
+   [
+    "2024-11",
+    390
+   ],
+   [
+    "2024-12",
+    326
+   ],
+   [
+    "2025-01",
+    299
+   ],
+   [
+    "2025-02",
+    328
+   ],
+   [
+    "2025-03",
+    345
+   ],
+   [
+    "2025-04",
+    357
+   ],
+   [
+    "2025-05",
+    366
+   ],
+   [
+    "2025-06",
+    430
+   ],
+   [
+    "2025-07",
+    559
+   ],
+   [
+    "2025-08",
+    656
+   ],
+   [
+    "2025-09",
+    392
+   ],
+   [
+    "2025-10",
+    373
+   ],
+   [
+    "2025-11",
+    331
+   ],
+   [
+    "2025-12",
+    303
+   ],
+   [
+    "2026-01",
+    269
+   ],
+   [
+    "2026-02",
+    283
+   ],
+   [
+    "2026-03",
+    262
+   ],
+   [
+    "2026-04",
+    337
+   ],
+   [
+    "2026-05",
+    325
+   ],
+   [
+    "2026-06",
+    434
+   ],
+   [
+    "2026-07",
+    434
+   ],
+   [
+    "2026-08",
+    512
+   ],
+   [
+    "2026-09",
+    360
+   ]
+  ],
+  "darrerMes": "2026-09",
+  "periode": [
+   "2025-10",
+   "2026-09"
+  ],
+  "total12": 4223,
+  "totalAbans12": 4805,
+  "tipus": [
+   {
+    "tipus": "Furt",
+    "n": 1099,
+    "abans": 1201,
+    "darrerMes": 88,
+    "resolts": 211,
+    "detencions": 57
+   },
+   {
+    "tipus": "Robatori amb força",
+    "n": 581,
+    "abans": 820,
+    "darrerMes": 48,
+    "resolts": 107,
+    "detencions": 86
+   },
+   {
+    "tipus": "Danys",
+    "n": 454,
+    "abans": 528,
+    "darrerMes": 35,
+    "resolts": 48,
+    "detencions": 5
+   },
+   {
+    "tipus": "Lesions",
+    "n": 373,
+    "abans": 370,
+    "darrerMes": 28,
+    "resolts": 337,
+    "detencions": 106
+   },
+   {
+    "tipus": "Robatori amb força interior vehicle",
+    "n": 264,
+    "abans": 295,
+    "darrerMes": 16,
+    "resolts": 31,
+    "detencions": 32
+   },
+   {
+    "tipus": "Estafes",
+    "n": 223,
+    "abans": 242,
+    "darrerMes": 20,
+    "resolts": 66,
+    "detencions": 14
+   },
+   {
+    "tipus": "Amenaces",
+    "n": 190,
+    "abans": 205,
+    "darrerMes": 14,
+    "resolts": 173,
+    "detencions": 48
+   },
+   {
+    "tipus": "Conduir sota els efectes d'alcohol i drogues",
+    "n": 188,
+    "abans": 199,
+    "darrerMes": 27,
+    "resolts": 158,
+    "detencions": 9
+   },
+   {
+    "tipus": "Conduir sense permís",
+    "n": 165,
+    "abans": 180,
+    "darrerMes": 24,
+    "resolts": 146,
+    "detencions": 5
+   },
+   {
+    "tipus": "Robatori amb violència i/o intimidació",
+    "n": 98,
+    "abans": 121,
+    "darrerMes": 10,
+    "resolts": 57,
+    "detencions": 49
+   },
+   {
+    "tipus": "Altres delictes contra l'ordre públic",
+    "n": 64,
+    "abans": 67,
+    "darrerMes": 3,
+    "resolts": 59,
+    "detencions": 51
+   },
+   {
+    "tipus": "Robatori i furt d'us de vehicle",
+    "n": 55,
+    "abans": 65,
+    "darrerMes": 3,
+    "resolts": 16,
+    "detencions": 9
+   },
+   {
+    "tipus": "Coaccions",
+    "n": 53,
+    "abans": 55,
+    "darrerMes": 8,
+    "resolts": 44,
+    "detencions": 3
+   },
+   {
+    "tipus": "Ocupació immobles",
+    "n": 49,
+    "abans": 103,
+    "darrerMes": 1,
+    "resolts": 45,
+    "detencions": 0
+   },
+   {
+    "tipus": "Trencament de condemna",
+    "n": 41,
+    "abans": 38,
+    "darrerMes": 3,
+    "resolts": 41,
+    "detencions": 23
+   },
+   {
+    "tipus": "Apropiació indeguda",
+    "n": 41,
+    "abans": 44,
+    "darrerMes": 4,
+    "resolts": 23,
+    "detencions": 2
+   },
+   {
+    "tipus": "Contra la salut pública",
+    "n": 37,
+    "abans": 30,
+    "darrerMes": 3,
+    "resolts": 37,
+    "detencions": 40
+   },
+   {
+    "tipus": "Agressions sexuals i Abusos sexuals",
+    "n": 36,
+    "abans": 34,
+    "darrerMes": 1,
+    "resolts": 33,
+    "detencions": 19
+   },
+   {
+    "tipus": "Negativa a sotmetre's a les proves",
+    "n": 32,
+    "abans": 27,
+    "darrerMes": 4,
+    "resolts": 29,
+    "detencions": 1
+   },
+   {
+    "tipus": "Entrada a vivenda aliena",
+    "n": 20,
+    "abans": 9,
+    "darrerMes": 0,
+    "resolts": 19,
+    "detencions": 13
+   },
+   {
+    "tipus": "Falsedats documentals",
+    "n": 16,
+    "abans": 29,
+    "darrerMes": 1,
+    "resolts": 13,
+    "detencions": 2
+   },
+   {
+    "tipus": "Contra els drets i deures familiars",
+    "n": 16,
+    "abans": 14,
+    "darrerMes": 4,
+    "resolts": 13,
+    "detencions": 0
+   },
+   {
+    "tipus": "De la usurpació de l'estat civil",
+    "n": 13,
+    "abans": 15,
+    "darrerMes": 2,
+    "resolts": 2,
+    "detencions": 1
+   },
+   {
+    "tipus": "Tracte degradant / vexatori",
+    "n": 10,
+    "abans": 8,
+    "darrerMes": 0,
+    "resolts": 10,
+    "detencions": 1
+   },
+   {
+    "tipus": "Descobriment i revelació de secrets",
+    "n": 9,
+    "abans": 8,
+    "darrerMes": 0,
+    "resolts": 6,
+    "detencions": 0
+   },
+   {
+    "tipus": "Usurpació",
+    "n": 9,
+    "abans": 8,
+    "darrerMes": 1,
+    "resolts": 5,
+    "detencions": 0
+   },
+   {
+    "tipus": "Defraudacions de fluid elèctric i anàlogues",
+    "n": 8,
+    "abans": 6,
+    "darrerMes": 0,
+    "resolts": 5,
+    "detencions": 0
+   },
+   {
+    "tipus": "Extorsió",
+    "n": 8,
+    "abans": 3,
+    "darrerMes": 0,
+    "resolts": 2,
+    "detencions": 0
+   },
+   {
+    "tipus": "Usurpació de funcions públiques i intrusisme",
+    "n": 7,
+    "abans": 6,
+    "darrerMes": 1,
+    "resolts": 6,
+    "detencions": 0
+   },
+   {
+    "tipus": "Injúria",
+    "n": 7,
+    "abans": 5,
+    "darrerMes": 1,
+    "resolts": 6,
+    "detencions": 0
+   },
+   {
+    "tipus": "Conducció temerària",
+    "n": 7,
+    "abans": 14,
+    "darrerMes": 1,
+    "resolts": 7,
+    "detencions": 6
+   },
+   {
+    "tipus": "Incendi",
+    "n": 6,
+    "abans": 3,
+    "darrerMes": 0,
+    "resolts": 4,
+    "detencions": 3
+   },
+   {
+    "tipus": "Receptació i altres conductes afins",
+    "n": 5,
+    "abans": 10,
+    "darrerMes": 1,
+    "resolts": 4,
+    "detencions": 5
+   },
+   {
+    "tipus": "Abandonament lloc accident",
+    "n": 5,
+    "abans": 5,
+    "darrerMes": 1,
+    "resolts": 3,
+    "detencions": 1
+   },
+   {
+    "tipus": "Exhibicionisme i provocació sexual",
+    "n": 4,
+    "abans": 0,
+    "darrerMes": 1,
+    "resolts": 3,
+    "detencions": 3
+   },
+   {
+    "tipus": "Desordres públics",
+    "n": 4,
+    "abans": 3,
+    "darrerMes": 0,
+    "resolts": 4,
+    "detencions": 9
+   },
+   {
+    "tipus": "Homicidi per imprudència",
+    "n": 4,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 4,
+    "detencions": 1
+   },
+   {
+    "tipus": "Falsificació de moneda i efectes timbrats",
+    "n": 3,
+    "abans": 0,
+    "darrerMes": 2,
+    "resolts": 2,
+    "detencions": 0
+   },
+   {
+    "tipus": "Contra els animals",
+    "n": 3,
+    "abans": 4,
+    "darrerMes": 0,
+    "resolts": 2,
+    "detencions": 1
+   },
+   {
+    "tipus": "Realització arbitrària del propi dret",
+    "n": 2,
+    "abans": 0,
+    "darrerMes": 1,
+    "resolts": 2,
+    "detencions": 0
+   },
+   {
+    "tipus": "Obstrucció a la justícia i deslleialtat professional",
+    "n": 2,
+    "abans": 4,
+    "darrerMes": 1,
+    "resolts": 2,
+    "detencions": 2
+   },
+   {
+    "tipus": "Relatius a la prostitució",
+    "n": 2,
+    "abans": 2,
+    "darrerMes": 1,
+    "resolts": 1,
+    "detencions": 0
+   },
+   {
+    "tipus": "Originar un greu risc per la circulació",
+    "n": 2,
+    "abans": 2,
+    "darrerMes": 0,
+    "resolts": 2,
+    "detencions": 2
+   },
+   {
+    "tipus": "Assetjament sexual",
+    "n": 2,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 2,
+    "detencions": 0
+   },
+   {
+    "tipus": "Entrada a domicili aliè",
+    "n": 2,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 2,
+    "detencions": 1
+   },
+   {
+    "tipus": "Protecció de la flora, fauna i animals domèstics",
+    "n": 1,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 2,
+    "detencions": 0
+   },
+   {
+    "tipus": "Detenció il·legal",
+    "n": 1,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 1,
+    "detencions": 0
+   },
+   {
+    "tipus": "Velocitat penalment punible",
+    "n": 1,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 1,
+    "detencions": 0
+   },
+   {
+    "tipus": "Propietat industrial",
+    "n": 1,
+    "abans": 0,
+    "darrerMes": 1,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Assassinat Consumat",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Acusació, denúncia falsa i simulació de delictes",
+    "n": 0,
+    "abans": 2,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Homicidi Temptativa",
+    "n": 0,
+    "abans": 6,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Propietat intel·lectual",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Resta delictes sexuals",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Contra el patrimoni històric",
+    "n": 0,
+    "abans": 2,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Suborn",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Organitzacions i grups criminals",
+    "n": 0,
+    "abans": 5,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 4
+   },
+   {
+    "tipus": "Contra exercici drets fonamentals i llibertats públiques",
+    "n": 0,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Risc catastròfic",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Assassinat Temptativa",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Omissió del deure de socors",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Contra els drets de ciutadans estrangers",
+    "n": 0,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Homicidi Consumat",
+    "n": 0,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Contra l'ordenació del territori",
+    "n": 0,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Malversació",
+    "n": 0,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   }
+  ],
+  "resolts12": 1796,
+  "detencions12": 614,
+  "serieDetencions": [
+   [
+    "2023-01",
+    32
+   ],
+   [
+    "2023-02",
+    45
+   ],
+   [
+    "2023-03",
+    37
+   ],
+   [
+    "2023-04",
+    45
+   ],
+   [
+    "2023-05",
+    35
+   ],
+   [
+    "2023-06",
+    34
+   ],
+   [
+    "2023-07",
+    71
+   ],
+   [
+    "2023-08",
+    54
+   ],
+   [
+    "2023-09",
+    24
+   ],
+   [
+    "2023-10",
+    47
+   ],
+   [
+    "2023-11",
+    36
+   ],
+   [
+    "2023-12",
+    28
+   ],
+   [
+    "2024-01",
+    43
+   ],
+   [
+    "2024-02",
+    30
+   ],
+   [
+    "2024-03",
+    41
+   ],
+   [
+    "2024-04",
+    35
+   ],
+   [
+    "2024-05",
+    48
+   ],
+   [
+    "2024-06",
+    70
+   ],
+   [
+    "2024-07",
+    52
+   ],
+   [
+    "2024-08",
+    50
+   ],
+   [
+    "2024-09",
+    35
+   ],
+   [
+    "2024-10",
+    38
+   ],
+   [
+    "2024-11",
+    54
+   ],
+   [
+    "2024-12",
+    42
+   ],
+   [
+    "2025-01",
+    57
+   ],
+   [
+    "2025-02",
+    55
+   ],
+   [
+    "2025-03",
+    55
+   ],
+   [
+    "2025-04",
+    50
+   ],
+   [
+    "2025-05",
+    76
+   ],
+   [
+    "2025-06",
+    45
+   ],
+   [
+    "2025-07",
+    100
+   ],
+   [
+    "2025-08",
+    72
+   ],
+   [
+    "2025-09",
+    45
+   ],
+   [
+    "2025-10",
+    55
+   ],
+   [
+    "2025-11",
+    45
+   ],
+   [
+    "2025-12",
+    38
+   ],
+   [
+    "2026-01",
+    47
+   ],
+   [
+    "2026-02",
+    42
+   ],
+   [
+    "2026-03",
+    33
+   ],
+   [
+    "2026-04",
+    52
+   ],
+   [
+    "2026-05",
+    32
+   ],
+   [
+    "2026-06",
+    72
+   ],
+   [
+    "2026-07",
+    68
+   ],
+   [
+    "2026-08",
+    83
+   ],
+   [
+    "2026-09",
+    47
+   ]
+  ]
+ },
+ "bombers": {
+  "actualitzat": "2026-08-18T07:01:13+00:00",
+  "municipis": {
+   "17022": {
+    "serie": [
+     [
+      "2023-01",
+      12
+     ],
+     [
+      "2023-02",
+      12
+     ],
+     [
+      "2023-03",
+      16
+     ],
+     [
+      "2023-04",
+      17
+     ],
+     [
+      "2023-05",
+      17
+     ],
+     [
+      "2023-06",
+      14
+     ],
+     [
+      "2023-07",
+      23
+     ],
+     [
+      "2023-08",
+      15
+     ],
+     [
+      "2023-09",
+      5
+     ],
+     [
+      "2023-10",
+      9
+     ],
+     [
+      "2023-11",
+      12
+     ],
+     [
+      "2023-12",
+      6
+     ],
+     [
+      "2024-01",
+      13
+     ],
+     [
+      "2024-02",
+      11
+     ],
+     [
+      "2024-03",
+      12
+     ],
+     [
+      "2024-04",
+      8
+     ],
+     [
+      "2024-05",
+      5
+     ],
+     [
+      "2024-06",
+      3
+     ],
+     [
+      "2024-07",
+      11
+     ],
+     [
+      "2024-08",
+      6
+     ],
+     [
+      "2024-09",
+      4
+     ],
+     [
+      "2024-10",
+      4
+     ],
+     [
+      "2024-11",
+      6
+     ],
+     [
+      "2024-12",
+      13
+     ],
+     [
+      "2025-01",
+      6
+     ],
+     [
+      "2025-02",
+      6
+     ],
+     [
+      "2025-03",
+      20
+     ],
+     [
+      "2025-04",
+      10
+     ],
+     [
+      "2025-05",
+      7
+     ],
+     [
+      "2025-06",
+      15
+     ],
+     [
+      "2025-07",
+      9
+     ],
+     [
+      "2025-08",
+      9
+     ],
+     [
+      "2025-09",
+      6
+     ],
+     [
+      "2025-10",
+      10
+     ],
+     [
+      "2025-11",
+      7
+     ],
+     [
+      "2025-12",
+      7
+     ],
+     [
+      "2026-01",
+      16
+     ],
+     [
+      "2026-02",
+      7
+     ],
+     [
+      "2026-03",
+      35
+     ],
+     [
+      "2026-04",
+      8
+     ],
+     [
+      "2026-05",
+      9
+     ],
+     [
+      "2026-06",
+      31
+     ],
+     [
+      "2026-07",
+      19
+     ],
+     [
+      "2026-08",
+      9
+     ]
+    ],
+    "darrerMes": "2026-08",
+    "periode": [
+     "2025-09",
+     "2026-08"
+    ],
+    "total12": 164,
+    "totalAbans12": 109,
+    "tipus": [
+     {
+      "tipus": "Altra assistència tècnica urgent",
+      "n": 28,
+      "abans": 10,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi de contenidor de residus",
+      "n": 21,
+      "abans": 16,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi en edifici",
+      "n": 15,
+      "abans": 7,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta urbana i coneixement del territori",
+      "n": 14,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "n": 13,
+      "abans": 23,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "n": 9,
+      "abans": 14,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Inundació d'aigua",
+      "n": 9,
+      "abans": 5,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Visita element de risc",
+      "n": 6,
+      "abans": 0,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi vegetació urbana",
+      "n": 5,
+      "abans": 6,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Rescat persones en ascensor",
+      "n": 5,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta forestal i coneixement del territori",
+      "n": 5,
+      "abans": 0,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi vegetació forestal",
+      "n": 4,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Patologies edificació",
+      "n": 3,
+      "abans": 4,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Industrial o magatzem",
+      "n": 3,
+      "abans": 6,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi vegetació agrícola",
+      "n": 3,
+      "abans": 1,
+      "darrerMes": 0
+     }
+    ],
+    "urgents12": 132,
+    "grups": [
+     {
+      "tipus": "incendi urbà",
+      "n": 45,
+      "abans": 35,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "assistència tècnica",
+      "n": 40,
+      "abans": 19,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "activitat no urgent",
+      "n": 25,
+      "abans": 0,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "salvaments",
+      "n": 23,
+      "abans": 26,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "incendi vegetació",
+      "n": 12,
+      "abans": 7,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "mobilitat",
+      "n": 10,
+      "abans": 17,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "pràctiques",
+      "n": 4,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "dispositiu preventiu",
+      "n": 3,
+      "abans": 0,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "fuites perilloses",
+      "n": 2,
+      "abans": 4,
+      "darrerMes": 0
+     }
+    ]
+   },
+   "17057": {
+    "serie": [
+     [
+      "2023-01",
+      4
+     ],
+     [
+      "2023-02",
+      1
+     ],
+     [
+      "2023-03",
+      3
+     ],
+     [
+      "2023-04",
+      2
+     ],
+     [
+      "2023-05",
+      4
+     ],
+     [
+      "2023-07",
+      1
+     ],
+     [
+      "2023-08",
+      2
+     ],
+     [
+      "2023-09",
+      1
+     ],
+     [
+      "2023-10",
+      1
+     ],
+     [
+      "2023-11",
+      1
+     ],
+     [
+      "2023-12",
+      3
+     ],
+     [
+      "2024-01",
+      3
+     ],
+     [
+      "2024-02",
+      2
+     ],
+     [
+      "2024-03",
+      3
+     ],
+     [
+      "2024-04",
+      4
+     ],
+     [
+      "2024-05",
+      2
+     ],
+     [
+      "2024-06",
+      2
+     ],
+     [
+      "2024-07",
+      2
+     ],
+     [
+      "2024-09",
+      1
+     ],
+     [
+      "2024-10",
+      1
+     ],
+     [
+      "2024-11",
+      2
+     ],
+     [
+      "2025-01",
+      1
+     ],
+     [
+      "2025-02",
+      3
+     ],
+     [
+      "2025-03",
+      4
+     ],
+     [
+      "2025-04",
+      4
+     ],
+     [
+      "2025-05",
+      2
+     ],
+     [
+      "2025-06",
+      4
+     ],
+     [
+      "2025-07",
+      3
+     ],
+     [
+      "2025-08",
+      2
+     ],
+     [
+      "2025-09",
+      2
+     ],
+     [
+      "2025-11",
+      2
+     ],
+     [
+      "2025-12",
+      2
+     ],
+     [
+      "2026-01",
+      4
+     ],
+     [
+      "2026-02",
+      3
+     ],
+     [
+      "2026-03",
+      6
+     ],
+     [
+      "2026-04",
+      1
+     ],
+     [
+      "2026-05",
+      1
+     ],
+     [
+      "2026-06",
+      2
+     ],
+     [
+      "2026-07",
+      4
+     ],
+     [
+      "2026-08",
+      1
+     ]
+    ],
+    "darrerMes": "2026-08",
+    "periode": [
+     "2025-08",
+     "2026-08"
+    ],
+    "total12": 30,
+    "totalAbans12": 25,
+    "tipus": [
+     {
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "n": 9,
+      "abans": 6,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Altra assistència tècnica urgent",
+      "n": 7,
+      "abans": 5,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi en edifici",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "n": 3,
+      "abans": 5,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi vegetació agrícola",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta urbana i coneixement del territori",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Persones amb comportament alterat",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "n": 1,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Inundació d'aigua",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Recerca persones perdudes o desaparegudes",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Salvament i/o rescat de muntanya",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi de contenidor de residus",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Salvament animals (excepte abelles)",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta forestal i coneixement del territori",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi vegetació forestal",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     }
+    ],
+    "urgents12": 29,
+    "grups": [
+     {
+      "tipus": "mobilitat",
+      "n": 10,
+      "abans": 8,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "assistència tècnica",
+      "n": 8,
+      "abans": 6,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "salvaments",
+      "n": 5,
+      "abans": 6,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "incendi urbà",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "incendi vegetació",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "activitat no urgent",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     }
+    ]
+   },
+   "17902": {
+    "serie": [
+     [
+      "2023-01",
+      7
+     ],
+     [
+      "2023-02",
+      3
+     ],
+     [
+      "2023-03",
+      6
+     ],
+     [
+      "2023-04",
+      3
+     ],
+     [
+      "2023-05",
+      4
+     ],
+     [
+      "2023-06",
+      5
+     ],
+     [
+      "2023-07",
+      6
+     ],
+     [
+      "2023-08",
+      4
+     ],
+     [
+      "2023-10",
+      6
+     ],
+     [
+      "2023-11",
+      2
+     ],
+     [
+      "2023-12",
+      4
+     ],
+     [
+      "2024-02",
+      5
+     ],
+     [
+      "2024-03",
+      1
+     ],
+     [
+      "2024-04",
+      1
+     ],
+     [
+      "2024-05",
+      4
+     ],
+     [
+      "2024-06",
+      2
+     ],
+     [
+      "2024-07",
+      3
+     ],
+     [
+      "2024-08",
+      3
+     ],
+     [
+      "2024-09",
+      6
+     ],
+     [
+      "2024-10",
+      2
+     ],
+     [
+      "2024-11",
+      1
+     ],
+     [
+      "2024-12",
+      7
+     ],
+     [
+      "2025-01",
+      4
+     ],
+     [
+      "2025-02",
+      6
+     ],
+     [
+      "2025-03",
+      5
+     ],
+     [
+      "2025-05",
+      1
+     ],
+     [
+      "2025-06",
+      2
+     ],
+     [
+      "2025-07",
+      9
+     ],
+     [
+      "2025-09",
+      4
+     ],
+     [
+      "2025-10",
+      2
+     ],
+     [
+      "2025-11",
+      5
+     ],
+     [
+      "2025-12",
+      4
+     ],
+     [
+      "2026-01",
+      5
+     ],
+     [
+      "2026-02",
+      2
+     ],
+     [
+      "2026-03",
+      7
+     ],
+     [
+      "2026-04",
+      6
+     ],
+     [
+      "2026-05",
+      1
+     ],
+     [
+      "2026-06",
+      5
+     ],
+     [
+      "2026-07",
+      6
+     ],
+     [
+      "2026-08",
+      8
+     ]
+    ],
+    "darrerMes": "2026-08",
+    "periode": [
+     "2025-09",
+     "2026-08"
+    ],
+    "total12": 55,
+    "totalAbans12": 43,
+    "tipus": [
+     {
+      "tipus": "Altra assistència tècnica urgent",
+      "n": 13,
+      "abans": 10,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "n": 9,
+      "abans": 8,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi vegetació forestal",
+      "n": 6,
+      "abans": 2,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "Incendi vegetació agrícola",
+      "n": 5,
+      "abans": 4,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi en edifici",
+      "n": 4,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Salvament i/o rescat de muntanya",
+      "n": 4,
+      "abans": 2,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Varis (barraca, caseta d'obres,...)",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta urbana i coneixement del territori",
+      "n": 2,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Inundació d'aigua",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Pràctiques conducció",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "n": 1,
+      "abans": 5,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi d'infraestructura elèctrica",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi vegetació urbana",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Rescat persones en ascensor",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     }
+    ],
+    "urgents12": 59,
+    "grups": [
+     {
+      "tipus": "assistència tècnica",
+      "n": 14,
+      "abans": 11,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "incendi vegetació",
+      "n": 12,
+      "abans": 7,
+      "darrerMes": 3
+     },
+     {
+      "tipus": "mobilitat",
+      "n": 10,
+      "abans": 13,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "incendi urbà",
+      "n": 8,
+      "abans": 6,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "salvaments",
+      "n": 6,
+      "abans": 5,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "activitat no urgent",
+      "n": 3,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "pràctiques",
+      "n": 2,
+      "abans": 0,
+      "darrerMes": 0
+     }
+    ]
+   },
+   "17901": {
+    "serie": [
+     [
+      "2023-01",
+      6
+     ],
+     [
+      "2023-02",
+      6
+     ],
+     [
+      "2023-03",
+      4
+     ],
+     [
+      "2023-04",
+      7
+     ],
+     [
+      "2023-05",
+      3
+     ],
+     [
+      "2023-06",
+      6
+     ],
+     [
+      "2023-07",
+      3
+     ],
+     [
+      "2023-08",
+      6
+     ],
+     [
+      "2023-09",
+      4
+     ],
+     [
+      "2023-10",
+      2
+     ],
+     [
+      "2023-11",
+      6
+     ],
+     [
+      "2023-12",
+      1
+     ],
+     [
+      "2024-01",
+      2
+     ],
+     [
+      "2024-02",
+      6
+     ],
+     [
+      "2024-03",
+      5
+     ],
+     [
+      "2024-04",
+      1
+     ],
+     [
+      "2024-05",
+      2
+     ],
+     [
+      "2024-06",
+      1
+     ],
+     [
+      "2024-07",
+      2
+     ],
+     [
+      "2024-09",
+      2
+     ],
+     [
+      "2024-10",
+      4
+     ],
+     [
+      "2024-12",
+      5
+     ],
+     [
+      "2025-01",
+      4
+     ],
+     [
+      "2025-02",
+      2
+     ],
+     [
+      "2025-03",
+      3
+     ],
+     [
+      "2025-04",
+      4
+     ],
+     [
+      "2025-05",
+      3
+     ],
+     [
+      "2025-06",
+      1
+     ],
+     [
+      "2025-07",
+      3
+     ],
+     [
+      "2025-08",
+      2
+     ],
+     [
+      "2025-09",
+      1
+     ],
+     [
+      "2025-10",
+      2
+     ],
+     [
+      "2025-11",
+      2
+     ],
+     [
+      "2025-12",
+      3
+     ],
+     [
+      "2026-01",
+      2
+     ],
+     [
+      "2026-02",
+      1
+     ],
+     [
+      "2026-03",
+      9
+     ],
+     [
+      "2026-04",
+      3
+     ],
+     [
+      "2026-05",
+      5
+     ],
+     [
+      "2026-06",
+      3
+     ],
+     [
+      "2026-07",
+      9
+     ],
+     [
+      "2026-08",
+      2
+     ]
+    ],
+    "darrerMes": "2026-08",
+    "periode": [
+     "2025-09",
+     "2026-08"
+    ],
+    "total12": 42,
+    "totalAbans12": 33,
+    "tipus": [
+     {
+      "tipus": "Altra assistència tècnica urgent",
+      "n": 11,
+      "abans": 4,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "n": 9,
+      "abans": 10,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Incendi vegetació forestal",
+      "n": 4,
+      "abans": 2,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Salvament i/o rescat de muntanya",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Recerca persones perdudes o desaparegudes",
+      "n": 2,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi vegetació urbana",
+      "n": 2,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Salvament animals (excepte abelles)",
+      "n": 2,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Industrial o magatzem",
+      "n": 2,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Omplir i manteniment de basses i dipòsits",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi en edifici",
+      "n": 1,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Estassades, aclarides,... en vegetació forestal",
+      "n": 1,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta urbana i coneixement del territori",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Inundació d'aigua",
+      "n": 1,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi de contenidor de residus",
+      "n": 1,
+      "abans": 2,
+      "darrerMes": 0
+     }
+    ],
+    "urgents12": 41,
+    "grups": [
+     {
+      "tipus": "assistència tècnica",
+      "n": 12,
+      "abans": 6,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "mobilitat",
+      "n": 10,
+      "abans": 11,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "salvaments",
+      "n": 7,
+      "abans": 5,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "incendi vegetació",
+      "n": 6,
+      "abans": 2,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "incendi urbà",
+      "n": 4,
+      "abans": 5,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "activitat no urgent",
+      "n": 3,
+      "abans": 3,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "pràctiques",
+      "n": 0,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "fuites perilloses",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "dispositiu preventiu",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     }
+    ]
+   }
+  }
+ },
+ "e112": {
+  "actualitzat": "2026-10-10T08:01:37+00:00",
+  "municipis": {
+   "17022": {
+    "serie": [
+     [
+      "2023-01",
+      89
+     ],
+     [
+      "2023-02",
+      69
+     ],
+     [
+      "2023-03",
+      91
+     ],
+     [
+      "2023-04",
+      104
+     ],
+     [
+      "2023-05",
+      108
+     ],
+     [
+      "2023-06",
+      133
+     ],
+     [
+      "2023-07",
+      98
+     ],
+     [
+      "2023-08",
+      122
+     ],
+     [
+      "2023-09",
+      115
+     ],
+     [
+      "2023-10",
+      100
+     ],
+     [
+      "2023-11",
+      96
+     ],
+     [
+      "2023-12",
+      129
+     ],
+     [
+      "2024-01",
+      105
+     ],
+     [
+      "2024-02",
+      91
+     ],
+     [
+      "2024-03",
+      101
+     ],
+     [
+      "2024-04",
+      99
+     ],
+     [
+      "2024-05",
+      94
+     ],
+     [
+      "2024-06",
+      112
+     ],
+     [
+      "2024-07",
+      133
+     ],
+     [
+      "2024-08",
+      129
+     ],
+     [
+      "2024-09",
+      84
+     ],
+     [
+      "2024-10",
+      120
+     ],
+     [
+      "2024-11",
+      108
+     ],
+     [
+      "2024-12",
+      104
+     ],
+     [
+      "2025-01",
+      93
+     ],
+     [
+      "2025-02",
+      79
+     ],
+     [
+      "2025-03",
+      134
+     ],
+     [
+      "2025-04",
+      140
+     ],
+     [
+      "2025-05",
+      115
+     ],
+     [
+      "2025-06",
+      118
+     ],
+     [
+      "2025-07",
+      134
+     ],
+     [
+      "2025-08",
+      154
+     ],
+     [
+      "2025-09",
+      105
+     ],
+     [
+      "2025-10",
+      132
+     ],
+     [
+      "2025-11",
+      112
+     ],
+     [
+      "2025-12",
+      106
+     ],
+     [
+      "2026-01",
+      108
+     ],
+     [
+      "2026-02",
+      70
+     ],
+     [
+      "2026-03",
+      151
+     ],
+     [
+      "2026-04",
+      112
+     ],
+     [
+      "2026-05",
+      115
+     ],
+     [
+      "2026-06",
+      164
+     ],
+     [
+      "2026-07",
+      172
+     ],
+     [
+      "2026-08",
+      128
+     ],
+     [
+      "2026-09",
+      179
+     ]
+    ],
+    "darrerMes": "2026-09",
+    "periode": [
+     "2025-10",
+     "2026-09"
+    ],
+    "total12": 1549,
+    "totalAbans12": 1404,
+    "tipus": [
+     {
+      "tipus": "Seguretat",
+      "n": 512,
+      "abans": 521,
+      "darrerMes": 56
+     },
+     {
+      "tipus": "Assistència sanitària",
+      "n": 505,
+      "abans": 508,
+      "darrerMes": 61
+     },
+     {
+      "tipus": "Altres incidències",
+      "n": 118,
+      "abans": 104,
+      "darrerMes": 13
+     },
+     {
+      "tipus": "Trànsit",
+      "n": 116,
+      "abans": 94,
+      "darrerMes": 20
+     },
+     {
+      "tipus": "Incendi",
+      "n": 106,
+      "abans": 63,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "Civisme",
+      "n": 101,
+      "abans": 85,
+      "darrerMes": 8
+     },
+     {
+      "tipus": "Meteorologia",
+      "n": 55,
+      "abans": 12,
+      "darrerMes": 17
+     },
+     {
+      "tipus": "Accident",
+      "n": 14,
+      "abans": 7,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "Fuita (aigua, gas, altres)",
+      "n": 14,
+      "abans": 8,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Medi ambient",
+      "n": 8,
+      "abans": 2,
+      "darrerMes": 0
+     }
+    ]
+   },
+   "17057": {
+    "serie": [
+     [
+      "2023-01",
+      17
+     ],
+     [
+      "2023-02",
+      9
+     ],
+     [
+      "2023-03",
+      18
+     ],
+     [
+      "2023-04",
+      14
+     ],
+     [
+      "2023-05",
+      17
+     ],
+     [
+      "2023-06",
+      18
+     ],
+     [
+      "2023-07",
+      30
+     ],
+     [
+      "2023-08",
+      25
+     ],
+     [
+      "2023-09",
+      21
+     ],
+     [
+      "2023-10",
+      18
+     ],
+     [
+      "2023-11",
+      10
+     ],
+     [
+      "2023-12",
+      21
+     ],
+     [
+      "2024-01",
+      21
+     ],
+     [
+      "2024-02",
+      20
+     ],
+     [
+      "2024-03",
+      16
+     ],
+     [
+      "2024-04",
+      17
+     ],
+     [
+      "2024-05",
+      16
+     ],
+     [
+      "2024-06",
+      21
+     ],
+     [
+      "2024-07",
+      26
+     ],
+     [
+      "2024-08",
+      27
+     ],
+     [
+      "2024-09",
+      6
+     ],
+     [
+      "2024-10",
+      25
+     ],
+     [
+      "2024-11",
+      14
+     ],
+     [
+      "2024-12",
+      12
+     ],
+     [
+      "2025-01",
+      20
+     ],
+     [
+      "2025-02",
+      11
+     ],
+     [
+      "2025-03",
+      23
+     ],
+     [
+      "2025-04",
+      16
+     ],
+     [
+      "2025-05",
+      21
+     ],
+     [
+      "2025-06",
+      26
+     ],
+     [
+      "2025-07",
+      22
+     ],
+     [
+      "2025-08",
+      22
+     ],
+     [
+      "2025-09",
+      23
+     ],
+     [
+      "2025-10",
+      17
+     ],
+     [
+      "2025-11",
+      19
+     ],
+     [
+      "2025-12",
+      29
+     ],
+     [
+      "2026-01",
+      13
+     ],
+     [
+      "2026-02",
+      19
+     ],
+     [
+      "2026-03",
+      30
+     ],
+     [
+      "2026-04",
+      11
+     ],
+     [
+      "2026-05",
+      23
+     ],
+     [
+      "2026-06",
+      26
+     ],
+     [
+      "2026-07",
+      29
+     ],
+     [
+      "2026-08",
+      30
+     ],
+     [
+      "2026-09",
+      25
+     ]
+    ],
+    "darrerMes": "2026-09",
+    "periode": [
+     "2025-10",
+     "2026-09"
+    ],
+    "total12": 271,
+    "totalAbans12": 235,
+    "tipus": [
+     {
+      "tipus": "Trànsit",
+      "n": 89,
+      "abans": 87,
+      "darrerMes": 12
+     },
+     {
+      "tipus": "Assistència sanitària",
+      "n": 51,
+      "abans": 57,
+      "darrerMes": 3
+     },
+     {
+      "tipus": "Seguretat",
+      "n": 43,
+      "abans": 44,
+      "darrerMes": 3
+     },
+     {
+      "tipus": "Altres incidències",
+      "n": 27,
+      "abans": 13,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Civisme",
+      "n": 26,
+      "abans": 16,
+      "darrerMes": 4
+     },
+     {
+      "tipus": "Incendi",
+      "n": 17,
+      "abans": 11,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Meteorologia",
+      "n": 8,
+      "abans": 5,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Accident",
+      "n": 4,
+      "abans": 2,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Medi ambient",
+      "n": 4,
+      "abans": 0,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Fuita (aigua, gas, altres)",
+      "n": 2,
+      "abans": 0,
+      "darrerMes": 0
+     }
+    ]
+   },
+   "17902": {
+    "serie": [
+     [
+      "2023-01",
+      33
+     ],
+     [
+      "2023-02",
+      20
+     ],
+     [
+      "2023-03",
+      27
+     ],
+     [
+      "2023-04",
+      25
+     ],
+     [
+      "2023-05",
+      27
+     ],
+     [
+      "2023-06",
+      35
+     ],
+     [
+      "2023-07",
+      35
+     ],
+     [
+      "2023-08",
+      34
+     ],
+     [
+      "2023-09",
+      23
+     ],
+     [
+      "2023-10",
+      33
+     ],
+     [
+      "2023-11",
+      25
+     ],
+     [
+      "2023-12",
+      38
+     ],
+     [
+      "2024-01",
+      33
+     ],
+     [
+      "2024-02",
+      23
+     ],
+     [
+      "2024-03",
+      36
+     ],
+     [
+      "2024-04",
+      26
+     ],
+     [
+      "2024-05",
+      33
+     ],
+     [
+      "2024-06",
+      33
+     ],
+     [
+      "2024-07",
+      36
+     ],
+     [
+      "2024-08",
+      37
+     ],
+     [
+      "2024-09",
+      33
+     ],
+     [
+      "2024-10",
+      33
+     ],
+     [
+      "2024-11",
+      22
+     ],
+     [
+      "2024-12",
+      27
+     ],
+     [
+      "2025-01",
+      22
+     ],
+     [
+      "2025-02",
+      24
+     ],
+     [
+      "2025-03",
+      19
+     ],
+     [
+      "2025-04",
+      22
+     ],
+     [
+      "2025-05",
+      24
+     ],
+     [
+      "2025-06",
+      47
+     ],
+     [
+      "2025-07",
+      49
+     ],
+     [
+      "2025-08",
+      43
+     ],
+     [
+      "2025-09",
+      34
+     ],
+     [
+      "2025-10",
+      40
+     ],
+     [
+      "2025-11",
+      29
+     ],
+     [
+      "2025-12",
+      39
+     ],
+     [
+      "2026-01",
+      33
+     ],
+     [
+      "2026-02",
+      26
+     ],
+     [
+      "2026-03",
+      39
+     ],
+     [
+      "2026-04",
+      33
+     ],
+     [
+      "2026-05",
+      34
+     ],
+     [
+      "2026-06",
+      48
+     ],
+     [
+      "2026-07",
+      46
+     ],
+     [
+      "2026-08",
+      65
+     ],
+     [
+      "2026-09",
+      52
+     ]
+    ],
+    "darrerMes": "2026-09",
+    "periode": [
+     "2025-10",
+     "2026-09"
+    ],
+    "total12": 484,
+    "totalAbans12": 366,
+    "tipus": [
+     {
+      "tipus": "Trànsit",
+      "n": 146,
+      "abans": 109,
+      "darrerMes": 24
+     },
+     {
+      "tipus": "Assistència sanitària",
+      "n": 106,
+      "abans": 81,
+      "darrerMes": 6
+     },
+     {
+      "tipus": "Seguretat",
+      "n": 78,
+      "abans": 80,
+      "darrerMes": 8
+     },
+     {
+      "tipus": "Altres incidències",
+      "n": 55,
+      "abans": 39,
+      "darrerMes": 3
+     },
+     {
+      "tipus": "Incendi",
+      "n": 40,
+      "abans": 16,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Meteorologia",
+      "n": 19,
+      "abans": 11,
+      "darrerMes": 7
+     },
+     {
+      "tipus": "Civisme",
+      "n": 19,
+      "abans": 17,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Accident",
+      "n": 11,
+      "abans": 8,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Fuita (aigua, gas, altres)",
+      "n": 5,
+      "abans": 1,
+      "darrerMes": 3
+     },
+     {
+      "tipus": "Medi ambient",
+      "n": 5,
+      "abans": 4,
+      "darrerMes": 0
+     }
+    ]
+   },
+   "17901": {
+    "serie": [
+     [
+      "2023-01",
+      17
+     ],
+     [
+      "2023-02",
+      21
+     ],
+     [
+      "2023-03",
+      8
+     ],
+     [
+      "2023-04",
+      14
+     ],
+     [
+      "2023-05",
+      15
+     ],
+     [
+      "2023-06",
+      18
+     ],
+     [
+      "2023-07",
+      26
+     ],
+     [
+      "2023-08",
+      25
+     ],
+     [
+      "2023-09",
+      19
+     ],
+     [
+      "2023-10",
+      21
+     ],
+     [
+      "2023-11",
+      23
+     ],
+     [
+      "2023-12",
+      17
+     ],
+     [
+      "2024-01",
+      11
+     ],
+     [
+      "2024-02",
+      20
+     ],
+     [
+      "2024-03",
+      14
+     ],
+     [
+      "2024-04",
+      10
+     ],
+     [
+      "2024-05",
+      25
+     ],
+     [
+      "2024-06",
+      19
+     ],
+     [
+      "2024-07",
+      23
+     ],
+     [
+      "2024-08",
+      23
+     ],
+     [
+      "2024-09",
+      19
+     ],
+     [
+      "2024-10",
+      17
+     ],
+     [
+      "2024-11",
+      9
+     ],
+     [
+      "2024-12",
+      17
+     ],
+     [
+      "2025-01",
+      14
+     ],
+     [
+      "2025-02",
+      17
+     ],
+     [
+      "2025-03",
+      21
+     ],
+     [
+      "2025-04",
+      21
+     ],
+     [
+      "2025-05",
+      26
+     ],
+     [
+      "2025-06",
+      18
+     ],
+     [
+      "2025-07",
+      17
+     ],
+     [
+      "2025-08",
+      23
+     ],
+     [
+      "2025-09",
+      18
+     ],
+     [
+      "2025-10",
+      15
+     ],
+     [
+      "2025-11",
+      20
+     ],
+     [
+      "2025-12",
+      17
+     ],
+     [
+      "2026-01",
+      16
+     ],
+     [
+      "2026-02",
+      16
+     ],
+     [
+      "2026-03",
+      29
+     ],
+     [
+      "2026-04",
+      22
+     ],
+     [
+      "2026-05",
+      32
+     ],
+     [
+      "2026-06",
+      23
+     ],
+     [
+      "2026-07",
+      51
+     ],
+     [
+      "2026-08",
+      26
+     ],
+     [
+      "2026-09",
+      30
+     ]
+    ],
+    "darrerMes": "2026-09",
+    "periode": [
+     "2025-10",
+     "2026-09"
+    ],
+    "total12": 297,
+    "totalAbans12": 218,
+    "tipus": [
+     {
+      "tipus": "Trànsit",
+      "n": 62,
+      "abans": 58,
+      "darrerMes": 9
+     },
+     {
+      "tipus": "Seguretat",
+      "n": 50,
+      "abans": 45,
+      "darrerMes": 3
+     },
+     {
+      "tipus": "Assistència sanitària",
+      "n": 49,
+      "abans": 48,
+      "darrerMes": 6
+     },
+     {
+      "tipus": "Incendi",
+      "n": 44,
+      "abans": 12,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Altres incidències",
+      "n": 38,
+      "abans": 24,
+      "darrerMes": 4
+     },
+     {
+      "tipus": "Civisme",
+      "n": 18,
+      "abans": 15,
+      "darrerMes": 5
+     },
+     {
+      "tipus": "Meteorologia",
+      "n": 17,
+      "abans": 5,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Medi ambient",
+      "n": 10,
+      "abans": 3,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Accident",
+      "n": 9,
+      "abans": 6,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Fuita (aigua, gas, altres)",
+      "n": 0,
+      "abans": 2,
+      "darrerMes": 0
+     }
+    ]
+   }
+  },
+  "comarca": {
+   "darrerMes": "2026-09",
+   "periode": [
+    "2025-10",
+    "2026-09"
+   ],
+   "total12": 31335,
+   "totalAbans12": 28198,
+   "tipus": [
+    {
+     "tipus": "Assistència sanitària",
+     "n": 11185,
+     "abans": 10760,
+     "darrerMes": 1007
+    },
+    {
+     "tipus": "Seguretat",
+     "n": 8071,
+     "abans": 7981,
+     "darrerMes": 694
+    },
+    {
+     "tipus": "Trànsit",
+     "n": 4335,
+     "abans": 3845,
+     "darrerMes": 392
+    },
+    {
+     "tipus": "Altres incidències",
+     "n": 2565,
+     "abans": 2125,
+     "darrerMes": 204
+    },
+    {
+     "tipus": "Civisme",
+     "n": 1531,
+     "abans": 1359,
+     "darrerMes": 152
+    },
+    {
+     "tipus": "Incendi",
+     "n": 1425,
+     "abans": 1002,
+     "darrerMes": 75
+    },
+    {
+     "tipus": "Meteorologia",
+     "n": 998,
+     "abans": 225,
+     "darrerMes": 44
+    },
+    {
+     "tipus": "Accident",
+     "n": 523,
+     "abans": 416,
+     "darrerMes": 54
+    },
+    {
+     "tipus": "Medi ambient",
+     "n": 442,
+     "abans": 280,
+     "darrerMes": 35
+    },
+    {
+     "tipus": "Fuita (aigua, gas, altres)",
+     "n": 260,
+     "abans": 205,
+     "darrerMes": 24
+    }
+   ]
+  }
+ }
+}

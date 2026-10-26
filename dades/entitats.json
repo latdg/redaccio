@@ -1,0 +1,455 @@
+{
+ "generat": "2026-10-26T23:49:58+00:00",
+ "actualitzatFont": "2026-10-26T19:05:56+00:00",
+ "font": "Registre d'entitats de Catalunya (Departament de Justícia), dades obertes de la Generalitat",
+ "primeraRevisio": true,
+ "municipis": {
+  "17022": {
+   "nom": "la Bisbal d'Empordà",
+   "total": 1,
+   "inactives": 0,
+   "tipus": [
+    [
+     "Associació",
+     1
+    ]
+   ],
+   "ambits": [
+    [
+     "Foment i defensa dels drets cívics, socials i de la persona",
+     1
+    ]
+   ],
+   "perAny": [
+    [
+     "2012",
+     0
+    ],
+    [
+     "2013",
+     0
+    ],
+    [
+     "2014",
+     0
+    ],
+    [
+     "2015",
+     0
+    ],
+    [
+     "2016",
+     0
+    ],
+    [
+     "2017",
+     0
+    ],
+    [
+     "2018",
+     0
+    ],
+    [
+     "2019",
+     0
+    ],
+    [
+     "2020",
+     0
+    ],
+    [
+     "2021",
+     0
+    ],
+    [
+     "2022",
+     0
+    ],
+    [
+     "2023",
+     0
+    ],
+    [
+     "2024",
+     0
+    ],
+    [
+     "2025",
+     0
+    ],
+    [
+     "2026",
+     0
+    ]
+   ],
+   "recents": [],
+   "noves": []
+  },
+  "17057": {
+   "nom": "Corçà",
+   "total": 25,
+   "inactives": 0,
+   "tipus": [
+    [
+     "Associació",
+     24
+    ],
+    [
+     "Fundació",
+     1
+    ]
+   ],
+   "ambits": [
+    [
+     "Cultura",
+     13
+    ],
+    [
+     "Foment i defensa dels drets cívics, socials i de la persona",
+     3
+    ],
+    [
+     "Ensenyament, formació i investigació",
+     3
+    ],
+    [
+     "Salut",
+     2
+    ],
+    [
+     "Ordenació de l'espai, ecologia i habitatge",
+     2
+    ],
+    [
+     "Interessos de sectors econòmics, geogràfics o professionals",
+     1
+    ],
+    [
+     "Cultural",
+     1
+    ]
+   ],
+   "perAny": [
+    [
+     "2012",
+     1
+    ],
+    [
+     "2013",
+     0
+    ],
+    [
+     "2014",
+     1
+    ],
+    [
+     "2015",
+     2
+    ],
+    [
+     "2016",
+     0
+    ],
+    [
+     "2017",
+     0
+    ],
+    [
+     "2018",
+     1
+    ],
+    [
+     "2019",
+     0
+    ],
+    [
+     "2020",
+     1
+    ],
+    [
+     "2021",
+     0
+    ],
+    [
+     "2022",
+     1
+    ],
+    [
+     "2023",
+     3
+    ],
+    [
+     "2024",
+     1
+    ],
+    [
+     "2025",
+     1
+    ],
+    [
+     "2026",
+     1
+    ]
+   ],
+   "recents": [
+    {
+     "id": "123958",
+     "nom": "Associació Comunitat Energètica Veïns de Corçà",
+     "tipus": "Associació",
+     "data": "2026-06-10",
+     "nucli": "Corçà",
+     "ambit": "Ordenació de l'espai, ecologia i habitatge",
+     "detall": "Ecologia, naturalesa i medi ambient",
+     "finalitats": "(art. 2) Fins: L’associació promou l’eficiència energètica, l’autoconsum sostenible, l’estalvi energètic i la transició energètica veïnal, contribuint al desenvolupament sostenible i a la lluita contra l’emergència climàtica i la vulnerabilitat energètica . Activitats: L’associació impulsa i col·labora en iniciatives locals vinculades a energies renovables compartides, eficiència energètica i proj…",
+     "utilitatPublica": false
+    }
+   ],
+   "noves": []
+  },
+  "17902": {
+   "nom": "Forallac",
+   "total": 32,
+   "inactives": 0,
+   "tipus": [
+    [
+     "Associació",
+     32
+    ]
+   ],
+   "ambits": [
+    [
+     "Cultura",
+     12
+    ],
+    [
+     "Ensenyament, formació i investigació",
+     8
+    ],
+    [
+     "<sense classificacio>",
+     6
+    ],
+    [
+     "Foment i defensa dels drets cívics, socials i de la persona",
+     2
+    ],
+    [
+     "Interessos de sectors econòmics, geogràfics o professionals",
+     2
+    ],
+    [
+     "Ordenació de l'espai, ecologia i habitatge",
+     1
+    ],
+    [
+     "Assistència social",
+     1
+    ]
+   ],
+   "perAny": [
+    [
+     "2012",
+     1
+    ],
+    [
+     "2013",
+     0
+    ],
+    [
+     "2014",
+     2
+    ],
+    [
+     "2015",
+     1
+    ],
+    [
+     "2016",
+     0
+    ],
+    [
+     "2017",
+     0
+    ],
+    [
+     "2018",
+     1
+    ],
+    [
+     "2019",
+     0
+    ],
+    [
+     "2020",
+     0
+    ],
+    [
+     "2021",
+     4
+    ],
+    [
+     "2022",
+     2
+    ],
+    [
+     "2023",
+     1
+    ],
+    [
+     "2024",
+     3
+    ],
+    [
+     "2025",
+     0
+    ],
+    [
+     "2026",
+     0
+    ]
+   ],
+   "recents": [],
+   "noves": []
+  },
+  "17901": {
+   "nom": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+   "total": 36,
+   "inactives": 0,
+   "tipus": [
+    [
+     "Associació",
+     34
+    ],
+    [
+     "Associació estatal",
+     1
+    ],
+    [
+     "Fundació",
+     1
+    ]
+   ],
+   "ambits": [
+    [
+     "Cultura",
+     16
+    ],
+    [
+     "Interessos de sectors econòmics, geogràfics o professionals",
+     5
+    ],
+    [
+     "Foment i defensa dels drets cívics, socials i de la persona",
+     4
+    ],
+    [
+     "Ensenyament, formació i investigació",
+     4
+    ],
+    [
+     "Ordenació de l'espai, ecologia i habitatge",
+     4
+    ],
+    [
+     "<sense classificacio>",
+     1
+    ],
+    [
+     "Salut",
+     1
+    ],
+    [
+     "Cultural",
+     1
+    ]
+   ],
+   "perAny": [
+    [
+     "2012",
+     1
+    ],
+    [
+     "2013",
+     1
+    ],
+    [
+     "2014",
+     0
+    ],
+    [
+     "2015",
+     0
+    ],
+    [
+     "2016",
+     1
+    ],
+    [
+     "2017",
+     0
+    ],
+    [
+     "2018",
+     0
+    ],
+    [
+     "2019",
+     1
+    ],
+    [
+     "2020",
+     1
+    ],
+    [
+     "2021",
+     1
+    ],
+    [
+     "2022",
+     0
+    ],
+    [
+     "2023",
+     2
+    ],
+    [
+     "2024",
+     0
+    ],
+    [
+     "2025",
+     0
+    ],
+    [
+     "2026",
+     2
+    ]
+   ],
+   "recents": [
+    {
+     "id": "122465",
+     "nom": "LA COLLA LES ACOMODADES",
+     "tipus": "Associació",
+     "data": "2026-04-14",
+     "nucli": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+     "ambit": "Cultura",
+     "detall": "Activitats juvenils · corals, dansaires · culturals diverses · folklore",
+     "finalitats": "-Fomentar l’esperit festiu i la voluntat de promoure la cultura popular.-Impulsar la tradició de la festa de Carnestoltes com a eina d’expressió col·lectiva i de cohesió comunitària.Per aconseguir les seves finalitats, l’associació du a terme les activitats següents:-Donar vida als pobles amb colors, música i disbauxa, on anem a fer les rues.-Trobades de colles per dinamitzar la cultura popular de…",
+     "utilitatPublica": false
+    },
+    {
+     "id": "121720",
+     "nom": "Associació RELS",
+     "tipus": "Associació",
+     "data": "2026-02-23",
+     "nucli": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+     "ambit": "Interessos de sectors econòmics, geogràfics o professionals",
+     "detall": "Ecologia, naturalesa i medi ambient · foment d'activitats",
+     "finalitats": "L’associació té com a objectiu impulsar accions educatives vinculades a la producció alimentària agroecològica, local i sostenible, facilitant la realització d’activitats educatives i de sensibilització en finques agroecològiques per sensibilitzar la ciutadania i promoure el consum responsable.Per aconseguir aquests objectius, l’associació realitzarà les activitats següents:Organització i promoció…",
+     "utilitatPublica": false
+    }
+   ],
+   "noves": []
+  }
+ }
+}

@@ -1,8 +1,4 @@
-# INE: turisme mesurat amb telèfons mòbils (27.10.2026)
-https://www.ine.es/jaxiT3/files/t/es/csv_bdsc/52048.csv
-https://www.ine.es/jaxiT3/files/t/es/csv_bdsc/53462.csv
-https://www.ine.es/jaxiT3/files/t/es/csv_bdsc/53001.csv
-https://www.ine.es/jaxiT3/files/t/es/csv_bdsc/52052.csv
-https://www.ine.es/jaxiT3/files/t/es/csv_bdsc/53463.csv
-https://servicios.ine.es/wstempus/js/ES/TABLA_VARIABLES/52048
-https://servicios.ine.es/wstempus/js/ES/TABLA_VARIABLES/53001
+# Registre d'entitats (27.10.2026)
+https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$select=nom_poblacio,codi_postal,count(*)&$where=nom_comarca%20like%20'%25Baix%20Empord%25'&$group=nom_poblacio,codi_postal&$order=nom_poblacio&$limit=300
+https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$where=codi_postal%20in('17100','17121')&$limit=3&$order=data_inscripcio%20DESC
+https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$select=estat,tipus_entitat,count(*)&$group=estat,tipus_entitat&$limit=100

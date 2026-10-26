@@ -1,0 +1,44 @@
+# Resultats electorals — La TdG · 26.10.2026
+# Baixa del Ministeri de l'Interior els resultats mesa a mesa de les eleccions
+# de eleccions/eleccions.py i desa dades/eleccions.json. Els resultats no
+# canvien: es llança a mà quan s'afegeix una elecció nova a la llista.
+name: Resultats electorals
+
+on:
+  workflow_dispatch:
+    inputs:
+      forca:
+        description: "Torna a baixar també les eleccions que ja hi són"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eleccions
+  cancel-in-progress: false
+
+jobs:
+  eleccions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Genera i desa
+        run: |
+          python eleccions/eleccions.py ${{ inputs.forca && '--forca' || '' }}
+          git config user.name "La TdG (eleccions)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for intent in 1 2 3; do
+            git add dades/eleccions.json
+            if git diff --cached --quiet; then echo "Sense canvis"; break; fi
+            git commit -qm "Resultats electorals ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
+            git push -q origin HEAD:main && break
+            git pull -q --rebase origin main
+            sleep 10
+          done

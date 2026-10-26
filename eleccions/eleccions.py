@@ -56,7 +56,7 @@ def llegeix(zf, prefix):
 
 def processa(tipus, any_, mes, nom):
     url = URL.format(tipus=tipus, any=any_, mes=mes)
-    r = requests.get(url, headers=CAPCALERES, timeout=600)
+    r = requests.get(url, headers=CAPCALERES, timeout=(20, 300))
     r.raise_for_status()
     zf = zipfile.ZipFile(io.BytesIO(r.content))
     sufix = f"{tipus}{any_[2:]}{mes}"
@@ -150,7 +150,7 @@ def main():
     anterior = {}
     if SORTIDA.exists():
         anterior = {e["id"]: e for e in json.loads(SORTIDA.read_text(encoding="utf-8")).get("eleccions", [])}
-    eleccions = []
+    eleccions, errors = [], []
     for t, a, m, n in ELECCIONS:
         ident = f"{t}{a}{m}"
         if ident in anterior and "--forca" not in sys.argv:
@@ -162,10 +162,14 @@ def main():
                 eleccions.append(e)
         except Exception as err:
             print("No s'ha pogut baixar", n, err)
+            errors.append(f"{n}: {type(err).__name__}: {err}")
             if ident in anterior:
                 eleccions.append(anterior[ident])
+    (ARREL / "eleccions" / "diagnosi.txt").write_text(
+        datetime.now(timezone.utc).isoformat(timespec="seconds") + "\n" + ("\n".join(errors) or "Cap error") + "\n", encoding="utf-8")
     if not eleccions:
-        sys.exit("Cap elecció: no es toca res.")
+        print("Cap elecció: no es toca dades/eleccions.json.")
+        return
     SORTIDA.write_text(json.dumps({
         "generat": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "font": "Ministeri de l'Interior (infoelectoral.interior.gob.es), resultats mesa a mesa",

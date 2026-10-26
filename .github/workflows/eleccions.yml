@@ -29,13 +29,15 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install requests
+      - name: Prova la connexió
+        run: curl -sS -m 30 -o /dev/null -w "%{http_code} %{time_total}s\n" -I https://infoelectoral.interior.gob.es/estaticos/docxl/apliextr/04202305_MESA.zip > eleccions/connexio.txt 2>&1 || true
       - name: Genera i desa
         run: |
           python eleccions/eleccions.py ${{ inputs.forca && '--forca' || '' }}
           git config user.name "La TdG (eleccions)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for intent in 1 2 3; do
-            git add dades/eleccions.json
+            git add eleccions/diagnosi.txt eleccions/connexio.txt; [ -f dades/eleccions.json ] && git add dades/eleccions.json
             if git diff --cached --quiet; then echo "Sense canvis"; break; fi
             git commit -qm "Resultats electorals ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
             git push -q origin HEAD:main && break

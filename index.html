@@ -1406,7 +1406,7 @@ async function pintaEntitats(codi) {
     (m.recents.length ? `<h4>Inscrites els darrers 12 mesos</h4>` + m.recents.filter(f => !novesIds.has(f.id)).map(f => targetaEntitat(f, false)).join("") : "") +
     `<h4>Inscripcions cada any</h4><div class="serie">${m.perAny.map(([a, n]) => `<span style="height:${(n / maxA * 100).toFixed(0)}%" title="${a}: ${n}"></span>`).join("")}</div>` +
     `<div class="serie-eix"><span>${m.perAny[0][0]}</span><span>${m.perAny[m.perAny.length - 1][0]}</span></div>` +
-    `<h4>Per àmbit</h4><p class="det" style="font-size:.88rem">${m.ambits.map(([a, n]) => `${esc(a)}: <b>${nCa(n)}</b>`).join(" · ")}</p>` +
+    `<h4>Per àmbit</h4><p class="det" style="font-size:.88rem">${m.ambits.map(([a, n]) => `${esc(/^<.*>$/.test(a) ? "Sense classificar" : a)}: <b>${nCa(n)}</b>`).join(" · ")}</p>` +
     `<p class="nota" style="color:#6b6b66;font-size:.85rem">Entitats amb seu al municipi segons el Registre d'entitats de la Generalitat (associacions, fundacions, federacions…). ` +
     `Els clubs i les entitats esportives no hi surten: tenen un registre propi.` +
     (m.inactives ? ` A més, n'hi ha ${nCa(m.inactives)} d'inactives.` : "") + `</p>`;

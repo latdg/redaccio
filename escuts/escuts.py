@@ -50,6 +50,10 @@ def main():
     cf = CARPETA / "credits.json"
     anteriors = json.loads(cf.read_text(encoding="utf-8")) if cf.exists() else {}
     for codi, titols in MUNICIPIS.items():
+        # Els escuts posats a mà (camp «local», com el de Cruïlles) no es toquen.
+        if codi in anteriors and anteriors[codi].get("local") and (CARPETA / anteriors[codi]["local"]).exists():
+            credits[codi] = anteriors[codi]
+            continue
         if (CARPETA / f"{codi}.svg").exists() and codi in anteriors:
             credits[codi] = anteriors[codi]
             continue

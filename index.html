@@ -1125,7 +1125,7 @@ let ELEC = null, ESCUTS = {};
 
 function escut(codi) {
   return ESCUTS[codi]
-    ? `<img src="escuts/${codi}.svg" alt="" width="34" height="40" style="height:40px;width:auto;flex:none">`
+    ? `<img src="escuts/${ESCUTS[codi].local || codi + ".svg"}" alt="" width="34" height="40" style="height:40px;width:auto;flex:none">`
     : `<span style="width:34px;height:40px;flex:none;border:1px dashed var(--linia);border-radius:6px 6px 17px 17px"></span>`;
 }
 
@@ -1176,7 +1176,8 @@ function pintaEleccio(id) {
   const ordre = ELEC.eleccions.filter(x => x.tipus === e.tipus).sort((a, b) => b.data.localeCompare(a.data));
   const ant = ordre[ordre.indexOf(e) + 1] || null;
   const titol = (el.dataset.numero ? el.dataset.numero + " " : "🗳️ ") + TITOL_ELEC;
-  const credEscuts = Object.values(ESCUTS).filter(c => c && c.pagina).map(c => `<a href="${esc(c.pagina)}" target="_blank" rel="noopener">${esc(c.llicencia || "Commons")}</a>`).join(", ");
+  const credEscuts = Object.values(ESCUTS).filter(c => c && c.pagina).map(c => `<a href="${esc(c.pagina)}" target="_blank" rel="noopener">${esc(c.llicencia || "Commons")}</a>`).join(", ") +
+    (ESCUTS["17901"] && ESCUTS["17901"].local ? "; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament" : "");
   el.innerHTML = `<h2>${titol}</h2>` +
     `<p class="font">Font: <a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">Ministeri de l'Interior</a>, resultats oficials mesa a mesa</p>` +
     `<div class="sv-eines" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">` +
@@ -1222,7 +1223,7 @@ const NOMS_MUN = { "17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902":
 const NOMS_CURTS_MUN = { "17022": "la Bisbal", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i SSH" };
 function triadorMun(codis, actiu, escuts) {
   return `<div class="tria-mun">` + codis.map(c => `<button type="button" data-mun="${c}" class="${c === actiu ? "actiu" : ""}">` +
-    (escuts[c] ? `<img src="escuts/${c}.svg" alt="">` : `<span class="sense-escut"></span>`) + esc(NOMS_CURTS_MUN[c] || c) + `</button>`).join("") + `</div>`;
+    (escuts[c] ? `<img src="escuts/${escuts[c].local || c + ".svg"}" alt="">` : `<span class="sense-escut"></span>`) + esc(NOMS_CURTS_MUN[c] || c) + `</button>`).join("") + `</div>`;
 }
 const MESOS_CA = ["gener", "febrer", "març", "abril", "maig", "juny", "juliol", "agost", "setembre", "octubre", "novembre", "desembre"];
 const nomMes = ym => { if (!ym) return "—"; const [a, m] = ym.split("-").map(Number); return MESOS_CA[m - 1] + " de " + a; };

@@ -17,21 +17,11 @@
   "autor": "",
   "llicencia": "CC BY-SA 4.0"
  },
- "_cercat_17901": [
-  "File:Escut d'Aiguafreda.svg",
-  "File:Escut de Torrent.svg",
-  "File:Escut de Regencós.svg",
-  "File:Escut de Seva.svg",
-  "File:Escut de Montagut i Oix.svg",
-  "File:111 Ajuntament de Sant Sadurní de l'Heura, escuts dels antics municipis fusionats.jpg",
-  "File:036 Ca l'Estanyol (Monells), escut sobre el portal.jpg",
-  "File:045 Ca l'Estanyol (Monells), escut de la façana sud.jpg",
-  "File:004 Mas Fàbrega, c. Vilanova 1 (Monells), finestra amb escut a la llinda.jpg",
-  "File:Armes dels Cruïlles.svg",
-  "File:003 Mas Fàbrega, c. Vilanova 1 (Monells), escut.jpg",
-  "File:Girona. Portada de l’antiga Casa de Misericòrdia, actualment Casa de Cultura de la Diputació de Girona (8628911420).jpg",
-  "File:Sigillografía catalana - inventari, descripcío i estudi dels segells de Catalunya (IA sigillografiacat03saga).pdf",
-  "File:Llibertats y antich govern de Catalunya (1905).djvu",
-  "File:CatalegBensProtegits l'Eliana.pdf"
- ]
+ "17901": {
+  "fitxer": "17901.png",
+  "local": "17901.png",
+  "pagina": null,
+  "autor": "",
+  "llicencia": "Ajuntament de Cruïlles, Monells i Sant Sadurní de l'Heura"
+ }
 }

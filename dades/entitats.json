@@ -1,77 +1,121 @@
 {
- "generat": "2026-10-26T23:49:58+00:00",
+ "generat": "2026-10-26T23:51:09+00:00",
  "actualitzatFont": "2026-10-26T19:05:56+00:00",
  "font": "Registre d'entitats de Catalunya (Departament de Justícia), dades obertes de la Generalitat",
  "primeraRevisio": true,
  "municipis": {
   "17022": {
    "nom": "la Bisbal d'Empordà",
-   "total": 1,
+   "total": 162,
    "inactives": 0,
    "tipus": [
     [
      "Associació",
+     158
+    ],
+    [
+     "Fundació",
+     3
+    ],
+    [
+     "Federació",
      1
     ]
    ],
    "ambits": [
     [
+     "Cultura",
+     80
+    ],
+    [
      "Foment i defensa dels drets cívics, socials i de la persona",
+     19
+    ],
+    [
+     "Ensenyament, formació i investigació",
+     16
+    ],
+    [
+     "Interessos de sectors econòmics, geogràfics o professionals",
+     16
+    ],
+    [
+     "<sense classificacio>",
+     14
+    ],
+    [
+     "Ordenació de l'espai, ecologia i habitatge",
+     9
+    ],
+    [
+     "Assistència social",
+     5
+    ],
+    [
+     "Assistencial",
+     1
+    ],
+    [
+     "Cultural",
+     1
+    ],
+    [
+     "Assistencial i Docent",
      1
     ]
    ],
    "perAny": [
     [
      "2012",
-     0
+     8
     ],
     [
      "2013",
-     0
+     4
     ],
     [
      "2014",
-     0
+     6
     ],
     [
      "2015",
-     0
+     4
     ],
     [
      "2016",
-     0
+     2
     ],
     [
      "2017",
-     0
+     3
     ],
     [
      "2018",
-     0
+     5
     ],
     [
      "2019",
-     0
+     5
     ],
     [
      "2020",
-     0
+     2
     ],
     [
      "2021",
-     0
+     1
     ],
     [
      "2022",
-     0
+     3
     ],
     [
      "2023",
-     0
+     4
     ],
     [
      "2024",
-     0
+     3
     ],
     [
      "2025",
@@ -79,10 +123,77 @@
     ],
     [
      "2026",
-     0
+     6
     ]
    ],
-   "recents": [],
+   "recents": [
+    {
+     "id": "125304",
+     "nom": "Associació de Carnaval La Fàbrica de Confeti",
+     "tipus": "Associació",
+     "data": "2026-10-05",
+     "nucli": "Bisbal d'Empordà, la",
+     "ambit": "Cultura",
+     "detall": "Culturals diverses · folklore · tradicions diverses",
+     "finalitats": "Finalitats: Fomentar i promoure el carnaval com a manifestació cultural i festiva, afavorint la participació, la convivència i la preservació de les tradicions populars.Activitats: Organitzar i participar en activitats relacionades amb el carnaval, com ara desfilades, celebracions i altres actes festius i culturals, així com promoure activitats de participació i convivència vinculades a aquesta fe…",
+     "utilitatPublica": false
+    },
+    {
+     "id": "125428",
+     "nom": "Associació Nafadji Mali",
+     "tipus": "Associació",
+     "data": "2026-09-18",
+     "nucli": "Bisbal d'Empordà, la",
+     "ambit": "Foment i defensa dels drets cívics, socials i de la persona",
+     "detall": "Cooperació, desenvolupament · culturals diverses · estrangers",
+     "finalitats": "Fins: Facilitar la inserció social, econòmica i cultural de les persones immigrades, especialment les originàries de Mali; promoure la col·laboració entre associacions malianes; afavorir la promoció individual i col·lectiva dels membres; contribuir al desenvolupament de Mali mitjançant programes i projectes de cooperació; promoure el coneixement de la cultura de Mali i facilitar la cooperació cult…",
+     "utilitatPublica": false
+    },
+    {
+     "id": "123332",
+     "nom": "Espai Pedra",
+     "tipus": "Associació",
+     "data": "2026-05-08",
+     "nucli": "Bisbal d'Empordà, la",
+     "ambit": "Cultura",
+     "detall": "Culturals diverses · socials",
+     "finalitats": "(art.2) Fins: L’associació té com a finalitat la divulgació, promoció i foment de la cultura de la pedra natural, afavorint el coneixement, la transmissió de sabers i l’intercanvi d’experiències entorn d’aquest material.Activitats Per assolir aquestes finalitats, l’associació duu a terme exposicions, tallers pràctics, xerrades i altres activitats culturals orientades a compartir coneixements i exp…",
+     "utilitatPublica": false
+    },
+    {
+     "id": "122607",
+     "nom": "Associació cultural i literària espai Puput a la Bisbal d'Empordà",
+     "tipus": "Associació",
+     "data": "2026-03-05",
+     "nucli": "Bisbal d'Empordà, la",
+     "ambit": "Foment i defensa dels drets cívics, socials i de la persona",
+     "detall": "Activitats juvenils · amistat social · comunicacions · defensa d'interessos propis · gastronomia · juvenils · literatura",
+     "finalitats": "Vetllar per la lectura, la literatura, la natura, la gastronomia local, per l'activitat lúdica i esportiva local (sense caràcter competitiu), la convivència i la cultura en torn dels llibres envers els seus ciutadans, veïns del mateix municipi i rodalies, socis i qualsevol persona interessada en les activitats anomenades i de l'entorn cultural esmentat. -L'Espai Puput oferirà un servei de degustac…",
+     "utilitatPublica": false
+    },
+    {
+     "id": "121792",
+     "nom": "Asociación de Africanos Diolangueli Banta",
+     "tipus": "Associació",
+     "data": "2026-02-27",
+     "nucli": "Bisbal d'Empordà, la",
+     "ambit": "Foment i defensa dels drets cívics, socials i de la persona",
+     "detall": "Ajuda · culturals diverses · defensa d'interessos propis · immigració",
+     "finalitats": "Ayuda a la población africana que vive y reside en Catalunya en base a iniciativas y esfurzos conjuntos.",
+     "utilitatPublica": false
+    },
+    {
+     "id": "122220",
+     "nom": "Colla de Santa Llúcia",
+     "tipus": "Associació",
+     "data": "2026-02-11",
+     "nucli": "Bisbal d'Empordà, la",
+     "ambit": "Interessos de sectors econòmics, geogràfics o professionals",
+     "detall": "Culturals diverses · defensa d'interessos propis · romeus i colles",
+     "finalitats": "Ajudar a mantenir l’espai i l'entorn de l’ermita de Santa Llúcia de l’Arbós, pertanyen al municipi de la Bisbal d’Empordà.Fer actes per promocionar l’espai i l’entorn de l’ermita de Santa Llúcia de l’Arbós, pertanyen al municipi de la Bisbal d’Emporda.Per aconseguir les seves finalitats, l’associació du a terme les activitats següents:Activitat principal: Aplecs de Santa Llúcia de l’Arbós i de San…",
+     "utilitatPublica": false
+    }
+   ],
    "noves": []
   },
   "17057": {

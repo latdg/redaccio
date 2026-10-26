@@ -1106,7 +1106,7 @@ function escut(codi) {
 }
 
 // Mateixa candidatura en una altra elecció: per sigles, o pel primer mot de les sigles.
-const clauCand = s => String(s || "").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Z0-9]+/g, " ").trim();
+const clauCand = s => String(s || "").toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\./g, "").replace(/[^A-Z0-9]+/g, " ").trim();
 function trobaAnterior(r, ant) {
   if (!ant) return null;
   const k = clauCand(r.sigles);

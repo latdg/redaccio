@@ -80,12 +80,19 @@ def mes(any_, m):
     return f"{int(any_):04d}-{int(m):02d}"
 
 
-def finestres(mesos):
-    """Els darrers 12 mesos amb dades i els 12 anteriors."""
+def enrere(ym, n):
+    a, m = map(int, ym.split("-"))
+    t = a * 12 + (m - 1) - n
+    return f"{t // 12:04d}-{t % 12 + 1:02d}"
+
+
+def finestres(mesos, fi=None):
+    """Els 12 mesos de calendari que acaben a «fi» (o al darrer mes amb dades) i els 12 anteriors."""
     tots = sorted(mesos)
-    darrers = tots[-12:]
-    if not darrers:
+    fi = fi or (tots[-1] if tots else None)
+    if not fi:
         return [], []
+    darrers = [enrere(fi, n) for n in range(11, -1, -1)]
     a, m = map(int, darrers[0].split("-"))
     abans = [f"{a - 1:04d}-{m:02d}"]
     while len(abans) < 12:
@@ -97,7 +104,7 @@ def finestres(mesos):
     return darrers, abans
 
 
-def bloc(files, clau_mes, clau_tipus, valor=lambda f: 1):
+def bloc(files, clau_mes, clau_tipus, valor=lambda f: 1, fi=None):
     serie = Counter()
     tipus = defaultdict(Counter)
     for f in files:
@@ -105,9 +112,17 @@ def bloc(files, clau_mes, clau_tipus, valor=lambda f: 1):
         v = valor(f)
         serie[k] += v
         tipus[clau_tipus(f)][k] += v
-    darrers, abans = finestres([k for k, v in serie.items()])
+    darrers, abans = finestres([k for k, v in serie.items()], fi)
+    # Sèrie contínua (els mesos sense cap cas, a zero) fins al darrer mes de la finestra.
+    mesos = sorted(serie)
+    continua = []
+    if mesos:
+        k, fi_s = mesos[0], max(mesos[-1], darrers[-1] if darrers else mesos[-1])
+        while k <= fi_s:
+            continua.append([k, serie.get(k, 0)])
+            k = enrere(k, -1)
     return {
-        "serie": [[k, serie[k]] for k in sorted(serie)],
+        "serie": continua,
         "darrerMes": darrers[-1] if darrers else None,
         "periode": [darrers[0], darrers[-1]] if darrers else None,
         "total12": sum(serie[k] for k in darrers),
@@ -141,12 +156,13 @@ def main():
     b = recent(baixa("g2ay-3vnj", f"codi_ine in({codis})",
               "any,mes,codi_ine,tal_nom_alarma,tga_nom_grupo,urgents"))
     sortida["bombers"] = {"actualitzat": actualitzat("g2ay-3vnj"), "municipis": {}}
+    fi_b = max((mes(x["any"], x["mes"]) for x in b), default=None)   # mateix període per als quatre
     for c in MUNICIPIS:
         seus = [x for x in b if x.get("codi_ine") == c]
         urgents = [x for x in seus if str(x.get("urgents", "")).upper().startswith("S")]
-        d = bloc(seus, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tal_nom_alarma"))
-        d["urgents12"] = bloc(urgents, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tal_nom_alarma"))["total12"] if urgents else 0
-        d["grups"] = bloc(seus, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tga_nom_grupo"))["tipus"]
+        d = bloc(seus, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tal_nom_alarma"), fi=fi_b)
+        d["urgents12"] = bloc(urgents, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tal_nom_alarma"), fi=fi_b)["total12"] if urgents else 0
+        d["grups"] = bloc(seus, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tga_nom_grupo"), fi=fi_b)["tipus"]
         d["tipus"] = d["tipus"][:15]
         sortida["bombers"]["municipis"][c] = d
     print("Bombers:", len(b), "actuacions")
@@ -154,9 +170,10 @@ def main():
     # 3. 112 (per municipi; el nom ve en majúscules i sense accents)
     i = recent(baixa("jq8m-d7cw", f"comarca='BAIX EMPORDA'"))
     sortida["e112"] = {"actualitzat": actualitzat("jq8m-d7cw"), "municipis": {}, "comarca": {}}
+    fi_i = max((mes(x["any"], x["mes"]) for x in i), default=None)
     for c, (_, clau) in MUNICIPIS.items():
         seus = [x for x in i if clau in pla(x.get("municipi"))]
-        sortida["e112"]["municipis"][c] = bloc(seus, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tipus"), lambda x: num(x.get("incidents")))
+        sortida["e112"]["municipis"][c] = bloc(seus, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tipus"), lambda x: num(x.get("incidents")), fi=fi_i)
     sortida["e112"]["comarca"] = {k: v for k, v in bloc(i, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tipus"),
                                                         lambda x: num(x.get("incidents"))).items() if k != "serie"}
     print("112:", len(i), "files de la comarca")

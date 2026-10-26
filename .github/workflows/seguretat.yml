@@ -1,0 +1,40 @@
+# Seguretat i emergències — La TdG · 27.10.2026
+# Fets penals (Mossos, ABP la Bisbal), actuacions dels Bombers i incidents del
+# 112 dels quatre municipis (dades/seguretat.json). Cada dilluns; també a mà.
+name: Seguretat i emergències
+
+on:
+  schedule:
+    - cron: "53 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seguretat
+  cancel-in-progress: false
+
+jobs:
+  seguretat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Genera i desa
+        run: |
+          python seguretat/seguretat.py 2>&1 | tee seguretat/registre.txt
+          git config user.name "La TdG (seguretat)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for intent in 1 2 3; do
+            git add seguretat/registre.txt; git add dades/seguretat.json 2>/dev/null || true
+            if git diff --cached --quiet; then echo "Sense canvis"; break; fi
+            git commit -qm "Seguretat i emergències ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
+            git push -q origin HEAD:main && break
+            git pull -q --rebase origin main
+            sleep 10
+          done

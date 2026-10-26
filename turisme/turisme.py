@@ -58,7 +58,13 @@ def llegeix(taula):
             if r.status_code != 200 or "text/html" in r.headers.get("content-type", ""):
                 errors.append(f"{url}: {r.status_code}")
                 continue
-            linies = (l.decode("iso-8859-15") for l in r.iter_lines())
+            def desxifra(l):
+                # Els CSV de l'INE arriben en UTF-8 (amb BOM); si no ho són, en ISO-8859-15.
+                try:
+                    return l.decode("utf-8-sig")
+                except UnicodeDecodeError:
+                    return l.decode("iso-8859-15")
+            linies = (desxifra(l) for l in r.iter_lines())
             lector = csv.reader(linies, delimiter=";")
             cap = [c.lstrip("﻿") for c in next(lector)]
             files = [f for f in lector if any(re.match(rf"^{c}\b", x or "") for x in f for c in MUNICIPIS)]

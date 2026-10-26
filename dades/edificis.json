@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-26T22:55:55+00:00",
+ "generat": "2026-10-26T22:57:29+00:00",
  "font": "Direcció General del Cadastre (servei INSPIRE d'edificis)",
  "epoques": [
   "abans de 1900",
@@ -113,6 +113,7 @@
      "us": "Residencial"
     }
    ],
+   "any1900": 170,
    "ultims10anys": 34,
    "ruina": 10,
    "plantesMax": 13
@@ -219,6 +220,7 @@
      "us": "Residencial"
     }
    ],
+   "any1900": 329,
    "ultims10anys": 29,
    "ruina": 5,
    "plantesMax": 5
@@ -325,6 +327,7 @@
      "us": "Agrari"
     }
    ],
+   "any1900": 232,
    "ultims10anys": 17,
    "ruina": 4,
    "plantesMax": 5

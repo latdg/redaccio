@@ -1,0 +1,42 @@
+# Entitats i associacions — La TdG · 27.10.2026
+# Registre d'entitats dels quatre municipis (dades/entitats.json).
+# El registre s'actualitza cada dia: es revisa cada dilluns; també a mà.
+name: Entitats i associacions
+
+on:
+  schedule:
+    - cron: "41 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: entitats
+  cancel-in-progress: false
+
+jobs:
+  entitats:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Genera i desa
+        run: |
+          python entitats/entitats.py 2>&1 | tee entitats/registre.txt
+          git config user.name "La TdG (entitats)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Si un altre procés ha pujat canvis alhora, es torna a provar; si no hi ha manera, el workflow falla.
+          git add entitats/registre.txt; git add dades/entitats.json entitats/estat.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
+          git commit -qm "Entitats i associacions ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
+          for intent in 1 2 3 4 5 6; do
+            git push -q origin HEAD:main && exit 0
+            sleep $((intent * 10))
+            git fetch -q origin main && git rebase -q origin/main || { git rebase --abort; exit 1; }
+          done
+          echo "No s'han pogut pujar els canvis"; exit 1

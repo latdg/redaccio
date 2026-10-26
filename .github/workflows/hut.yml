@@ -1,0 +1,41 @@
+# Habitatges d'ús turístic — La TdG · 26.10.2026
+# Recomptes del Registre de Turisme de Catalunya per als quatre municipis
+# (dades/hut.json). La Generalitat l'actualitza més o menys un cop al mes:
+# es revisa cada dilluns i, si no ha canviat, no es desa res.
+name: Habitatges d'ús turístic
+
+on:
+  schedule:
+    - cron: "47 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hut
+  cancel-in-progress: false
+
+jobs:
+  hut:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Genera i desa
+        run: |
+          python hut/hut.py
+          git config user.name "La TdG (HUT)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for intent in 1 2 3; do
+            git add dades/hut.json hut/estat.json
+            if git diff --cached --quiet; then echo "Sense canvis"; break; fi
+            git commit -qm "Habitatges d'ús turístic ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
+            git push -q origin HEAD:main && break
+            git pull -q --rebase origin main
+            sleep 10
+          done

@@ -1,4 +1,2 @@
-2026-10-26T22:18:08+00:00
-Municipals 2023: RuntimeError: 04202305_MESA.zip: ni al Ministeri, ni a eleccions/zips/, ni al mirall
-Congrés 2023: RuntimeError: 02202307_MESA.zip: ni al Ministeri, ni a eleccions/zips/, ni al mirall
-Europees 2024: RuntimeError: 07202406_MESA.zip: ni al Ministeri, ni a eleccions/zips/, ni al mirall
+2026-10-26T22:39:37+00:00
+Cap error

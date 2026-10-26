@@ -13,6 +13,7 @@ import json
 import re
 import unicodedata
 import zipfile
+from urllib.parse import unquote
 import xml.etree.ElementTree as ET
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -30,7 +31,7 @@ CAPCALERES = {"User-Agent": "Mozilla/5.0 (LaTdG-redaccio; latdg@laguait.cat)"}
 # codi INE -> (nom, paraula per trobar-lo al feed del Cadastre)
 MUNICIPIS = {
     "17022": ("la Bisbal d'Empordà", "BISBAL D"),
-    "17057": ("Corçà", "CORCA"),
+    "17057": ("Corçà", "CORC"),
     "17902": ("Forallac", "FORALLAC"),
     "17901": ("Cruïlles, Monells i Sant Sadurní de l'Heura", "CRUILLES"),
 }
@@ -134,6 +135,7 @@ def resum(edificis):
         "epoques": [{"epoca": n, "edificis": per_epoca.get(n, 0), "habitatges": hab_epoca.get(n, 0)} for _, _, n in EPOQUES],
         "usos": Counter(e["us"] or "Altres" for e in edificis).most_common(),
         "mesAntics": [{"ref": e["ref"], "any": e["any"], "us": e["us"]} for e in antics],
+        "any1900": sum(1 for e in amb if e["any"] == 1900),
         "ultims10anys": sum(1 for e in amb if e["any"] >= datetime.now().year - 10),
         "ruina": sum(1 for e in edificis if e["ruina"]),
         "plantesMax": max((e["plantes"] or 0) for e in edificis) if edificis else None,
@@ -150,9 +152,10 @@ def main():
                "font": "Direcció General del Cadastre (servei INSPIRE d'edificis)",
                "epoques": [n for _, _, n in EPOQUES], "municipis": {}}
     for codi, (nom, clau) in MUNICIPIS.items():
-        url = next((z for z in zips if clau in pla(z.split("/")[-2])), None)
+        url = next((z for z in zips if clau in pla(unquote(z.split("/")[-2], encoding="latin-1"))
+                    or clau in pla(unquote(z.split("/")[-2]))), None)
         if not url:
-            print("No trobat al feed:", nom)
+            print("No trobat al feed:", nom, [z.split("/")[-2] for z in zips if "17057" in z or "CORC" in pla(z)])
             continue
         actualitzat = None
         m = re.search(re.escape(url) + r".*?<updated>([^<]+)</updated>", text, re.S)

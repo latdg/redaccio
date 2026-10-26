@@ -1,0 +1,33 @@
+# Escuts dels quatre municipis — La TdG · 26.10.2026
+# Baixa els escuts de Wikimedia Commons a escuts/. Només es llança a mà.
+name: Escuts
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  escuts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Baixa i desa
+        run: |
+          python escuts/escuts.py
+          git config user.name "La TdG (escuts)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for intent in 1 2 3; do
+            git add escuts
+            if git diff --cached --quiet; then echo "Sense canvis"; break; fi
+            git commit -qm "Escuts dels municipis"
+            git push -q origin HEAD:main && break
+            git pull -q --rebase origin main
+            sleep 10
+          done

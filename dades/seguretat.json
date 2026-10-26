@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-26T23:04:25+00:00",
+ "generat": "2026-10-26T23:18:11+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -1267,6 +1267,10 @@
       4
      ],
      [
+      "2023-06",
+      0
+     ],
+     [
       "2023-07",
       1
      ],
@@ -1319,6 +1323,10 @@
       2
      ],
      [
+      "2024-08",
+      0
+     ],
+     [
       "2024-09",
       1
      ],
@@ -1329,6 +1337,10 @@
      [
       "2024-11",
       2
+     ],
+     [
+      "2024-12",
+      0
      ],
      [
       "2025-01",
@@ -1365,6 +1377,10 @@
      [
       "2025-09",
       2
+     ],
+     [
+      "2025-10",
+      0
      ],
      [
       "2025-11",
@@ -1409,16 +1425,16 @@
     ],
     "darrerMes": "2026-08",
     "periode": [
-     "2025-08",
+     "2025-09",
      "2026-08"
     ],
-    "total12": 30,
-    "totalAbans12": 25,
+    "total12": 28,
+    "totalAbans12": 27,
     "tipus": [
      {
       "tipus": "Accident trànsit amb ferits i/o atrapats",
-      "n": 9,
-      "abans": 6,
+      "n": 8,
+      "abans": 7,
       "darrerMes": 0
      },
      {
@@ -1455,12 +1471,6 @@
       "tipus": "Persones amb comportament alterat",
       "n": 1,
       "abans": 0,
-      "darrerMes": 0
-     },
-     {
-      "tipus": "Neteja de calçada, sense accident de trànsit",
-      "n": 1,
-      "abans": 2,
       "darrerMes": 0
      },
      {
@@ -1504,21 +1514,27 @@
       "n": 0,
       "abans": 0,
       "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi d'infraestructura elèctrica",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
      }
     ],
-    "urgents12": 29,
+    "urgents12": 27,
     "grups": [
-     {
-      "tipus": "mobilitat",
-      "n": 10,
-      "abans": 8,
-      "darrerMes": 0
-     },
      {
       "tipus": "assistència tècnica",
       "n": 8,
       "abans": 6,
       "darrerMes": 1
+     },
+     {
+      "tipus": "mobilitat",
+      "n": 8,
+      "abans": 10,
+      "darrerMes": 0
      },
      {
       "tipus": "salvaments",
@@ -1581,6 +1597,10 @@
       4
      ],
      [
+      "2023-09",
+      0
+     ],
+     [
       "2023-10",
       6
      ],
@@ -1591,6 +1611,10 @@
      [
       "2023-12",
       4
+     ],
+     [
+      "2024-01",
+      0
      ],
      [
       "2024-02",
@@ -1649,6 +1673,10 @@
       5
      ],
      [
+      "2025-04",
+      0
+     ],
+     [
       "2025-05",
       1
      ],
@@ -1659,6 +1687,10 @@
      [
       "2025-07",
       9
+     ],
+     [
+      "2025-08",
+      0
      ],
      [
       "2025-09",
@@ -1808,7 +1840,7 @@
       "darrerMes": 0
      }
     ],
-    "urgents12": 59,
+    "urgents12": 50,
     "grups": [
      {
       "tipus": "assistència tècnica",
@@ -1933,12 +1965,20 @@
       2
      ],
      [
+      "2024-08",
+      0
+     ],
+     [
       "2024-09",
       2
      ],
      [
       "2024-10",
       4
+     ],
+     [
+      "2024-11",
+      0
      ],
      [
       "2024-12",
@@ -2124,7 +2164,7 @@
       "darrerMes": 0
      }
     ],
-    "urgents12": 41,
+    "urgents12": 39,
     "grups": [
      {
       "tipus": "assistència tècnica",

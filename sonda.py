@@ -56,3 +56,4 @@ for u in ["https://www.cruilles-monells-ssh.cat/","https://cruilles-monells-ssh.
     except Exception as e:
         out["escuts"][u]={"error":type(e).__name__}
 open("resultat.json","w").write(json.dumps(out,ensure_ascii=False,indent=1))
+# Mon Oct 26 23:28:43 CET 2026

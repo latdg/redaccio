@@ -1,5 +1,8 @@
 name: Sonda (recerca, temporal)
-on: workflow_dispatch
+on:
+  push:
+    branches: [recerca]
+    paths: [sonda.py]
 permissions:
   contents: write
 jobs:

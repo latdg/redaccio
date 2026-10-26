@@ -1,0 +1,353 @@
+{
+ "generat": "2026-10-26T21:48:12+00:00",
+ "actualitzatFont": "2026-10-05T06:24:56+00:00",
+ "comparatAmb": null,
+ "font": "Registre de Turisme de Catalunya (Departament d'Empresa i Treball), dades obertes de la Generalitat",
+ "comarca": {
+  "hut": 17799,
+  "municipis": 36,
+  "primers": [
+   [
+    "Castell d'Aro, Platja d'Aro i s'Agaró",
+    2902
+   ],
+   [
+    "Palafrugell",
+    2770
+   ],
+   [
+    "Torroella de Montgrí",
+    2638
+   ],
+   [
+    "Calonge i Sant Antoni",
+    2397
+   ],
+   [
+    "Begur",
+    1764
+   ]
+  ]
+ },
+ "municipis": {
+  "17022": {
+   "nom": "la Bisbal d'Empordà",
+   "hut": 49,
+   "places": 101,
+   "lloc": 14,
+   "carrers": [
+    [
+     "Carrer de la Riera",
+     7
+    ],
+    [
+     "Barri Castell d'Empordà",
+     5
+    ],
+    [
+     "Carrer Raval",
+     2
+    ],
+    [
+     "Plaça Nova",
+     2
+    ],
+    [
+     "Carrer Pau Casals",
+     1
+    ],
+    [
+     "Carrer Joan Baptista Coromina",
+     1
+    ],
+    [
+     "Carrer Pont",
+     1
+    ],
+    [
+     "Carrer Cavallers",
+     1
+    ],
+    [
+     "Carrer Castell",
+     1
+    ],
+    [
+     "Barri Sant Pol",
+     1
+    ],
+    [
+     "Carrer Call",
+     1
+    ],
+    [
+     "Barri Sant Pol - Mas Matas",
+     1
+    ]
+   ],
+   "altres": [
+    {
+     "tipus": "Llars compartides",
+     "n": 3,
+     "places": 8
+    },
+    {
+     "tipus": "Hostal o pensió",
+     "n": 2,
+     "places": 53
+    },
+    {
+     "tipus": "Hotel",
+     "n": 2,
+     "places": 126
+    }
+   ],
+   "altes": null,
+   "baixes": null
+  },
+  "17057": {
+   "nom": "Corçà",
+   "hut": 45,
+   "places": 134,
+   "lloc": 16,
+   "carrers": [
+    [
+     "Carrer Major",
+     8
+    ],
+    [
+     "Carrer Sant Joan",
+     2
+    ],
+    [
+     "Plaça del Firal",
+     2
+    ],
+    [
+     "Carrer de la Font",
+     2
+    ],
+    [
+     "Carrer Sant Sebastià",
+     2
+    ],
+    [
+     "Avinguda Costa Brava",
+     2
+    ],
+    [
+     "Carrer Mas Nadal",
+     1
+    ],
+    [
+     "Carrer Santa Llúcia (Casavells)",
+     1
+    ],
+    [
+     "Carretera Girona-Palamos",
+     1
+    ],
+    [
+     "Passatge Pont",
+     1
+    ],
+    [
+     "Carrer Mas Pujol,",
+     1
+    ],
+    [
+     "Carrer Sant Sebastia",
+     1
+    ]
+   ],
+   "altres": [
+    {
+     "tipus": "Allotjaments rurals",
+     "n": 4,
+     "places": 41
+    },
+    {
+     "tipus": "Hostal o pensió",
+     "n": 2,
+     "places": 20
+    },
+    {
+     "tipus": "Cases de pagès o establiments d'agroturisme",
+     "n": 1,
+     "places": 11
+    }
+   ],
+   "altes": null,
+   "baixes": null
+  },
+  "17902": {
+   "nom": "Forallac",
+   "hut": 111,
+   "places": 448,
+   "lloc": 10,
+   "carrers": [
+    [
+     "Carrer Canapost",
+     6
+    ],
+    [
+     "Carrer Nou",
+     6
+    ],
+    [
+     "Carrer Hospital",
+     4
+    ],
+    [
+     "Carrer Migdia",
+     3
+    ],
+    [
+     "Plaça Llarga",
+     3
+    ],
+    [
+     "Carrer Sant Generós",
+     3
+    ],
+    [
+     "Carrer Major",
+     3
+    ],
+    [
+     "Carrer Llorer",
+     3
+    ],
+    [
+     "Camí Fonteta-Fitor",
+     2
+    ],
+    [
+     "Carrer d' Orient",
+     2
+    ],
+    [
+     "Carrer Forn",
+     2
+    ],
+    [
+     "Carrer Fitor",
+     2
+    ]
+   ],
+   "altres": [
+    {
+     "tipus": "Allotjaments rurals",
+     "n": 7,
+     "places": 62
+    },
+    {
+     "tipus": "Hotel",
+     "n": 6,
+     "places": 111
+    },
+    {
+     "tipus": "Cases de pagès o establiments d'agroturisme",
+     "n": 4,
+     "places": 59
+    },
+    {
+     "tipus": "Hostal o pensió",
+     "n": 1,
+     "places": 16
+    }
+   ],
+   "altes": null,
+   "baixes": null
+  },
+  "17901": {
+   "nom": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+   "hut": 61,
+   "places": 58,
+   "lloc": 13,
+   "carrers": [
+    [
+     "Carrer Major",
+     8
+    ],
+    [
+     "Plaça Jaume I",
+     5
+    ],
+    [
+     "Carrer Font de Sant Burget",
+     4
+    ],
+    [
+     "Carrer Església",
+     4
+    ],
+    [
+     "Carrer Riera",
+     4
+    ],
+    [
+     "Carrer Vilanova",
+     3
+    ],
+    [
+     "Barri Banyeres - Mas Vancells,",
+     1
+    ],
+    [
+     "Lloc Mas Can Gafes, Poligon 18 Parcel.La Cadastral 18, Santa Pellaia",
+     1
+    ],
+    [
+     "Carretera Cassà de la Selva,",
+     1
+    ],
+    [
+     "Carretera Cassà de la Selva, Km 6,100-Pol 19-Parc",
+     1
+    ],
+    [
+     "Disseminat Pujol",
+     1
+    ],
+    [
+     "Veïnat Rabioses, Mas Can Molinetes , Polígon 13 Parcel.La 67",
+     1
+    ]
+   ],
+   "altres": [
+    {
+     "tipus": "Allotjaments rurals",
+     "n": 11,
+     "places": 111
+    },
+    {
+     "tipus": "Hotel",
+     "n": 3,
+     "places": 76
+    },
+    {
+     "tipus": "Apartaments Turístics",
+     "n": 1,
+     "places": 14
+    },
+    {
+     "tipus": "Llars compartides",
+     "n": 1,
+     "places": 4
+    }
+   ],
+   "altes": null,
+   "baixes": null
+  }
+ },
+ "historic": [
+  {
+   "data": "2026-10-05",
+   "17022": 49,
+   "17057": 45,
+   "17902": 111,
+   "17901": 61
+  }
+ ]
+}

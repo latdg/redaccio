@@ -30,10 +30,10 @@ FEED = "https://www.catastro.hacienda.gob.es/INSPIRE/buildings/17/ES.SDGC.bu.ato
 CAPCALERES = {"User-Agent": "Mozilla/5.0 (LaTdG-redaccio; latdg@laguait.cat)"}
 # codi INE -> (nom, paraula per trobar-lo al feed del Cadastre)
 MUNICIPIS = {
-    "17022": ("la Bisbal d'Empordà", "BISBAL D"),
-    "17057": ("Corçà", "CORC"),
-    "17902": ("Forallac", "FORALLAC"),
-    "17901": ("Cruïlles, Monells i Sant Sadurní de l'Heura", "CRUILLES"),
+    "17022": ("la Bisbal d'Empordà", r"BISBAL D"),
+    "17057": ("Corçà", r"^CORC?.?A$"),   # al Cadastre surt com «COR A» (la ç es perd)
+    "17902": ("Forallac", r"FORALLAC"),
+    "17901": ("Cruïlles, Monells i Sant Sadurní de l'Heura", r"CRUILLES"),
 }
 EPOQUES = [(0, 1900, "abans de 1900"), (1900, 1940, "1900-1939"), (1940, 1960, "1940-1959"), (1960, 1980, "1960-1979"),
            (1980, 2000, "1980-1999"), (2000, 2010, "2000-2009"), (2010, 9999, "des de 2010")]
@@ -152,10 +152,10 @@ def main():
                "font": "Direcció General del Cadastre (servei INSPIRE d'edificis)",
                "epoques": [n for _, _, n in EPOQUES], "municipis": {}}
     for codi, (nom, clau) in MUNICIPIS.items():
-        url = next((z for z in zips if clau in pla(unquote(z.split("/")[-2], encoding="latin-1"))
-                    or clau in pla(unquote(z.split("/")[-2]))), None)
+        nom_feed = lambda z: pla(unquote(z.split("/")[-2], encoding="latin-1")).split("-", 1)[-1].strip()
+        url = next((z for z in zips if re.search(clau, nom_feed(z))), None)
         if not url:
-            print("No trobat al feed:", nom, [z.split("/")[-2] for z in zips if z.split("/")[-2].split("-", 1)[-1][:2].upper() == clau[:2]])
+            print("No trobat al feed:", nom, [z.split("/")[-2] for z in zips if nom_feed(z)[:2] == re.sub(r"[^A-Z]", "", clau)[:2]])
             continue
         actualitzat = None
         m = re.search(re.escape(url) + r".*?<updated>([^<]+)</updated>", text, re.S)

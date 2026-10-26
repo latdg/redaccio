@@ -10,6 +10,7 @@
 # 12 mesos i la comparació amb els 12 anteriors. Es revisa cada setmana.
 # =============================================================================
 import json
+import time
 import unicodedata
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
@@ -40,13 +41,22 @@ def num(v):
 
 
 def baixa(ident, where, select=None):
-    files, pas = [], 50000
+    """Baixa per lots de 5.000 files; si el servidor falla (503, temps esgotat…), torna a provar-ho."""
+    files, pas = [], 5000
     while True:
         p = {"$where": where, "$limit": pas, "$offset": len(files), "$order": ":id"}
         if select:
             p["$select"] = select
-        r = requests.get(API.format(id=ident), params=p, headers=CAPCALERES, timeout=300)
-        r.raise_for_status()
+        for intent in range(5):
+            try:
+                r = requests.get(API.format(id=ident), params=p, headers=CAPCALERES, timeout=300)
+                r.raise_for_status()
+                break
+            except Exception as err:
+                print(f"{ident}: intent {intent + 1} fallit ({err}); es torna a provar")
+                time.sleep(30 * (intent + 1))
+        else:
+            raise RuntimeError(f"{ident}: el servidor no respon")
         lot = r.json()
         files += lot
         if len(lot) < pas:

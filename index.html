@@ -166,6 +166,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <div id="resum"><section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Carregant…</p></section></div>
   <section id="aigua"><h2>💧 Aigua potable</h2><p class="buit">Carregant…</p></section>
   <section id="dades-municipals"><h2>🏦 Dades municipals</h2><p class="buit">Carregant…</p></section>
+  <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
   <section id="congres"><h2>🏛️ Congrés dels Diputats</h2><p class="buit">Carregant…</p></section>
   <section id="parlament"><h2>🏛️ Parlament de Catalunya</h2><p class="buit">Carregant…</p></section>
   <section id="loteries"><h2>🍀 Loteries</h2><p class="buit">Carregant…</p></section>
@@ -716,6 +717,8 @@ const BLOCS_PROPIS = [
   { id: "congres", nom: "Congrés", titol: "CONGRÉS DELS DIPUTATS (ESMENTS DELS MUNICIPIS)", abans: /^GENERALITAT/i },
   { id: "parlament", nom: "Parlament", titol: "PARLAMENT DE CATALUNYA (ESMENTS DELS MUNICIPIS)", despres: /^GENERALITAT/i },
   { id: "dades-municipals", nom: "Dades municipals", titol: "DADES MUNICIPALS (ENDEUTAMENT, PRESSUPOST I LIQUIDACIÓ)", enLlocDe: /^ATUR/i },
+  // 26.10.2026: just després de les dades municipals.
+  { id: "hut", nom: "Habitatges turístics", titol: "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i }
 ];
 
@@ -1033,6 +1036,53 @@ function pintaDadesMunicipals(s, generat) {
 }
 
 // -----------------------------------------------------------------------------
+// HABITATGES D'ÚS TURÍSTIC (26.10.2026): recomptes del Registre de Turisme de
+// Catalunya que desa el workflow «Habitatges d'ús turístic» (hut/hut.py) a
+// dades/hut.json. Una fitxa per municipi, com les dades municipals. No porta
+// cap nom de titular ni pis ni porta: només recomptes.
+// -----------------------------------------------------------------------------
+const TITOL_HUT = "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS";
+const nCa = n => Number(n || 0).toLocaleString("ca-ES");
+const dataIso = iso => { const d = new Date(iso), z = n => String(n).padStart(2, "0"); return z(d.getDate()) + "." + z(d.getMonth() + 1) + "." + d.getFullYear(); };
+
+function fitxaHut(c, m, d) {
+  const evol = (d.historic || []).filter(h => h[c] !== undefined);
+  const canvi = m.altes === null || m.altes === undefined
+    ? '<div class="det">Es comptaran a partir de la propera actualització del registre</div>'
+    : `<div class="det">${m.altes ? `<span class="amunt">+${m.altes} altes</span>` : "cap alta"} · ${m.baixes ? `<span class="avall">−${m.baixes} baixes</span>` : "cap baixa"}</div>`;
+  const maxC = Math.max(1, ...m.carrers.map(x => x[1]));
+  return `<article class="fitxa"><h3>${esc(m.nom)}</h3>` +
+    `<div class="xifres">` +
+      `<div class="xifra"><div class="etq">Habitatges d'ús turístic</div><div class="val">${nCa(m.hut)}</div>${canvi}</div>` +
+      `<div class="xifra"><div class="etq">Lloc al Baix Empordà</div><div class="val">${m.lloc ? m.lloc + "è" : "—"}</div><div class="det">de ${nCa(d.comarca.municipis)} municipis amb HUT</div></div>` +
+      `<div class="xifra"><div class="etq">Altres allotjaments turístics</div><div class="val">${nCa(m.altres.reduce((s, a) => s + a.n, 0))}</div><div class="det">${nCa(m.altres.reduce((s, a) => s + a.places, 0))} places</div></div>` +
+    `</div>` +
+    (m.carrers.length ? `<h4>Carrers amb més HUT</h4><div class="barres" style="grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto">` +
+      m.carrers.slice(0, 8).map(([nom, n]) => `<span style="overflow-wrap:anywhere">${esc(nom)}</span><span class="barra" style="width:${(n / maxC * 100).toFixed(0)}%"></span><span class="num">${n}</span>`).join("") + `</div>` : "") +
+    (m.altres.length ? `<h4>Altres allotjaments</h4><div class="taula"><table><thead><tr><th>Tipus</th><th class="n">Establiments</th><th class="n">Places</th></tr></thead><tbody>` +
+      m.altres.map(a => `<tr><td style="white-space:normal">${esc(a.tipus)}</td><td class="n">${nCa(a.n)}</td><td class="n">${nCa(a.places)}</td></tr>`).join("") + `</tbody></table></div>` : "") +
+    (evol.length > 1 ? `<h4>Evolució dels HUT</h4><p class="det">${evol.map(h => `${dataCa(h.data)}: <b>${nCa(h[c])}</b>`).join(" · ")}</p>` : "") +
+    `</article>`;
+}
+
+async function carregaHut() {
+  const el = document.getElementById("hut");
+  if (!el) return;
+  const titol = () => (el.dataset.numero ? el.dataset.numero + " " : "🏠 ") + TITOL_HUT;
+  let d;
+  try { d = await obtenir("dades/hut.json"); }
+  catch (e) { el.innerHTML = `<h2>${titol()}</h2><p class="buit">Encara no s'han baixat les dades del Registre de Turisme.</p>`; return; }
+  const total = Object.values(d.municipis).reduce((s, m) => s + m.hut, 0);
+  el.innerHTML = `<h2>${titol()}</h2>` +
+    `<p class="font">Registre actualitzat el ${dataIso(d.actualitzatFont || d.generat)} · revisat el ${dataIso(d.generat)} · Font: ` +
+    `<a href="https://analisi.transparenciacatalunya.cat/Turisme/Establiments-d-allotjament-tur-stic-inscrits-al-Re/t2h3-cgys" target="_blank" rel="noopener">${esc(d.font)}</a></p>` +
+    `<p>Als quatre municipis hi ha <b>${nCa(total)}</b> habitatges d'ús turístic donats d'alta. A tot el Baix Empordà n'hi ha ${nCa(d.comarca.hut)}; ` +
+    `on més: ${d.comarca.primers.map(([n, v]) => `${esc(n)} (${nCa(v)})`).join(", ")}.</p>` +
+    ["17022", "17057", "17902", "17901"].filter(c => d.municipis[c]).map(c => fitxaHut(c, d.municipis[c], d)).join("") +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Habitatges inscrits i no donats de baixa al registre. Les altes i baixes es compten entre dues actualitzacions del registre (la Generalitat l'actualitza més o menys cada mes). Les places dels HUT no es mostren perquè el registre no les té de tots.</p>`;
+}
+
+// -----------------------------------------------------------------------------
 // AIGUA POTABLE: un sol bloc amb una fitxa per municipi. Analítiques del SINAC
 // (el darrer butlletí amb tot el detall i els anteriors, que s'obren clicant-hi)
 // i, a Corçà i a Cruïlles, Monells i Sant Sadurní, les de la Mancomunitat.
@@ -1193,6 +1243,7 @@ async function inicia() {
   carregaJSON(dia, "extres.json", ["aigua", "dades-municipals", "congres"], "extres");
   carregaJSON(dia, "parlament.json", ["parlament"]);
   carregaJSON(dia, "loteries.json", ["loteries"]);
+  carregaHut();
 }
 inicia();
 </script>

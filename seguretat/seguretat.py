@@ -146,7 +146,24 @@ def main():
     for t in coneguts["tipus"]:
         t["resolts"] = resolts_t.get(t["tipus"], {}).get("n", 0)
         t["detencions"] = det_t.get(t["tipus"], {}).get("n", 0)
+    # 27.10.2026: el darrer mes, tipus a tipus, comparat amb el mateix mes de l'any anterior.
+    dm = coneguts["darrerMes"]
+    mes_abans = f"{int(dm[:4]) - 1}{dm[4:]}" if dm else None
+    det = defaultdict(lambda: {"coneguts": 0, "resolts": 0, "detencions": 0, "abans": 0, "titol": ""})
+    for x in f:
+        k = mes(x["any"], x["mes"])
+        if k not in (dm, mes_abans):
+            continue
+        t = det[x.get("tipus_de_fet") or "Altres"]
+        t["titol"] = x.get("t_tol_codi_penal") or t["titol"]
+        if k == dm:
+            t["coneguts"] += num(x.get("coneguts")); t["resolts"] += num(x.get("resolts")); t["detencions"] += num(x.get("detencions"))
+        else:
+            t["abans"] += num(x.get("coneguts"))
+    darrer_mes = sorted(({"tipus": k, **v} for k, v in det.items() if v["coneguts"] or v["detencions"] or v["abans"]),
+                        key=lambda z: (-z["coneguts"], -z["detencions"]))
     sortida["fetsPenals"] = {"abp": ABP, "actualitzat": actualitzat("qnyt-emjc"), **coneguts,
+                             "darrerMesDetall": darrer_mes, "mesAnyAnterior": mes_abans,
                              "resolts12": resolts["total12"], "detencions12": detencions["total12"],
                              "serieDetencions": detencions["serie"]}
     print("Fets penals:", len(f), "files; darrer mes", coneguts["darrerMes"], "; 12 mesos:", coneguts["total12"])

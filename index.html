@@ -1343,8 +1343,19 @@ async function pintaSeguretat(codi) {
         `<div class="xifra"><div class="etq">Fets resolts</div><div class="val">${nCa(f.resolts12)}</div><div class="det">${f.total12 ? pctCa(f.resolts12 / f.total12 * 100, 0) + " dels coneguts" : ""}</div></div>` +
         `<div class="xifra"><div class="etq">Detencions</div><div class="val">${nCa(f.detencions12)}</div><div class="det">darrer mes amb dades: ${esc(nomMes(f.darrerMes))}</div></div>` +
       `</div>` +
+      // 27.10.2026: el darrer mes, desglossat; després, el global dels 12 mesos.
+      (f.darrerMesDetall && f.darrerMesDetall.length ? (() => {
+        const d = f.darrerMesDetall, tc = d.reduce((x, t) => x + t.coneguts, 0), ta = d.reduce((x, t) => x + t.abans, 0),
+              tr = d.reduce((x, t) => x + t.resolts, 0), td = d.reduce((x, t) => x + t.detencions, 0);
+        return `<h4>El darrer mes: ${esc(nomMes(f.darrerMes))}</h4>` +
+          `<p style="margin:2px 0 8px"><b>${nCa(tc)}</b> fets coneguts (${variacio(tc, ta)} respecte a ${esc(nomMes(f.mesAnyAnterior))}, amb ${nCa(ta)}), ${nCa(tr)} de resolts i ${nCa(td)} detencions.</p>` +
+          `<div class="taula"><table><thead><tr><th>Tipus de fet</th><th class="n">Coneguts</th><th class="n">Resolts</th><th class="n">Detencions</th><th class="n">Fa un any</th></tr></thead><tbody>` +
+          d.map(t => `<tr><td style="white-space:normal;min-width:150px">${esc(t.tipus)}</td><td class="n"><b>${nCa(t.coneguts)}</b></td><td class="n">${nCa(t.resolts)}</td><td class="n">${nCa(t.detencions)}</td><td class="n">${nCa(t.abans)}</td></tr>`).join("") +
+          `</tbody></table></div><p class="det" style="font-size:.8rem;color:#6b6b66">Els resolts i les detencions d'un mes poden ser de fets d'abans.</p>`;
+      })() : "") +
+      `<h4 style="margin-top:14px">Els darrers 12 mesos</h4>` +
       `<h4>Fets coneguts cada mes</h4>${serieBarres(f.serie)}` +
-      `<h4>Per tipus de fet</h4>${taulaTipus(f.tipus, 12, { cap: '<th class="n">Detencions</th>', fila: t => `<td class="n">${nCa(t.detencions)}</td>` })}` +
+      `<h4>Per tipus de fet (12 mesos)</h4>${taulaTipus(f.tipus, 12, { cap: '<th class="n">Detencions</th>', fila: t => `<td class="n">${nCa(t.detencions)}</td>` })}` +
     `</article>` +
     `<h4 style="margin-top:16px">112 i Bombers per municipi</h4>` + triadorMun(["17022", "17057", "17902", "17901"], codi, escuts) +
     `<article class="fitxa"><h3>☎️ Incidents del 112 · ${esc(NOMS_MUN[codi])}</h3>` +

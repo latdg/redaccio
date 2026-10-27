@@ -1074,7 +1074,8 @@ function plegaNovetats(sec) {
       (vells.length ? `<details class="anteriors"><summary>Anteriors (${vells.length})</summary>${vells.map(x => `<div class="item">${x}</div>`).join("")}</details>` : "") +
       `</div>`;
   }).join("");
-  cos.innerHTML = (introText ? `<p class="pob" style="margin:4px 0 0">${esc(introText.replace(/:\s*$/, ""))}</p>` : "") +
+  // 27.10.2026: a la premsa local no es posa «(últimes 48 hores)»: «Anteriors» arriba a una setmana enrere.
+  cos.innerHTML = (introText && tipus !== "premsa" ? `<p class="pob" style="margin:4px 0 0">${esc(introText.replace(/:\s*$/, ""))}</p>` : "") +
     `<p class="pista-plega">${totalNous ? `${totalNous} ${totalNous === 1 ? "novetat" : "novetats"} respecte al dia anterior. ` : "Cap novetat respecte al dia anterior. "}La resta, a «Anteriors».</p>` + html;
   if (typeof normalitzaDates === "function") normalitzaDates(cos);
 }

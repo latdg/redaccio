@@ -1,4 +1,7 @@
-# Escuts dels clubs (27.10.2026)
-https://latdg-fcf.ignasicorney.workers.dev/?tipus=classificacio&grupId=58161863
-https://latdg-fcf.ignasicorney.workers.dev/?tipus=partidos&grupId=58161863
-https://www.feb.es/segundafeb/Inicio.aspx?tabid=5
+# On són les imatges dels escuts de la FCF (27.10.2026)
+https://files.fcf.cat/escudos/clubes/escudos/00100_0000654695_begur_200x200.png
+https://files.fcf.cat/escudos/00100_0000654695_begur_200x200.png
+https://www.fcf.cat/files/escudos/00100_0000654695_begur_200x200.png
+https://files.fcf.cat/escudos/clubes/00100_0000654695_begur_200x200.png
+https://www.fcf.cat/club/2026-2027/5057
+https://www.feb.es/segundafeb/Inicio.aspx?tabid=4

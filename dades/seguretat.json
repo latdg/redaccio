@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-27T06:00:24+00:00",
+ "generat": "2026-10-27T06:17:32+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -720,6 +720,305 @@
     "detencions": 0
    }
   ],
+  "darrerMesDetall": [
+   {
+    "tipus": "Furt",
+    "coneguts": 88,
+    "resolts": 7,
+    "detencions": 0,
+    "abans": 108,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Robatori amb força",
+    "coneguts": 48,
+    "resolts": 11,
+    "detencions": 9,
+    "abans": 54,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Danys",
+    "coneguts": 35,
+    "resolts": 7,
+    "detencions": 1,
+    "abans": 45,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Lesions",
+    "coneguts": 28,
+    "resolts": 26,
+    "detencions": 5,
+    "abans": 34,
+    "titol": "De les lesions"
+   },
+   {
+    "tipus": "Conduir sota els efectes d'alcohol i drogues",
+    "coneguts": 27,
+    "resolts": 25,
+    "detencions": 1,
+    "abans": 15,
+    "titol": "Delictes contra la seguretat viària"
+   },
+   {
+    "tipus": "Conduir sense permís",
+    "coneguts": 24,
+    "resolts": 21,
+    "detencions": 0,
+    "abans": 15,
+    "titol": "Delictes contra la seguretat viària"
+   },
+   {
+    "tipus": "Estafes",
+    "coneguts": 20,
+    "resolts": 6,
+    "detencions": 4,
+    "abans": 24,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Robatori amb força interior vehicle",
+    "coneguts": 16,
+    "resolts": 2,
+    "detencions": 1,
+    "abans": 25,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Amenaces",
+    "coneguts": 14,
+    "resolts": 16,
+    "detencions": 4,
+    "abans": 15,
+    "titol": "Delictes contra la llibertat"
+   },
+   {
+    "tipus": "Robatori amb violència i/o intimidació",
+    "coneguts": 10,
+    "resolts": 9,
+    "detencions": 10,
+    "abans": 10,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Coaccions",
+    "coneguts": 8,
+    "resolts": 5,
+    "detencions": 0,
+    "abans": 4,
+    "titol": "Delictes contra la llibertat"
+   },
+   {
+    "tipus": "Apropiació indeguda",
+    "coneguts": 4,
+    "resolts": 3,
+    "detencions": 0,
+    "abans": 3,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Negativa a sotmetre's a les proves",
+    "coneguts": 4,
+    "resolts": 3,
+    "detencions": 0,
+    "abans": 1,
+    "titol": "Delictes contra la seguretat viària"
+   },
+   {
+    "tipus": "Contra els drets i deures familiars",
+    "coneguts": 4,
+    "resolts": 2,
+    "detencions": 0,
+    "abans": 3,
+    "titol": "Delictes contra les relacions familiars"
+   },
+   {
+    "tipus": "Contra la salut pública",
+    "coneguts": 3,
+    "resolts": 3,
+    "detencions": 3,
+    "abans": 4,
+    "titol": "Dels delictes contra la seguretat col·lectiva"
+   },
+   {
+    "tipus": "Robatori i furt d'us de vehicle",
+    "coneguts": 3,
+    "resolts": 1,
+    "detencions": 2,
+    "abans": 5,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Trencament de condemna",
+    "coneguts": 3,
+    "resolts": 3,
+    "detencions": 2,
+    "abans": 1,
+    "titol": "Delictes contra l'Administració de justícia"
+   },
+   {
+    "tipus": "Altres delictes contra l'ordre públic",
+    "coneguts": 3,
+    "resolts": 2,
+    "detencions": 1,
+    "abans": 9,
+    "titol": "Delictes contra l'ordre públic"
+   },
+   {
+    "tipus": "De la usurpació de l'estat civil",
+    "coneguts": 2,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "De les falsedats"
+   },
+   {
+    "tipus": "Falsificació de moneda i efectes timbrats",
+    "coneguts": 2,
+    "resolts": 1,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "De les falsedats"
+   },
+   {
+    "tipus": "Falsedats documentals",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 1,
+    "abans": 3,
+    "titol": "De les falsedats"
+   },
+   {
+    "tipus": "Conducció temerària",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 1,
+    "abans": 1,
+    "titol": "Delictes contra la seguretat viària"
+   },
+   {
+    "tipus": "Receptació i altres conductes afins",
+    "coneguts": 1,
+    "resolts": 0,
+    "detencions": 1,
+    "abans": 0,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Obstrucció a la justícia i deslleialtat professional",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 1,
+    "abans": 0,
+    "titol": "Delictes contra l'Administració de justícia"
+   },
+   {
+    "tipus": "Ocupació immobles",
+    "coneguts": 1,
+    "resolts": 2,
+    "detencions": 0,
+    "abans": 7,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Agressions sexuals i Abusos sexuals",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 0,
+    "abans": 3,
+    "titol": "Delictes contra la llibertat i la indemnitat sexuals"
+   },
+   {
+    "tipus": "Usurpació de funcions públiques i intrusisme",
+    "coneguts": 1,
+    "resolts": 2,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "De les falsedats"
+   },
+   {
+    "tipus": "Propietat industrial",
+    "coneguts": 1,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Usurpació",
+    "coneguts": 1,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Realització arbitrària del propi dret",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra l'Administració de justícia"
+   },
+   {
+    "tipus": "Injúria",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra l’honor"
+   },
+   {
+    "tipus": "Exhibicionisme i provocació sexual",
+    "coneguts": 1,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra la llibertat i la indemnitat sexuals"
+   },
+   {
+    "tipus": "Relatius a la prostitució",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra la llibertat i la indemnitat sexuals"
+   },
+   {
+    "tipus": "Abandonament lloc accident",
+    "coneguts": 1,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra la seguretat viària"
+   },
+   {
+    "tipus": "Descobriment i revelació de secrets",
+    "coneguts": 0,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 1,
+    "titol": "Delictes contra la intimitat, el dret a la pròpia imatge i la inviolabilitat del domicili"
+   },
+   {
+    "tipus": "Entrada a vivenda aliena",
+    "coneguts": 0,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 1,
+    "titol": "Delictes contra la intimitat, el dret a la pròpia imatge i la inviolabilitat del domicili"
+   },
+   {
+    "tipus": "Protecció de la flora, fauna i animals domèstics",
+    "coneguts": 0,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 1,
+    "titol": "Dels delictes relatius a l’ordenació del territori i l’urbanisme, la protecció del patrimoni històric i el medi ambient"
+   }
+  ],
+  "mesAnyAnterior": "2025-09",
   "resolts12": 1796,
   "detencions12": 614,
   "serieDetencions": [

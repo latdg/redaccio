@@ -815,7 +815,8 @@ async function carregaResum(dia) {
     if (!blocs.length) throw new Error("sense apartats");
     // 27.10.2026: per saber què és nou, els enllaços del resum del dia anterior.
     DIA_RESUM = dia;
-    CLAUS_ABANS = await clausDiaAnterior(dia);
+    [CLAUS_ABANS, HIST_PREMSA, TAULER_GAV] = await Promise.all([
+      clausDiaAnterior(dia), historicPremsa(dia), obtenir("dades/tauler-gavarres.json").catch(() => null)]);
 
     // Es treuen els blocs del resum, però no els propis del panell.
     Array.from(cont.children).forEach(c => { if (!propis.includes(c.id)) c.remove(); });
@@ -891,7 +892,10 @@ async function carregaResum(dia) {
         enllacarTextos(cos);
         if (/^CONTRACTACI/i.test(b.titol)) { contractacioEnTargetes(cos); contractacioAny(sec); }
         // 27.10.2026: premsa local, webs de les administracions i taulers: novetats a la vista, la resta plegada.
-        if (BLOCS_NOVETATS.some(rx => rx.test(b.titol))) { try { plegaNovetats(sec); } catch (err) { console.error(err); } }
+        if (BLOCS_NOVETATS.some(rx => rx.test(b.titol))) {
+          sec.dataset.novetats = /^PREMSA/i.test(b.titol) ? "premsa" : /^TAULER/i.test(b.titol) ? "taulers" : "web";
+          try { plegaNovetats(sec); } catch (err) { console.error(err); }
+        }
       }
       cont.appendChild(sec);
 
@@ -961,7 +965,8 @@ async function clausDiaAnterior(dia) {
 function esNou(item) {
   const d = DIA_RESUM.split("-").reverse().join(".");   // 2026-10-27 → 27.10.2026
   // Les actes del Ple no vénen del resum (no hi són mai el dia anterior): noves, només si són del dia.
-  if (CLAUS_ABANS && !/Acta del Ple/.test(item)) return !CLAUS_ABANS.has(clauItem(item));
+  // També l'e-tauler del Consorci de les Gavarres (ve d'un altre fitxer): per data.
+  if (CLAUS_ABANS && !/Acta del Ple|idEns=9813510007/.test(item)) return !CLAUS_ABANS.has(clauItem(item));
   return !!d && item.includes(d);
 }
 function partsGrup(html) {
@@ -992,6 +997,35 @@ const LOGOS_MITJANS = [
   [/tv\s*costa\s*brava/, "tv-costa-brava.png"], [/aguait/, "laguait.png"], [/radio\s*capital/, "radio-capital.png"],
   [/diari\s*de\s*girona/, "diari-de-girona.png"], [/gerio/, "gerio.png"], [/punt\s*avui/, "el-punt-avui.png"],
 ];
+// 27.10.2026: blocs 3 i 4, sempre en aquest ordre: la Bisbal, Forallac, Corçà, Cruïlles, Monells i
+// Sant Sadurní de l'Heura, el Consell Comarcal i el Consorci de les Gavarres.
+const ORDRE_ADMINS = ["17022", "17902", "17057", "17901", "ccbe", "gavarres"];
+const rangAdmin = nom => { const i = ORDRE_ADMINS.indexOf(codiPerNom(nom)); return i < 0 ? 99 : i; };
+// Els taulers dels municipis porten «Ajuntament de…», com a l'espai web.
+const nomAdmin = nom => {
+  const c = codiPerNom(nom);
+  return ["17022", "17057", "17902", "17901"].includes(c) && !/^ajuntament/i.test(nom) ? "Ajuntament de " + NOMS_MUN[c] : nom;
+};
+let TAULER_GAV = null, HIST_PREMSA = null;
+// Bloc 1: les notícies dels dies anteriors (fins a sis), per mitjà, per tenir-les a «Anteriors».
+async function historicPremsa(dia) {
+  const per = {};
+  try {
+    const dies = (await obtenir("dades/dies.json")).filter(x => x < dia).sort().reverse().slice(0, 6);
+    for (const d of dies) {
+      try {
+        const doc = new DOMParser().parseFromString(await obtenir(`dades/${d}/resum.html`, "text"), "text/html");
+        const b = blocsDelResum(doc.body).find(x => /^PREMSA LOCAL/i.test(x.titol));
+        if (!b) continue;
+        const div = document.createElement("div");
+        b.nodes.forEach(n => div.appendChild(document.importNode(n, true)));
+        enllacarTextos(div);
+        grupsDelText(div.innerHTML).grups.forEach(g => (per[g.nom] = per[g.nom] || []).push(...g.items));
+      } catch (e) {}
+    }
+  } catch (e) {}
+  return per;
+}
 function marcaGrup(nom) {
   nom = String(nom || "").replace(/Sant Sadurní(?! de l'Heura)/, "Sant Sadurní de l'Heura");   // el nom, sempre sencer
   const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -1004,16 +1038,34 @@ function plegaNovetats(sec) {
   const cos = sec.querySelector(".cos");
   if (!cos) return;
   if (cos._original === undefined) cos._original = cos.innerHTML;
+  const tipus = sec.dataset.novetats || "";
   const { intro, grups } = grupsDelText(cos._original);
   if (!grups.length) return;   // format desconegut: es deixa com estava
+  // Taulers: «Ajuntament de…» i, si el resum no el porta, l'e-tauler del Consorci de les Gavarres.
+  if (tipus === "taulers") {
+    grups.forEach(g => g.nom = nomAdmin(g.nom));
+    // (només al resum del dia en què s'ha llegit l'e-tauler, no en dies antics)
+    if (TAULER_GAV && TAULER_GAV.items && String(TAULER_GAV.generat || "").slice(0, 10) === DIA_RESUM && !grups.some(g => codiPerNom(g.nom) === "gavarres"))
+      grups.push({ nom: "Consorci de les Gavarres", items: TAULER_GAV.items.map(x =>
+        `▪ <a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.titol)}</a>${x.data ? ` (${x.data.split("-").reverse().join(".")})` : ""}`) });
+  }
+  if (tipus === "taulers" || tipus === "web") grups.sort((a, b) => rangAdmin(a.nom) - rangAdmin(b.nom));
+  // Premsa local: també els mitjans que avui no hi surten però sí els dies anteriors.
+  if (tipus === "premsa" && HIST_PREMSA) Object.keys(HIST_PREMSA).forEach(n => { if (!grups.some(g => g.nom === n)) grups.push({ nom: n, items: [] }); });
   const introText = intro.replace(/<[^>]+>/g, "").trim();
   let totalNous = 0;
   const html = grups.map(g => {
     const nous = g.items.filter(esNou), vells = g.items.filter(x => !esNou(x));
+    // Premsa local: a «Anteriors», també les notícies dels sis dies anteriors (sense repetir-ne cap).
+    if (tipus === "premsa" && HIST_PREMSA && HIST_PREMSA[g.nom]) {
+      const vistes = new Set(g.items.map(clauItem));
+      HIST_PREMSA[g.nom].forEach(x => { const k = clauItem(x); if (!vistes.has(k)) { vistes.add(k); vells.push(x); } });
+    }
+    g.total = nous.length + vells.length;
     totalNous += nous.length;
     return `<div class="grup-nov${nous.length ? "" : " sense-nou"}"><div class="cap"><span class="nom-grup">${marcaGrup(g.nom)}</span>` +
       `<span>${nous.length ? `<span class="tdg-boleta-avui"></span>${nous.length} ${nous.length === 1 ? "novetat" : "novetats"}` : "Sense novetats"}` +
-      `${g.items.length ? ` · ${g.items.length} en total` : ""}</span></div>` +
+      `${g.total ? ` · ${g.total} en total` : ""}</span></div>` +
       nous.map(x => `<div class="item">${x}</div>`).join("") +
       (vells.length ? `<details class="anteriors"><summary>Anteriors (${vells.length})</summary>${vells.map(x => `<div class="item">${x}</div>`).join("")}</details>` : "") +
       `</div>`;

@@ -1260,7 +1260,7 @@ function carregaEscuts() {
   return ESCUTS_P;
 }
 const NOMS_MUN = { "17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura" };
-const NOMS_CURTS_MUN = { "17022": "la Bisbal", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i SSH" };
+const NOMS_CURTS_MUN = { "17022": "la Bisbal", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura" };
 function triadorMun(codis, actiu, escuts) {
   return `<div class="tria-mun">` + codis.map(c => `<button type="button" data-mun="${c}" class="${c === actiu ? "actiu" : ""}">` +
     (escuts[c] ? `<img src="escuts/${escuts[c].local || c + ".svg"}" alt="">` : `<span class="sense-escut"></span>`) + esc(NOMS_CURTS_MUN[c] || c) + `</button>`).join("") + `</div>`;

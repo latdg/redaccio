@@ -230,6 +230,18 @@ def escoles():
         c["nens"] += num(x.get("matr_cules_homes")) or 0
         c["unitats"] += num(x.get("unitats")) or 0
         c["estudis"][x.get("nom_estudis") or "Altres"] += n
+    # 27.10.2026: els centres de cada curs, per poder-los consultar any a any.
+    per_curs = defaultdict(dict)
+    for x in mat:
+        k = x.get("codi_centre")
+        c = per_curs[x.get("curs")].setdefault(k, {"nom": x.get("denominaci_completa"), "mun": x.get("codi_municipi_5"),
+                                                    "naturalesa": x.get("nom_naturalesa"), "alumnes": 0, "unitats": 0, "estudis": Counter()})
+        n = num(x.get("matr_cules_total")) or 0
+        c["alumnes"] += n
+        c["unitats"] += num(x.get("unitats")) or 0
+        c["estudis"][x.get("nom_estudis") or "Altres"] += n
+    centres_cursos = {cu: sorted(({**c, "estudis": c["estudis"].most_common()} for c in cs.values()), key=lambda z: (z["mun"], -z["alumnes"]))
+                      for cu, cs in sorted(per_curs.items()) if cu}
     # Evolució dels alumnes per municipi (tots els cursos)
     evol = defaultdict(Counter)
     for x in mat:
@@ -238,22 +250,27 @@ def escoles():
     cursos_p = sorted({x.get("curs") for x in pre if x.get("curs")})
     curs_p = cursos_p[-1] if cursos_p else None
     preins = []
+    preins_cursos = defaultdict(list)   # 27.10.2026: la preinscripció de cada curs (només els cursos d'entrada)
     camps_num = set()
     for x in pre:
-        if x.get("curs") != curs_p:
-            continue
         fila = {"centre": x.get("denominaci_completa"), "codi": x.get("codi_centre"), "mun": x.get("codi_municipi_5"),
                 "naturalesa": x.get("nom_naturalesa"), "ensenyament": x.get("nom_ensenyament"), "nivell": x.get("nivell")}
         for k, v in x.items():
             if k.startswith(("oferta", "places", "assignacions", "sol", "demanda", "peticions", "vacants")):
                 fila[k] = num(v)
                 camps_num.add(k)
+        if x.get("curs") and fila["nivell"] == "1" and (fila.get("oferta_inicial_places") or fila.get("assignacions")):
+            preins_cursos[x.get("curs")].append({k: fila.get(k) for k in ("centre", "mun", "ensenyament", "nivell",
+                                                 "oferta_inicial_places", "assignacions", "assignacions_1a_peticio")})
+        if x.get("curs") != curs_p:
+            continue
         preins.append(fila)
     return {"actualitzatMatricula": actualitzat("xvme-26kg"), "actualitzatPreinscripcio": actualitzat("99md-r3rq"),
             "curs": curs, "cursPreinscripcio": curs_p,
             "centres": sorted(({**c, "estudis": c["estudis"].most_common()} for c in centres.values()), key=lambda z: (z["mun"], -z["alumnes"])),
             "evolucio": {m: [[k, v] for k, v in sorted(c.items())] for m, c in evol.items()},
-            "preinscripcio": preins, "campsPreinscripcio": sorted(camps_num)}
+            "preinscripcio": preins, "campsPreinscripcio": sorted(camps_num),
+            "centresCursos": centres_cursos, "preinscripcioCursos": dict(sorted(preins_cursos.items()))}
 
 
 def main():

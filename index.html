@@ -1384,10 +1384,12 @@ function taulaTipus(tipus, n = 10, extra = null) {
     tipus.filter(t => t.n || t.abans).slice(0, n).map(t => `<tr><td style="white-space:normal;min-width:150px">${esc(t.tipus)}</td><td class="n"><b>${nCa(t.n)}</b></td><td class="n">${nCa(t.abans)}</td><td class="n">${variacio(t.n, t.abans)}</td>${extra ? extra.fila(t) : ""}</tr>`).join("") +
     `</tbody></table></div>`;
 }
-async function pintaSeguretat(codi) {
+// 27.10.2026: un selector per al 112 i un altre per als Bombers, cadascun damunt la seva fitxa.
+async function pintaSeguretat(codi, codiB = codi) {
   const el = document.getElementById("seguretat");
   const escuts = await carregaEscuts();
-  const f = SEG.fetsPenals, b = SEG.bombers.municipis[codi], e = SEG.e112.municipis[codi];
+  const f = SEG.fetsPenals, b = SEG.bombers.municipis[codiB], e = SEG.e112.municipis[codi];
+  const MUNS_SEG = ["17022", "17057", "17902", "17901"];
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🚨 ") + TITOL_SEG}</h2>` +
     `<p class="font">Revisat el ${dataIso(SEG.generat)} · Font: dades obertes de la Generalitat (Mossos d'Esquadra, Bombers i CAT112)</p>` +
     `<article class="fitxa"><h3>👮 Fets penals · ${esc(f.abp)}</h3>` +
@@ -1411,14 +1413,15 @@ async function pintaSeguretat(codi) {
       `<h4>Fets coneguts cada mes</h4>${serieBarres(f.serie)}` +
       `<h4>Per tipus de fet (12 mesos)</h4>${taulaTipus(f.tipus, 12, { cap: '<th class="n">Detencions</th>', fila: t => `<td class="n">${nCa(t.detencions)}</td>` })}` +
     `</article>` +
-    `<h4 style="margin-top:16px">112 i Bombers per municipi</h4>` + triadorMun(["17022", "17057", "17902", "17901"], codi, escuts) +
+    `<h4 style="margin-top:16px">Incidents del 112 per municipi</h4><div data-sel="112">` + triadorMun(MUNS_SEG, codi, escuts) + `</div>` +
     `<article class="fitxa"><h3>☎️ Incidents del 112 · ${esc(NOMS_MUN[codi])}</h3>` +
       (e && e.serie.length ? `<p class="pob">${periodeCa(e.periode)}</p>` +
         `<div class="xifres"><div class="xifra"><div class="etq">Incidents</div><div class="val">${nCa(e.total12)}</div><div class="det">${variacio(e.total12, e.totalAbans12)} (abans, ${nCa(e.totalAbans12)})</div></div></div>` +
         `${serieBarres(e.serie)}<h4>Per tipus</h4>${taulaTipus(e.tipus, 12)}`
         : '<p class="buit">No hi ha incidents registrats.</p>') +
     `</article>` +
-    `<article class="fitxa"><h3>🚒 Actuacions dels Bombers · ${esc(NOMS_MUN[codi])}</h3>` +
+    `<h4 style="margin-top:16px" id="segBombers">Actuacions dels Bombers per municipi</h4><div data-sel="bombers">` + triadorMun(MUNS_SEG, codiB, escuts) + `</div>` +
+    `<article class="fitxa"><h3>🚒 Actuacions dels Bombers · ${esc(NOMS_MUN[codiB])}</h3>` +
       (b && b.serie.length ? `<p class="pob">${periodeCa(b.periode)}</p>` +
         `<div class="xifres"><div class="xifra"><div class="etq">Actuacions</div><div class="val">${nCa(b.total12)}</div><div class="det">${variacio(b.total12, b.totalAbans12)} (abans, ${nCa(b.totalAbans12)})</div></div>` +
         `<div class="xifra"><div class="etq">Urgents</div><div class="val">${nCa(b.urgents12)}</div><div class="det">la resta són activitats no urgents (prevenció, rutes…)</div></div></div>` +
@@ -1431,7 +1434,12 @@ async function pintaSeguretat(codi) {
     `</article>` +
     `<p class="nota" style="color:#6b6b66;font-size:.85rem">«Var.»: variació respecte als 12 mesos anteriors (en vermell, si puja). Les barres grises de les gràfiques són l'any anterior. ` +
     `Els fets penals són els que coneixen els Mossos (denúncies i actuacions pròpies), no tots els que passen. Els incidents del 112 són els operatius gestionats per la central, no totes les trucades.</p>`;
-  el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaSeguretat(x.dataset.mun));
+  el.querySelectorAll('[data-sel="112"] .tria-mun button').forEach(x => x.onclick = () => pintaSeguretat(x.dataset.mun, codiB));
+  el.querySelectorAll('[data-sel="bombers"] .tria-mun button').forEach(x => x.onclick = async () => {
+    await pintaSeguretat(codi, x.dataset.mun);
+    // Que el canvi no faci saltar la pàgina: es torna al selector dels Bombers.
+    const t = document.getElementById("segBombers"); if (t) t.scrollIntoView({ block: "start" });
+  });
 }
 async function carregaSeguretat() {
   const el = document.getElementById("seguretat");
@@ -1463,7 +1471,9 @@ async function pintaOb(id, emoji, titol, font, codi, cos) {
   const escuts = await carregaEscuts();
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : emoji + " ") + titol}</h2>` +
     `<p class="font">Revisat el ${dataIso(OB.generat)} · Font: ${font}</p>` + triadorMun(MUNS4, codi, escuts) + cos(codi);
-  el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaOb(id, emoji, titol, font, x.dataset.mun, cos));
+  el.querySelectorAll(".tria-mun button[data-mun]").forEach(x => x.onclick = () => pintaOb(id, emoji, titol, font, x.dataset.mun, cos));
+  // 27.10.2026: botons de curs (escoles): canvien el curs i mantenen el municipi.
+  el.querySelectorAll("button[data-curs]").forEach(x => x.onclick = () => { ESC_CURS = x.dataset.curs; pintaOb(id, emoji, titol, font, codi, cos); });
   if (typeof normalitzaDates === "function") normalitzaDates(el);
 }
 
@@ -1534,19 +1544,30 @@ function cosResidus(codi) {
 }
 
 // --- Escoles ---
+// 27.10.2026: any a any. Botons amb els cursos; per defecte, el darrer.
+let ESC_CURS = null;
 function cosEscoles(codi) {
-  const e = OB.escoles, cen = (e.centres || []).filter(c => c.mun === codi), ev = (e.evolucio || {})[codi] || [];
-  const pre = (e.preinscripcio || []).filter(x => x.mun === codi && x.oferta_inicial_places);
+  const e = OB.escoles, ev = (e.evolucio || {})[codi] || [];
+  const cursos = Object.keys(e.centresCursos || {}).sort();
+  const sel = cursos.includes(ESC_CURS) ? ESC_CURS : (cursos[cursos.length - 1] || e.curs);
+  const cen = (e.centresCursos && e.centresCursos[sel] ? e.centresCursos[sel] : (sel === e.curs ? e.centres || [] : [])).filter(c => c.mun === codi);
+  const pre = (e.preinscripcioCursos && e.preinscripcioCursos[sel]
+    ? e.preinscripcioCursos[sel]
+    : (sel === e.cursPreinscripcio ? (e.preinscripcio || []).filter(x => x.nivell === "1" && (x.oferta_inicial_places || x.assignacions)) : [])).filter(x => x.mun === codi && x.oferta_inicial_places);
   const curt = t => String(t || "").replace(/^Educació infantil: /, "").replace("Educació primària", "Primària").replace("Educació secundària obligatòria", "ESO");
   const nivell = x => /Parvulari/.test(x.ensenyament) ? "P" + (Number(x.nivell) + 2) : /primària/.test(x.ensenyament) ? x.nivell + "r de primària" : x.nivell + "r d'ESO";
-  return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])} · curs ${esc(e.curs || "—")}</h3><div class="xifres">` +
+  // 27.10.2026: els cursos, amb guionet («Curs 2025-2026»), no amb barra.
+  const cursCa = c => String(c || "—").replace(/\//g, "-");
+  const triaCurs = cursos.length > 1 ? `<div class="tria-mun" style="margin-top:0">` + cursos.slice().reverse().map(c =>
+    `<button type="button" data-curs="${esc(c)}" class="${c === sel ? "actiu" : ""}" style="padding:4px 10px">${esc(cursCa(c))}</button>`).join("") + `</div>` : "";
+  return triaCurs + `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])} · Curs ${esc(cursCa(sel))}</h3><div class="xifres">` +
     `<div class="xifra"><div class="etq">Alumnes matriculats</div><div class="val">${nCa(cen.reduce((a, c) => a + c.alumnes, 0))}</div><div class="det">${cen.length} centres</div></div></div>` +
     `<div class="taula"><table><thead><tr><th>Centre</th><th>Tipus</th><th class="n">Alumnes</th><th class="n">Grups</th><th>Estudis</th></tr></thead><tbody>` +
     cen.map(c => `<tr><td style="white-space:normal;min-width:160px"><b>${esc(c.nom)}</b></td><td>${esc(c.naturalesa || "")}</td><td class="n">${nCa(c.alumnes)}</td><td class="n">${nCa(c.unitats)}</td>` +
       `<td style="white-space:normal;font-size:.8rem">${c.estudis.map(([k, v]) => esc(majuscula(k.toLowerCase())) + " (" + nCa(v) + ")").join(", ")}</td></tr>`).join("") + `</tbody></table></div>` +
-    (ev.length ? `<h4>Alumnes de tot el municipi, curs a curs</h4>${serieAnysOb(ev.map(([k, v]) => [k, v]))}` : "") +
-    (pre.length ? `<h4>Preinscripció del curs ${esc(e.cursPreinscripcio)} (cursos d'entrada)</h4><div class="taula"><table><thead><tr><th>Centre</th><th>Curs</th><th class="n">Places</th><th class="n">Assignades</th><th class="n">En 1a opció</th></tr></thead><tbody>` +
-      pre.filter(x => x.nivell === "1" && (x.oferta_inicial_places || x.assignacions)).map(x =>
+    (ev.length ? `<h4>Alumnes de tot el municipi, curs a curs</h4>${serieAnysOb(ev.map(([k, v]) => [cursCa(k), v]))}` : "") +
+    (pre.length ? `<h4>Preinscripció del curs ${esc(cursCa(sel))} (cursos d'entrada)</h4><div class="taula"><table><thead><tr><th>Centre</th><th>Curs</th><th class="n">Places</th><th class="n">Assignades</th><th class="n">En 1a opció</th></tr></thead><tbody>` +
+      pre.map(x =>
         `<tr><td style="white-space:normal">${esc(x.centre)}</td><td>${esc(nivell(x))}</td><td class="n">${nCa(x.oferta_inicial_places)}</td><td class="n">${nCa(x.assignacions)}</td><td class="n">${nCa(x.assignacions_1a_peticio)}</td></tr>`).join("") +
       `</tbody></table></div>` : "") + `</article>` +
     notaOb("Departament d'Educació: matrícula per centre i resultats de la preinscripció. Places: l'oferta inicial de cada centre; «Assignades», els alumnes que hi van obtenir plaça; «En 1a opció», els alumnes que hi van entrar com a primera tria. Les llars d'infants municipals hi surten si consten al registre del Departament.");

@@ -52,7 +52,12 @@ def main():
         r.raise_for_status()
         arrel = ET.fromstring(r.content)
         pagina = arrel.findall(".//item")
+        # Registre: quants anuncis porta la pàgina i les dates dels primers (per veure-ho al workflow).
+        print(f"Pàgina {p}: {len(pagina)} anuncis; primeres dates: {[str(data_item(x)) for x in pagina[:5]]}")
+        if p == 1 and pagina:
+            print("Primer anunci tal com arriba:", ET.tostring(pagina[0], encoding="unicode")[:800])
         if not pagina:
+            print("Començament de la resposta:", r.text[:500])
             break
         antics = 0
         for it in pagina:

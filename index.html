@@ -375,10 +375,20 @@ async function contractacioAny(sec) {
   const totalAny = totes.reduce((s, x) => s + (x.import || 0), 0);
   const norm = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
+  // 27.10.2026: una fitxa plegada per municipi i per organisme (com el bloc 14),
+  // amb l'escut o l'isotip. En obrir-ne una, s'hi veuen els seus contractes.
   const cos = sec.querySelector(".cos");
-  cos.innerHTML = '<div class="sv-xifres"></div><div class="sv-eines"></div><div class="tg-llista"></div><div class="sv-mesc"></div><p class="sv-nota"></p>';
-  const xifres = cos.querySelector(".sv-xifres"), eines = cos.querySelector(".sv-eines"),
-        llista = cos.querySelector(".tg-llista"), mesc = cos.querySelector(".sv-mesc"), nota = cos.querySelector(".sv-nota");
+  const ordreEns = Object.keys(perMun).sort((a, b) => rangEns(a) - rangEns(b) || perMun[b].n - perMun[a].n);
+  cos.innerHTML = `<p style="margin:4px 0 0">Aquest any, <b>${totes.length}</b> contractes per valor de <b>${eurosCurt(totalAny)}</b>.</p>` + PISTA_PLEGA +
+    ordreEns.map(m => fitxaPlegadaEns(m, `${perMun[m].n} contractes · ${eurosCurt(perMun[m].total)}`)).join("") +
+    `<p class="sv-nota">Font: Plataforma de Serveis de Contractació Pública (dades obertes de la Generalitat). Anuncis, adjudicacions, formalitzacions i contractes menors publicats des de l'1 de gener.` +
+    (d.complet === false ? " Atenció: a la darrera actualització alguna consulta va fallar i pot faltar algun contracte." : "") + `</p>`;
+  activaEns(cos, (mun, caixa) => contractesEns(mun, caixa));
+
+  function contractesEns(mun, caixa) {
+  const ESTAT = { mun, organ: "", vista: "recents", text: "", limit: 60 };
+  caixa.innerHTML = '<div class="sv-eines"></div><div class="tg-llista"></div><div class="sv-mesc"></div>';
+  const eines = caixa.querySelector(".sv-eines"), llista = caixa.querySelector(".tg-llista"), mesc = caixa.querySelector(".sv-mesc");
 
   function filtra() {
     const t = norm(ESTAT.text);
@@ -428,23 +438,20 @@ async function contractacioAny(sec) {
     if (m) m.onclick = () => { ESTAT.limit += 60; pintaLlista(); };
   }
 
-  function pinta(xif = true) {
-    if (xif) xifres.innerHTML =
-      `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Tot l'any</span><span class="val">${totes.length} contractes</span><span class="det">${eurosCurt(totalAny)}</span></button>` +
-      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${perMun[m].n} contractes</span><span class="det">${eurosCurt(perMun[m].total)}</span></button>`).join("");
+  function pinta() {
     pintaEines();
     pintaLlista();
-    nota.textContent = "Font: Plataforma de Serveis de Contractació Pública (dades obertes de la Generalitat). Anuncis, adjudicacions, formalitzacions i contractes menors publicats des de l'1 de gener. Clica un municipi o un organisme per filtrar." +
-      (d.complet === false ? " Atenció: a la darrera actualització alguna consulta va fallar i pot faltar algun contracte." : "");
   }
 
-  cos.addEventListener("click", e => {
+  eines.addEventListener("click", e => {
     const b = e.target.closest("button");
-    if (!b || b.classList.contains("sv-mes")) return;
-    if (b.dataset.vista) { ESTAT.vista = b.dataset.vista; ESTAT.limit = 60; pinta(false); }
-    else if (b.dataset.mun !== undefined) { ESTAT.mun = ESTAT.mun === b.dataset.mun ? "" : b.dataset.mun; ESTAT.limit = 60; pinta(); }
+    if (!b || !b.dataset.vista) return;
+    ESTAT.vista = b.dataset.vista; ESTAT.limit = 60; pinta();
   });
+  // Si no n'hi ha cap en els últims 15 dies, s'obre directament amb tot l'any.
+  if (!totes.some(x => x.municipi === mun && diesDes(x.dataObj) <= 15)) ESTAT.vista = "any";
   pinta();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -533,23 +540,18 @@ function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
     entitats: { nom: "Rebudes per entitats del municipi", curt: "Rebuda per una entitat", ico: "🤝" }
   };
 
-  const ESTAT = { tipus: "rep", mun: "", vista: "ultimes", text: "" };
-
-  // CANVI 21.10.2026: cercador (concepte, qui atorga, qui rep). Va en un
-  // contenidor a part perquè no es redibuixi mentre s'hi escriu.
-  cos.innerHTML = '<div class="sv-eines sv-tipus"></div><div class="sv-xifres"></div><div class="sv-eines sv-vista"></div>' +
-    '<div class="sv-eines sv-cerca"><input type="search" placeholder="Cerca (concepte, qui atorga, qui rep…)" aria-label="Cerca"></div>' +
-    '<div class="tg-llista"></div><p class="sv-nota"></p>';
-  cos.querySelector(".sv-cerca input").addEventListener("input", e => { ESTAT.text = e.target.value; pinta(); });
-  const tipusEl = cos.querySelector(".sv-tipus"), xifres = cos.querySelector(".sv-xifres"), eines = cos.querySelector(".sv-vista"),
-        llista = cos.querySelector(".tg-llista"), nota = cos.querySelector(".sv-nota");
+  // 27.10.2026: la tria del tipus, a dalt; després, una fitxa plegada per municipi i
+  // organisme (escut o isotip, total i nombre). En obrir-ne una, s'hi veuen les seves.
+  const ESTAT = { tipus: "rep" };
+  cos.innerHTML = '<div class="sv-eines sv-tipus"></div><div class="sv-plegs"></div><p class="sv-nota"></p>';
+  const tipusEl = cos.querySelector(".sv-tipus"), plegs = cos.querySelector(".sv-plegs"), nota = cos.querySelector(".sv-nota");
+  nota.textContent = "Fonts: Base de Datos Nacional de Subvenciones (BDNS) i Registre d'ajuts i subvencions de Catalunya (RAISC). «Rebudes per l'administració»: l'ajuntament o l'ens les rep d'una altra administració. «Atorgades»: les dona ell mateix (a associacions, clubs, entitats...). «Entitats del municipi»: les reben entitats locals d'altres administracions.";
 
   function pinta() {
     tipusEl.innerHTML = Object.keys(TIPUS).map(k => {
       const n = totes.filter(x => x.tipus === k).length;
       return `<button type="button" data-tipus="${k}" class="${ESTAT.tipus === k ? "actiu" : ""}">${TIPUS[k].ico} ${TIPUS[k].nom} · ${n}</button>`;
     }).join("");
-
     const delTipus = totes.filter(x => x.tipus === ESTAT.tipus);
     const municipis = {};
     delTipus.forEach(x => {
@@ -557,41 +559,52 @@ function subvencionsEnTargetes(cos, nodesBdns, nodesRaisc) {
       m.total += x.imp; m.n++;
       if (x.data && (!m.darrera || x.data > m.darrera)) m.darrera = x.data;
     });
-    if (ESTAT.mun && !municipis[ESTAT.mun]) ESTAT.mun = "";
-    const ordreMun = Object.keys(municipis).sort((a, b) => municipis[b].total - municipis[a].total);
+    const ordreMun = Object.keys(municipis).sort((a, b) => rangEns(a) - rangEns(b) || municipis[b].total - municipis[a].total);
     const total = delTipus.reduce((s, x) => s + x.imp, 0);
+    // En canviar de tipus, les fitxes que hi havia obertes es tornen a obrir.
+    const oberts = [...plegs.querySelectorAll("details[data-ens][open]")].map(x => x.dataset.ens);
+    plegs.innerHTML = delTipus.length
+      ? `<p style="margin:8px 0 0">Total de l'any: <b>${eurosCurt(total)}</b> en ${delTipus.length} subvencions.</p>` + PISTA_PLEGA +
+        ordreMun.map(m => fitxaPlegadaEns(m, `${eurosCurt(municipis[m].total)} · ${municipis[m].n} · darrera ${fmtData(municipis[m].darrera)}`)).join("")
+      : '<p class="buit">Cap subvenció d\'aquest tipus aquest any.</p>';
+    activaEns(plegs, (mun, caixa) => subvencionsEns(mun, caixa, delTipus.filter(x => x.mun === mun)));
+    oberts.forEach(m => { const x = [...plegs.querySelectorAll("details[data-ens]")].find(y => y.dataset.ens === m); if (x) x.open = true; });
+  }
+  tipusEl.addEventListener("click", e => {
+    const b = e.target.closest("button[data-tipus]");
+    if (!b) return;
+    ESTAT.tipus = b.dataset.tipus;
+    pinta();
+  });
+  pinta();
 
-    xifres.innerHTML =
-      `<button type="button" class="sv-xifra${ESTAT.mun ? "" : " actiu"}" data-mun=""><span class="etq">Total de l'any</span><span class="val">${eurosCurt(total)}</span><span class="det">${delTipus.length} subvencions</span></button>` +
-      ordreMun.map(m => `<button type="button" class="sv-xifra${ESTAT.mun === m ? " actiu" : ""}" data-mun="${esc(m)}"><span class="etq">${esc(m)}</span><span class="val">${eurosCurt(municipis[m].total)}</span><span class="det">${municipis[m].n} · darrera ${fmtData(municipis[m].darrera)}</span></button>`).join("");
-
-    const cerca = nrm(ESTAT.text.trim());
-    const filtrades = delTipus.filter(x => (!ESTAT.mun || x.mun === ESTAT.mun) &&
-      (!cerca || nrm(x.concepte + " " + x.atorgant + " " + x.beneficiari + " " + x.mun).includes(cerca)));
+  // Dins de cada fitxa: les últimes (30 dies) o tot l'any, i un cercador.
+  function subvencionsEns(mun, caixa, delMun) {
+    const E = { vista: delMun.some(x => diesDes(x.data) <= 30) ? "ultimes" : "any", text: "" };
+    caixa.innerHTML = '<div class="sv-eines sv-vista"></div>' +
+      '<div class="sv-eines sv-cerca"><input type="search" placeholder="Cerca (concepte, qui atorga, qui rep…)" aria-label="Cerca"></div><div class="tg-llista"></div>';
+    const eines = caixa.querySelector(".sv-vista"), llista = caixa.querySelector(".tg-llista");
+    caixa.querySelector(".sv-cerca input").addEventListener("input", e => { E.text = e.target.value; llistaEns(); });
+    eines.addEventListener("click", e => { const b = e.target.closest("button[data-vista]"); if (b) { E.vista = b.dataset.vista; llistaEns(); } });
+    llistaEns();
+    function llistaEns() {
+    const cerca = nrm(E.text.trim());
+    const filtrades = delMun.filter(x => !cerca || nrm(x.concepte + " " + x.atorgant + " " + x.beneficiari + " " + x.mun).includes(cerca));
     const ultimes = filtrades.filter(x => diesDes(x.data) <= 30);
     eines.innerHTML =
-      `<button type="button" data-vista="ultimes" class="${ESTAT.vista === "ultimes" ? "actiu" : ""}">Últimes (30 dies) · ${ultimes.length}</button>` +
-      `<button type="button" data-vista="any" class="${ESTAT.vista === "any" ? "actiu" : ""}">Tot l'any · ${filtrades.length}</button>`;
-    const mostrar = ESTAT.vista === "ultimes" ? ultimes : filtrades;
+      `<button type="button" data-vista="ultimes" class="${E.vista === "ultimes" ? "actiu" : ""}">Últimes (30 dies) · ${ultimes.length}</button>` +
+      `<button type="button" data-vista="any" class="${E.vista === "any" ? "actiu" : ""}">Tot l'any · ${filtrades.length}</button>`;
+    const mostrar = E.vista === "ultimes" ? ultimes : filtrades;
     llista.innerHTML = mostrar.length ? mostrar.map(x =>
       `<article class="tg${diesDes(x.data) <= 7 ? " tg-nou" : ""}">` +
       `<div class="tg-cap"><span class="tg-quin">📍 ${esc(x.mun)}</span>${x.data ? `<span>📅 ${fmtData(x.data)}</span>` : ""}${x.fonts.map(f => `<span class="tg-font">${f}</span>`).join("")}</div>` +
       `<div class="tg-text">${esc(x.concepte || "Subvenció")}</div>` +
       `<div class="tg-qui">${TIPUS[x.tipus].ico} <b>${TIPUS[x.tipus].curt}</b><br>🏛️ Atorga: ${esc(x.atorgant)}${x.beneficiari ? `<br>👤 Rep: ${esc(x.beneficiari)}` : ""}</div>` +
       `<div class="tg-peu">${x.link ? `<a href="${esc(x.link)}" target="_blank" rel="noopener">Bases ↗</a>` : "<span></span>"}<span class="tg-import">${x.imp ? eurosTg(x.imp) : ""}</span></div></article>`).join("")
-      : (cerca ? '<p class="buit">Cap subvenció d\'aquest tipus amb aquesta cerca' + (ESTAT.vista === "ultimes" ? " en els últims 30 dies. Mira «Tot l\'any»." : ".") + "</p>"
-         : '<p class="buit">Cap subvenció d\'aquest tipus en els últims 30 dies' + (ESTAT.mun ? " per a " + esc(ESTAT.mun) : "") + '. Mira «Tot l\'any».</p>');
-    nota.textContent = "Fonts: Base de Datos Nacional de Subvenciones (BDNS) i Registre d'ajuts i subvencions de Catalunya (RAISC). «Rebudes per l'administració»: l'ajuntament o l'ens les rep d'una altra administració. «Atorgades»: les dona ell mateix (a associacions, clubs, entitats...). «Entitats del municipi»: les reben entitats locals d'altres administracions. Clica un municipi per filtrar.";
+      : (cerca ? '<p class="buit">Cap subvenció amb aquesta cerca' + (E.vista === "ultimes" ? " en els últims 30 dies. Mira «Tot l\'any»." : ".") + "</p>"
+         : '<p class="buit">Cap subvenció d\'aquest tipus en els últims 30 dies. Mira «Tot l\'any».</p>');
+    }
   }
-  cos.addEventListener("click", e => {
-    const b = e.target.closest("button");
-    if (!b) return;
-    if (b.dataset.tipus) { ESTAT.tipus = b.dataset.tipus; ESTAT.mun = ""; }
-    else if (b.dataset.vista) ESTAT.vista = b.dataset.vista;
-    else if (b.dataset.mun !== undefined) ESTAT.mun = ESTAT.mun === b.dataset.mun ? "" : b.dataset.mun;
-    pinta();
-  });
-  pinta();
 }
 
 // -----------------------------------------------------------------------------
@@ -1014,11 +1027,26 @@ function taulaCapitols(titol, pres, liq, camp, campTotal) {
 }
 
 // 27.10.2026: capçalera plegable amb l'escut i el nom del municipi.
-const FITXER_ESCUT = { "17022": "17022.svg", "17057": "17057.svg", "17902": "17902.svg", "17901": "17901.png" };
+// 27.10.2026: tamb\u00e9 l'isotip (el logotip sense text) del Consell Comarcal i del Consorci de les Gavarres.
+const FITXER_ESCUT = { "17022": "17022.svg", "17057": "17057.svg", "17902": "17902.svg", "17901": "17901.png", "ccbe": "ccbe.png", "gavarres": "gavarres.png" };
 const codiPerNom = nom => {
   const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return t.includes("bisbal") ? "17022" : t.includes("corca") ? "17057" : t.includes("forallac") ? "17902" : t.includes("cruilles") ? "17901" : null;
+  return t.includes("consell comarcal") ? "ccbe" : t.includes("gavarres") ? "gavarres" :
+    t.includes("bisbal") ? "17022" : t.includes("corca") ? "17057" : t.includes("forallac") ? "17902" : t.includes("cruilles") ? "17901" : null;
 };
+// Ordre fix de les fitxes: els quatre municipis, el Consell Comarcal i el Consorci de les Gavarres.
+const ORDRE_ENS = ["17022", "17057", "17902", "17901", "ccbe", "gavarres"];
+const rangEns = nom => { const i = ORDRE_ENS.indexOf(codiPerNom(nom)); return i < 0 ? 99 : i; };
+// Fitxa plegada per a un ens qualsevol (pel nom); el contingut es pinta en obrir-la.
+const fitxaPlegadaEns = (nom, detall) => `<details class="fitxa plegable" data-ens="${esc(nom)}">${capPlegable(nom, codiPerNom(nom), detall)}<div class="cos-plega"></div></details>`;
+function activaEns(arrel, pinta) {
+  arrel.querySelectorAll("details[data-ens]").forEach(d => d.addEventListener("toggle", () => {
+    if (!d.open || d.dataset.fet) return;
+    d.dataset.fet = "1";
+    const caixa = d.querySelector(".cos-plega");
+    try { pinta(d.dataset.ens, caixa); } catch (err) { console.error(err); caixa.innerHTML = '<p class="buit">No s\'han pogut mostrar les dades.</p>'; }
+  }));
+}
 const escutPetit = codi => codi && FITXER_ESCUT[codi] ? `<img class="escut-mun" src="escuts/${FITXER_ESCUT[codi]}" alt="">` : "";
 const capPlegable = (nom, codi, detall) =>
   `<summary>${escutPetit(codi)}<h3>${esc(nom)}</h3>${detall ? `<span class="resum-mun">${detall}</span>` : ""}</summary>`;

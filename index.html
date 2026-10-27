@@ -1585,6 +1585,17 @@ const pctTur = (n, abans) => {
   const p = (n - abans) / abans * 100;
   return `<span class="${p >= 0 ? "amunt" : "avall"}">${p >= 0 ? "+" : "−"}${Math.abs(p).toLocaleString("ca-ES", { maximumFractionDigits: 0 })} %</span>`;
 };
+// 27.10.2026: clicant un any de la taula, «D'on vénen» passa a ser d'aquell any.
+function llocsTur(d, any) {
+  const llista = any ? ((d.llocsAnys || {})[any] || []) : d.llocs;
+  const anys = d.serie.filter(x => x[0].startsWith(any + "-")).map(x => Number(x[0].slice(5)));
+  const tram = any ? (anys.length && anys.length < 12 ? `${any}, de ${MESOS_CA[anys[0] - 1]} a ${MESOS_CA[anys[anys.length - 1] - 1]}` : any) : "últims 12 mesos";
+  const vis = llista.filter(x => x[1] > 0).slice(0, 8), max = Math.max(1, ...vis.map(x => x[1]));
+  return `<h4>D'on vénen (${esc(String(tram))})</h4>` + (vis.length ? `<div class="barres" style="grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto">` +
+    vis.map(([n, v]) => `<span>${esc(String(n).replace(/^\d+\s+/, ""))}</span><span class="barra" style="width:${(v / max * 100).toFixed(0)}%"></span><span class="num">${nCa(v)}</span>`).join("") + `</div>`
+    : `<p class="buit">${any && !d.llocsAnys ? "Les procedències per any arribaran amb la pròxima baixada de l'INE." : "No hi ha dades de procedència."}</p>`) +
+    (any ? `<p class="det" style="font-size:.85rem"><a href="#" data-tur-any="">Torna als últims 12 mesos</a></p>` : "");
+}
 function cosTurisme(codi) {
   const t = TUR.taules.nacionals, d = t && t.ok ? (t.municipis || {})[codi] : null;
   if (!d) return '<p class="buit">L\'INE no dona dades d\'aquest municipi.</p>';
@@ -1603,12 +1614,11 @@ function cosTurisme(codi) {
   const taula = `<div class="taula"><table><thead><tr><th>Any</th><th class="n">${esc(tram)}</th><th class="n">Variació</th><th class="n">Any sencer</th><th class="n">Variació</th></tr></thead><tbody>` +
     files.map((f, i) => {
       const ant = files[i - 1];
-      return `<tr${f.a === aU ? ' class="destacat"' : ""}><td>${f.a}</td>` +
+      return `<tr data-tur-any="${f.a}" style="cursor:pointer" title="Mostra d'on venien el ${f.a}"${f.a === aU ? ' class="destacat"' : ""}><td><a href="#" data-tur-any="${f.a}">${f.a}</a></td>` +
         `<td class="n">${f.mateixos == null ? "—" : nCa(f.mateixos)}</td><td class="n">${f.mateixos != null && ant && ant.mateixos != null ? pctTur(f.mateixos, ant.mateixos) : ""}</td>` +
         `<td class="n">${f.sencer == null ? (f.mesos ? `<span class="var">${f.mesos} mesos</span>` : "—") : nCa(f.sencer)}</td>` +
         `<td class="n">${f.sencer != null && ant && ant.sencer != null ? pctTur(f.sencer, ant.sencer) : ""}</td></tr>`;
     }).join("") + `</tbody></table></div>`;
-  const maxL = Math.max(1, ...d.llocs.map(x => x[1]));
   return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])}</h3><div class="xifres">` +
     `<div class="xifra"><div class="etq">Últims 12 mesos</div><div class="val">${nCa(d.total12)}</div><div class="det">${esc(periodeCa(d.periode))}` +
       (d.totalAbans12 ? ` · ${pctTur(d.total12, d.totalAbans12)} respecte als 12 anteriors` : "") + `</div></div>` +
@@ -1616,10 +1626,9 @@ function cosTurisme(codi) {
       `<div class="det">${fa ? pctTur(valor[d.darrerMes], fa) + ` respecte al mateix mes de ${aU - 1} (${nCa(fa)})` : ""}</div></div></div>` +
     `<h4>Comparació per anys</h4>${taula}` +
     `<h4>Cada mes</h4>${serieBarres(serie, 36)}` +
-    (d.llocs.length ? `<h4>D'on vénen (últims 12 mesos)</h4><div class="barres" style="grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto">` +
-      d.llocs.filter(x => x[1] > 0).slice(0, 8).map(([n, v]) => `<span>${esc(String(n).replace(/^\d+\s+/, ""))}</span><span class="barra" style="width:${(v / maxL * 100).toFixed(0)}%"></span><span class="num">${nCa(v)}</span>`).join("") + `</div>` : "") +
+    `<div class="tur-llocs">${llocsTur(d, "")}</div>` +
     `</article>` +
-    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Turistes de la resta de l'Estat. L'INE compta com a turista qui passa almenys una nit fora del seu municipi habitual (hotel, pis turístic, segona residència o casa de família), a partir de les dades anònimes de les companyies de telefonia mòbil. La sèrie comença el juliol de 2019; per comparar anys, la primera columna suma els mateixos mesos de cada any. 2020 i 2021 queden afectats per la covid. Les barres grises són els mesos de fa més d'un any.</p>`;
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Turistes de la resta de l'Estat. L'INE compta com a turista qui passa almenys una nit fora del seu municipi habitual (hotel, pis turístic, segona residència o casa de família), a partir de les dades anònimes de les companyies de telefonia mòbil. La sèrie comença el juliol de 2019; per comparar anys, la primera columna suma els mateixos mesos de cada any. Clica un any per veure d'on venien els turistes aquell any. 2020 i 2021 queden afectats per la covid. Les barres grises són els mesos de fa més d'un any.</p>`;
 }
 async function carregaTurisme() {
   const el = document.getElementById("turisme");
@@ -1633,6 +1642,16 @@ async function carregaTurisme() {
       `<a href="https://www.ine.es/experimental/turismo_moviles/experimental_turismo_moviles.htm" target="_blank" rel="noopener">INE, estadística experimental</a></p>` +
       triadorMun(MUNS4, codi, escuts) + cosTurisme(codi);
     el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pinta(x.dataset.mun));
+    const d = TUR.taules.nacionals.municipis[codi], caixa = el.querySelector(".tur-llocs");
+    el.onclick = !(d && caixa) ? null : ev => {
+      const t = ev.target.closest("[data-tur-any]");
+      if (!t || !el.contains(t)) return;
+      ev.preventDefault();
+      const any = t.dataset.turAny;
+      caixa.innerHTML = llocsTur(d, any);
+      el.querySelectorAll("tr[data-tur-any]").forEach(tr => tr.style.outline = tr.dataset.turAny === any ? "2px solid var(--accent)" : "");
+      caixa.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    };
     if (typeof normalitzaDates === "function") normalitzaDates(el);
   };
   try { pinta("17022"); } catch (err) { console.error(err); el.innerHTML = `<h2>${titolTur()}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }

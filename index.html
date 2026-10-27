@@ -60,6 +60,8 @@ section.resum a{color:#b4462c !important}
 section.resum .font{color:#6b6b66}
 section.resum .cos{overflow-x:auto}
 section.resum .cos img{max-width:100%;height:auto}
+/* 27.10.2026: els escuts i isotips de les fitxes plegades, a la mida del bloc 14 també dins dels blocs del resum */
+section.resum .cos img.escut-mun{height:32px;width:auto;max-width:72px;object-fit:contain}
 /* Fitxes de dades municipals (bloc 14) */
 .fitxa{border:1px solid var(--linia);border-radius:10px;padding:14px;margin-top:14px;background:var(--fons)}
 .fitxa h3{margin:0;font-size:1.05rem}
@@ -74,6 +76,13 @@ details.fitxa.plegable[open]>summary::after{transform:rotate(90deg)}
 details.fitxa.plegable[open]>summary{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--linia)}
 .escut-mun{height:32px;width:auto;flex:none}
 .pista-plega{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+/* 27.10.2026: blocs 1, 3 i 4: un grup per mitjà o administració; les novetats a la vista, la resta plegada */
+.grup-nov{border:1px solid var(--linia);border-radius:10px;padding:10px 14px;margin-top:10px;background:var(--fons)}
+.grup-nov .cap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.grup-nov .cap>span{color:var(--suau);font-size:.85rem}
+.grup-nov.sense-nou .cap b{color:var(--suau)}
+.grup-nov .item{margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--linia);overflow-wrap:anywhere}
+.grup-nov details.anteriors>summary{cursor:pointer;color:var(--accent);font-size:.88rem;margin-top:8px}
 /* 27.10.2026: dins d'una fitxa plegada, el contingut va pla (sense una vora dins l'altra) */
 .cos-plega>article.fitxa{border:0;padding:0;margin:0 0 10px;background:none}
 .cos-plega>article.fitxa+article.fitxa{border-top:1px solid var(--linia);padding-top:12px}
@@ -801,6 +810,9 @@ async function carregaResum(dia) {
     const blocs = blocsDelResum(doc.body);
 
     if (!blocs.length) throw new Error("sense apartats");
+    // 27.10.2026: per saber què és nou, els enllaços del resum del dia anterior.
+    DIA_RESUM = dia;
+    CLAUS_ABANS = await clausDiaAnterior(dia);
 
     // Es treuen els blocs del resum, però no els propis del panell.
     Array.from(cont.children).forEach(c => { if (!propis.includes(c.id)) c.remove(); });
@@ -875,6 +887,8 @@ async function carregaResum(dia) {
         b.nodes.forEach(n => cos.appendChild(document.importNode(n, true)));
         enllacarTextos(cos);
         if (/^CONTRACTACI/i.test(b.titol)) { contractacioEnTargetes(cos); contractacioAny(sec); }
+        // 27.10.2026: premsa local, webs de les administracions i taulers: novetats a la vista, la resta plegada.
+        if (BLOCS_NOVETATS.some(rx => rx.test(b.titol))) { try { plegaNovetats(sec); } catch (err) { console.error(err); } }
       }
       cont.appendChild(sec);
 
@@ -915,6 +929,85 @@ async function carregaJSON(dia, fitxer, ids, clauEstat) {
 }
 
 // -----------------------------------------------------------------------------
+// NOVETATS PLEGADES (27.10.2026): als blocs de premsa local, espai web de les
+// administracions i taulers d'anuncis, cada mitjà o administració és una fitxa.
+// S'hi veu només el que és nou (el que no hi era al resum del dia anterior); la
+// resta queda plegada a «Anteriors». Sense el dia anterior, és nou el que porta
+// la data del dia.
+// -----------------------------------------------------------------------------
+const BLOCS_NOVETATS = [/^PREMSA LOCAL/i, /^ESPAIS? WEB/i, /^TAULERS? D/i];
+let CLAUS_ABANS = null, DIA_RESUM = "";
+// La clau d'un element és la primera adreça web que porta (enllaç o text); si no en porta, el text.
+const RX_URL = /https?:\/\/[^\s"'<>]+/g;
+const netejaUrl = u => u.replace(/&amp;/g, "&").replace(/[).,;]+$/, "");
+const clauItem = h => {
+  const m = String(h).match(RX_URL);
+  return m ? netejaUrl(m[0]) : String(h).replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
+};
+async function clausDiaAnterior(dia) {
+  try {
+    const dies = await obtenir("dades/dies.json");
+    const ant = dies.filter(x => x < dia).sort().pop();
+    if (!ant) return null;
+    const t = await obtenir(`dades/${ant}/resum.html`, "text");
+    const claus = new Set();
+    (t.match(RX_URL) || []).forEach(u => claus.add(netejaUrl(u)));
+    return claus;
+  } catch (e) { return null; }
+}
+function esNou(item) {
+  const d = DIA_RESUM.split("-").reverse().join(".");   // 2026-10-27 → 27.10.2026
+  // Les actes del Ple no vénen del resum (no hi són mai el dia anterior): noves, només si són del dia.
+  if (CLAUS_ABANS && !/Acta del Ple/.test(item)) return !CLAUS_ABANS.has(clauItem(item));
+  return !!d && item.includes(d);
+}
+function partsGrup(html) {
+  // Elements separats per dos salts de línia o més; es descarten els buits.
+  return html.split(/(?:<br\s*\/?>\s*){2,}/i).map(x => x.trim()).filter(x => x.replace(/<[^>]+>/g, "").trim());
+}
+function grupsDelText(html) {
+  let intro = "", grups = [];
+  if (/<div style="font-weight:bold/i.test(html)) {
+    // Taulers d'anuncis: <div style="font-weight:bold…">Nom</div><br>▪ …
+    const trossos = html.split(/<div style="font-weight:bold[^>]*>([\s\S]*?)<\/div>\s*(?:<br\s*\/?>)?/i);
+    intro = trossos[0];
+    for (let i = 1; i < trossos.length; i += 2) grups.push({ nom: trossos[i].replace(/<[^>]+>/g, "").trim(), items: partsGrup(trossos[i + 1] || "") });
+  } else {
+    // Premsa i webs: ▶ Nom:<br><br>• …
+    const trossos = html.split(/▶\s*/);
+    intro = trossos.shift();
+    trossos.forEach(t => {
+      const m = t.match(/^([\s\S]*?):?\s*(?:<br\s*\/?>\s*)+/i);
+      const nom = (m ? m[1] : t.split("<")[0]).replace(/<[^>]+>/g, "").replace(/:\s*$/, "").trim();
+      grups.push({ nom, items: partsGrup(m ? t.slice(m[0].length) : "") });
+    });
+  }
+  return { intro, grups: grups.filter(g => g.nom) };
+}
+function plegaNovetats(sec) {
+  const cos = sec.querySelector(".cos");
+  if (!cos) return;
+  if (cos._original === undefined) cos._original = cos.innerHTML;
+  const { intro, grups } = grupsDelText(cos._original);
+  if (!grups.length) return;   // format desconegut: es deixa com estava
+  const introText = intro.replace(/<[^>]+>/g, "").trim();
+  let totalNous = 0;
+  const html = grups.map(g => {
+    const nous = g.items.filter(esNou), vells = g.items.filter(x => !esNou(x));
+    totalNous += nous.length;
+    return `<div class="grup-nov${nous.length ? "" : " sense-nou"}"><div class="cap"><b>${esc(g.nom)}</b>` +
+      `<span>${nous.length ? `<span class="tdg-boleta-avui"></span>${nous.length} ${nous.length === 1 ? "novetat" : "novetats"}` : "Sense novetats"}` +
+      `${g.items.length ? ` · ${g.items.length} en total` : ""}</span></div>` +
+      nous.map(x => `<div class="item">${x}</div>`).join("") +
+      (vells.length ? `<details class="anteriors"><summary>${nous.length ? "Anteriors" : "Veure'ls"} (${vells.length})</summary>${vells.map(x => `<div class="item">${x}</div>`).join("")}</details>` : "") +
+      `</div>`;
+  }).join("");
+  cos.innerHTML = (introText ? `<p class="pob" style="margin:4px 0 0">${esc(introText.replace(/:\s*$/, ""))}</p>` : "") +
+    `<p class="pista-plega">${totalNous ? `${totalNous} ${totalNous === 1 ? "novetat" : "novetats"} respecte al dia anterior. ` : "Cap novetat respecte al dia anterior. "}La resta, a «Anteriors».</p>` + html;
+  if (typeof normalitzaDates === "function") normalitzaDates(cos);
+}
+
+// -----------------------------------------------------------------------------
 // ACTES DEL PLE DEL CONSELL COMARCAL dins de l'apartat 3 (Espai web de les
 // administracions), just després de les notícies del Consell Comarcal. El
 // resum i les actes arriben per separat: s'afegeixen quan hi ha totes dues coses.
@@ -944,6 +1037,16 @@ function afegeixActesAlResum() {
   const html = "▶ Consell Comarcal del Baix Empordà (actes del ple):<br><br>" + (linies.length
     ? linies.join("")
     : '<span class="buit">No s\'ha trobat cap acta del Ple.</span><br><br>');
+
+  // 27.10.2026: si el bloc ja s'ha passat a novetats plegades, les actes s'afegeixen
+  // al text original (just abans del Consorci de les Gavarres) i es torna a plegar.
+  if (cos._original !== undefined) {
+    const o = cos._original, i = o.search(/▶\s*Consell Comarcal del Baix Empord/);
+    const j = i < 0 ? -1 : o.slice(i + 1).search(/▶/);
+    cos._original = j < 0 ? o + html : o.slice(0, i + 1 + j) + html + o.slice(i + 1 + j);
+    plegaNovetats(bloc);
+    return;
+  }
 
   // Es posa just abans del bloc següent (el Consorci de les Gavarres). Si no
   // es troba, al final de l'apartat.

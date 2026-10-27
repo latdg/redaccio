@@ -1548,23 +1548,31 @@ function cosResidus(codi) {
 let ESC_CURS = null;
 function cosEscoles(codi) {
   const e = OB.escoles, ev = (e.evolucio || {})[codi] || [];
-  const cursos = Object.keys(e.centresCursos || {}).sort();
-  const sel = cursos.includes(ESC_CURS) ? ESC_CURS : (cursos[cursos.length - 1] || e.curs);
-  const cen = (e.centresCursos && e.centresCursos[sel] ? e.centresCursos[sel] : (sel === e.curs ? e.centres || [] : [])).filter(c => c.mun === codi);
-  const pre = (e.preinscripcioCursos && e.preinscripcioCursos[sel]
-    ? e.preinscripcioCursos[sel]
-    : (sel === e.cursPreinscripcio ? (e.preinscripcio || []).filter(x => x.nivell === "1" && (x.oferta_inicial_places || x.assignacions)) : [])).filter(x => x.mun === codi && x.oferta_inicial_places);
+  // La font escriu uns cursos amb barra i d'altres amb guionet: tot es passa a «2025/2026».
+  const nc = c => String(c || "").replace("-", "/");
+  const mat = {}, prc = {};
+  Object.entries(e.centresCursos || {}).forEach(([k, v]) => mat[nc(k)] = v);
+  Object.entries(e.preinscripcioCursos || {}).forEach(([k, v]) => prc[nc(k)] = v);
+  if (!Object.keys(mat).length && e.curs) mat[nc(e.curs)] = e.centres || [];
+  if (!Object.keys(prc).length && e.cursPreinscripcio) prc[nc(e.cursPreinscripcio)] = (e.preinscripcio || []).filter(x => x.nivell === "1" && (x.oferta_inicial_places || x.assignacions));
+  const cursos = [...new Set([...Object.keys(mat), ...Object.keys(prc)])].sort();
+  const darrerMat = Object.keys(mat).sort().pop();
+  const sel = cursos.includes(ESC_CURS) ? ESC_CURS : (darrerMat || cursos[cursos.length - 1]);
+  const cen = (mat[sel] || []).filter(c => c.mun === codi);
+  const pre = (prc[sel] || []).filter(x => x.mun === codi && x.oferta_inicial_places);
   const curt = t => String(t || "").replace(/^Educació infantil: /, "").replace("Educació primària", "Primària").replace("Educació secundària obligatòria", "ESO");
   const nivell = x => /Parvulari/.test(x.ensenyament) ? "P" + (Number(x.nivell) + 2) : /primària/.test(x.ensenyament) ? x.nivell + "r de primària" : x.nivell + "r d'ESO";
   // 27.10.2026: els cursos, amb guionet («Curs 2025-2026»), no amb barra.
   const cursCa = c => String(c || "—").replace(/\//g, "-");
   const triaCurs = cursos.length > 1 ? `<div class="tria-mun" style="margin-top:0">` + cursos.slice().reverse().map(c =>
     `<button type="button" data-curs="${esc(c)}" class="${c === sel ? "actiu" : ""}" style="padding:4px 10px">${esc(cursCa(c))}</button>`).join("") + `</div>` : "";
-  return triaCurs + `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])} · Curs ${esc(cursCa(sel))}</h3><div class="xifres">` +
+  return triaCurs + `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])} · Curs ${esc(cursCa(sel))}</h3>` +
+    (!mat[sel] ? `<p class="buit">La matrícula d'aquest curs encara no s'ha publicat; de moment només hi ha la preinscripció.</p>` :
+    `<div class="xifres">` +
     `<div class="xifra"><div class="etq">Alumnes matriculats</div><div class="val">${nCa(cen.reduce((a, c) => a + c.alumnes, 0))}</div><div class="det">${cen.length} centres</div></div></div>` +
     `<div class="taula"><table><thead><tr><th>Centre</th><th>Tipus</th><th class="n">Alumnes</th><th class="n">Grups</th><th>Estudis</th></tr></thead><tbody>` +
     cen.map(c => `<tr><td style="white-space:normal;min-width:160px"><b>${esc(c.nom)}</b></td><td>${esc(c.naturalesa || "")}</td><td class="n">${nCa(c.alumnes)}</td><td class="n">${nCa(c.unitats)}</td>` +
-      `<td style="white-space:normal;font-size:.8rem">${c.estudis.map(([k, v]) => esc(majuscula(k.toLowerCase())) + " (" + nCa(v) + ")").join(", ")}</td></tr>`).join("") + `</tbody></table></div>` +
+      `<td style="white-space:normal;font-size:.8rem">${c.estudis.map(([k, v]) => esc(majuscula(k.toLowerCase())) + " (" + nCa(v) + ")").join(", ")}</td></tr>`).join("") + `</tbody></table></div>`) +
     (ev.length ? `<h4>Alumnes de tot el municipi, curs a curs</h4>${serieAnysOb(ev.map(([k, v]) => [cursCa(k), v]))}` : "") +
     (pre.length ? `<h4>Preinscripció del curs ${esc(cursCa(sel))} (cursos d'entrada)</h4><div class="taula"><table><thead><tr><th>Centre</th><th>Curs</th><th class="n">Places</th><th class="n">Assignades</th><th class="n">En 1a opció</th></tr></thead><tbody>` +
       pre.map(x =>

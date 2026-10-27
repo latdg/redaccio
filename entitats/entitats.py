@@ -5,9 +5,9 @@
 # en el seu municipi i desa a dades/entitats.json, per a cada un dels quatre:
 # quantes n'hi ha i de quin tipus, les inscrites cada any, les dels darrers
 # 12 mesos i les noves des de la revisió anterior.
-# PRIVADESA: no es desa l'adreça (sovint és un domicili particular), ni el
-# telèfon, ni els fundadors. Només el nom, el tipus, el nucli, la data i les
-# finalitats de l'entitat.
+# 27.10.2026: es desen l'adreça i el telèfon (la redacció els necessita per
+# contactar-hi; són les mateixes dades que publica la Generalitat). Els
+# fundadors no es desen.
 # =============================================================================
 import json
 import re
@@ -25,7 +25,7 @@ ESTAT = ARREL / "entitats" / "estat.json"     # id de les entitats ja vistes, pe
 API = "https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json"
 VISTA = "https://analisi.transparenciacatalunya.cat/api/views/y6fz-g3ff.json"
 CAPCALERES = {"User-Agent": "LaTdG-redaccio (https://latdg.github.io/redaccio/)"}
-CAMPS = ("id_entitat,tipus_entitat,nom_entitat,num_inscripcio,data_inscripcio,nom_poblacio,codi_postal,"
+CAMPS = ("id_entitat,tipus_entitat,nom_entitat,num_inscripcio,data_inscripcio,nom_poblacio,codi_postal,adreca,telefon,"
          "classificacio_general,classificacio_especifica,contingut_finalitats,estat,utilitat_publica")
 # Nuclis de cada municipi tal com surten al registre (sense accents ni majúscules).
 NUCLIS = {
@@ -80,6 +80,9 @@ def fitxa(x):
         "tipus": x.get("tipus_entitat"),
         "data": (x.get("data_inscripcio") or "")[:10],
         "nucli": x.get("nom_poblacio"),
+        "adreca": " ".join(str(x.get("adreca") or "").split()),
+        "cp": x.get("codi_postal"),
+        "telefon": " ".join(str(x.get("telefon") or "").split()),
         "ambit": x.get("classificacio_general"),
         "detall": (x.get("classificacio_especifica") or "").replace("|", " · ").capitalize(),
         "finalitats": fin[:400] + ("…" if len(fin) > 400 else ""),
@@ -131,6 +134,7 @@ def main():
             "ambits": Counter(x.get("classificacio_general") or "Sense classificar" for x in actives).most_common(12),
             "perAny": [[str(a), per_any.get(str(a), 0)] for a in range(any_actual - 14, any_actual + 1)],
             "recents": recents,
+            "totes": sorted((fitxa(x) for x in actives), key=lambda f: pla(f["nom"])),
             "noves": noves,
         }
         print(nom, len(actives), "actives;", len(recents), "dels darrers 12 mesos;", len(noves), "noves")

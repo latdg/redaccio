@@ -1378,14 +1378,22 @@ async function carregaTurisme() {
 // -----------------------------------------------------------------------------
 // ENTITATS I ASSOCIACIONS (27.10.2026): dades/entitats.json, que desa el
 // workflow «Entitats i associacions» (entitats/entitats.py) a partir del
-// Registre d'entitats. Sense adreces, telèfons ni fundadors.
+// Registre d'entitats. Amb l'adreça i el telèfon (27.10.2026); sense fundadors.
 // -----------------------------------------------------------------------------
 const TITOL_ENT = "ENTITATS I ASSOCIACIONS (REGISTRE D'ENTITATS)";
 let ENT = null;
+function contacte(f) {
+  const tel = String(f.telefon || "").replace(/[^\d+]/g, "");
+  const parts = [];
+  if (f.adreca) parts.push(`📍 ${esc(f.adreca)}${f.cp ? ", " + esc(f.cp) : ""} ${esc(f.nucli || "")}`);
+  if (tel && tel.length >= 9) parts.push(`📞 <a href="tel:${esc(tel)}">${esc(f.telefon)}</a>`);
+  return parts.length ? `<p style="margin:6px 0 2px;font-size:.88rem">${parts.join("<br>")}</p>` : "";
+}
 function targetaEntitat(f, nova) {
   return `<details class="targeta" style="margin:6px 0;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta)">` +
     `<summary style="cursor:pointer"><b>${esc(f.nom)}</b>${nova ? ' <span class="amunt" style="font-size:.8rem">· nova</span>' : ""}<br>` +
     `<span class="var" style="color:#6b6b66;font-size:.82rem">${esc(f.tipus || "")} · ${esc(f.ambit || "")} · ${esc(f.nucli || "")} · inscrita el ${f.data ? dataCa(f.data) : "—"}${f.utilitatPublica ? " · d'utilitat pública" : ""}</span></summary>` +
+    contacte(f) +
     (f.detall ? `<p style="margin:6px 0 2px;font-size:.85rem;color:#6b6b66">${esc(f.detall)}</p>` : "") +
     (f.finalitats ? `<p style="margin:4px 0 0;font-size:.88rem">${esc(f.finalitats)}</p>` : "") + `</details>`;
 }
@@ -1404,6 +1412,9 @@ async function pintaEntitats(codi) {
     `</div>` +
     (m.noves && m.noves.length ? `<h4>🆕 Noves des de la revisió anterior</h4>` + m.noves.map(f => targetaEntitat(f, true)).join("") : "") +
     (m.recents.length ? `<h4>Inscrites els darrers 12 mesos</h4>` + m.recents.filter(f => !novesIds.has(f.id)).map(f => targetaEntitat(f, false)).join("") : "") +
+    (m.totes && m.totes.length ? `<details style="margin-top:12px"><summary style="cursor:pointer"><b>Totes les entitats (${nCa(m.totes.length)})</b> · amb l'adreça i el telèfon</summary>` +
+      `<input type="search" id="cercaEnt" placeholder="Cerca pel nom, l'àmbit o el nucli…" style="width:100%;margin:8px 0;font:inherit;padding:6px 10px;border:1px solid var(--linia);border-radius:8px">` +
+      `<div id="llistaEnt">${m.totes.map(f => targetaEntitat(f, false)).join("")}</div></details>` : "") +
     `<h4>Inscripcions cada any</h4><div class="serie">${m.perAny.map(([a, n]) => `<span style="height:${(n / maxA * 100).toFixed(0)}%" title="${a}: ${n}"></span>`).join("")}</div>` +
     `<div class="serie-eix"><span>${m.perAny[0][0]}</span><span>${m.perAny[m.perAny.length - 1][0]}</span></div>` +
     `<h4>Per àmbit</h4><p class="det" style="font-size:.88rem">${m.ambits.map(([a, n]) => `${esc(/^<.*>$/.test(a) ? "Sense classificar" : a)}: <b>${nCa(n)}</b>`).join(" · ")}</p>` +
@@ -1411,6 +1422,13 @@ async function pintaEntitats(codi) {
     `Els clubs i les entitats esportives no hi surten: tenen un registre propi.` +
     (m.inactives ? ` A més, n'hi ha ${nCa(m.inactives)} d'inactives.` : "") + `</p>`;
   el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaEntitats(x.dataset.mun));
+  const cerca = document.getElementById("cercaEnt");
+  if (cerca) cerca.oninput = () => {
+    const t = cerca.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    document.querySelectorAll("#llistaEnt > details").forEach(d => {
+      d.hidden = t && !d.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(t);
+    });
+  };
 }
 async function carregaEntitats() {
   const el = document.getElementById("entitats");

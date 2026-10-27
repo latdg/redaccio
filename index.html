@@ -1041,6 +1041,9 @@ function plegaNovetats(sec) {
   const tipus = sec.dataset.novetats || "";
   const { intro, grups } = grupsDelText(cos._original);
   if (!grups.length) return;   // format desconegut: es deixa com estava
+  // 27.10.2026: la boleta vermella només va al recompte de novetats, no davant dels titulars.
+  const senseBoleta = x => String(x).replace(/<span class="tdg-boleta-avui"><\/span>\s*/g, "");
+  grups.forEach(g => g.items = g.items.map(senseBoleta));
   // Taulers: «Ajuntament de…» i, si el resum no el porta, l'e-tauler del Consorci de les Gavarres.
   if (tipus === "taulers") {
     grups.forEach(g => g.nom = nomAdmin(g.nom));

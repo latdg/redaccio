@@ -10,6 +10,9 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+HORA_LOCAL = ZoneInfo("Europe/Madrid")   # el canal dona les dates en hora de Greenwich
 
 import requests
 
@@ -27,11 +30,11 @@ def data_item(it):
         if not t:
             continue
         try:
-            return parsedate_to_datetime(t).date()
+            return parsedate_to_datetime(t).astimezone(HORA_LOCAL).date()
         except Exception:
             pass
         try:
-            return datetime.fromisoformat(t.replace("Z", "+00:00")).date()
+            return datetime.fromisoformat(t.replace("Z", "+00:00")).astimezone(HORA_LOCAL).date()
         except Exception:
             pass
     text = " ".join((it.findtext(c) or "") for c in ("title", "description"))
@@ -45,8 +48,8 @@ def data_item(it):
 
 
 def main():
-    limit = (datetime.now(timezone.utc) - timedelta(days=DIES)).date()
-    items, vistos = [], set()
+    limit = (datetime.now(HORA_LOCAL) - timedelta(days=DIES)).date()
+    items, vistos, darrer = [], set(), None
     for p in range(1, 4):   # com a molt tres pàgines; s'atura quan arriba a anuncis d'abans de la setmana
         r = requests.get(RSS.format(p=p), headers=CAPCALERES, timeout=60)
         r.raise_for_status()
@@ -67,6 +70,9 @@ def main():
             if not titol or link in vistos:
                 continue
             vistos.add(link)
+            # El darrer anunci publicat, tingui la data que tingui (si la setmana és buida, el panell el mostra a «Anteriors»).
+            if d and (not darrer or d.isoformat() > darrer["data"]):
+                darrer = {"titol": titol, "link": link, "data": d.isoformat()}
             if d and d < limit:
                 antics += 1
                 continue
@@ -77,7 +83,7 @@ def main():
     print(f"Consorci de les Gavarres: {len(items)} anuncis de l'última setmana")
     SORTIDA.write_text(json.dumps({"generat": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                                    "font": "https://tauler.seu-e.cat/inici?idEns=9813510007",
-                                   "items": items}, ensure_ascii=False, indent=1), encoding="utf-8")
+                                   "items": items, "darrer": darrer}, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 if __name__ == "__main__":

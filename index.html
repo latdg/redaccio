@@ -1046,7 +1046,8 @@ function plegaNovetats(sec) {
     grups.forEach(g => g.nom = nomAdmin(g.nom));
     // (només al resum del dia en què s'ha llegit l'e-tauler, no en dies antics)
     if (TAULER_GAV && TAULER_GAV.items && String(TAULER_GAV.generat || "").slice(0, 10) === DIA_RESUM && !grups.some(g => codiPerNom(g.nom) === "gavarres"))
-      grups.push({ nom: "Consorci de les Gavarres", items: TAULER_GAV.items.map(x =>
+      // Si la setmana és buida, el darrer anunci publicat (queda a «Anteriors», perquè és antic).
+      grups.push({ nom: "Consorci de les Gavarres", items: (TAULER_GAV.items.length ? TAULER_GAV.items : (TAULER_GAV.darrer ? [TAULER_GAV.darrer] : [])).map(x =>
         `▪ <a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.titol)}</a>${x.data ? ` (${x.data.split("-").reverse().join(".")})` : ""}`) });
   }
   if (tipus === "taulers" || tipus === "web") grups.sort((a, b) => rangAdmin(a.nom) - rangAdmin(b.nom));

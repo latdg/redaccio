@@ -183,6 +183,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="aigua"><h2>💧 Aigua potable</h2><p class="buit">Carregant…</p></section>
   <section id="dades-municipals"><h2>🏦 Dades municipals</h2><p class="buit">Carregant…</p></section>
   <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
+  <section id="turisme"><h2>🧳 Turistes que hi arriben</h2><p class="buit">Carregant…</p></section>
   <section id="seguretat"><h2>🚨 Seguretat i emergències</h2><p class="buit">Carregant…</p></section>
   <section id="entitats"><h2>🤝 Entitats i associacions</h2><p class="buit">Carregant…</p></section>
   <section id="renda"><h2>🤲 Renda garantida de ciutadania</h2><p class="buit">Carregant…</p></section>
@@ -745,6 +746,8 @@ const BLOCS_PROPIS = [
   { id: "renda", nom: "Renda garantida", titol: "RENDA GARANTIDA DE CIUTADANIA", enLlocDe: /^ATUR/i },
   // 26.10.2026: just després de les dades municipals.
   { id: "hut", nom: "Habitatges turístics", titol: "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS", enLlocDe: /^ATUR/i },
+  // 27.10.2026: turistes que hi arriben (torna de La TdG ampliada), després dels habitatges turístics.
+  { id: "turisme", nom: "Turistes", titol: "TURISTES QUE HI ARRIBEN (TELEFONIA MÒBIL)", enLlocDe: /^ATUR/i },
   // 27.10.2026: lloguer i habitatges buits, al costat dels habitatges turístics.
   { id: "habitatge", nom: "Lloguer i pisos buits", titol: "LLOGUER I HABITATGES BUITS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
@@ -1532,6 +1535,73 @@ async function carregaObertes() {
 }
 
 // -----------------------------------------------------------------------------
+// TURISTES QUE HI ARRIBEN (27.10.2026, torna de La TdG ampliada). Les dades les
+// desa el workflow «Turistes que hi arriben» del repo latdg/tauler
+// (dades/turisme.json, INE, telefonia mòbil). La sèrie comença el juliol de 2019:
+// es compara cada any amb els mateixos mesos dels anys anteriors.
+// -----------------------------------------------------------------------------
+const TITOL_TUR = "TURISTES QUE HI ARRIBEN (TELEFONIA MÒBIL)";
+const FONT_TUR = "https://raw.githubusercontent.com/latdg/tauler/main/dades/turisme.json";
+let TUR = null;
+const pctTur = (n, abans) => {
+  if (!abans) return "";
+  const p = (n - abans) / abans * 100;
+  return `<span class="${p >= 0 ? "amunt" : "avall"}">${p >= 0 ? "+" : "−"}${Math.abs(p).toLocaleString("ca-ES", { maximumFractionDigits: 0 })} %</span>`;
+};
+function cosTurisme(codi) {
+  const t = TUR.taules.nacionals, d = t && t.ok ? (t.municipis || {})[codi] : null;
+  if (!d) return '<p class="buit">L\'INE no dona dades d\'aquest municipi.</p>';
+  const serie = d.serie, valor = Object.fromEntries(serie);
+  const [aU, mU] = d.darrerMes.split("-").map(Number);
+  const fa = valor[`${aU - 1}-${String(mU).padStart(2, "0")}`];
+  // Comparació per anys: cada any, els mateixos mesos (de gener al darrer mes amb dades) i l'any sencer.
+  const anys = [...new Set(serie.map(x => Number(x[0].slice(0, 4))))].sort();
+  const files = anys.map(a => {
+    const mesos = serie.filter(x => x[0].startsWith(a + "-"));
+    const comparables = mesos.filter(x => Number(x[0].slice(5)) <= mU);
+    return { a, mateixos: comparables.length === mU ? comparables.reduce((s, x) => s + x[1], 0) : null,
+      sencer: mesos.length === 12 ? mesos.reduce((s, x) => s + x[1], 0) : null, mesos: mesos.length };
+  });
+  const tram = mU === 1 ? "gener" : "gener–" + MESOS_CA[mU - 1];
+  const taula = `<div class="taula"><table><thead><tr><th>Any</th><th class="n">${esc(tram)}</th><th class="n">Variació</th><th class="n">Any sencer</th><th class="n">Variació</th></tr></thead><tbody>` +
+    files.map((f, i) => {
+      const ant = files[i - 1];
+      return `<tr${f.a === aU ? ' class="destacat"' : ""}><td>${f.a}</td>` +
+        `<td class="n">${f.mateixos == null ? "—" : nCa(f.mateixos)}</td><td class="n">${f.mateixos != null && ant && ant.mateixos != null ? pctTur(f.mateixos, ant.mateixos) : ""}</td>` +
+        `<td class="n">${f.sencer == null ? (f.mesos ? `<span class="var">${f.mesos} mesos</span>` : "—") : nCa(f.sencer)}</td>` +
+        `<td class="n">${f.sencer != null && ant && ant.sencer != null ? pctTur(f.sencer, ant.sencer) : ""}</td></tr>`;
+    }).join("") + `</tbody></table></div>`;
+  const maxL = Math.max(1, ...d.llocs.map(x => x[1]));
+  return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])}</h3><div class="xifres">` +
+    `<div class="xifra"><div class="etq">Últims 12 mesos</div><div class="val">${nCa(d.total12)}</div><div class="det">${esc(periodeCa(d.periode))}` +
+      (d.totalAbans12 ? ` · ${pctTur(d.total12, d.totalAbans12)} respecte als 12 anteriors` : "") + `</div></div>` +
+    `<div class="xifra"><div class="etq">${esc(nomMes(d.darrerMes).replace(/^./, c => c.toUpperCase()))}</div><div class="val">${nCa(valor[d.darrerMes])}</div>` +
+      `<div class="det">${fa ? pctTur(valor[d.darrerMes], fa) + ` respecte al mateix mes de ${aU - 1} (${nCa(fa)})` : ""}</div></div></div>` +
+    `<h4>Comparació per anys</h4>${taula}` +
+    `<h4>Cada mes</h4>${serieBarres(serie, 36)}` +
+    (d.llocs.length ? `<h4>D'on vénen (últims 12 mesos)</h4><div class="barres" style="grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto">` +
+      d.llocs.filter(x => x[1] > 0).slice(0, 8).map(([n, v]) => `<span>${esc(String(n).replace(/^\d+\s+/, ""))}</span><span class="barra" style="width:${(v / maxL * 100).toFixed(0)}%"></span><span class="num">${nCa(v)}</span>`).join("") + `</div>` : "") +
+    `</article>` +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Turistes de la resta de l'Estat. L'INE compta com a turista qui passa almenys una nit fora del seu municipi habitual (hotel, pis turístic, segona residència o casa de família), a partir de les dades anònimes de les companyies de telefonia mòbil. La sèrie comença el juliol de 2019; per comparar anys, la primera columna suma els mateixos mesos de cada any. 2020 i 2021 queden afectats per la covid. Les barres grises són els mesos de fa més d'un any.</p>`;
+}
+async function carregaTurisme() {
+  const el = document.getElementById("turisme");
+  if (!el) return;
+  const titol = (el.dataset.numero ? el.dataset.numero + " " : "🧳 ") + TITOL_TUR;
+  try { TUR = await obtenir(FONT_TUR); }
+  catch (e) { el.innerHTML = `<h2>${titol}</h2><p class="buit">Encara no s'han baixat les dades de l'INE.</p>`; return; }
+  const escuts = await carregaEscuts();
+  const pinta = codi => {
+    el.innerHTML = `<h2>${titol}</h2><p class="font">Dades fins a ${esc(nomMes(TUR.taules.nacionals.municipis["17022"].darrerMes))} · revisat el ${dataIso(TUR.generat)} · Font: ` +
+      `<a href="https://www.ine.es/experimental/turismo_moviles/experimental_turismo_moviles.htm" target="_blank" rel="noopener">INE, estadística experimental</a></p>` +
+      triadorMun(MUNS4, codi, escuts) + cosTurisme(codi);
+    el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pinta(x.dataset.mun));
+    if (typeof normalitzaDates === "function") normalitzaDates(el);
+  };
+  try { pinta("17022"); } catch (err) { console.error(err); el.innerHTML = `<h2>${titol}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }
+}
+
+// -----------------------------------------------------------------------------
 // AIGUA POTABLE: un sol bloc amb una fitxa per municipi. Analítiques del SINAC
 // (el darrer butlletí amb tot el detall i els anteriors, que s'obren clicant-hi)
 // i, a Corçà i a Cruïlles, Monells i Sant Sadurní, les de la Mancomunitat.
@@ -1697,6 +1767,7 @@ async function inicia() {
   carregaSeguretat();
   carregaEntitats();
   carregaObertes();
+  carregaTurisme();
 }
 inicia();
 </script>

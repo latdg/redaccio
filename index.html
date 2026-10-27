@@ -80,6 +80,9 @@ details.fitxa.plegable[open]>summary{margin-bottom:12px;padding-bottom:10px;bord
 .grup-nov{border:1px solid var(--linia);border-radius:10px;padding:10px 14px;margin-top:10px;background:var(--fons)}
 .grup-nov .cap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .grup-nov .cap>span{color:var(--suau);font-size:.85rem}
+.grup-nov .cap>span.nom-grup{display:flex;align-items:center;gap:10px;color:var(--text);font-size:1rem}
+section.resum .cos .grup-nov img.logo-mitja{height:26px;width:auto;max-width:180px;object-fit:contain;display:block}
+section.resum .cos .grup-nov img.escut-mun{height:32px;width:auto;max-width:72px;object-fit:contain}
 .grup-nov.sense-nou .cap b{color:var(--suau)}
 .grup-nov .item{margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--linia);overflow-wrap:anywhere}
 .grup-nov details.anteriors>summary{cursor:pointer;color:var(--accent);font-size:.88rem;margin-top:8px}
@@ -984,6 +987,19 @@ function grupsDelText(html) {
   }
   return { intro, grups: grups.filter(g => g.nom) };
 }
+// 27.10.2026: logotip de cada mitjà (bloc 1) i escut o isotip de cada administració (blocs 3 i 4).
+const LOGOS_MITJANS = [
+  [/tv\s*costa\s*brava/, "tv-costa-brava.png"], [/aguait/, "laguait.png"], [/radio\s*capital/, "radio-capital.png"],
+  [/diari\s*de\s*girona/, "diari-de-girona.png"], [/gerio/, "gerio.png"], [/punt\s*avui/, "el-punt-avui.png"],
+];
+function marcaGrup(nom) {
+  nom = String(nom || "").replace(/Sant Sadurní(?! de l'Heura)/, "Sant Sadurní de l'Heura");   // el nom, sempre sencer
+  const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const l = LOGOS_MITJANS.find(([rx]) => rx.test(t));
+  // El logotip ja porta el nom del mitjà: si no es carrega, surt el nom escrit.
+  if (l) return `<img class="logo-mitja" src="mitjans/${l[1]}" alt="${esc(nom)}" onerror="this.outerHTML='<b>${esc(nom).replace(/'/g, "&#39;")}</b>'">`;
+  return escutPetit(codiPerNom(nom)) + `<b>${esc(nom)}</b>`;
+}
 function plegaNovetats(sec) {
   const cos = sec.querySelector(".cos");
   if (!cos) return;
@@ -995,11 +1011,11 @@ function plegaNovetats(sec) {
   const html = grups.map(g => {
     const nous = g.items.filter(esNou), vells = g.items.filter(x => !esNou(x));
     totalNous += nous.length;
-    return `<div class="grup-nov${nous.length ? "" : " sense-nou"}"><div class="cap"><b>${esc(g.nom)}</b>` +
+    return `<div class="grup-nov${nous.length ? "" : " sense-nou"}"><div class="cap"><span class="nom-grup">${marcaGrup(g.nom)}</span>` +
       `<span>${nous.length ? `<span class="tdg-boleta-avui"></span>${nous.length} ${nous.length === 1 ? "novetat" : "novetats"}` : "Sense novetats"}` +
       `${g.items.length ? ` · ${g.items.length} en total` : ""}</span></div>` +
       nous.map(x => `<div class="item">${x}</div>`).join("") +
-      (vells.length ? `<details class="anteriors"><summary>${nous.length ? "Anteriors" : "Veure'ls"} (${vells.length})</summary>${vells.map(x => `<div class="item">${x}</div>`).join("")}</details>` : "") +
+      (vells.length ? `<details class="anteriors"><summary>Anteriors (${vells.length})</summary>${vells.map(x => `<div class="item">${x}</div>`).join("")}</details>` : "") +
       `</div>`;
   }).join("");
   cos.innerHTML = (introText ? `<p class="pob" style="margin:4px 0 0">${esc(introText.replace(/:\s*$/, ""))}</p>` : "") +

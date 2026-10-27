@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-27T06:05:27+00:00",
+ "generat": "2026-10-27T06:21:58+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -609,7 +609,206 @@
      "prestacio": 788
     }
    ],
-   "17901": []
+   "17901": [
+    {
+     "mes": "2024-01",
+     "titulars": 4,
+     "beneficiaris": 4,
+     "prestacio": 513
+    },
+    {
+     "mes": "2024-02",
+     "titulars": 4,
+     "beneficiaris": 4,
+     "prestacio": 487
+    },
+    {
+     "mes": "2024-03",
+     "titulars": 5,
+     "beneficiaris": 4,
+     "prestacio": 491
+    },
+    {
+     "mes": "2024-04",
+     "titulars": 5,
+     "beneficiaris": 4,
+     "prestacio": 491
+    },
+    {
+     "mes": "2024-05",
+     "titulars": 6,
+     "beneficiaris": 5,
+     "prestacio": 598
+    },
+    {
+     "mes": "2024-06",
+     "titulars": 6,
+     "beneficiaris": 5,
+     "prestacio": 598
+    },
+    {
+     "mes": "2024-07",
+     "titulars": 6,
+     "beneficiaris": 5,
+     "prestacio": 598
+    },
+    {
+     "mes": "2024-08",
+     "titulars": 5,
+     "beneficiaris": 4,
+     "prestacio": 491
+    },
+    {
+     "mes": "2024-09",
+     "titulars": 5,
+     "beneficiaris": 4,
+     "prestacio": 491
+    },
+    {
+     "mes": "2024-10",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 580
+    },
+    {
+     "mes": "2024-11",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 653
+    },
+    {
+     "mes": "2024-12",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 602
+    },
+    {
+     "mes": "2025-01",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 630
+    },
+    {
+     "mes": "2025-02",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-03",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-04",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-05",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-06",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-07",
+     "titulars": null,
+     "beneficiaris": 4,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-08",
+     "titulars": null,
+     "beneficiaris": 4,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-09",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-10",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-11",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2025-12",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2026-01",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 629
+    },
+    {
+     "mes": "2026-02",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 656
+    },
+    {
+     "mes": "2026-03",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 656
+    },
+    {
+     "mes": "2026-04",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 640
+    },
+    {
+     "mes": "2026-05",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 684
+    },
+    {
+     "mes": "2026-06",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 760
+    },
+    {
+     "mes": "2026-07",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 760
+    },
+    {
+     "mes": "2026-08",
+     "titulars": 4,
+     "beneficiaris": 4,
+     "prestacio": 760
+    },
+    {
+     "mes": "2026-09",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 760
+    }
+   ]
   }
  },
  "habitatge": {
@@ -1495,32 +1694,6 @@
     ],
     "17901": []
    }
-  },
-  "taxa": {
-   "actualitzat": "2026-04-09T14:42:38+00:00",
-   "municipis": {},
-   "camps": [
-    "ae_autoliquidacions",
-    "ae_import_ingressat",
-    "aj_autoliquidacions",
-    "aj_import_ingressat",
-    "at_autoliquidacions",
-    "at_import_ingressat",
-    "ca_autoliquidacions",
-    "ca_import_ingressat",
-    "cr_autoliquidacions",
-    "cr_import_ingressat",
-    "eh_autoliquidacions",
-    "eh_import_ingressat",
-    "ht_autoliquidacions",
-    "ht_import_ingressat",
-    "ht_recarrec_mpal",
-    "marca",
-    "municipi",
-    "per_ode_autoliquidaci",
-    "tr_autoliquidacions",
-    "tr_import_ingressat"
-   ]
   }
  },
  "ramaderia": {
@@ -1530,256 +1703,214 @@
     "explotacions": 21,
     "especies": [
      {
+      "especie": "Èquid",
+      "explotacions": 14,
+      "places": 41
+     },
+     {
       "especie": "Oví",
       "explotacions": 3,
-      "ub": 5928,
       "places": 848
      },
      {
       "especie": "Porcí",
       "explotacions": 2,
-      "ub": 2910,
-      "places": 3850
-     },
-     {
-      "especie": "Gallines i pollastres",
-      "explotacions": 1,
-      "ub": 2668,
-      "places": 5335
+      "places": 2140
      },
      {
       "especie": "Conill",
       "explotacions": 2,
-      "ub": 693,
       "places": 774
      },
      {
-      "especie": "Boví",
+      "especie": "Gallines i pollastres",
       "explotacions": 1,
-      "ub": 320,
-      "places": 800
-     },
-     {
-      "especie": "Èquid",
-      "explotacions": 14,
-      "ub": 297,
-      "places": 75
+      "places": 5335
      },
      {
       "especie": "Cabrum",
       "explotacions": 1,
-      "ub": 129,
       "places": 27
+     },
+     {
+      "especie": "Boví",
+      "explotacions": 1,
+      "places": 0
      }
     ],
-    "ub": 12945,
     "intensiu": 16
    },
    "17057": {
     "explotacions": 25,
     "especies": [
      {
-      "especie": "Porcí",
-      "explotacions": 6,
-      "ub": 89562,
-      "places": 12034
+      "especie": "Èquid",
+      "explotacions": 12,
+      "places": 9
      },
      {
-      "especie": "Oví",
-      "explotacions": 4,
-      "ub": 23247,
-      "places": 4079
+      "especie": "Porcí",
+      "explotacions": 6,
+      "places": 10054
      },
      {
       "especie": "Boví",
       "explotacions": 5,
-      "ub": 1482,
-      "places": 815
+      "places": 1
+     },
+     {
+      "especie": "Oví",
+      "explotacions": 4,
+      "places": 4079
      },
      {
       "especie": "Cabrum",
       "explotacions": 4,
-      "ub": 786,
       "places": 201
-     },
-     {
-      "especie": "Ratites",
-      "explotacions": 1,
-      "ub": 66,
-      "places": 2
-     },
-     {
-      "especie": "Èquid",
-      "explotacions": 12,
-      "ub": 49,
-      "places": 41
      },
      {
       "especie": "Gallines i pollastres",
       "explotacions": 2,
-      "ub": 27,
       "places": 450
-     },
-     {
-      "especie": "Conill",
-      "explotacions": 1,
-      "ub": 5,
-      "places": 1
-     },
-     {
-      "especie": "Galls dindi",
-      "explotacions": 1,
-      "ub": 1,
-      "places": 1
      },
      {
       "especie": "Abella",
       "explotacions": 2,
-      "ub": 0,
       "places": 310
      },
      {
       "especie": "Ànecs",
       "explotacions": 1,
-      "ub": 0,
       "places": 50
+     },
+     {
+      "especie": "Ratites",
+      "explotacions": 1,
+      "places": 2
+     },
+     {
+      "especie": "Conill",
+      "explotacions": 1,
+      "places": 1
+     },
+     {
+      "especie": "Galls dindi",
+      "explotacions": 1,
+      "places": 1
      },
      {
       "especie": "Llames",
       "explotacions": 1,
-      "ub": 0,
       "places": 1
      }
     ],
-    "ub": 115225,
     "intensiu": 20
    },
    "17902": {
     "explotacions": 47,
     "especies": [
      {
-      "especie": "Porcí",
-      "explotacions": 12,
-      "ub": 188840,
-      "places": 29392
+      "especie": "Èquid",
+      "explotacions": 26,
+      "places": 69
      },
      {
-      "especie": "Oví",
-      "explotacions": 4,
-      "ub": 15648,
-      "places": 2120
+      "especie": "Porcí",
+      "explotacions": 12,
+      "places": 26078
      },
      {
       "especie": "Boví",
       "explotacions": 6,
-      "ub": 3601,
-      "places": 826
+      "places": 226
      },
      {
-      "especie": "Èquid",
-      "explotacions": 26,
-      "ub": 1055,
-      "places": 346
-     },
-     {
-      "especie": "Gallines i pollastres",
-      "explotacions": 2,
-      "ub": 708,
-      "places": 23300
+      "especie": "Oví",
+      "explotacions": 4,
+      "places": 2120
      },
      {
       "especie": "Cabrum",
       "explotacions": 4,
-      "ub": 521,
       "places": 103
+     },
+     {
+      "especie": "Gallines i pollastres",
+      "explotacions": 2,
+      "places": 23300
      },
      {
       "especie": "Senglar",
       "explotacions": 1,
-      "ub": 51,
       "places": 6
-     },
-     {
-      "especie": "Ànecs",
-      "explotacions": 1,
-      "ub": 0,
-      "places": 0
      },
      {
       "especie": "Daines",
       "explotacions": 1,
-      "ub": 0,
       "places": 5
+     },
+     {
+      "especie": "Ànecs",
+      "explotacions": 1,
+      "places": 0
      }
     ],
-    "ub": 210424,
     "intensiu": 39
    },
    "17901": {
     "explotacions": 53,
     "especies": [
      {
+      "especie": "Èquid",
+      "explotacions": 33,
+      "places": 130
+     },
+     {
       "especie": "Oví",
       "explotacions": 9,
-      "ub": 6785,
       "places": 2351
      },
      {
       "especie": "Gallines i pollastres",
       "explotacions": 6,
-      "ub": 5842,
       "places": 196640
      },
      {
       "especie": "Cabrum",
       "explotacions": 5,
-      "ub": 4506,
       "places": 878
-     },
-     {
-      "especie": "Porcí",
-      "explotacions": 4,
-      "ub": 2013,
-      "places": 3845
-     },
-     {
-      "especie": "Èquid",
-      "explotacions": 33,
-      "ub": 1485,
-      "places": 293
      },
      {
       "especie": "Boví",
       "explotacions": 5,
-      "ub": 1114,
-      "places": 2059
+      "places": 333
      },
      {
-      "especie": "Ànecs",
-      "explotacions": 1,
-      "ub": 15,
-      "places": 50
-     },
-     {
-      "especie": "Galls dindi",
-      "explotacions": 1,
-      "ub": 2,
-      "places": 4
-     },
-     {
-      "especie": "Oques",
-      "explotacions": 1,
-      "ub": 2,
-      "places": 8
+      "especie": "Porcí",
+      "explotacions": 4,
+      "places": 3745
      },
      {
       "especie": "Pintades",
       "explotacions": 1,
-      "ub": 0,
       "places": 50
+     },
+     {
+      "especie": "Ànecs",
+      "explotacions": 1,
+      "places": 50
+     },
+     {
+      "especie": "Oques",
+      "explotacions": 1,
+      "places": 8
+     },
+     {
+      "especie": "Galls dindi",
+      "explotacions": 1,
+      "places": 4
      }
     ],
-    "ub": 21764,
     "intensiu": 33
    }
   }
@@ -3010,9 +3141,453 @@
      }
     }
    ],
-   "17901": []
+   "17901": [
+    {
+     "any": 2000,
+     "poblacio": 1099,
+     "selectiva": 9.63,
+     "kgHabAny": 399.7,
+     "kgHabDia": 1.1,
+     "total": 439.27,
+     "fraccions": {
+      "Paper i cartró": 14.03,
+      "Vidre": 24.6,
+      "Envasos": 3.64
+     }
+    },
+    {
+     "any": 2001,
+     "poblacio": 1099,
+     "selectiva": 13.21,
+     "kgHabAny": 477.2,
+     "kgHabDia": 1.31,
+     "total": 524.44,
+     "fraccions": {
+      "Paper i cartró": 20.48,
+      "Vidre": 41.2,
+      "Envasos": 7.54
+     }
+    },
+    {
+     "any": 2002,
+     "poblacio": 1090,
+     "selectiva": 10.99,
+     "kgHabAny": 643.5,
+     "kgHabDia": 1.76,
+     "total": 701.42,
+     "fraccions": {
+      "Paper i cartró": 22.39,
+      "Vidre": 35.28,
+      "Envasos": 16.46,
+      "Poda i jardineria": 0.05,
+      "Voluminosos i fusta": 0.34,
+      "Tèxtil": 0.04
+     }
+    },
+    {
+     "any": 2003,
+     "poblacio": 1168,
+     "selectiva": 11.8,
+     "kgHabAny": 639.1,
+     "kgHabDia": 1.75,
+     "total": 746.47,
+     "fraccions": {
+      "Paper i cartró": 26.43,
+      "Vidre": 43.3,
+      "Envasos": 17.35,
+      "Poda i jardineria": 0.06,
+      "Voluminosos i fusta": 0.82,
+      "Tèxtil": 0.06
+     }
+    },
+    {
+     "any": 2004,
+     "poblacio": 1201,
+     "selectiva": 12.7,
+     "kgHabAny": 630.77,
+     "kgHabDia": 1.73,
+     "total": 757.56,
+     "fraccions": {
+      "Paper i cartró": 30.72,
+      "Vidre": 47.61,
+      "Envasos": 17.12,
+      "Poda i jardineria": 0.07,
+      "Voluminosos i fusta": 0.54,
+      "Tèxtil": 0.04
+     }
+    },
+    {
+     "any": 2005,
+     "poblacio": 1233,
+     "selectiva": 13.01,
+     "kgHabAny": 628.05,
+     "kgHabDia": 1.72,
+     "total": 774.38,
+     "fraccions": {
+      "Paper i cartró": 33.74,
+      "Vidre": 50.1,
+      "Envasos": 13.54,
+      "Poda i jardineria": 0.07,
+      "Voluminosos i fusta": 0.5,
+      "Tèxtil": 0.03
+     }
+    },
+    {
+     "any": 2006,
+     "poblacio": 1271,
+     "selectiva": 15.1,
+     "kgHabAny": 612.92,
+     "kgHabDia": 1.68,
+     "total": 779.03,
+     "fraccions": {
+      "Orgànica": 14.2,
+      "Paper i cartró": 31.48,
+      "Vidre": 48.86,
+      "Envasos": 16.19,
+      "Poda i jardineria": 0.02,
+      "Voluminosos i fusta": 0.71,
+      "Tèxtil": 0.05
+     }
+    },
+    {
+     "any": 2007,
+     "poblacio": 1291,
+     "selectiva": 18.89,
+     "kgHabAny": 591.01,
+     "kgHabDia": 1.62,
+     "total": 763,
+     "fraccions": {
+      "Orgànica": 20.06,
+      "Paper i cartró": 32.95,
+      "Vidre": 61.74,
+      "Envasos": 24.65,
+      "Voluminosos i fusta": 0.61,
+      "Tèxtil": 0.02
+     }
+    },
+    {
+     "any": 2008,
+     "poblacio": 1270,
+     "selectiva": 19.05,
+     "kgHabAny": 542.5,
+     "kgHabDia": 1.49,
+     "total": 688.97,
+     "fraccions": {
+      "Orgànica": 22.76,
+      "Paper i cartró": 35.41,
+      "Vidre": 31.9,
+      "Envasos": 21.38,
+      "Poda i jardineria": 16.92,
+      "Voluminosos i fusta": 0.55,
+      "Tèxtil": 0.08
+     }
+    },
+    {
+     "any": 2009,
+     "poblacio": 1272,
+     "selectiva": 31.34,
+     "kgHabAny": 588.33,
+     "kgHabDia": 1.61,
+     "total": 748.36,
+     "fraccions": {
+      "Orgànica": 52.42,
+      "Paper i cartró": 40.34,
+      "Vidre": 50.06,
+      "Envasos": 19,
+      "Poda i jardineria": 72.67
+     }
+    },
+    {
+     "any": 2010,
+     "poblacio": 1250,
+     "selectiva": 42.04,
+     "kgHabAny": 646.83,
+     "kgHabDia": 1.77,
+     "total": 808.54,
+     "fraccions": {
+      "Orgànica": 53.68,
+      "Paper i cartró": 41.83,
+      "Vidre": 44.07,
+      "Envasos": 26.27,
+      "Poda i jardineria": 132.56,
+      "Voluminosos i fusta": 11.34,
+      "Tèxtil": 0.55,
+      "Aparells elèctrics": 5.51
+     }
+    },
+    {
+     "any": 2011,
+     "poblacio": 1282,
+     "selectiva": 37.44,
+     "kgHabAny": 563.52,
+     "kgHabDia": 1.54,
+     "total": 722.43,
+     "fraccions": {
+      "Orgànica": 64.93,
+      "Paper i cartró": 41.56,
+      "Vidre": 42.41,
+      "Envasos": 24.97,
+      "Poda i jardineria": 90.06,
+      "Voluminosos i fusta": 1.47,
+      "Runes": 2.78,
+      "Tèxtil": 0.09,
+      "Aparells elèctrics": 0.46
+     }
+    },
+    {
+     "any": 2012,
+     "poblacio": 1253,
+     "selectiva": 37.3,
+     "kgHabAny": 556.27,
+     "kgHabDia": 1.52,
+     "total": 697,
+     "fraccions": {
+      "Orgànica": 41.22,
+      "Paper i cartró": 40.2,
+      "Vidre": 32.82,
+      "Envasos": 25.42,
+      "Poda i jardineria": 89.51,
+      "Voluminosos i fusta": 4.85,
+      "Runes": 8.23,
+      "Tèxtil": 0.23,
+      "Aparells elèctrics": 3.23
+     }
+    },
+    {
+     "any": 2013,
+     "poblacio": 1273,
+     "selectiva": 43.7,
+     "kgHabAny": 543.9,
+     "kgHabDia": 1.49,
+     "total": 692.39,
+     "fraccions": {
+      "Orgànica": 46.84,
+      "Paper i cartró": 39.32,
+      "Vidre": 51.19,
+      "Envasos": 25.81,
+      "Poda i jardineria": 101.03,
+      "Voluminosos i fusta": 6.89,
+      "Runes": 10.83,
+      "Tèxtil": 0.24,
+      "Aparells elèctrics": 2.84
+     }
+    },
+    {
+     "any": 2014,
+     "poblacio": 1284,
+     "selectiva": 40.64,
+     "kgHabAny": 518.77,
+     "kgHabDia": 1.42,
+     "total": 666.1,
+     "fraccions": {
+      "Orgànica": 46.84,
+      "Paper i cartró": 36.95,
+      "Vidre": 24.96,
+      "Envasos": 27.88,
+      "Poda i jardineria": 88.21,
+      "Voluminosos i fusta": 9.89,
+      "Runes": 15.3,
+      "Tèxtil": 0.4,
+      "Aparells elèctrics": 2.45
+     }
+    },
+    {
+     "any": 2015,
+     "poblacio": 1304,
+     "selectiva": 42.57,
+     "kgHabAny": 532.59,
+     "kgHabDia": 1.46,
+     "total": 694.49,
+     "fraccions": {
+      "Orgànica": 32.51,
+      "Paper i cartró": 32.77,
+      "Vidre": 57.49,
+      "Envasos": 26.49,
+      "Poda i jardineria": 94.04,
+      "Voluminosos i fusta": 9.67,
+      "Runes": 15.3,
+      "Tèxtil": 0.45,
+      "Aparells elèctrics": 6.67
+     }
+    },
+    {
+     "any": 2016,
+     "poblacio": 1292,
+     "selectiva": 45.78,
+     "kgHabAny": 561.55,
+     "kgHabDia": 1.54,
+     "total": 725.52,
+     "fraccions": {
+      "Orgànica": 45.68,
+      "Paper i cartró": 35.93,
+      "Vidre": 52.61,
+      "Envasos": 28.04,
+      "Poda i jardineria": 76.84,
+      "Voluminosos i fusta": 21.19,
+      "Runes": 29.45,
+      "Tèxtil": 1.39,
+      "Aparells elèctrics": 8.72
+     }
+    },
+    {
+     "any": 2017,
+     "poblacio": 1296,
+     "selectiva": 46.52,
+     "kgHabAny": 508.16,
+     "kgHabDia": 1.39,
+     "total": 658.57,
+     "fraccions": {
+      "Orgànica": 41.84,
+      "Paper i cartró": 35.48,
+      "Vidre": 53.41,
+      "Envasos": 28.33,
+      "Poda i jardineria": 54,
+      "Voluminosos i fusta": 18.95,
+      "Runes": 23.43,
+      "Tèxtil": 0.51,
+      "Aparells elèctrics": 9.65
+     }
+    },
+    {
+     "any": 2018,
+     "poblacio": 1274,
+     "selectiva": 47.73,
+     "kgHabAny": 583.4,
+     "kgHabDia": 1.6,
+     "total": 743.25,
+     "fraccions": {
+      "Orgànica": 46.7,
+      "Paper i cartró": 34.53,
+      "Vidre": 51.67,
+      "Envasos": 35.2,
+      "Poda i jardineria": 60.13,
+      "Voluminosos i fusta": 27.29,
+      "Runes": 36.65,
+      "Tèxtil": 1.62,
+      "Aparells elèctrics": 11.04
+     }
+    },
+    {
+     "any": 2019,
+     "poblacio": 1279,
+     "selectiva": 52.57,
+     "kgHabAny": 626.02,
+     "kgHabDia": 1.72,
+     "total": 800.68,
+     "fraccions": {
+      "Orgànica": 59.98,
+      "Paper i cartró": 46.77,
+      "Vidre": 66.76,
+      "Envasos": 46.93,
+      "Poda i jardineria": 62.98,
+      "Voluminosos i fusta": 30.87,
+      "Runes": 41.67,
+      "Tèxtil": 1.61,
+      "Aparells elèctrics": 13.05
+     }
+    },
+    {
+     "any": 2020,
+     "poblacio": 1270,
+     "selectiva": 52.92,
+     "kgHabAny": 648.72,
+     "kgHabDia": 1.78,
+     "total": 823.87,
+     "fraccions": {
+      "Orgànica": 64.7,
+      "Paper i cartró": 53.6,
+      "Vidre": 71.65,
+      "Envasos": 45.16,
+      "Poda i jardineria": 59.18,
+      "Voluminosos i fusta": 56.55,
+      "Runes": 40.36,
+      "Tèxtil": 1.87,
+      "Aparells elèctrics": 12.98
+     }
+    },
+    {
+     "any": 2021,
+     "poblacio": 1327,
+     "selectiva": 52.74,
+     "kgHabAny": 646.4,
+     "kgHabDia": 1.77,
+     "total": 857.77,
+     "fraccions": {
+      "Orgànica": 62.12,
+      "Paper i cartró": 57.8,
+      "Vidre": 89.45,
+      "Envasos": 39.23,
+      "Poda i jardineria": 56.24,
+      "Voluminosos i fusta": 57.61,
+      "Runes": 46.99,
+      "Tèxtil": 1.8,
+      "Aparells elèctrics": 12.04
+     }
+    },
+    {
+     "any": 2022,
+     "poblacio": 1338,
+     "selectiva": 58.12,
+     "kgHabAny": 748.36,
+     "kgHabDia": 2.05,
+     "total": 1001.31,
+     "fraccions": {
+      "Orgànica": 57.53,
+      "Paper i cartró": 55.39,
+      "Vidre": 83.05,
+      "Envasos": 45.67,
+      "Poda i jardineria": 124.54,
+      "Voluminosos i fusta": 85.14,
+      "Runes": 80.24,
+      "Tèxtil": 2.93,
+      "Aparells elèctrics": 12.47
+     }
+    },
+    {
+     "any": 2023,
+     "poblacio": 1319,
+     "selectiva": 57.13,
+     "kgHabAny": 722.81,
+     "kgHabDia": 1.98,
+     "total": 953.38,
+     "fraccions": {
+      "Orgànica": 58.69,
+      "Paper i cartró": 59.24,
+      "Vidre": 74.57,
+      "Envasos": 51.36,
+      "Poda i jardineria": 98.39,
+      "Voluminosos i fusta": 80.56,
+      "Runes": 74.06,
+      "Tèxtil": 1.3,
+      "Aparells elèctrics": 11.69
+     }
+    },
+    {
+     "any": 2024,
+     "poblacio": 1323,
+     "selectiva": 55.24,
+     "kgHabAny": 769.74,
+     "kgHabDia": 2.11,
+     "total": 1018.37,
+     "fraccions": {
+      "Orgànica": 55.22,
+      "Paper i cartró": 54.56,
+      "Vidre": 76.26,
+      "Envasos": 51.66,
+      "Poda i jardineria": 137.76,
+      "Voluminosos i fusta": 78.01,
+      "Runes": 59.99,
+      "Tèxtil": 2.98,
+      "Aparells elèctrics": 11.25
+     }
+    }
+   ]
   },
-  "catalunya": null
+  "catalunya": {
+   "any": 2024,
+   "selectiva": 49.08,
+   "kgHabAny": 498.7
+  }
  },
  "escoles": {
   "actualitzatMatricula": "2026-04-23T11:01:46+00:00",

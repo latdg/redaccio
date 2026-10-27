@@ -1,11 +1,5 @@
 renda fet
 habitatge fet
 ramaderia fet
-69zu-w48s: intent 1 fallit (400 Client Error: Bad Request for url: https://analisi.transparenciacatalunya.cat/resource/69zu-w48s.json?%24limit=5000&%24offset=0&%24order=%3Aid&%24where=any%3D%272024%27&%24select=sum%28total_recollida_selectiva%29%2Csum%28generaci_residus_municipal%29%2Csum%28poblaci%29)
-69zu-w48s: intent 2 fallit (400 Client Error: Bad Request for url: https://analisi.transparenciacatalunya.cat/resource/69zu-w48s.json?%24limit=5000&%24offset=0&%24order=%3Aid&%24where=any%3D%272024%27&%24select=sum%28total_recollida_selectiva%29%2Csum%28generaci_residus_municipal%29%2Csum%28poblaci%29)
-69zu-w48s: intent 3 fallit (400 Client Error: Bad Request for url: https://analisi.transparenciacatalunya.cat/resource/69zu-w48s.json?%24limit=5000&%24offset=0&%24order=%3Aid&%24where=any%3D%272024%27&%24select=sum%28total_recollida_selectiva%29%2Csum%28generaci_residus_municipal%29%2Csum%28poblaci%29)
-69zu-w48s: intent 4 fallit (400 Client Error: Bad Request for url: https://analisi.transparenciacatalunya.cat/resource/69zu-w48s.json?%24limit=5000&%24offset=0&%24order=%3Aid&%24where=any%3D%272024%27&%24select=sum%28total_recollida_selectiva%29%2Csum%28generaci_residus_municipal%29%2Csum%28poblaci%29)
-69zu-w48s: intent 5 fallit (400 Client Error: Bad Request for url: https://analisi.transparenciacatalunya.cat/resource/69zu-w48s.json?%24limit=5000&%24offset=0&%24order=%3Aid&%24where=any%3D%272024%27&%24select=sum%28total_recollida_selectiva%29%2Csum%28generaci_residus_municipal%29%2Csum%28poblaci%29)
-Mitjana de Catalunya: 69zu-w48s: el servidor no respon
 residus fet
 escoles fet

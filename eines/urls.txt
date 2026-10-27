@@ -1,17 +1,4 @@
-# Exploració dels conjunts nous (27.10.2026)
-https://analisi.transparenciacatalunya.cat/resource/qww9-bvhh.json?$where=nom_territori%20like%20'%25Bisbal%20d%25'%20OR%20nom_territori%20like%20'%25Cor%C3%A7%C3%A0%25'&$order=any%20DESC&$limit=6
-https://analisi.transparenciacatalunya.cat/resource/2b4s-skfm.json?$limit=2
-https://analisi.transparenciacatalunya.cat/resource/2b4s-skfm.json?$select=codi_ine_municipi,municipi,count(*),sum(pot_ncia)&$where=comarca%20like%20'%25Baix%20Empord%25'&$group=codi_ine_municipi,municipi&$limit=60
-https://analisi.transparenciacatalunya.cat/resource/6st4-ptsi.json?$where=municipi%20like%20'%25Bisbal%20d%25'%20OR%20municipi%20like%20'%25Forallac%25'&$order=any%20DESC&$limit=6
-https://analisi.transparenciacatalunya.cat/resource/7bpt-5azk.json?$limit=2
-https://analisi.transparenciacatalunya.cat/resource/69zu-w48s.json?$where=municipi%20like%20'%25Bisbal%20d%25'&$order=any%20DESC&$limit=2
-https://analisi.transparenciacatalunya.cat/resource/xvme-26kg.json?$limit=2&$order=curs%20DESC
-https://analisi.transparenciacatalunya.cat/resource/99md-r3rq.json?$limit=2&$order=curs%20DESC
-https://analisi.transparenciacatalunya.cat/resource/w8kv-kmwv.json?$where=municipi%20like%20'%25Bisbal%20d%25'&$limit=5
-https://analisi.transparenciacatalunya.cat/resource/q4sr-68c3.json?$where=municipi%20like%20'%25Bisbal%20d%25'&$limit=5
-https://analisi.transparenciacatalunya.cat/resource/u5i2-b24m.json?$where=municipi%20like%20'%25Bisbal%20d%25'&$limit=3
-https://analisi.transparenciacatalunya.cat/resource/8idm-becu.json?$where=municipi%20like%20'%25Bisbal%20d%25'&$order=any%20DESC&$limit=8
-https://analisi.transparenciacatalunya.cat/resource/g2ay-3vnj.json?$where=codi_ine='17022'&$order=act_dat_actuacio%20DESC&$limit=3
-https://servicios.ine.es/wstempus/js/ES/TABLAS_OPERACION/353 | Girona
-https://insideairbnb.com/get-the-data/ | girona|costa brava|catalonia|catalu
-https://www.cofgi.org/farmacies/farmacies-de-guardia | Bisbal|Cor[çc]|Forallac|Cru[ïi]lles|guàrdia
+# Inside Airbnb i renda per secció (27.10.2026)
+https://insideairbnb.com/get-the-data/ | <h3>[^<]*(Girona|Costa Brava|Empord)[^<]*</h3>
+https://servicios.ine.es/wstempus/js/ES/TABLAS_OPERACION/ADRH | Girona
+https://servicios.ine.es/wstempus/js/ES/OPERACIONES_DISPONIBLES | Atlas de distribuci

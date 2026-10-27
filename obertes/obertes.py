@@ -2,8 +2,9 @@
 # DADES OBERTES DE LA GENERALITAT PER A LA REDACCIÓ — La TdG · 27.10.2026
 # Un sol guió per a diversos blocs de La TdG redacció (dades/obertes.json):
 #   renda    Renda garantida de ciutadania per municipi (u5i2-b24m), mensual
-#   habitatge  Preu del lloguer (qww9-bvhh, trimestral), impost sobre els
-#            habitatges buits (w8kv-kmwv, anual) i taxa turística (q4sr-68c3)
+#   habitatge  Preu del lloguer (qww9-bvhh, trimestral) i impost sobre els
+#            habitatges buits (w8kv-kmwv, anual). La taxa turística (q4sr-68c3)
+#            no té files dels nostres municipis i no es baixa.
 #   ramaderia  Registre d'explotacions ramaderes (7bpt-5azk)
 #   residus  Estadística de residus municipals (69zu-w48s), anual
 #   escoles  Alumnes matriculats per centre (xvme-26kg) i preinscripció (99md-r3rq)
@@ -29,7 +30,7 @@ CAPCALERES = {"User-Agent": "LaTdG-redaccio (https://latdg.github.io/redaccio/)"
 MUNICIPIS = {"17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac",
              "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"}
 # Codis de 6 xifres (amb el dígit de control de l'Idescat)
-CODI6 = {"17022": "170221", "17057": "170577", "17902": "179026", "17901": "179013"}
+CODI6 = {"17022": "170221", "17057": "170577", "17902": "179026", "17901": "179011"}
 PARAULA = {"17022": "BISBAL D", "17057": "CORCA", "17902": "FORALLAC", "17901": "CRUILLES"}
 
 
@@ -118,8 +119,7 @@ def renda():
 # --- Habitatge: lloguer, habitatges buits, taxa turística -------------------------
 def habitatge():
     sortida = {"lloguer": {"actualitzat": actualitzat("qww9-bvhh"), "municipis": {}},
-               "buits": {"actualitzat": actualitzat("w8kv-kmwv"), "municipis": {}},
-               "taxa": {"actualitzat": actualitzat("q4sr-68c3"), "municipis": {}, "camps": []}}
+               "buits": {"actualitzat": actualitzat("w8kv-kmwv"), "municipis": {}}}
     codis5 = ",".join(f"'{c}'" for c in MUNICIPIS)
     ll = baixa("qww9-bvhh", f"ambit_territorial='Municipi' AND codi_territorial in({codis5})")
     ordre_t = {"GENER-MARC": 1, "ABRIL-JUNY": 2, "JULIOL-SETEMBRE": 3, "OCTUBRE-DESEMBRE": 4}
@@ -148,15 +148,6 @@ def habitatge():
             a["tenidors"] += num(x.get("tenidors")) or 0
             a["superficie"] += num(x.get("superficie_util")) or 0
         sortida["buits"]["municipis"][c] = [{"any": k, **v} for k, v in sorted(per_any.items())]
-    # Taxa turística: el municipi pot venir amb el nom en qualsevol forma.
-    tx = baixa("q4sr-68c3")
-    for x in tx:
-        c = codi_per_nom(x.get("municipi"))
-        if not c:
-            continue
-        sortida["taxa"]["municipis"].setdefault(c, []).append({k: v for k, v in x.items() if not k.startswith(":")})
-    if tx:
-        sortida["taxa"]["camps"] = sorted({k for x in tx[:50] for k in x if not k.startswith(":")})
     return sortida
 
 
@@ -168,19 +159,20 @@ def ramaderia():
         seves = [x for x in f if codi_per_nom(x.get("municipi")) == c and pla(x.get("estat_explotaci_")).startswith("ACTIV")
                  and pla(x.get("estat_subexplotaci_") or "ACTIVA").startswith("ACTIV")]
         explot = {x.get("codi_rega") for x in seves}
-        esp = defaultdict(lambda: {"explotacions": set(), "ub": 0, "places": 0})
+        esp = defaultdict(lambda: {"explotacions": set(), "places": 0})
         for x in seves:
             e = esp[x.get("esp_cie") or "Altres"]
             e["explotacions"].add(x.get("codi_rega"))
-            e["ub"] += num(x.get("total_ub")) or 0
-            # Places: suma de les capacitats de la subexplotació (tots els camps «cap…»).
-            e["places"] += sum(num(v) or 0 for k, v in x.items() if (k.startswith("cap") or k.startswith("capacitat_"))
-                               and k not in ("capacitat_productiva",))
+            # Places: el total de la subexplotació o, si no hi és, la suma de les
+            # capacitats parcials (engreix, femelles…). El camp total_ub del registre
+            # no és fiable (hi ha explotacions amb més UB que animals) i no es fa servir.
+            total = num(x.get("cap_n_m_total_animals")) or 0
+            parcials = sum(num(v) or 0 for k, v in x.items() if k.startswith("cap_") and k != "cap_n_m_total_animals")
+            e["places"] += total or parcials
         per[c] = {
             "explotacions": len(explot),
-            "especies": sorted(({"especie": k, "explotacions": len(v["explotacions"]), "ub": round(v["ub"]), "places": round(v["places"])}
-                                for k, v in esp.items()), key=lambda z: -z["ub"]),
-            "ub": round(sum(v["ub"] for v in esp.values())),
+            "especies": sorted(({"especie": k, "explotacions": len(v["explotacions"]), "places": round(v["places"])}
+                                for k, v in esp.items()), key=lambda z: (-z["explotacions"], -z["places"])),
             "intensiu": len({x.get("codi_rega") for x in seves if pla(x.get("sistema_productiu")).startswith("INTENS")}),
         }
     return {"actualitzat": actualitzat("7bpt-5azk"), "municipis": per}
@@ -205,8 +197,11 @@ def residus():
     # Mitjana de Catalunya del darrer any, per comparar
     try:
         darrer = max(a["any"] for v in per.values() for a in v)
-        cat = baixa("69zu-w48s", f"any='{darrer}'", "sum(total_recollida_selectiva),sum(generaci_residus_municipal),sum(poblaci)")
-        s, t, p = (num(cat[0].get(k)) for k in ("sum_total_recollida_selectiva", "sum_generaci_residus_municipal", "sum_poblaci"))
+        # Els camps són de text i l'API no els pot sumar: se sumen aquí.
+        cat = baixa("69zu-w48s", f"any='{darrer}'", "r_s_r_m_total,generaci_residus_municipal,poblaci")
+        # La recollida selectiva és un percentatge: es pondera per les tones de cada municipi.
+        s = sum((num(x.get("r_s_r_m_total")) or 0) * (num(x.get("generaci_residus_municipal")) or 0) / 100 for x in cat)
+        t, p = (sum(num(x.get(k)) or 0 for x in cat) for k in ("generaci_residus_municipal", "poblaci"))
         catalunya = {"any": darrer, "selectiva": round(s / t * 100, 2) if s and t else None, "kgHabAny": round(t * 1000 / p, 1) if t and p else None}
     except Exception as err:
         print("Mitjana de Catalunya:", err)

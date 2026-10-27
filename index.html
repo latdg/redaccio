@@ -1213,7 +1213,8 @@ const codiPerNom = nom => {
 const ORDRE_ENS = ["17022", "17057", "17902", "17901", "ccbe", "gavarres"];
 const rangEns = nom => { const i = ORDRE_ENS.indexOf(codiPerNom(nom)); return i < 0 ? 99 : i; };
 // Fitxa plegada per a un ens qualsevol (pel nom); el contingut es pinta en obrir-la.
-const fitxaPlegadaEns = (nom, detall) => `<details class="fitxa plegable" data-ens="${esc(nom)}">${capPlegable(nom, codiPerNom(nom), detall)}<div class="cos-plega"></div></details>`;
+// Blocs 11 i 13: els municipis, amb «Ajuntament de…» (el data-ens es queda amb el nom de les dades, per filtrar).
+const fitxaPlegadaEns = (nom, detall) => `<details class="fitxa plegable" data-ens="${esc(nom)}">${capPlegable(nomAdmin(nom), codiPerNom(nom), detall)}<div class="cos-plega"></div></details>`;
 function activaEns(arrel, pinta) {
   arrel.querySelectorAll("details[data-ens]").forEach(d => d.addEventListener("toggle", () => {
     if (!d.open || d.dataset.fet) return;
@@ -1223,8 +1224,9 @@ function activaEns(arrel, pinta) {
   }));
 }
 const escutPetit = codi => codi && FITXER_ESCUT[codi] ? `<img class="escut-mun" src="escuts/${FITXER_ESCUT[codi]}" alt="">` : "";
+// 27.10.2026: darrere de l'escut, el nom comença sempre amb majúscula («La Bisbal d'Empordà»).
 const capPlegable = (nom, codi, detall) =>
-  `<summary>${escutPetit(codi)}<h3>${esc(nom)}</h3>${detall ? `<span class="resum-mun">${detall}</span>` : ""}</summary>`;
+  `<summary>${escutPetit(codi)}<h3>${esc(String(nom || "").replace(/^./, c => c.toUpperCase()))}</h3>${detall ? `<span class="resum-mun">${detall}</span>` : ""}</summary>`;
 const PISTA_PLEGA = '<p class="pista-plega">Clica el nom d\'un municipi per veure\'n el detall.</p>';
 
 function fitxaMunicipi(m) {
@@ -1235,7 +1237,7 @@ function fitxaMunicipi(m) {
   const poblacio = (pres && pres.poblacio) || (liq && liq.poblacio) || (darrer && darrer.cens) || null;
 
   let h = `<details class="fitxa plegable">` +
-    capPlegable(m.nom, codiPerNom(m.nom), poblacio ? `${String(poblacio).replace(/\B(?=(\d{3})+(?!\d))/g, ".")} habitants` : "");
+    capPlegable(nomAdmin(m.nom), codiPerNom(m.nom), poblacio ? `${String(poblacio).replace(/\B(?=(\d{3})+(?!\d))/g, ".")} habitants` : "");
 
   // Xifres principals
   h += '<div class="xifres">';

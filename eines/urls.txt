@@ -1,2 +1,2 @@
-https://www.cofgi.org/farmacies/farmacies-de-guardia | <form|<input|<select|data-|ajax|datepicker|fecha|date
-https://www.cofgi.org/farmacies/farmacies-de-guardia-pdf
+https://www.cofgi.org/farmacies/farmacies-de-guardia | name="(?!_)[a-z-]+"|BISBAL|Data:
+https://www.cofgi.org/farmacies/farmacies-de-guardia-pdf | \.pdf|href="[^"]*guard

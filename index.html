@@ -1391,10 +1391,15 @@ function contacte(f) {
   if (f.fundadors) parts.push(`Fundadors: ${esc(f.fundadors)}`);
   return parts.length ? `<p style="margin:6px 0 2px;font-size:.88rem">${parts.join("<br>")}</p>` : "";
 }
-function targetaEntitat(f, nova) {
-  return `<details class="targeta" style="margin:6px 0;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta)">` +
-    `<summary style="cursor:pointer"><b>${esc(f.nom)}</b>${nova ? ' <span class="amunt" style="font-size:.8rem">· nova</span>' : ""}<br>` +
-    `<span class="var" style="color:#6b6b66;font-size:.82rem">${esc(f.tipus || "")} · ${esc(f.ambit || "")} · ${esc(f.nucli || "")} · inscrita el ${f.data ? dataCa(f.data) : "—"}${f.utilitatPublica ? " · d'utilitat pública" : ""}</span></summary>` +
+// 27.10.2026: totes les entitats a la vista, amb cercador; les inscrites fa
+// menys de 12 mesos, destacades (vora i etiqueta de color) i al capdamunt.
+function targetaEntitat(f, recent, nova) {
+  const marca = recent || nova;
+  return `<details class="targeta" style="margin:6px 0;padding:8px 10px;border:1px solid ${marca ? "var(--accent)" : "var(--linia)"};${marca ? "border-left:4px solid var(--accent);background:#fbf1ec;" : "background:var(--targeta);"}border-radius:8px">` +
+    `<summary style="cursor:pointer"><b>${esc(f.nom)}</b>` +
+    (nova ? ' <span style="font-size:.75rem;font-weight:700;color:#fff;background:var(--accent);border-radius:999px;padding:1px 7px;margin-left:4px;white-space:nowrap">NOVA</span>'
+      : recent ? ' <span style="font-size:.75rem;font-weight:700;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:0 7px;margin-left:4px;white-space:nowrap">fa menys d\'un any</span>' : "") +
+    `<br><span class="var" style="color:#6b6b66;font-size:.82rem">${esc(f.tipus || "")} · ${esc(f.ambit || "")} · ${esc(f.nucli || "")} · inscrita el ${f.data ? dataCa(f.data) : "—"}${f.utilitatPublica ? " · d'utilitat pública" : ""}</span></summary>` +
     contacte(f) +
     (f.detall ? `<p style="margin:6px 0 2px;font-size:.85rem;color:#6b6b66">${esc(f.detall)}</p>` : "") +
     (f.finalitats ? `<p style="margin:4px 0 0;font-size:.88rem">${esc(f.finalitats)}</p>` : "") + `</details>`;
@@ -1405,31 +1410,39 @@ async function pintaEntitats(codi) {
   const m = ENT.municipis[codi];
   const maxA = Math.max(1, ...m.perAny.map(x => x[1]));
   const novesIds = new Set((m.noves || []).map(f => f.id));
+  const recentsIds = new Set((m.recents || []).map(f => f.id));
+  // Primer les noves i les de menys d'un any (de la més nova a la més antiga); després, la resta per ordre alfabètic.
+  const totes = (m.totes || []).slice().sort((a, b) => {
+    const ra = recentsIds.has(a.id) || novesIds.has(a.id), rb = recentsIds.has(b.id) || novesIds.has(b.id);
+    if (ra !== rb) return ra ? -1 : 1;
+    return ra ? String(b.data).localeCompare(String(a.data)) : 0;
+  });
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🤝 ") + TITOL_ENT}</h2>` +
     `<p class="font">${ENT.actualitzatFont ? "Registre actualitzat el " + dataIso(ENT.actualitzatFont) + " · " : ""}revisat el ${dataIso(ENT.generat)} · Font: ${esc(ENT.font)}</p>` +
     triadorMun(["17022", "17057", "17902", "17901"], codi, escuts) +
     `<div class="xifres">` +
       `<div class="xifra"><div class="etq">Entitats inscrites</div><div class="val">${nCa(m.total)}</div><div class="det">${m.tipus.slice(0, 3).map(([t, n]) => `${esc(t)}: ${nCa(n)}`).join(" · ")}</div></div>` +
-      `<div class="xifra"><div class="etq">Noves els darrers 12 mesos</div><div class="val">${nCa(m.recents.length)}</div><div class="det">${ENT.primeraRevisio ? "a partir d'ara s'assenyalaran les noves de cada setmana" : `${nCa((m.noves || []).length)} des de la revisió anterior`}</div></div>` +
+      `<div class="xifra"><div class="etq">Inscrites els darrers 12 mesos</div><div class="val">${nCa(m.recents.length)}</div><div class="det">${ENT.primeraRevisio ? "destacades al capdamunt de la llista" : ((m.noves || []).length ? `${nCa(m.noves.length)} de noves des de la revisió anterior` : "cap de nova des de la revisió anterior")}</div></div>` +
     `</div>` +
-    (m.noves && m.noves.length ? `<h4>🆕 Noves des de la revisió anterior</h4>` + m.noves.map(f => targetaEntitat(f, true)).join("") : "") +
-    (m.recents.length ? `<h4>Inscrites els darrers 12 mesos</h4>` + m.recents.filter(f => !novesIds.has(f.id)).map(f => targetaEntitat(f, false)).join("") : "") +
-    (m.totes && m.totes.length ? `<details style="margin-top:12px"><summary style="cursor:pointer"><b>Totes les entitats (${nCa(m.totes.length)})</b> · amb la junta, l'adreça i el telèfon</summary>` +
-      `<input type="search" id="cercaEnt" placeholder="Cerca pel nom, una persona, l'àmbit o el nucli…" style="width:100%;margin:8px 0;font:inherit;padding:6px 10px;border:1px solid var(--linia);border-radius:8px">` +
-      `<div id="llistaEnt">${m.totes.map(f => targetaEntitat(f, false)).join("")}</div></details>` : "") +
+    `<input type="search" id="cercaEnt" placeholder="Cerca pel nom, una persona, l'àmbit o el nucli…" style="width:100%;margin:4px 0 8px;font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px">` +
+    `<p class="var" id="comptaEnt" style="color:#6b6b66;font-size:.82rem;margin:0 0 4px">${nCa(totes.length)} entitats · toca'n una per veure'n la junta, l'adreça, el telèfon i les finalitats</p>` +
+    `<div id="llistaEnt">${totes.map(f => targetaEntitat(f, recentsIds.has(f.id), novesIds.has(f.id))).join("")}</div>` +
     `<h4>Inscripcions cada any</h4><div class="serie">${m.perAny.map(([a, n]) => `<span style="height:${(n / maxA * 100).toFixed(0)}%" title="${a}: ${n}"></span>`).join("")}</div>` +
     `<div class="serie-eix"><span>${m.perAny[0][0]}</span><span>${m.perAny[m.perAny.length - 1][0]}</span></div>` +
     `<h4>Per àmbit</h4><p class="det" style="font-size:.88rem">${m.ambits.map(([a, n]) => `${esc(/^<.*>$/.test(a) ? "Sense classificar" : a)}: <b>${nCa(n)}</b>`).join(" · ")}</p>` +
     `<p class="nota" style="color:#6b6b66;font-size:.85rem">Entitats amb seu al municipi segons el Registre d'entitats de la Generalitat (associacions, fundacions, federacions…). ` +
-    `Els clubs i les entitats esportives no hi surten: tenen un registre propi.` +
+    `Destacades, les inscrites fa menys d'un any; «NOVA», les aparegudes des de la revisió anterior. Els clubs i les entitats esportives no hi surten: tenen un registre propi.` +
     (m.inactives ? ` A més, n'hi ha ${nCa(m.inactives)} d'inactives.` : "") + `</p>`;
   el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaEntitats(x.dataset.mun));
   const cerca = document.getElementById("cercaEnt");
   if (cerca) cerca.oninput = () => {
     const t = cerca.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    let n = 0;
     document.querySelectorAll("#llistaEnt > details").forEach(d => {
       d.hidden = t && !d.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(t);
+      if (!d.hidden) n++;
     });
+    document.getElementById("comptaEnt").textContent = t ? `${nCa(n)} de ${nCa(totes.length)} entitats` : `${nCa(totes.length)} entitats · toca'n una per veure'n la junta, l'adreça, el telèfon i les finalitats`;
   };
 }
 async function carregaEntitats() {

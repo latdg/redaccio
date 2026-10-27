@@ -1,4 +1,5 @@
-# Registre d'entitats (27.10.2026)
-https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$select=nom_poblacio,codi_postal,count(*)&$where=nom_comarca%20like%20'%25Baix%20Empord%25'&$group=nom_poblacio,codi_postal&$order=nom_poblacio&$limit=300
-https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$where=codi_postal%20in('17100','17121')&$limit=3&$order=data_inscripcio%20DESC
-https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$select=estat,tipus_entitat,count(*)&$group=estat,tipus_entitat&$limit=100
+# Òrgans de govern i fundadors del Registre d'entitats (27.10.2026)
+https://analisi.transparenciacatalunya.cat/resource/i46c-ebpp.json?$where=id_entitat='125304'%20OR%20id_entitat='123958'&$limit=20
+https://analisi.transparenciacatalunya.cat/resource/i46c-ebpp.json?$limit=3
+https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$select=id_entitat,nom_entitat,fundadors&$where=id_entitat='125304'%20OR%20id_entitat='123958'
+https://analisi.transparenciacatalunya.cat/api/views/i46c-ebpp.json

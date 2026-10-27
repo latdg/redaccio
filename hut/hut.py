@@ -122,7 +122,7 @@ def main():
             "hut": len(hut),
             "places": sum(num(x.get("total_places")) for x in hut),
             "lloc": (ranquing.index(c) + 1) if c in ranquing else None,
-            "carrers": carrers.most_common(12),
+            "carrers": carrers.most_common(),  # 27.10.2026: tots els carrers
             "altres": sorted(({"tipus": k, **v} for k, v in altres.items()), key=lambda z: -z["n"]),
             "altes": None if abans is None else len(set(numeros) - abans),
             "baixes": None if abans is None else len(abans - set(numeros)),

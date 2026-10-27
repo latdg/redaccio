@@ -5,9 +5,10 @@
 # en el seu municipi i desa a dades/entitats.json, per a cada un dels quatre:
 # quantes n'hi ha i de quin tipus, les inscrites cada any, les dels darrers
 # 12 mesos i les noves des de la revisió anterior.
-# 27.10.2026: es desen l'adreça i el telèfon (la redacció els necessita per
-# contactar-hi; són les mateixes dades que publica la Generalitat). Els
-# fundadors no es desen.
+# 27.10.2026: es desen l'adreça, el telèfon, la junta (Òrgans de govern,
+# i46c-ebpp) i els fundadors quan n'hi ha: la redacció els necessita per
+# contactar-hi i saber qui hi ha. Són les mateixes dades que publica la Generalitat.
+JUNTES = "https://analisi.transparenciacatalunya.cat/resource/i46c-ebpp.json"
 # =============================================================================
 import json
 import re
@@ -25,7 +26,7 @@ ESTAT = ARREL / "entitats" / "estat.json"     # id de les entitats ja vistes, pe
 API = "https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json"
 VISTA = "https://analisi.transparenciacatalunya.cat/api/views/y6fz-g3ff.json"
 CAPCALERES = {"User-Agent": "LaTdG-redaccio (https://latdg.github.io/redaccio/)"}
-CAMPS = ("id_entitat,tipus_entitat,nom_entitat,num_inscripcio,data_inscripcio,nom_poblacio,codi_postal,adreca,telefon,"
+CAMPS = ("id_entitat,tipus_entitat,nom_entitat,num_inscripcio,data_inscripcio,nom_poblacio,codi_postal,adreca,telefon,fundadors,"
          "classificacio_general,classificacio_especifica,contingut_finalitats,estat,utilitat_publica")
 # Nuclis de cada municipi tal com surten al registre (sense accents ni majúscules).
 NUCLIS = {
@@ -87,7 +88,35 @@ def fitxa(x):
         "detall": (x.get("classificacio_especifica") or "").replace("|", " · ").capitalize(),
         "finalitats": fin[:400] + ("…" if len(fin) > 400 else ""),
         "utilitatPublica": str(x.get("utilitat_publica", "")).lower().startswith("s"),
+        "fundadors": " ".join(str(x.get("fundadors") or "").split()),
+        "junta": JUNTA.get(x.get("id_entitat"), []),
     }
+
+
+JUNTA = {}
+
+
+def baixa_juntes(ids):
+    """Càrrecs de la junta de cada entitat (per lots de 60 id), ordenats com al registre."""
+    ids = sorted(i for i in ids if i)
+    for n in range(0, len(ids), 60):
+        llista = ",".join(f"'{i}'" for i in ids[n:n + 60])
+        for intent in range(5):
+            try:
+                r = requests.get(JUNTES, params={"$where": f"id_entitat in({llista})", "$limit": 5000},
+                                 headers=CAPCALERES, timeout=120)
+                r.raise_for_status()
+                break
+            except Exception as err:
+                print(f"Juntes: intent {intent + 1} fallit ({err})")
+                time.sleep(20 * (intent + 1))
+        else:
+            continue
+        for f in r.json():
+            JUNTA.setdefault(f.get("id_entitat"), []).append((int(f.get("ordre_carrec") or 999), f.get("carrec") or "", f.get("persona") or ""))
+    for k, v in JUNTA.items():
+        JUNTA[k] = [{"carrec": c, "persona": " ".join(p.split())} for _, c, p in sorted(v)]
+    print(len(JUNTA), "entitats amb junta")
 
 
 def main():
@@ -116,6 +145,7 @@ def main():
     if nuclis_no:
         print("Nuclis semblants que no s'han assignat:", dict(nuclis_no))
 
+    baixa_juntes(totes_ids)
     sortida = {"generat": datetime.now(timezone.utc).isoformat(timespec="seconds"), "actualitzatFont": actualitzat,
                "font": "Registre d'entitats de Catalunya (Departament de Justícia), dades obertes de la Generalitat",
                "primeraRevisio": vistes is None, "municipis": {}}

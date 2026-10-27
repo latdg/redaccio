@@ -1378,7 +1378,7 @@ async function carregaTurisme() {
 // -----------------------------------------------------------------------------
 // ENTITATS I ASSOCIACIONS (27.10.2026): dades/entitats.json, que desa el
 // workflow «Entitats i associacions» (entitats/entitats.py) a partir del
-// Registre d'entitats. Amb l'adreça i el telèfon (27.10.2026); sense fundadors.
+// Registre d'entitats. Amb l'adreça, el telèfon, la junta i els fundadors (27.10.2026).
 // -----------------------------------------------------------------------------
 const TITOL_ENT = "ENTITATS I ASSOCIACIONS (REGISTRE D'ENTITATS)";
 let ENT = null;
@@ -1387,6 +1387,8 @@ function contacte(f) {
   const parts = [];
   if (f.adreca) parts.push(`📍 ${esc(f.adreca)}${f.cp ? ", " + esc(f.cp) : ""} ${esc(f.nucli || "")}`);
   if (tel && tel.length >= 9) parts.push(`📞 <a href="tel:${esc(tel)}">${esc(f.telefon)}</a>`);
+  if (f.junta && f.junta.length) parts.push("👥 " + f.junta.map(j => `${esc(j.carrec)}: <b>${esc(j.persona)}</b>`).join(" · "));
+  if (f.fundadors) parts.push(`Fundadors: ${esc(f.fundadors)}`);
   return parts.length ? `<p style="margin:6px 0 2px;font-size:.88rem">${parts.join("<br>")}</p>` : "";
 }
 function targetaEntitat(f, nova) {
@@ -1412,8 +1414,8 @@ async function pintaEntitats(codi) {
     `</div>` +
     (m.noves && m.noves.length ? `<h4>🆕 Noves des de la revisió anterior</h4>` + m.noves.map(f => targetaEntitat(f, true)).join("") : "") +
     (m.recents.length ? `<h4>Inscrites els darrers 12 mesos</h4>` + m.recents.filter(f => !novesIds.has(f.id)).map(f => targetaEntitat(f, false)).join("") : "") +
-    (m.totes && m.totes.length ? `<details style="margin-top:12px"><summary style="cursor:pointer"><b>Totes les entitats (${nCa(m.totes.length)})</b> · amb l'adreça i el telèfon</summary>` +
-      `<input type="search" id="cercaEnt" placeholder="Cerca pel nom, l'àmbit o el nucli…" style="width:100%;margin:8px 0;font:inherit;padding:6px 10px;border:1px solid var(--linia);border-radius:8px">` +
+    (m.totes && m.totes.length ? `<details style="margin-top:12px"><summary style="cursor:pointer"><b>Totes les entitats (${nCa(m.totes.length)})</b> · amb la junta, l'adreça i el telèfon</summary>` +
+      `<input type="search" id="cercaEnt" placeholder="Cerca pel nom, una persona, l'àmbit o el nucli…" style="width:100%;margin:8px 0;font:inherit;padding:6px 10px;border:1px solid var(--linia);border-radius:8px">` +
       `<div id="llistaEnt">${m.totes.map(f => targetaEntitat(f, false)).join("")}</div></details>` : "") +
     `<h4>Inscripcions cada any</h4><div class="serie">${m.perAny.map(([a, n]) => `<span style="height:${(n / maxA * 100).toFixed(0)}%" title="${a}: ${n}"></span>`).join("")}</div>` +
     `<div class="serie-eix"><span>${m.perAny[0][0]}</span><span>${m.perAny[m.perAny.length - 1][0]}</span></div>` +

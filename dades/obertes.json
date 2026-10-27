@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-27T06:25:01+00:00",
+ "generat": "2026-10-27T09:15:30+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -3591,9 +3591,9 @@
  },
  "escoles": {
   "actualitzatMatricula": "2026-04-23T11:01:46+00:00",
-  "actualitzatPreinscripcio": "2025-11-12T08:38:35+00:00",
+  "actualitzatPreinscripcio": "2026-10-27T08:42:19+00:00",
   "curs": "2025/2026",
-  "cursPreinscripcio": "2025-2026",
+  "cursPreinscripcio": "2026-2027",
   "centres": [
    {
     "codi": "17007300",
@@ -4081,12 +4081,12 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "1",
-    "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 20,
-    "places_ofertades_a_la": 19,
-    "assignacions": 19,
-    "assignacions_1a_peticio": 19,
-    "assignacions_altres_peticions": 0
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 40,
+    "places_ofertades_a_la": 40,
+    "assignacions": 29,
+    "assignacions_1a_peticio": 22,
+    "assignacions_altres_peticions": 7
    },
    {
     "centre": "Escola Joan de Margarit",
@@ -4095,9 +4095,9 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "2",
-    "oferta_inicial_grups": 2,
-    "oferta_inicial_places": 36,
-    "places_ofertades_a_la": 7,
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4109,6 +4109,20 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "3",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 36,
+    "places_ofertades_a_la": 8,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 19,
     "places_ofertades_a_la": 0,
@@ -4122,24 +4136,10 @@
     "mun": "17022",
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
-    "nivell": "1",
-    "oferta_inicial_grups": 2,
-    "oferta_inicial_places": 40,
-    "places_ofertades_a_la": 2,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
-    "assignacions_altres_peticions": 0
-   },
-   {
-    "centre": "Escola Joan de Margarit",
-    "codi": "17000411",
-    "mun": "17022",
-    "naturalesa": "Públic",
-    "ensenyament": "Educació primària",
     "nivell": "2",
     "oferta_inicial_grups": 2,
-    "oferta_inicial_places": 50,
-    "places_ofertades_a_la": 6,
+    "oferta_inicial_places": 40,
+    "places_ofertades_a_la": 3,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4153,10 +4153,10 @@
     "nivell": "3",
     "oferta_inicial_grups": 2,
     "oferta_inicial_places": 50,
-    "places_ofertades_a_la": 9,
-    "assignacions": 1,
+    "places_ofertades_a_la": 5,
+    "assignacions": 0,
     "assignacions_1a_peticio": 0,
-    "assignacions_altres_peticions": 1
+    "assignacions_altres_peticions": 0
    },
    {
     "centre": "Escola Joan de Margarit",
@@ -4167,7 +4167,7 @@
     "nivell": "4",
     "oferta_inicial_grups": 2,
     "oferta_inicial_places": 50,
-    "places_ofertades_a_la": 0,
+    "places_ofertades_a_la": 9,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4195,9 +4195,9 @@
     "nivell": "6",
     "oferta_inicial_grups": 2,
     "oferta_inicial_places": 50,
-    "places_ofertades_a_la": 8,
-    "assignacions": 1,
-    "assignacions_1a_peticio": 1,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4210,9 +4210,9 @@
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 23,
     "places_ofertades_a_la": 23,
-    "assignacions": 20,
-    "assignacions_1a_peticio": 17,
-    "assignacions_altres_peticions": 3
+    "assignacions": 22,
+    "assignacions_1a_peticio": 20,
+    "assignacions_altres_peticions": 2
    },
    {
     "centre": "Cor de Maria",
@@ -4223,9 +4223,9 @@
     "nivell": "2",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 23,
-    "places_ofertades_a_la": 6,
-    "assignacions": 1,
-    "assignacions_1a_peticio": 1,
+    "places_ofertades_a_la": 1,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4236,10 +4236,10 @@
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "3",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 25,
-    "places_ofertades_a_la": 8,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
+    "oferta_inicial_places": 23,
+    "places_ofertades_a_la": 2,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4251,7 +4251,7 @@
     "nivell": "1",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 25,
-    "places_ofertades_a_la": 0,
+    "places_ofertades_a_la": 6,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4265,7 +4265,7 @@
     "nivell": "2",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 25,
-    "places_ofertades_a_la": 2,
+    "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4279,7 +4279,7 @@
     "nivell": "3",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 25,
-    "places_ofertades_a_la": 0,
+    "places_ofertades_a_la": 1,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4307,7 +4307,7 @@
     "nivell": "5",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 25,
-    "places_ofertades_a_la": 3,
+    "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4321,7 +4321,7 @@
     "nivell": "6",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 25,
-    "places_ofertades_a_la": 4,
+    "places_ofertades_a_la": 2,
     "assignacions": 1,
     "assignacions_1a_peticio": 1,
     "assignacions_altres_peticions": 0
@@ -4335,10 +4335,10 @@
     "nivell": "1",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 30,
-    "places_ofertades_a_la": 4,
-    "assignacions": 7,
+    "places_ofertades_a_la": 8,
+    "assignacions": 8,
     "assignacions_1a_peticio": 7,
-    "assignacions_altres_peticions": 0
+    "assignacions_altres_peticions": 1
    },
    {
     "centre": "Cor de Maria",
@@ -4349,9 +4349,9 @@
     "nivell": "2",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 30,
-    "places_ofertades_a_la": 0,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
+    "places_ofertades_a_la": 4,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4363,7 +4363,7 @@
     "nivell": "3",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 30,
-    "places_ofertades_a_la": 0,
+    "places_ofertades_a_la": 1,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4377,35 +4377,7 @@
     "nivell": "4",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 30,
-    "places_ofertades_a_la": 5,
-    "assignacions": 1,
-    "assignacions_1a_peticio": 0,
-    "assignacions_altres_peticions": 1
-   },
-   {
-    "centre": "Escola El Rodonell",
-    "codi": "17000998",
-    "mun": "17057",
-    "naturalesa": "Públic",
-    "ensenyament": "Educació infantil: Parvulari",
-    "nivell": "1",
-    "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 10,
-    "places_ofertades_a_la": 10,
-    "assignacions": 10,
-    "assignacions_1a_peticio": 10,
-    "assignacions_altres_peticions": 0
-   },
-   {
-    "centre": "Escola El Rodonell",
-    "codi": "17000998",
-    "mun": "17057",
-    "naturalesa": "Públic",
-    "ensenyament": "Educació infantil: Parvulari",
-    "nivell": "2",
-    "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 10,
-    "places_ofertades_a_la": 4,
+    "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4416,9 +4388,37 @@
     "mun": "17057",
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 8,
+    "places_ofertades_a_la": 8,
+    "assignacions": 8,
+    "assignacions_1a_peticio": 8,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 12,
+    "places_ofertades_a_la": 1,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
     "nivell": "3",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 16,
+    "oferta_inicial_places": 7,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4431,6 +4431,20 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
     "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 15,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 20,
     "places_ofertades_a_la": 0,
@@ -4444,26 +4458,12 @@
     "mun": "17057",
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
-    "nivell": "2",
-    "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 11,
-    "places_ofertades_a_la": 0,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
-    "assignacions_altres_peticions": 0
-   },
-   {
-    "centre": "Escola El Rodonell",
-    "codi": "17000998",
-    "mun": "17057",
-    "naturalesa": "Públic",
-    "ensenyament": "Educació primària",
     "nivell": "3",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 14,
-    "places_ofertades_a_la": 0,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
+    "oferta_inicial_places": 10,
+    "places_ofertades_a_la": 1,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4474,7 +4474,7 @@
     "ensenyament": "Educació primària",
     "nivell": "4",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 16,
+    "oferta_inicial_places": 14,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4502,7 +4502,7 @@
     "ensenyament": "Educació primària",
     "nivell": "6",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 18,
+    "oferta_inicial_places": 15,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4515,22 +4515,22 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "1",
-    "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 5,
-    "places_ofertades_a_la": 5,
-    "assignacions": 5,
-    "assignacions_1a_peticio": 5,
-    "assignacions_altres_peticions": 0
-   },
-   {
-    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
-    "codi": "17001024",
-    "mun": "17901",
-    "naturalesa": "Públic",
-    "ensenyament": "Educació infantil: Parvulari",
-    "nivell": "2",
     "oferta_inicial_grups": 0,
     "oferta_inicial_places": 7,
+    "places_ofertades_a_la": 7,
+    "assignacions": 6,
+    "assignacions_1a_peticio": 6,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 5,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4544,7 +4544,7 @@
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "3",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 5,
+    "oferta_inicial_places": 6,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4572,7 +4572,7 @@
     "ensenyament": "Educació primària",
     "nivell": "2",
     "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 4,
+    "oferta_inicial_places": 5,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4586,7 +4586,7 @@
     "ensenyament": "Educació primària",
     "nivell": "3",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 6,
+    "oferta_inicial_places": 5,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4600,7 +4600,7 @@
     "ensenyament": "Educació primària",
     "nivell": "4",
     "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 6,
+    "oferta_inicial_places": 5,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4614,7 +4614,7 @@
     "ensenyament": "Educació primària",
     "nivell": "5",
     "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 5,
+    "oferta_inicial_places": 6,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4641,11 +4641,11 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "1",
-    "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 3,
-    "places_ofertades_a_la": 3,
-    "assignacions": 2,
-    "assignacions_1a_peticio": 2,
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 11,
+    "places_ofertades_a_la": 11,
+    "assignacions": 11,
+    "assignacions_1a_peticio": 11,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4656,8 +4656,8 @@
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "2",
     "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 2,
-    "places_ofertades_a_la": 0,
+    "oferta_inicial_places": 8,
+    "places_ofertades_a_la": 6,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4669,9 +4669,9 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "3",
-    "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 5,
-    "places_ofertades_a_la": 0,
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 8,
+    "places_ofertades_a_la": 6,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4683,9 +4683,9 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
     "nivell": "1",
-    "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 3,
-    "places_ofertades_a_la": 0,
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 9,
+    "places_ofertades_a_la": 4,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4698,10 +4698,10 @@
     "ensenyament": "Educació primària",
     "nivell": "2",
     "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 3,
-    "places_ofertades_a_la": 0,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
+    "oferta_inicial_places": 5,
+    "places_ofertades_a_la": 1,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4726,7 +4726,7 @@
     "ensenyament": "Educació primària",
     "nivell": "4",
     "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 6,
+    "oferta_inicial_places": 3,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4740,10 +4740,10 @@
     "ensenyament": "Educació primària",
     "nivell": "5",
     "oferta_inicial_grups": 0,
-    "oferta_inicial_places": 4,
-    "places_ofertades_a_la": 0,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
+    "oferta_inicial_places": 7,
+    "places_ofertades_a_la": 1,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4767,12 +4767,26 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 20,
+    "assignacions": 20,
+    "assignacions_1a_peticio": 20,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
     "oferta_inicial_grups": 2,
     "oferta_inicial_places": 40,
-    "places_ofertades_a_la": 40,
-    "assignacions": 30,
-    "assignacions_1a_peticio": 26,
-    "assignacions_altres_peticions": 4
+    "places_ofertades_a_la": 8,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
    },
    {
     "centre": "Escola Mas Clarà",
@@ -4780,7 +4794,7 @@
     "mun": "17022",
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
-    "nivell": "2",
+    "nivell": "3",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 18,
     "places_ofertades_a_la": 0,
@@ -4793,25 +4807,11 @@
     "codi": "17005248",
     "mun": "17022",
     "naturalesa": "Públic",
-    "ensenyament": "Educació infantil: Parvulari",
-    "nivell": "3",
-    "oferta_inicial_grups": 2,
-    "oferta_inicial_places": 38,
-    "places_ofertades_a_la": 5,
-    "assignacions": 0,
-    "assignacions_1a_peticio": 0,
-    "assignacions_altres_peticions": 0
-   },
-   {
-    "centre": "Escola Mas Clarà",
-    "codi": "17005248",
-    "mun": "17022",
-    "naturalesa": "Públic",
     "ensenyament": "Educació primària",
     "nivell": "1",
     "oferta_inicial_grups": 2,
-    "oferta_inicial_places": 40,
-    "places_ofertades_a_la": 0,
+    "oferta_inicial_places": 38,
+    "places_ofertades_a_la": 3,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4823,9 +4823,9 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
     "nivell": "2",
-    "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 25,
-    "places_ofertades_a_la": 0,
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 40,
+    "places_ofertades_a_la": 5,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4837,8 +4837,8 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
     "nivell": "3",
-    "oferta_inicial_grups": 2,
-    "oferta_inicial_places": 50,
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4851,8 +4851,8 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
     "nivell": "4",
-    "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 25,
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4865,8 +4865,8 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
     "nivell": "5",
-    "oferta_inicial_grups": 2,
-    "oferta_inicial_places": 50,
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4881,7 +4881,7 @@
     "nivell": "6",
     "oferta_inicial_grups": 2,
     "oferta_inicial_places": 50,
-    "places_ofertades_a_la": 8,
+    "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4893,12 +4893,12 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació secundària obligatòria",
     "nivell": "1",
-    "oferta_inicial_grups": 7,
-    "oferta_inicial_places": 189,
-    "places_ofertades_a_la": 181,
-    "assignacions": 176,
-    "assignacions_1a_peticio": 176,
-    "assignacions_altres_peticions": 0
+    "oferta_inicial_grups": 6,
+    "oferta_inicial_places": 180,
+    "places_ofertades_a_la": 160,
+    "assignacions": 154,
+    "assignacions_1a_peticio": 151,
+    "assignacions_altres_peticions": 3
    },
    {
     "centre": "Institut La Bisbal",
@@ -4937,7 +4937,7 @@
     "nivell": "4",
     "oferta_inicial_grups": 6,
     "oferta_inicial_places": 180,
-    "places_ofertades_a_la": 0,
+    "places_ofertades_a_la": 4,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -4950,10 +4950,10 @@
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "1",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 16,
-    "places_ofertades_a_la": 16,
-    "assignacions": 16,
-    "assignacions_1a_peticio": 16,
+    "oferta_inicial_places": 11,
+    "places_ofertades_a_la": 11,
+    "assignacions": 10,
+    "assignacions_1a_peticio": 10,
     "assignacions_altres_peticions": 0
    },
    {
@@ -4964,7 +4964,7 @@
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "2",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 14,
+    "oferta_inicial_places": 17,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -4977,6 +4977,20 @@
     "naturalesa": "Públic",
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 15,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 13,
     "places_ofertades_a_la": 0,
@@ -4990,9 +5004,9 @@
     "mun": "17902",
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
-    "nivell": "1",
+    "nivell": "2",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 18,
+    "oferta_inicial_places": 17,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -5004,26 +5018,12 @@
     "mun": "17902",
     "naturalesa": "Públic",
     "ensenyament": "Educació primària",
-    "nivell": "2",
-    "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 14,
-    "places_ofertades_a_la": 1,
-    "assignacions": 1,
-    "assignacions_1a_peticio": 1,
-    "assignacions_altres_peticions": 0
-   },
-   {
-    "centre": "Escola Forallac",
-    "codi": "17008997",
-    "mun": "17902",
-    "naturalesa": "Públic",
-    "ensenyament": "Educació primària",
     "nivell": "3",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 16,
-    "places_ofertades_a_la": 1,
-    "assignacions": 1,
-    "assignacions_1a_peticio": 1,
+    "oferta_inicial_places": 14,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
    },
    {
@@ -5034,7 +5034,7 @@
     "ensenyament": "Educació primària",
     "nivell": "4",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 19,
+    "oferta_inicial_places": 17,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -5048,7 +5048,7 @@
     "ensenyament": "Educació primària",
     "nivell": "5",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 19,
+    "oferta_inicial_places": 20,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -5062,7 +5062,7 @@
     "ensenyament": "Educació primària",
     "nivell": "6",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 23,
+    "oferta_inicial_places": 18,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -5078,8 +5078,8 @@
     "oferta_inicial_grups": 1,
     "oferta_inicial_places": 20,
     "places_ofertades_a_la": 20,
-    "assignacions": 16,
-    "assignacions_1a_peticio": 16,
+    "assignacions": 20,
+    "assignacions_1a_peticio": 20,
     "assignacions_altres_peticions": 0
    },
    {
@@ -5090,8 +5090,8 @@
     "ensenyament": "Educació infantil: Parvulari",
     "nivell": "2",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 19,
-    "places_ofertades_a_la": 1,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 4,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -5118,10 +5118,10 @@
     "ensenyament": "Educació primària",
     "nivell": "1",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 20,
-    "places_ofertades_a_la": 1,
-    "assignacions": 1,
-    "assignacions_1a_peticio": 1,
+    "oferta_inicial_places": 19,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
    },
    {
@@ -5132,8 +5132,8 @@
     "ensenyament": "Educació primària",
     "nivell": "2",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 22,
-    "places_ofertades_a_la": 0,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 3,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
     "assignacions_altres_peticions": 0
@@ -5146,7 +5146,7 @@
     "ensenyament": "Educació primària",
     "nivell": "3",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 23,
+    "oferta_inicial_places": 22,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -5160,7 +5160,7 @@
     "ensenyament": "Educació primària",
     "nivell": "4",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 24,
+    "oferta_inicial_places": 23,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -5174,7 +5174,7 @@
     "ensenyament": "Educació primària",
     "nivell": "5",
     "oferta_inicial_grups": 1,
-    "oferta_inicial_places": 22,
+    "oferta_inicial_places": 25,
     "places_ofertades_a_la": 0,
     "assignacions": 0,
     "assignacions_1a_peticio": 0,
@@ -5202,6 +5202,4077 @@
    "oferta_inicial_grups",
    "oferta_inicial_places",
    "places_ofertades_a_la"
-  ]
+  ],
+  "centresCursos": {
+   "2015/2016": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 834,
+     "unitats": 30,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       495
+      ],
+      [
+       "BATXILLERAT",
+       196
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       143
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 426,
+     "unitats": 18,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       286
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       140
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 398,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       275
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       123
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 341,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       163
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       100
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       78
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 124,
+     "unitats": 7,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       69
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       55
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 106,
+     "unitats": 8,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       106
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 135,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       94
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       41
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 22,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       22
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 50,
+     "unitats": 5,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       40
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       10
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 42,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       25
+      ],
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       17
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 37,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       37
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 16,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       16
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 159,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       107
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       52
+      ]
+     ]
+    }
+   ],
+   "2016/2017": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 877,
+     "unitats": 32.0,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       511
+      ],
+      [
+       "BATXILLERAT",
+       234
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       122
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       10
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 418,
+     "unitats": 18,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       279
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       139
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 381,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       269
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       112
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 339,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       166
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       101
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       72
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 139,
+     "unitats": 8,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       92
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       47
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 96,
+     "unitats": 8,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       96
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 140,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       89
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       51
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 33,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       33
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 57,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       39
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       18
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 44,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       26
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       18
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 35,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       35
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 17,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       17
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 152,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       103
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       49
+      ]
+     ]
+    }
+   ],
+   "2017/2018": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 927,
+     "unitats": 35.0,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       509
+      ],
+      [
+       "BATXILLERAT",
+       265
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       137
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       16
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 407,
+     "unitats": 18,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       278
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       129
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 393,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       285
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       108
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 332,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       162
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       106
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       64
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 163,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       109
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       54
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 95,
+     "unitats": 7,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       95
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 136,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       87
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       49
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 33,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       33
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 58,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       40
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       18
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 43,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       27
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       16
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 39,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       39
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 16,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       16
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 154,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       96
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       58
+      ]
+     ]
+    }
+   ],
+   "2018/2019": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 975,
+     "unitats": 36.0,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       563
+      ],
+      [
+       "BATXILLERAT",
+       257
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       138
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       17
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 421,
+     "unitats": 18,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       291
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       130
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 402,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       260
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       142
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 320,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       154
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       108
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       58
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 155,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       106
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       49
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 98,
+     "unitats": 8,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       98
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 138,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       92
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       46
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 33,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       33
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 61,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       39
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       22
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 43,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       29
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       14
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 27,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       27
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 15,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       15
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 157,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       98
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       59
+      ]
+     ]
+    }
+   ],
+   "2019/2020": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 987,
+     "unitats": 39,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       594
+      ],
+      [
+       "BATXILLERAT",
+       238
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       147
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       8
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 417,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       273
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       144
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 403,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       295
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       108
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 320,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       151
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       106
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       63
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 174,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       119
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       55
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 83,
+     "unitats": 7,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       83
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 136,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       93
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       43
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 28,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       28
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 59,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       41
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       18
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 42,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       28
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       14
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 28,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       28
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 11,
+     "unitats": 1,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       11
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 159,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       105
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       54
+      ]
+     ]
+    }
+   ],
+   "2020/2021": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 1068,
+     "unitats": 40,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       612
+      ],
+      [
+       "BATXILLERAT",
+       273
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       174
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       9
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 405,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       288
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       117
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 382,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       260
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       122
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 320,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       136
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       114
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       70
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 174,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       121
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       53
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 55,
+     "unitats": 5,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       55
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 139,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       97
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       42
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 30,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       30
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 54,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       39
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       15
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 38,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       25
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       13
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 30,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       30
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 14,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       14
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 153,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       106
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       47
+      ]
+     ]
+    }
+   ],
+   "2021/2022": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 1084,
+     "unitats": 38.5,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       649
+      ],
+      [
+       "BATXILLERAT",
+       254
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       170
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       11
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 391,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       291
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       100
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 368,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       261
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       107
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 316,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       139
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       107
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       70
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 176,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       119
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       57
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 62,
+     "unitats": 5,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       62
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 131,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       95
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       36
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 41,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       41
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 47,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       34
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       13
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 41,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       29
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       12
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 22,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       22
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 19,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       19
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 152,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       108
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       44
+      ]
+     ]
+    }
+   ],
+   "2022/2023": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 1100,
+     "unitats": 39.5,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       680
+      ],
+      [
+       "BATXILLERAT",
+       252
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       158
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       10
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 374,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       264
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       110
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 357,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       260
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       97
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 314,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       136
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       110
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       68
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 188,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       128
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       60
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 88,
+     "unitats": 7,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       88
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 139,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       96
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       43
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 30,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       30
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 46,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       33
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       13
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 36,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       29
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       7
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 22,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       22
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 19,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       19
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 155,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       109
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       46
+      ]
+     ]
+    }
+   ],
+   "2023/2024": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 1134,
+     "unitats": 42.0,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       714
+      ],
+      [
+       "BATXILLERAT",
+       243
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       153
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       24
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 357,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       268
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       89
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 332,
+     "unitats": 15,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       243
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       89
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 320,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       136
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       121
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       63
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 189,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       133
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       56
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 75,
+     "unitats": 6,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       75
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 138,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       94
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       44
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 23,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       23
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 47,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       33
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       14
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 39,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       27
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       12
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 20,
+     "unitats": 2,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       20
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 15,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       15
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 161,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       116
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       45
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 16,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       16
+      ]
+     ]
+    }
+   ],
+   "2024/2025": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 1154,
+     "unitats": 33.0,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       728
+      ],
+      [
+       "BATXILLERAT",
+       253
+      ],
+      [
+       "FORMACIÓ PROFESSIONAL",
+       150
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       23
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 348,
+     "unitats": 17,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       267
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       81
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 330,
+     "unitats": 15,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       243
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       87
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 310,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       140
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       112
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       58
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 192,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       137
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       55
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 83,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       83
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 130,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       89
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       41
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 33,
+     "unitats": 6,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       33
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 49,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       33
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       16
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 33,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       23
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       10
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 26,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       26
+      ]
+     ]
+    },
+    {
+     "nom": "Escola agrària i Alimentària de l'Empordà",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 17,
+     "unitats": 0,
+     "estudis": [
+      [
+       "FORMACIÓ PROFESSIONAL",
+       17
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 159,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       113
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       46
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 21,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       21
+      ]
+     ]
+    }
+   ],
+   "2025/2026": [
+    {
+     "nom": "Institut La Bisbal",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 998,
+     "unitats": 38,
+     "estudis": [
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       714
+      ],
+      [
+       "BATXILLERAT",
+       262
+      ],
+      [
+       "ARTS PLÀSTIQUES I DISSENY",
+       22
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Joan de Margarit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 320,
+     "unitats": 16,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       255
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       65
+      ]
+     ]
+    },
+    {
+     "nom": "Cor de Maria",
+     "mun": "17022",
+     "naturalesa": "Privat",
+     "alumnes": 317,
+     "unitats": 13,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       146
+      ],
+      [
+       "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+       115
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       56
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Mas Clarà",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 316,
+     "unitats": 15,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       231
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       85
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Empordanet",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 188,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       134
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       54
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants El Tren Petit",
+     "mun": "17022",
+     "naturalesa": "Públic",
+     "alumnes": 76,
+     "unitats": 10,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       76
+      ]
+     ]
+    },
+    {
+     "nom": "Escola El Rodonell",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 126,
+     "unitats": 8,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       93
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       33
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants Municipal La Bòbila",
+     "mun": "17057",
+     "naturalesa": "Públic",
+     "alumnes": 31,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       31
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 45,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       29
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       16
+      ]
+     ]
+    },
+    {
+     "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 31,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       22
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       9
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Monells",
+     "mun": "17901",
+     "naturalesa": "Públic",
+     "alumnes": 26,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       26
+      ]
+     ]
+    },
+    {
+     "nom": "Escola Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 156,
+     "unitats": 9,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       111
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       45
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants de Forallac",
+     "mun": "17902",
+     "naturalesa": "Públic",
+     "alumnes": 23,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       23
+      ]
+     ]
+    }
+   ]
+  },
+  "preinscripcioCursos": {
+   "2017/2018": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 38,
+     "assignacions": 40,
+     "assignacions_1a_peticio": 40
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 19,
+     "assignacions_1a_peticio": 17
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 13,
+     "assignacions": 14,
+     "assignacions_1a_peticio": 14
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 13,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 6
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 3,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 2,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 38,
+     "assignacions": 38,
+     "assignacions_1a_peticio": 36
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 150,
+     "assignacions": 129,
+     "assignacions_1a_peticio": 129
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 21,
+     "assignacions": 21,
+     "assignacions_1a_peticio": 21
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 13,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 14,
+     "assignacions_1a_peticio": 14
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    }
+   ],
+   "2018/2019": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 50,
+     "assignacions_1a_peticio": 50
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 18,
+     "assignacions_1a_peticio": 17
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 15,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 16
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 6
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 4,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 4,
+     "assignacions": 4,
+     "assignacions_1a_peticio": 4
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 44,
+     "assignacions": 43,
+     "assignacions_1a_peticio": 42
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 180,
+     "assignacions": 154,
+     "assignacions_1a_peticio": 154
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 17,
+     "assignacions_1a_peticio": 17
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 17,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 15,
+     "assignacions_1a_peticio": 15
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 1
+    }
+   ],
+   "2019/2020": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 41,
+     "assignacions_1a_peticio": 36
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 25,
+     "assignacions_1a_peticio": 23
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 16,
+     "assignacions": 12,
+     "assignacions_1a_peticio": 11
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 14,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 7,
+     "assignacions": 5,
+     "assignacions_1a_peticio": 5
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 9,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 5
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 7,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 25,
+     "assignacions_1a_peticio": 25
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 150,
+     "assignacions": 140,
+     "assignacions_1a_peticio": 140
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 18,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 15
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 12
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    }
+   ],
+   "2020/2021": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 25,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 24,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 14,
+     "assignacions": 14,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 16,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 4,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 7,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 4,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 53,
+     "assignacions_1a_peticio": 4
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 180,
+     "assignacions": 169,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 17,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 19,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 0
+    }
+   ],
+   "2021/2022": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 35,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 21,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 13,
+     "assignacions_1a_peticio": 4
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 9,
+     "assignacions": 8,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 15,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 4,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 2,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 25,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 174,
+     "assignacions": 172,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 13,
+     "assignacions": 13,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 16,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 20,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 0
+    }
+   ],
+   "2022/2023": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 40,
+     "assignacions": 39,
+     "assignacions_1a_peticio": 38
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 24,
+     "assignacions_1a_peticio": 22
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 11,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 15,
+     "assignacions": 15,
+     "assignacions_1a_peticio": 15
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 12,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 4,
+     "assignacions_1a_peticio": 4
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 3,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 8,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 40,
+     "assignacions": 35,
+     "assignacions_1a_peticio": 35
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 180,
+     "assignacions": 176,
+     "assignacions_1a_peticio": 176
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 16,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 16
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 16,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 20,
+     "assignacions": 17,
+     "assignacions_1a_peticio": 16
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    }
+   ],
+   "2023/2024": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 19,
+     "assignacions_1a_peticio": 19
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 18,
+     "assignacions_1a_peticio": 18
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 12,
+     "assignacions_1a_peticio": 12
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 15,
+     "assignacions": 14,
+     "assignacions_1a_peticio": 14
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 15,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 8,
+     "assignacions": 5,
+     "assignacions_1a_peticio": 5
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 4,
+     "assignacions_1a_peticio": 4
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 1,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 38,
+     "assignacions": 26,
+     "assignacions_1a_peticio": 24
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 180,
+     "assignacions": 152,
+     "assignacions_1a_peticio": 151
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 11,
+     "assignacions": 12,
+     "assignacions_1a_peticio": 11
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 16,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 17,
+     "assignacions_1a_peticio": 15
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 22,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    }
+   ],
+   "2024-2025": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 36,
+     "assignacions": 25,
+     "assignacions_1a_peticio": 20
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 50,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 23,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 15
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 3,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 5
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 11,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 7,
+     "assignacions": 7,
+     "assignacions_1a_peticio": 6
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 4,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 3,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 18,
+     "assignacions": 19,
+     "assignacions_1a_peticio": 19
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 1
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 180,
+     "assignacions": 167,
+     "assignacions_1a_peticio": 159
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 14,
+     "assignacions": 14,
+     "assignacions_1a_peticio": 14
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 13,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 18,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 16
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 23,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    }
+   ],
+   "2025-2026": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 20,
+     "assignacions": 19,
+     "assignacions_1a_peticio": 19
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 40,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 23,
+     "assignacions": 20,
+     "assignacions_1a_peticio": 17
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 7,
+     "assignacions_1a_peticio": 7
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 10,
+     "assignacions": 10,
+     "assignacions_1a_peticio": 10
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 20,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 5,
+     "assignacions_1a_peticio": 5
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 40,
+     "assignacions": 30,
+     "assignacions_1a_peticio": 26
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 40,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 189,
+     "assignacions": 176,
+     "assignacions_1a_peticio": 176
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 16,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 16
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 18,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 20,
+     "assignacions": 16,
+     "assignacions_1a_peticio": 16
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 20,
+     "assignacions": 1,
+     "assignacions_1a_peticio": 1
+    }
+   ],
+   "2026-2027": [
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 40,
+     "assignacions": 29,
+     "assignacions_1a_peticio": 22
+    },
+    {
+     "centre": "Escola Joan de Margarit",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 23,
+     "assignacions": 22,
+     "assignacions_1a_peticio": 20
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 25,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Cor de Maria",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 30,
+     "assignacions": 8,
+     "assignacions_1a_peticio": 7
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 8,
+     "assignacions": 8,
+     "assignacions_1a_peticio": 8
+    },
+    {
+     "centre": "Escola El Rodonell",
+     "mun": "17057",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 15,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 7,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 6
+    },
+    {
+     "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 11,
+     "assignacions": 11,
+     "assignacions_1a_peticio": 11
+    },
+    {
+     "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+     "mun": "17901",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 9,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 20,
+     "assignacions": 20,
+     "assignacions_1a_peticio": 20
+    },
+    {
+     "centre": "Escola Mas Clarà",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 38,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Institut La Bisbal",
+     "mun": "17022",
+     "ensenyament": "Educació secundària obligatòria",
+     "nivell": "1",
+     "oferta_inicial_places": 180,
+     "assignacions": 154,
+     "assignacions_1a_peticio": 151
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 11,
+     "assignacions": 10,
+     "assignacions_1a_peticio": 10
+    },
+    {
+     "centre": "Escola Forallac",
+     "mun": "17902",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 13,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 20,
+     "assignacions": 20,
+     "assignacions_1a_peticio": 20
+    },
+    {
+     "centre": "Escola Empordanet",
+     "mun": "17022",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 19,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    }
+   ]
+  }
  }
 }

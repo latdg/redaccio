@@ -74,6 +74,9 @@ details.fitxa.plegable[open]>summary::after{transform:rotate(90deg)}
 details.fitxa.plegable[open]>summary{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--linia)}
 .escut-mun{height:32px;width:auto;flex:none}
 .pista-plega{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+/* 27.10.2026: dins d'una fitxa plegada, el contingut va pla (sense una vora dins l'altra) */
+.cos-plega>article.fitxa{border:0;padding:0;margin:0 0 10px;background:none}
+.cos-plega>article.fitxa+article.fitxa{border-top:1px solid var(--linia);padding-top:12px}
 .fitxa .pob{color:var(--suau);font-size:.85rem;margin:2px 0 10px}
 .xifres{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:12px}
 .xifra{background:var(--targeta);border:1px solid var(--linia);border-radius:8px;padding:10px}
@@ -1192,8 +1195,9 @@ function fitxaEleccio(codi, m, e, ant) {
       return `<tr><td>${esc(s.seccio)}${s.meses > 1 ? ` <span class="var">(${s.meses} meses)</span>` : ""}</td><td class="n">${pctCa(s.participacio)}</td>` +
         `<td>${v[0] ? `${esc(v[0][0])} · ${p(v[0][1])}` : "—"}</td><td>${v[1] ? `${esc(v[1][0])} · ${p(v[1][1])}` : "—"}</td></tr>`;
     }).join("") + `</tbody></table></div></details>` : "";
-  return `<article class="fitxa"><div style="display:flex;align-items:center;gap:10px">${escut(codi)}<h3>${esc(m.nom)}</h3></div>` +
-    `<div class="xifres" style="margin-top:10px">` +
+  // 27.10.2026: dins d'una fitxa plegada ja hi ha l'escut i el nom a la capçalera.
+  return `<article class="fitxa">` +
+    `<div class="xifres" style="margin-top:4px">` +
       `<div class="xifra"><div class="etq">Participació</div><div class="val">${pctCa(m.participacio)}</div>` +
         `<div class="det">${nCa(m.votants)} de ${nCa(m.cens)} electors${difPart !== null ? ` · <span class="${difPart >= 0 ? "amunt" : "avall"}">${difPart >= 0 ? "+" : "−"}${Math.abs(difPart).toLocaleString("ca-ES", { maximumFractionDigits: 1 })} punts</span>` : ""}</div></div>` +
       `<div class="xifra"><div class="etq">Guanyador</div><div class="val" style="font-size:1.1rem">${esc(m.resultats[0] ? m.resultats[0].sigles : "—")}</div>` +
@@ -1204,9 +1208,7 @@ function fitxaEleccio(codi, m, e, ant) {
     seccions + `</article>`;
 }
 
-let ELEC_MUN = "17022";   // 27.10.2026: un municipi cada vegada, triat amb l'escut
-function pintaEleccio(id, codi) {
-  if (codi) ELEC_MUN = codi;
+function pintaEleccio(id, oberts) {
   const el = document.getElementById("eleccions");
   const e = ELEC.eleccions.find(x => x.id === id) || ELEC.eleccions[0];
   const ordre = ELEC.eleccions.filter(x => x.tipus === e.tipus).sort((a, b) => b.data.localeCompare(a.data));
@@ -1221,18 +1223,20 @@ function pintaEleccio(id, codi) {
       (ant ? `<span class="var" style="color:#6b6b66;font-size:.85rem">Diferències respecte a: ${esc(ant.nom)}</span>` : "") +
     `</div>` +
     (() => {
+      // 27.10.2026: les quatre fitxes plegades; a la vista, el guanyador de cada municipi.
       const codis = ORDRE_MUN.filter(c => e.municipis[c]);
-      if (!codis.includes(ELEC_MUN)) ELEC_MUN = codis[0];
       if (!codis.length) return '<p class="buit">No hi ha resultats dels municipis en aquesta elecció.</p>';
-      const a = ant && ant.municipis[ELEC_MUN] ? ant.municipis[ELEC_MUN] : null;
-      return triadorMun(codis, ELEC_MUN, ESCUTS) + fitxaEleccio(ELEC_MUN, e.municipis[ELEC_MUN], e, a);
+      return plegaMun(codis, c => { const r = e.municipis[c].resultats[0]; return r ? `${esc(r.sigles)} · ${pctCa(r.pct)}` : ""; });
     })() +
     `<p class="nota" style="color:#6b6b66;font-size:.85rem">Percentatges sobre vots vàlids (candidatures i blanc). La participació no inclou el vot dels residents a l'estranger (CERA), que el Ministeri no reparteix per meses. ` +
     `«Dif.» són punts percentuals respecte a l'elecció anterior del mateix tipus; «nova», candidatura que no s'hi va presentar amb les mateixes sigles. ` +
     `Les eleccions al Parlament de Catalunya no hi són: les publica la Generalitat.` +
     (credEscuts ? ` Escuts: Wikimedia Commons (${credEscuts}).` : "") + `</p>`;
-  document.getElementById("triaEleccio").onchange = ev => pintaEleccio(ev.target.value);
-  el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaEleccio(e.id, x.dataset.mun));
+  activaPlega(el, (c, caixa) => caixa.innerHTML = fitxaEleccio(c, e.municipis[c], e, ant && ant.municipis[c] ? ant.municipis[c] : null));
+  // En canviar d'elecció, les fitxes que hi havia obertes es tornen a obrir.
+  (oberts || []).forEach(c => { const d = el.querySelector(`details[data-plega="${c}"]`); if (d) d.open = true; });
+  document.getElementById("triaEleccio").onchange = ev => pintaEleccio(ev.target.value,
+    [...el.querySelectorAll("details[data-plega][open]")].map(d => d.dataset.plega));
 }
 
 async function carregaEleccions() {
@@ -1265,6 +1269,23 @@ function triadorMun(codis, actiu, escuts) {
   return `<div class="tria-mun">` + codis.map(c => `<button type="button" data-mun="${c}" class="${c === actiu ? "actiu" : ""}">` +
     (escuts[c] ? `<img src="escuts/${escuts[c].local || c + ".svg"}" alt="">` : `<span class="sense-escut"></span>`) + esc(NOMS_CURTS_MUN[c] || c) + `</button>`).join("") + `</div>`;
 }
+// 27.10.2026: tots els blocs per municipi, plegats com el bloc 14. A la vista,
+// l'escut, el nom i una xifra; el contingut es pinta quan s'obre la fitxa.
+function plegaMun(codis, detall, grup = "") {
+  return PISTA_PLEGA + codis.map(c => `<details class="fitxa plegable" data-plega="${c}"${grup ? ` data-grup="${grup}"` : ""}>` +
+    capPlegable(NOMS_MUN[c], c, (detall && detall(c)) || "") + `<div class="cos-plega"></div></details>`).join("");
+}
+function activaPlega(el, pinta, grup = "") {
+  el.querySelectorAll(`details[data-plega]${grup ? `[data-grup="${grup}"]` : ""}`).forEach(d => d.addEventListener("toggle", () => {
+    if (!d.open || d.dataset.fet) return;
+    d.dataset.fet = "1";
+    const caixa = d.querySelector(".cos-plega");
+    try { pinta(d.dataset.plega, caixa); } catch (err) { console.error(err); caixa.innerHTML = '<p class="buit">No s\'han pogut mostrar les dades.</p>'; }
+    if (typeof normalitzaDates === "function") normalitzaDates(caixa);
+  }));
+}
+// La nota final de cada bloc va un sol cop, a sota de les quatre fitxes.
+const separaNota = h => { const i = String(h).lastIndexOf('<p class="nota"'); return i < 0 ? [h, ""] : [h.slice(0, i), h.slice(i)]; };
 const MESOS_CA = ["gener", "febrer", "març", "abril", "maig", "juny", "juliol", "agost", "setembre", "octubre", "novembre", "desembre"];
 const nomMes = ym => { if (!ym) return "—"; const [a, m] = ym.split("-").map(Number); return MESOS_CA[m - 1] + " de " + a; };
 const deMes = ym => { const t = nomMes(ym); return /^[aeiouàèéíòóú]/i.test(t) ? "d'" + t : "de " + t; };
@@ -1310,9 +1331,18 @@ function targetaEntitat(f, recent, nova) {
     (f.detall ? `<p style="margin:6px 0 2px;font-size:.85rem;color:#6b6b66">${esc(f.detall)}</p>` : "") +
     (f.finalitats ? `<p style="margin:4px 0 0;font-size:.88rem">${esc(f.finalitats)}</p>` : "") + `</details>`;
 }
-async function pintaEntitats(codi) {
+// 27.10.2026: les quatre fitxes plegades; en obrir-ne una, es pinta amb el seu cercador.
+async function pintaEntitats() {
   const el = document.getElementById("entitats");
-  const escuts = await carregaEscuts();
+  const codis = ["17022", "17057", "17902", "17901"].filter(c => ENT.municipis[c]);
+  el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🤝 ") + TITOL_ENT}</h2>` +
+    `<p class="font">${ENT.actualitzatFont ? "Registre actualitzat el " + dataIso(ENT.actualitzatFont) + " · " : ""}revisat el ${dataIso(ENT.generat)} · Font: ${esc(ENT.font)}</p>` +
+    plegaMun(codis, c => { const m = ENT.municipis[c]; return `${nCa(m.total)} entitats` + (m.recents && m.recents.length ? ` · ${nCa(m.recents.length)} en 12 mesos` : ""); }) +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Entitats amb seu al municipi segons el Registre d'entitats de la Generalitat (associacions, fundacions, federacions…). ` +
+    `Destacades, les inscrites fa menys d'un any; «NOVA», les aparegudes des de la revisió anterior. Els clubs i les entitats esportives no hi surten: tenen un registre propi.</p>`;
+  activaPlega(el, cosEntitats);
+}
+function cosEntitats(codi, caixa) {
   const m = ENT.municipis[codi];
   const maxA = Math.max(1, ...m.perAny.map(x => x[1]));
   const novesIds = new Set((m.noves || []).map(f => f.id));
@@ -1328,36 +1358,30 @@ async function pintaEntitats(codi) {
   const destacades = totes.filter(esDestacada), resta = totes.filter(f => !esDestacada(f));
   const textCompta = () => `${nCa(totes.length)} entitats` + (destacades.length ? ` · ${nCa(destacades.length)} destacades a la vista` : "") +
     " · toca'n una per veure'n la junta, l'adreça, el telèfon i les finalitats";
-  el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🤝 ") + TITOL_ENT}</h2>` +
-    `<p class="font">${ENT.actualitzatFont ? "Registre actualitzat el " + dataIso(ENT.actualitzatFont) + " · " : ""}revisat el ${dataIso(ENT.generat)} · Font: ${esc(ENT.font)}</p>` +
-    triadorMun(["17022", "17057", "17902", "17901"], codi, escuts) +
-    `<div class="xifres">` +
+  caixa.innerHTML = `<div class="xifres">` +
       `<div class="xifra"><div class="etq">Entitats inscrites</div><div class="val">${nCa(m.total)}</div><div class="det">${m.tipus.slice(0, 3).map(([t, n]) => `${esc(t)}: ${nCa(n)}`).join(" · ")}</div></div>` +
       `<div class="xifra"><div class="etq">Inscrites els darrers 12 mesos</div><div class="val">${nCa(m.recents.length)}</div><div class="det">${ENT.primeraRevisio ? "destacades al capdamunt de la llista" : ((m.noves || []).length ? `${nCa(m.noves.length)} de noves des de la revisió anterior` : "cap de nova des de la revisió anterior")}</div></div>` +
     `</div>` +
-    `<input type="search" id="cercaEnt" placeholder="Cerca pel nom, una persona, l'àmbit o el nucli…" style="width:100%;margin:4px 0 8px;font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px">` +
-    `<p class="var" id="comptaEnt" style="color:#6b6b66;font-size:.82rem;margin:0 0 4px">${textCompta()}</p>` +
-    `<div id="llistaEnt">${destacades.map(f => targetaEntitat(f, recentsIds.has(f.id), novesIds.has(f.id))).join("")}` +
-    (resta.length ? `<details id="restaEnt" style="margin:8px 0"><summary style="cursor:pointer;color:var(--accent);font-weight:600">${destacades.length ? "Totes les altres entitats" : "Totes les entitats"} (${nCa(resta.length)})</summary>` +
+    `<input type="search" class="cercaEnt" placeholder="Cerca pel nom, una persona, l'àmbit o el nucli…" style="width:100%;margin:4px 0 8px;font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px">` +
+    `<p class="var comptaEnt" style="color:#6b6b66;font-size:.82rem;margin:0 0 4px">${textCompta()}</p>` +
+    `<div class="llistaEnt">${destacades.map(f => targetaEntitat(f, recentsIds.has(f.id), novesIds.has(f.id))).join("")}` +
+    (resta.length ? `<details class="restaEnt" style="margin:8px 0"><summary style="cursor:pointer;color:var(--accent);font-weight:600">${destacades.length ? "Totes les altres entitats" : "Totes les entitats"} (${nCa(resta.length)})</summary>` +
       resta.map(f => targetaEntitat(f, false, false)).join("") + `</details>` : "") + `</div>` +
     `<h4>Inscripcions cada any</h4><div class="serie">${m.perAny.map(([a, n]) => `<span style="height:${(n / maxA * 100).toFixed(0)}%" title="${a}: ${n}"></span>`).join("")}</div>` +
     `<div class="serie-eix"><span>${m.perAny[0][0]}</span><span>${m.perAny[m.perAny.length - 1][0]}</span></div>` +
     `<h4>Per àmbit</h4><p class="det" style="font-size:.88rem">${m.ambits.map(([a, n]) => `${esc(/^<.*>$/.test(a) ? "Sense classificar" : a)}: <b>${nCa(n)}</b>`).join(" · ")}</p>` +
-    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Entitats amb seu al municipi segons el Registre d'entitats de la Generalitat (associacions, fundacions, federacions…). ` +
-    `Destacades, les inscrites fa menys d'un any; «NOVA», les aparegudes des de la revisió anterior. Els clubs i les entitats esportives no hi surten: tenen un registre propi.` +
-    (m.inactives ? ` A més, n'hi ha ${nCa(m.inactives)} d'inactives.` : "") + `</p>`;
-  el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaEntitats(x.dataset.mun));
-  const cerca = document.getElementById("cercaEnt");
+    (m.inactives ? `<p class="det" style="font-size:.85rem;color:#6b6b66">A més, n'hi ha ${nCa(m.inactives)} d'inactives.</p>` : "");
+  const cerca = caixa.querySelector(".cercaEnt");
   if (cerca) cerca.oninput = () => {
     const t = cerca.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     let n = 0;
-    const plega = document.getElementById("restaEnt");
+    const plega = caixa.querySelector(".restaEnt");
     if (plega) plega.open = !!t;
-    document.querySelectorAll("#llistaEnt details.targeta").forEach(d => {
+    caixa.querySelectorAll(".llistaEnt details.targeta").forEach(d => {
       d.hidden = t && !d.textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(t);
       if (!d.hidden) n++;
     });
-    document.getElementById("comptaEnt").textContent = t ? `${nCa(n)} de ${nCa(totes.length)} entitats` : textCompta();
+    caixa.querySelector(".comptaEnt").textContent = t ? `${nCa(n)} de ${nCa(totes.length)} entitats` : textCompta();
   };
 }
 async function carregaEntitats() {
@@ -1368,7 +1392,7 @@ async function carregaEntitats() {
     el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🤝 ") + TITOL_ENT}</h2><p class="buit">Encara no s'han baixat les dades del registre.</p>`;
     return;
   }
-  pintaEntitats("17022");
+  pintaEntitats();
 }
 
 // -----------------------------------------------------------------------------
@@ -1384,11 +1408,10 @@ function taulaTipus(tipus, n = 10, extra = null) {
     tipus.filter(t => t.n || t.abans).slice(0, n).map(t => `<tr><td style="white-space:normal;min-width:150px">${esc(t.tipus)}</td><td class="n"><b>${nCa(t.n)}</b></td><td class="n">${nCa(t.abans)}</td><td class="n">${variacio(t.n, t.abans)}</td>${extra ? extra.fila(t) : ""}</tr>`).join("") +
     `</tbody></table></div>`;
 }
-// 27.10.2026: un selector per al 112 i un altre per als Bombers, cadascun damunt la seva fitxa.
-async function pintaSeguretat(codi, codiB = codi) {
+// 27.10.2026: els fets penals a la vista; el 112 i els Bombers, en fitxes plegades per municipi.
+async function pintaSeguretat() {
   const el = document.getElementById("seguretat");
-  const escuts = await carregaEscuts();
-  const f = SEG.fetsPenals, b = SEG.bombers.municipis[codiB], e = SEG.e112.municipis[codi];
+  const f = SEG.fetsPenals;
   const MUNS_SEG = ["17022", "17057", "17902", "17901"];
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🚨 ") + TITOL_SEG}</h2>` +
     `<p class="font">Revisat el ${dataIso(SEG.generat)} · Font: dades obertes de la Generalitat (Mossos d'Esquadra, Bombers i CAT112)</p>` +
@@ -1413,16 +1436,26 @@ async function pintaSeguretat(codi, codiB = codi) {
       `<h4>Fets coneguts cada mes</h4>${serieBarres(f.serie)}` +
       `<h4>Per tipus de fet (12 mesos)</h4>${taulaTipus(f.tipus, 12, { cap: '<th class="n">Detencions</th>', fila: t => `<td class="n">${nCa(t.detencions)}</td>` })}` +
     `</article>` +
-    `<h4 style="margin-top:16px">Incidents del 112 per municipi</h4><div data-sel="112">` + triadorMun(MUNS_SEG, codi, escuts) + `</div>` +
-    `<article class="fitxa"><h3>☎️ Incidents del 112 · ${esc(NOMS_MUN[codi])}</h3>` +
-      (e && e.serie.length ? `<p class="pob">${periodeCa(e.periode)}</p>` +
+    // 27.10.2026: el 112 i els Bombers, cadascun amb les quatre fitxes plegades.
+    `<h3 style="margin:18px 0 0">☎️ Incidents del 112 per municipi</h3>` +
+    plegaMun(MUNS_SEG, c => { const x = SEG.e112.municipis[c]; return x && x.serie.length ? `${nCa(x.total12)} incidents en 12 mesos` : ""; }, "112") +
+    `<h3 style="margin:18px 0 0">🚒 Actuacions dels Bombers per municipi</h3>` +
+    plegaMun(MUNS_SEG, c => { const x = SEG.bombers.municipis[c]; return x && x.serie.length ? `${nCa(x.total12)} actuacions en 12 mesos` : ""; }, "bombers") +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">«Var.»: variació respecte als 12 mesos anteriors (en vermell, si puja). Les barres grises de les gràfiques són l'any anterior. ` +
+    `Els fets penals són els que coneixen els Mossos (denúncies i actuacions pròpies), no tots els que passen. Els incidents del 112 són els operatius gestionats per la central, no totes les trucades.</p>`;
+  activaPlega(el, (c, caixa) => caixa.innerHTML = cos112(c), "112");
+  activaPlega(el, (c, caixa) => caixa.innerHTML = cosBombers(c), "bombers");
+}
+function cos112(codi) {
+  const e = SEG.e112.municipis[codi];
+  return (e && e.serie.length ? `<p class="pob">${periodeCa(e.periode)}</p>` +
         `<div class="xifres"><div class="xifra"><div class="etq">Incidents</div><div class="val">${nCa(e.total12)}</div><div class="det">${variacio(e.total12, e.totalAbans12)} (abans, ${nCa(e.totalAbans12)})</div></div></div>` +
         `${serieBarres(e.serie)}<h4>Per tipus</h4>${taulaTipus(e.tipus, 12)}`
-        : '<p class="buit">No hi ha incidents registrats.</p>') +
-    `</article>` +
-    `<h4 style="margin-top:16px" id="segBombers">Actuacions dels Bombers per municipi</h4><div data-sel="bombers">` + triadorMun(MUNS_SEG, codiB, escuts) + `</div>` +
-    `<article class="fitxa"><h3>🚒 Actuacions dels Bombers · ${esc(NOMS_MUN[codiB])}</h3>` +
-      (b && b.serie.length ? `<p class="pob">${periodeCa(b.periode)}</p>` +
+        : '<p class="buit">No hi ha incidents registrats.</p>');
+}
+function cosBombers(codi) {
+  const b = SEG.bombers.municipis[codi];
+  return (b && b.serie.length ? `<p class="pob">${periodeCa(b.periode)}</p>` +
         `<div class="xifres"><div class="xifra"><div class="etq">Actuacions</div><div class="val">${nCa(b.total12)}</div><div class="det">${variacio(b.total12, b.totalAbans12)} (abans, ${nCa(b.totalAbans12)})</div></div>` +
         `<div class="xifra"><div class="etq">Urgents</div><div class="val">${nCa(b.urgents12)}</div><div class="det">la resta són activitats no urgents (prevenció, rutes…)</div></div></div>` +
         `${serieBarres(b.serie)}` +
@@ -1430,16 +1463,7 @@ async function pintaSeguretat(codi, codiB = codi) {
           b.darreres.slice(0, 15).map(x => `<tr><td>${x.data ? dataCa(x.data) : "—"}</td><td style="white-space:normal">${x.urgent ? "🚨 " : ""}${esc(x.tipus)}</td></tr>`).join("") +
           `</tbody></table></div><p class="det" style="font-size:.8rem;color:#6b6b66">🚨 urgent. La font dona el dia i el tipus d'actuació, però no l'hora ni l'adreça.</p>` : "") +
         `<h4>Per tipus (12 mesos)</h4>${taulaTipus(b.tipus, 10)}`
-        : '<p class="buit">No hi ha actuacions registrades.</p>') +
-    `</article>` +
-    `<p class="nota" style="color:#6b6b66;font-size:.85rem">«Var.»: variació respecte als 12 mesos anteriors (en vermell, si puja). Les barres grises de les gràfiques són l'any anterior. ` +
-    `Els fets penals són els que coneixen els Mossos (denúncies i actuacions pròpies), no tots els que passen. Els incidents del 112 són els operatius gestionats per la central, no totes les trucades.</p>`;
-  el.querySelectorAll('[data-sel="112"] .tria-mun button').forEach(x => x.onclick = () => pintaSeguretat(x.dataset.mun, codiB));
-  el.querySelectorAll('[data-sel="bombers"] .tria-mun button').forEach(x => x.onclick = async () => {
-    await pintaSeguretat(codi, x.dataset.mun);
-    // Que el canvi no faci saltar la pàgina: es torna al selector dels Bombers.
-    const t = document.getElementById("segBombers"); if (t) t.scrollIntoView({ block: "start" });
-  });
+        : '<p class="buit">No hi ha actuacions registrades.</p>');
 }
 async function carregaSeguretat() {
   const el = document.getElementById("seguretat");
@@ -1449,7 +1473,7 @@ async function carregaSeguretat() {
     el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🚨 ") + TITOL_SEG}</h2><p class="buit">Encara no s'han baixat les dades.</p>`;
     return;
   }
-  pintaSeguretat("17022");
+  pintaSeguretat();
 }
 
 // -----------------------------------------------------------------------------
@@ -1466,14 +1490,34 @@ function serieAnysOb(serie) {   // [[etiqueta, valor], ...]
   return `<div class="serie">${serie.map(x => `<span style="height:${((x[1] || 0) / max * 100).toFixed(0)}%" title="${esc(x[0])}: ${esc(decCa(x[1], Number.isInteger(x[1]) ? 0 : 1))}"></span>`).join("")}</div>` +
     `<div class="serie-eix"><span>${esc(serie.length ? serie[0][0] : "")}</span><span>${esc(serie.length ? serie[serie.length - 1][0] : "")}</span></div>`;
 }
+// 27.10.2026: la xifra que es veu al costat del nom de cada municipi, amb la fitxa plegada.
+const darrerOb = (bloc, c) => { const s = ((OB[bloc] || {}).municipis || {})[c] || []; return s[s.length - 1]; };
+const DETALL_OB = {
+  renda: c => { const u = darrerOb("renda", c); return u ? `${nCa(u.titulars)} titulars` : ""; },
+  habitatge: c => {
+    const ll = ((OB.habitatge.lloguer.municipis || {})[c] || []).filter(x => x.trimestre), u = ll[ll.length - 1];
+    return u && u.renda != null ? `lloguer mitjà: ${decCa(u.renda, 0)} €/mes` : "";
+  },
+  ramaderia: c => { const r = (OB.ramaderia.municipis || {})[c]; return r ? `${nCa(r.explotacions)} explotacions` : ""; },
+  residus: c => { const u = darrerOb("residus", c); return u ? `${pctCa(u.selectiva, 1)} de selectiva (${u.any})` : ""; },
+  escoles: c => {
+    const cc = OB.escoles.centresCursos || {}, k = Object.keys(cc).sort().pop();
+    const n = k ? cc[k].filter(x => x.mun === c).reduce((a, x) => a + x.alumnes, 0) : 0;
+    return n ? `${nCa(n)} alumnes (${k.replace(/\//g, "-")})` : "";
+  },
+};
 async function pintaOb(id, emoji, titol, font, codi, cos) {
   const el = document.getElementById(id);
-  const escuts = await carregaEscuts();
+  const nota = separaNota(cos(MUNS4[0]))[1];
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : emoji + " ") + titol}</h2>` +
-    `<p class="font">Revisat el ${dataIso(OB.generat)} · Font: ${font}</p>` + triadorMun(MUNS4, codi, escuts) + cos(codi);
-  el.querySelectorAll(".tria-mun button[data-mun]").forEach(x => x.onclick = () => pintaOb(id, emoji, titol, font, x.dataset.mun, cos));
-  // 27.10.2026: botons de curs (escoles): canvien el curs i mantenen el municipi.
-  el.querySelectorAll("button[data-curs]").forEach(x => x.onclick = () => { ESC_CURS = x.dataset.curs; pintaOb(id, emoji, titol, font, codi, cos); });
+    `<p class="font">Revisat el ${dataIso(OB.generat)} · Font: ${font}</p>` + plegaMun(MUNS4, DETALL_OB[id]) + nota;
+  const pinta = (c, caixa) => {
+    caixa.innerHTML = separaNota(cos(c))[0];
+    // Botons de curs (escoles): canvien el curs dins d'aquesta fitxa.
+    caixa.querySelectorAll("button[data-curs]").forEach(x => x.onclick = () => { ESC_CURS = x.dataset.curs; pinta(c, caixa); });
+    if (typeof normalitzaDates === "function") normalitzaDates(caixa);
+  };
+  activaPlega(el, pinta);
   if (typeof normalitzaDates === "function") normalitzaDates(el);
 }
 
@@ -1665,25 +1709,28 @@ async function carregaTurisme() {
   const titolTur = () => (el.dataset.numero ? el.dataset.numero + " " : "🧳 ") + TITOL_TUR;
   try { TUR = await obtenir(FONT_TUR); }
   catch (e) { el.innerHTML = `<h2>${titolTur()}</h2><p class="buit">Encara no s'han baixat les dades de l'INE.</p>`; return; }
-  const escuts = await carregaEscuts();
-  const pinta = codi => {
-    el.innerHTML = `<h2>${titolTur()}</h2><p class="font">Dades fins a ${esc(nomMes(TUR.taules.nacionals.municipis["17022"].darrerMes))} · revisat el ${dataIso(TUR.generat)} · Font: ` +
-      `<a href="https://www.ine.es/experimental/turismo_moviles/experimental_turismo_moviles.htm" target="_blank" rel="noopener">INE, estadística experimental</a></p>` +
-      triadorMun(MUNS4, codi, escuts) + cosTurisme(codi);
-    el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pinta(x.dataset.mun));
-    const d = TUR.taules.nacionals.municipis[codi], caixa = el.querySelector(".tur-llocs");
-    el.onclick = !(d && caixa) ? null : ev => {
+  // 27.10.2026: fitxes plegades; en obrir-ne una, es pinta, i els anys es cliquen dins de cada fitxa.
+  const munsTur = TUR.taules.nacionals.municipis || {};
+  const pinta = (codi, caixa) => {
+    caixa.innerHTML = separaNota(cosTurisme(codi))[0];
+    const d = munsTur[codi], llocs = caixa.querySelector(".tur-llocs");
+    caixa.onclick = !(d && llocs) ? null : ev => {
       const t = ev.target.closest("[data-tur-any]");
-      if (!t || !el.contains(t)) return;
+      if (!t || !caixa.contains(t)) return;
       ev.preventDefault();
       const any = t.dataset.turAny;
-      caixa.innerHTML = llocsTur(d, any);
-      el.querySelectorAll("tr[data-tur-any]").forEach(tr => tr.style.outline = tr.dataset.turAny === any ? "2px solid var(--accent)" : "");
-      caixa.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      llocs.innerHTML = llocsTur(d, any);
+      caixa.querySelectorAll("tr[data-tur-any]").forEach(tr => tr.style.outline = tr.dataset.turAny === any ? "2px solid var(--accent)" : "");
+      llocs.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
-    if (typeof normalitzaDates === "function") normalitzaDates(el);
   };
-  try { pinta("17022"); } catch (err) { console.error(err); el.innerHTML = `<h2>${titolTur()}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }
+  try {
+    el.innerHTML = `<h2>${titolTur()}</h2><p class="font">Dades fins a ${esc(nomMes((munsTur["17022"] || {}).darrerMes))} · revisat el ${dataIso(TUR.generat)} · Font: ` +
+      `<a href="https://www.ine.es/experimental/turismo_moviles/experimental_turismo_moviles.htm" target="_blank" rel="noopener">INE, estadística experimental</a></p>` +
+      plegaMun(MUNS4.filter(c => munsTur[c]), c => `${nCa(munsTur[c].total12)} turistes en 12 mesos`) + separaNota(cosTurisme("17022"))[1];
+    activaPlega(el, pinta);
+    if (typeof normalitzaDates === "function") normalitzaDates(el);
+  } catch (err) { console.error(err); el.innerHTML = `<h2>${titolTur()}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }
 }
 
 // -----------------------------------------------------------------------------

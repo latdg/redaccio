@@ -185,6 +185,11 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
   <section id="seguretat"><h2>🚨 Seguretat i emergències</h2><p class="buit">Carregant…</p></section>
   <section id="entitats"><h2>🤝 Entitats i associacions</h2><p class="buit">Carregant…</p></section>
+  <section id="renda"><h2>🤲 Renda garantida de ciutadania</h2><p class="buit">Carregant…</p></section>
+  <section id="habitatge"><h2>🔑 Lloguer i habitatges buits</h2><p class="buit">Carregant…</p></section>
+  <section id="ramaderia"><h2>🐄 Explotacions ramaderes</h2><p class="buit">Carregant…</p></section>
+  <section id="residus"><h2>♻️ Residus municipals</h2><p class="buit">Carregant…</p></section>
+  <section id="escoles"><h2>🏫 Escoles i alumnes</h2><p class="buit">Carregant…</p></section>
   <section id="eleccions"><h2>🗳️ Resultats electorals</h2><p class="buit">Carregant…</p></section>
   <section id="congres"><h2>🏛️ Congrés dels Diputats</h2><p class="buit">Carregant…</p></section>
   <section id="parlament"><h2>🏛️ Parlament de Catalunya</h2><p class="buit">Carregant…</p></section>
@@ -736,12 +741,21 @@ const BLOCS_PROPIS = [
   { id: "congres", nom: "Congrés", titol: "CONGRÉS DELS DIPUTATS (ESMENTS DELS MUNICIPIS)", abans: /^GENERALITAT/i },
   { id: "parlament", nom: "Parlament", titol: "PARLAMENT DE CATALUNYA (ESMENTS DELS MUNICIPIS)", despres: /^GENERALITAT/i },
   { id: "dades-municipals", nom: "Dades municipals", titol: "DADES MUNICIPALS (ENDEUTAMENT, PRESSUPOST I LIQUIDACIÓ)", enLlocDe: /^ATUR/i },
+  // 27.10.2026: renda garantida, al costat de les dades municipals.
+  { id: "renda", nom: "Renda garantida", titol: "RENDA GARANTIDA DE CIUTADANIA", enLlocDe: /^ATUR/i },
   // 26.10.2026: just després de les dades municipals.
   { id: "hut", nom: "Habitatges turístics", titol: "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS", enLlocDe: /^ATUR/i },
+  // 27.10.2026: lloguer i habitatges buits, al costat dels habitatges turístics.
+  { id: "habitatge", nom: "Lloguer i pisos buits", titol: "LLOGUER I HABITATGES BUITS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
+  // 27.10.2026: ramaderia i residus, després de l'aigua potable.
+  { id: "ramaderia", nom: "Ramaderia", titol: "EXPLOTACIONS RAMADERES", enLlocDe: /^ATUR/i },
+  { id: "residus", nom: "Residus", titol: "RESIDUS MUNICIPALS (RECOLLIDA SELECTIVA)", enLlocDe: /^ATUR/i },
   // 27.10.2026: després de l'aigua potable.
   { id: "seguretat", nom: "Seguretat i emergències", titol: "SEGURETAT I EMERGÈNCIES (MOSSOS, 112 I BOMBERS)", enLlocDe: /^ATUR/i },
   { id: "entitats", nom: "Entitats", titol: "ENTITATS I ASSOCIACIONS (REGISTRE D'ENTITATS)", enLlocDe: /^ATUR/i },
+  // 27.10.2026: escoles, després de les entitats.
+  { id: "escoles", nom: "Escoles", titol: "ESCOLES I ALUMNES (MATRÍCULA I PREINSCRIPCIÓ)", enLlocDe: /^ATUR/i },
   // 26.10.2026: sense lloc de referència, perquè vagi sempre l'últim (cada quatre anys).
   { id: "eleccions", nom: "Eleccions", titol: "RESULTATS ELECTORALS (MESA A MESA)" },
 ];
@@ -1391,6 +1405,133 @@ async function carregaSeguretat() {
 }
 
 // -----------------------------------------------------------------------------
+// DADES OBERTES (27.10.2026): renda garantida, lloguer i habitatges buits,
+// ramaderia, residus i escoles. dades/obertes.json, que desa el workflow
+// «Dades obertes (redacció)» (obertes/obertes.py) cada dilluns.
+// -----------------------------------------------------------------------------
+let OB = null;
+const MUNS4 = ["17022", "17057", "17902", "17901"];
+const decCa = (n, d = 1) => Number(n || 0).toLocaleString("ca-ES", { minimumFractionDigits: d, maximumFractionDigits: d });
+const notaOb = t => `<p class="nota" style="color:#6b6b66;font-size:.85rem">${t}</p>`;
+function serieAnysOb(serie) {   // [[etiqueta, valor], ...]
+  const max = Math.max(1, ...serie.map(x => x[1] || 0));
+  return `<div class="serie">${serie.map(x => `<span style="height:${((x[1] || 0) / max * 100).toFixed(0)}%" title="${esc(x[0])}: ${esc(decCa(x[1], Number.isInteger(x[1]) ? 0 : 1))}"></span>`).join("")}</div>` +
+    `<div class="serie-eix"><span>${esc(serie.length ? serie[0][0] : "")}</span><span>${esc(serie.length ? serie[serie.length - 1][0] : "")}</span></div>`;
+}
+async function pintaOb(id, emoji, titol, font, codi, cos) {
+  const el = document.getElementById(id);
+  const escuts = await carregaEscuts();
+  el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : emoji + " ") + titol}</h2>` +
+    `<p class="font">Revisat el ${dataIso(OB.generat)} · Font: ${font}</p>` + triadorMun(MUNS4, codi, escuts) + cos(codi);
+  el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaOb(id, emoji, titol, font, x.dataset.mun, cos));
+  if (typeof normalitzaDates === "function") normalitzaDates(el);
+}
+
+// --- Renda garantida ---
+function cosRenda(codi) {
+  const s = (OB.renda.municipis || {})[codi] || [];
+  const u = s[s.length - 1];
+  if (!u) return '<p class="buit">No hi ha dades d\'aquest municipi.</p>';
+  const [a, m] = u.mes.split("-");
+  const fa = s.find(x => x.mes === `${Number(a) - 1}-${m}`);
+  return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])} · ${esc(nomMes(u.mes))}</h3><div class="xifres">` +
+    `<div class="xifra"><div class="etq">Titulars de la prestació</div><div class="val">${nCa(u.titulars)}</div><div class="det">${fa ? variacio(u.titulars, fa.titulars) + " respecte a " + esc(nomMes(fa.mes)) + ` (${nCa(fa.titulars)})` : ""}</div></div>` +
+    `<div class="xifra"><div class="etq">Persones beneficiàries</div><div class="val">${u.beneficiaris == null ? "—" : nCa(u.beneficiaris)}</div><div class="det">${u.beneficiaris == null ? "dada protegida (menys de 4)" : "titulars i persones a càrrec"}</div></div>` +
+    `<div class="xifra"><div class="etq">Prestació mitjana</div><div class="val">${u.prestacio == null ? "—" : nCa(u.prestacio) + " €"}</div><div class="det">al mes</div></div></div>` +
+    `<h4>Titulars cada mes</h4>${serieBarres(s.map(x => [x.mes, x.titulars || 0]), 36)}</article>` +
+    notaOb("La renda garantida de ciutadania és la prestació de la Generalitat per a les persones i famílies sense prou ingressos. Quan hi ha menys de 4 casos, la font no dona la xifra. Les barres grises són els mesos de fa més d'un any.");
+}
+
+// --- Lloguer i habitatges buits ---
+function cosHabitatge(codi) {
+  // Només els trimestres (la font hi barreja acumulats de semestre i d'any).
+  const ll = ((OB.habitatge.lloguer.municipis || {})[codi] || []).filter(x => x.trimestre), hb = (OB.habitatge.buits.municipis || {})[codi] || [];
+  const u = ll[ll.length - 1], fa = u && ll.find(x => x.any === u.any - 1 && x.trimestre === u.trimestre);
+  const per = x => `${x.trimestre ? x.trimestre + "r trimestre" : x.periode} del ${x.any}`.replace("1r", "1r").replace("2r", "2n").replace("3r", "3r").replace("4r", "4t");
+  let h = `<article class="fitxa"><h3>🔑 Lloguer · ${esc(NOMS_MUN[codi])}</h3>`;
+  if (u) {
+    h += `<p class="pob">${esc(per(u))}: contractes nous registrats a l'Incasòl</p><div class="xifres">` +
+      `<div class="xifra"><div class="etq">Lloguer mitjà</div><div class="val">${u.renda == null ? "—" : decCa(u.renda, 0) + " €/mes"}</div><div class="det">${fa && fa.renda && u.renda ? variacio(u.renda, fa.renda) + " respecte a fa un any" : esc(u.tram || "")}</div></div>` +
+      `<div class="xifra"><div class="etq">Contractes nous</div><div class="val">${nCa(u.contractes)}</div><div class="det">${fa ? "fa un any, " + nCa(fa.contractes) : ""}</div></div></div>` +
+      `<div class="taula"><table><thead><tr><th>Trimestre</th><th class="n">Contractes</th><th class="n">Lloguer mitjà</th></tr></thead><tbody>` +
+      ll.slice(-8).reverse().map(x => `<tr><td>${esc(per(x))}</td><td class="n">${nCa(x.contractes)}</td><td class="n">${x.renda == null ? "—" : decCa(x.renda, 0) + " €"}</td></tr>`).join("") + `</tbody></table></div>`;
+  } else h += '<p class="buit">No hi ha dades de lloguer d\'aquest municipi.</p>';
+  h += `</article><article class="fitxa"><h3>🏚️ Habitatges buits · ${esc(NOMS_MUN[codi])}</h3>`;
+  if (hb.length) {
+    h += `<p class="pob">Habitatges declarats a l'impost sobre els habitatges buits (pisos de bancs, empreses i altres persones jurídiques buits més de dos anys)</p>` +
+      `<div class="taula"><table><thead><tr><th>Any</th><th class="n">Habitatges</th><th class="n">Exempts</th><th class="n">Propietaris</th><th class="n">Superfície</th></tr></thead><tbody>` +
+      hb.slice().reverse().map(x => `<tr><td>${x.any}</td><td class="n"><b>${nCa(x.habitatges)}</b></td><td class="n">${nCa(x.exempts)}</td><td class="n">${nCa(x.tenidors)}</td><td class="n">${nCa(Math.round(x.superficie))} m²</td></tr>`).join("") + `</tbody></table></div>`;
+  } else h += '<p class="buit">No hi ha cap habitatge declarat a l\'impost en aquest municipi.</p>';
+  return h + `</article>` + notaOb("Lloguer: fiances dipositades a l'Incasòl (només els contractes nous de cada trimestre). Habitatges buits: autoliquidacions de l'impost de la Generalitat; els exempts no paguen (per exemple, si són de lloguer social). La taxa turística no es publica per municipi per a cap dels quatre.");
+}
+
+// --- Ramaderia ---
+function cosRamaderia(codi) {
+  const r = (OB.ramaderia.municipis || {})[codi];
+  if (!r) return '<p class="buit">No hi ha dades d\'aquest municipi.</p>';
+  return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])}</h3><div class="xifres">` +
+    `<div class="xifra"><div class="etq">Explotacions actives</div><div class="val">${nCa(r.explotacions)}</div><div class="det">${r.especies.length} espècies</div></div></div>` +
+    `<div class="taula"><table><thead><tr><th>Espècie</th><th class="n">Explotacions</th><th class="n">Places</th></tr></thead><tbody>` +
+    r.especies.map(x => `<tr><td>${esc(x.especie)}</td><td class="n">${nCa(x.explotacions)}</td><td class="n">${x.places ? nCa(x.places) : "—"}</td></tr>`).join("") +
+    `</tbody></table></div></article>` +
+    notaOb(`Registre d'explotacions ramaderes del Departament d'Agricultura (actualitzat el ${OB.ramaderia.actualitzat ? dataIso(OB.ramaderia.actualitzat) : "—"}). Les places són la capacitat màxima declarada de cada granja, no els animals que hi ha en un moment donat. Una explotació pot tenir més d'una espècie.`);
+}
+
+// --- Residus ---
+function cosResidus(codi) {
+  const s = (OB.residus.municipis || {})[codi] || [], u = s[s.length - 1], cat = OB.residus.catalunya;
+  if (!u) return '<p class="buit">No hi ha dades d\'aquest municipi.</p>';
+  const ant = s.find(x => x.any === u.any - 1);
+  const fr = Object.entries(u.fraccions || {}).sort((a, b) => b[1] - a[1]), max = Math.max(1, ...fr.map(x => x[1]));
+  return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])} · ${u.any}</h3><div class="xifres">` +
+    `<div class="xifra"><div class="etq">Recollida selectiva</div><div class="val">${pctCa(u.selectiva, 1)}</div><div class="det">${cat && cat.selectiva ? "Catalunya: " + pctCa(cat.selectiva, 1) : ""}${ant ? ` · el ${ant.any}, ${pctCa(ant.selectiva, 1)}` : ""}</div></div>` +
+    `<div class="xifra"><div class="etq">Residus per habitant</div><div class="val">${nCa(Math.round(u.kgHabAny))} kg/any</div><div class="det">${decCa(u.kgHabDia, 2)} kg al dia${cat && cat.kgHabAny ? " · Catalunya: " + nCa(Math.round(cat.kgHabAny)) + " kg/any" : ""}</div></div>` +
+    `<div class="xifra"><div class="etq">Residus municipals</div><div class="val">${nCa(Math.round(u.total))} t</div><div class="det">${nCa(u.poblacio)} habitants</div></div></div>` +
+    `<h4>Fraccions recollides selectivament (tones)</h4><div class="barres">` +
+    fr.map(([k, v]) => `<span>${esc(k)}</span><span class="barra" style="width:${(v / max * 100).toFixed(0)}%"></span><span class="num">${nCa(Math.round(v))} t</span>`).join("") + `</div>` +
+    `<h4>Recollida selectiva cada any (%)</h4>${serieAnysOb(s.map(x => [String(x.any), x.selectiva]))}</article>` +
+    notaOb("Estadística de residus municipals de l'Agència de Residus de Catalunya. Als municipis petits i turístics, els kg per habitant pugen perquè la població de pas no hi compta.");
+}
+
+// --- Escoles ---
+function cosEscoles(codi) {
+  const e = OB.escoles, cen = (e.centres || []).filter(c => c.mun === codi), ev = (e.evolucio || {})[codi] || [];
+  const pre = (e.preinscripcio || []).filter(x => x.mun === codi && x.oferta_inicial_places);
+  const curt = t => String(t || "").replace(/^Educació infantil: /, "").replace("Educació primària", "Primària").replace("Educació secundària obligatòria", "ESO");
+  const nivell = x => /Parvulari/.test(x.ensenyament) ? "P" + (Number(x.nivell) + 2) : /primària/.test(x.ensenyament) ? x.nivell + "r de primària" : x.nivell + "r d'ESO";
+  return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])} · curs ${esc(e.curs || "—")}</h3><div class="xifres">` +
+    `<div class="xifra"><div class="etq">Alumnes matriculats</div><div class="val">${nCa(cen.reduce((a, c) => a + c.alumnes, 0))}</div><div class="det">${cen.length} centres</div></div></div>` +
+    `<div class="taula"><table><thead><tr><th>Centre</th><th>Tipus</th><th class="n">Alumnes</th><th class="n">Grups</th><th>Estudis</th></tr></thead><tbody>` +
+    cen.map(c => `<tr><td style="white-space:normal;min-width:160px"><b>${esc(c.nom)}</b></td><td>${esc(c.naturalesa || "")}</td><td class="n">${nCa(c.alumnes)}</td><td class="n">${nCa(c.unitats)}</td>` +
+      `<td style="white-space:normal;font-size:.8rem">${c.estudis.map(([k, v]) => esc(majuscula(k.toLowerCase())) + " (" + nCa(v) + ")").join(", ")}</td></tr>`).join("") + `</tbody></table></div>` +
+    (ev.length ? `<h4>Alumnes de tot el municipi, curs a curs</h4>${serieAnysOb(ev.map(([k, v]) => [k, v]))}` : "") +
+    (pre.length ? `<h4>Preinscripció del curs ${esc(e.cursPreinscripcio)} (cursos d'entrada)</h4><div class="taula"><table><thead><tr><th>Centre</th><th>Curs</th><th class="n">Places</th><th class="n">Assignades</th><th class="n">En 1a opció</th></tr></thead><tbody>` +
+      pre.filter(x => x.nivell === "1" && (x.oferta_inicial_places || x.assignacions)).map(x =>
+        `<tr><td style="white-space:normal">${esc(x.centre)}</td><td>${esc(nivell(x))}</td><td class="n">${nCa(x.oferta_inicial_places)}</td><td class="n">${nCa(x.assignacions)}</td><td class="n">${nCa(x.assignacions_1a_peticio)}</td></tr>`).join("") +
+      `</tbody></table></div>` : "") + `</article>` +
+    notaOb("Departament d'Educació: matrícula per centre i resultats de la preinscripció. Places: l'oferta inicial de cada centre; «Assignades», els alumnes que hi van obtenir plaça; «En 1a opció», els alumnes que hi van entrar com a primera tria. Les llars d'infants municipals hi surten si consten al registre del Departament.");
+}
+const majuscula = t => t.charAt(0).toUpperCase() + t.slice(1);
+
+async function carregaObertes() {
+  try { OB = await obtenir("dades/obertes.json"); } catch (e) { OB = null; }
+  const blocs = [
+    ["renda", "🤲", "RENDA GARANTIDA DE CIUTADANIA", "Departament de Drets Socials (dades obertes de la Generalitat)", cosRenda, "renda"],
+    ["habitatge", "🔑", "LLOGUER I HABITATGES BUITS", "Incasòl i Agència Tributària de Catalunya (dades obertes de la Generalitat)", cosHabitatge, "habitatge"],
+    ["ramaderia", "🐄", "EXPLOTACIONS RAMADERES", "Departament d'Agricultura (dades obertes de la Generalitat)", cosRamaderia, "ramaderia"],
+    ["residus", "♻️", "RESIDUS MUNICIPALS (RECOLLIDA SELECTIVA)", "Agència de Residus de Catalunya (dades obertes de la Generalitat)", cosResidus, "residus"],
+    ["escoles", "🏫", "ESCOLES I ALUMNES (MATRÍCULA I PREINSCRIPCIÓ)", "Departament d'Educació (dades obertes de la Generalitat)", cosEscoles, "escoles"],
+  ];
+  for (const [id, emoji, titol, font, cos, clau] of blocs) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (!OB || !OB[clau]) { el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : emoji + " ") + titol}</h2><p class="buit">Encara no s'han baixat les dades.</p>`; continue; }
+    try { await pintaOb(id, emoji, titol, font, "17022", cos); }
+    catch (err) { console.error(id, err); el.innerHTML = `<h2>${emoji} ${titol}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }
+  }
+}
+
+// -----------------------------------------------------------------------------
 // AIGUA POTABLE: un sol bloc amb una fitxa per municipi. Analítiques del SINAC
 // (el darrer butlletí amb tot el detall i els anteriors, que s'obren clicant-hi)
 // i, a Corçà i a Cruïlles, Monells i Sant Sadurní, les de la Mancomunitat.
@@ -1555,6 +1696,7 @@ async function inicia() {
   carregaEleccions();
   carregaSeguretat();
   carregaEntitats();
+  carregaObertes();
 }
 inicia();
 </script>

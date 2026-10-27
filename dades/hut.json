@@ -1,7 +1,7 @@
 {
- "generat": "2026-10-26T21:48:12+00:00",
+ "generat": "2026-10-27T08:13:21+00:00",
  "actualitzatFont": "2026-10-05T06:24:56+00:00",
- "comparatAmb": null,
+ "comparatAmb": "2026-10-05T06:24:56+00:00",
  "font": "Registre de Turisme de Catalunya (Departament d'Empresa i Treball), dades obertes de la Generalitat",
  "comarca": {
   "hut": 17799,
@@ -83,6 +83,106 @@
     [
      "Barri Sant Pol - Mas Matas",
      1
+    ],
+    [
+     "Polígon 1 - Mas Ripoll",
+     1
+    ],
+    [
+     "Carrer Francesc Cambo",
+     1
+    ],
+    [
+     "Carrer Pedró",
+     1
+    ],
+    [
+     "Disseminat Can Selles",
+     1
+    ],
+    [
+     "Passatge del Pedró",
+     1
+    ],
+    [
+     "Carrer Pompeu Fabra",
+     1
+    ],
+    [
+     "Polígon 1 Parcel·La 152 Afores Castell d'Empordà",
+     1
+    ],
+    [
+     "Polígon Pol. 5 Parcel·La 182 Afores",
+     1
+    ],
+    [
+     "Carrer Convent",
+     1
+    ],
+    [
+     "Lloc Afores la Bisbal Mas Sendra",
+     1
+    ],
+    [
+     "Carrer Sis d'Octubre de 1869",
+     1
+    ],
+    [
+     "Carrer Rec de Can Tunyeca",
+     1
+    ],
+    [
+     "Carrer dels Germans de Ferrer",
+     1
+    ],
+    [
+     "Carrer D,En Vinyoles",
+     1
+    ],
+    [
+     "Carrer de Joan Baptista Coromina",
+     1
+    ],
+    [
+     "Camí Afores, Castell d'Empordà",
+     1
+    ],
+    [
+     "Cases Afores Sant Pol 15(A) Can Lloberas",
+     1
+    ],
+    [
+     "Carrer Afores la Bisbal, 80 Parc. Pol.3, Parcel.La 128",
+     1
+    ],
+    [
+     "Lloc Lloc Afores Castell Empordà",
+     1
+    ],
+    [
+     "Carrer Josep M? Soler",
+     1
+    ],
+    [
+     "Carrer Marquès de Cruïlles",
+     1
+    ],
+    [
+     "Carrer del Pedró",
+     1
+    ],
+    [
+     "Carrer Barceló i Matas",
+     1
+    ],
+    [
+     "Avinguda President Companys",
+     1
+    ],
+    [
+     "Disseminat Afores Castell d'Emporda",
+     1
     ]
    ],
    "altres": [
@@ -102,8 +202,8 @@
      "places": 126
     }
    ],
-   "altes": null,
-   "baixes": null
+   "altes": 0,
+   "baixes": 0
   },
   "17057": {
    "nom": "Corçà",
@@ -158,6 +258,90 @@
     [
      "Carrer Sant Sebastia",
      1
+    ],
+    [
+     "Carrer Major de Matajudaica",
+     1
+    ],
+    [
+     "Barri de Planils",
+     1
+    ],
+    [
+     "Plaça del Rebot",
+     1
+    ],
+    [
+     "Carrer Unió (Matajudaica)",
+     1
+    ],
+    [
+     "Carrer Sant Isidre",
+     1
+    ],
+    [
+     "Disseminat Veïnat de Cassà de Pelràs",
+     1
+    ],
+    [
+     "Disseminat Veïnat del Rissec",
+     1
+    ],
+    [
+     "Disseminat Veïnat de Planils, (Mas Mascaró)",
+     1
+    ],
+    [
+     "Disseminat Veïnat d'Anyells",
+     1
+    ],
+    [
+     "Disseminat Mas Martí (Cassà de Pelràs)",
+     1
+    ],
+    [
+     "Carrer Sant Galderic (Casavells)(Casa 6)",
+     1
+    ],
+    [
+     "Carrer de Baix (Matajudaica)",
+     1
+    ],
+    [
+     "Carrer Major (Matajudaica)",
+     1
+    ],
+    [
+     "Carrer Torrent",
+     1
+    ],
+    [
+     "Disseminat Veïnat Anyells, (Pol. 2 Parc. 151)",
+     1
+    ],
+    [
+     "Carrer Sant Josep (Casavells)",
+     1
+    ],
+    [
+     "Carrer de l' Oli",
+     1
+    ],
+    [
+     "Carrer Sant Galderic",
+     1
+    ],
+    [
+     "Urbanització Planils",
+     1
+    ],
+    [
+     "Carrer Mur",
+     1
+    ],
+    [
+     "Carrer Canigó",
+     1
     ]
    ],
    "altres": [
@@ -177,8 +361,8 @@
      "places": 11
     }
    ],
-   "altes": null,
-   "baixes": null
+   "altes": 0,
+   "baixes": 0
   },
   "17902": {
    "nom": "Forallac",
@@ -233,6 +417,286 @@
     [
      "Carrer Fitor",
      2
+    ],
+    [
+     "Plaça de les Voltes",
+     2
+    ],
+    [
+     "Carrer de Santa Basilissa",
+     2
+    ],
+    [
+     "Disseminat Mas Muni",
+     1
+    ],
+    [
+     "Disseminat Blay-Camí Barrera",
+     1
+    ],
+    [
+     "Disseminat Can Marimon",
+     1
+    ],
+    [
+     "Camí Fitor",
+     1
+    ],
+    [
+     "Camí Santa Maria",
+     1
+    ],
+    [
+     "Carrer Can Carbonell-Mas Pomerol",
+     1
+    ],
+    [
+     "Camí Vulpellac-Peralta",
+     1
+    ],
+    [
+     "Carrer Marquesos de Robert",
+     1
+    ],
+    [
+     "Plaça Castell",
+     1
+    ],
+    [
+     "Disseminat Nou d'En Lliure",
+     1
+    ],
+    [
+     "Carrer Constitució",
+     1
+    ],
+    [
+     "Carrer la Riera",
+     1
+    ],
+    [
+     "Camí Mas Teixidor",
+     1
+    ],
+    [
+     "Disseminat Mateu",
+     1
+    ],
+    [
+     "Disseminat Frigolet",
+     1
+    ],
+    [
+     "Carrer Riera",
+     1
+    ],
+    [
+     "Carrer Carles",
+     1
+    ],
+    [
+     "Carrer Mas Anglada",
+     1
+    ],
+    [
+     "Disseminat Bandrell",
+     1
+    ],
+    [
+     "Disseminat Carrony",
+     1
+    ],
+    [
+     "Plaça Voltes",
+     1
+    ],
+    [
+     "Camí Torroella",
+     1
+    ],
+    [
+     "Passatge Sureda",
+     1
+    ],
+    [
+     "Carrer Mas Cal de Fitor",
+     1
+    ],
+    [
+     "Carrer Orient",
+     1
+    ],
+    [
+     "Carrer Santa Basilissa",
+     1
+    ],
+    [
+     "Disseminat Mas Comas-Vulpellac",
+     1
+    ],
+    [
+     "Carretera Girona A Palamós",
+     1
+    ],
+    [
+     "Carrer Santa Bassilissa",
+     1
+    ],
+    [
+     "Disseminat Camí Mas Carles",
+     1
+    ],
+    [
+     "Carrer d'En Vas",
+     1
+    ],
+    [
+     "Camí Camí Mas Carbonell",
+     1
+    ],
+    [
+     "Cases Mas Plaja",
+     1
+    ],
+    [
+     "Carrer Mas Bou - Peratallada",
+     1
+    ],
+    [
+     "Carrer Miquel de Sarriera",
+     1
+    ],
+    [
+     "Disseminat Mas Noguer, Parcel·La 72 Polígon 11",
+     1
+    ],
+    [
+     "Carrer la Roca",
+     1
+    ],
+    [
+     "Camí de Sant Climent A Fitor",
+     1
+    ],
+    [
+     "Disseminat Mas Vidal de Sant Climent de Peralta",
+     1
+    ],
+    [
+     "Carrer Estret",
+     1
+    ],
+    [
+     "Disseminat Sant Climent de Peralta",
+     1
+    ],
+    [
+     "Camí del Puig",
+     1
+    ],
+    [
+     "Carrer d'En Bas",
+     1
+    ],
+    [
+     "Avinguda del Puig Negre",
+     1
+    ],
+    [
+     "Carrer U d'Octubre",
+     1
+    ],
+    [
+     "Carrer Sant Joan",
+     1
+    ],
+    [
+     "Carrer Mas Puigsec, Polï¿¿Gon 4, Parcelï¿¿La 36",
+     1
+    ],
+    [
+     "Carrer de la Torre de Peratallada",
+     1
+    ],
+    [
+     "Disseminat Afueras-Perat Plaça Sant Climent",
+     1
+    ],
+    [
+     "Carrer del Montseny",
+     1
+    ],
+    [
+     "Carrer de Miquel de Sarriera",
+     1
+    ],
+    [
+     "Carrer del Llorer",
+     1
+    ],
+    [
+     "Carrer de Fitor",
+     1
+    ],
+    [
+     "Carrer Puig Negre",
+     1
+    ],
+    [
+     "Camí de Fonteta A Fitor ( Afores de Fonteta)",
+     1
+    ],
+    [
+     "Carrer de L Hospital",
+     1
+    ],
+    [
+     "Disseminat Paratge Garriga",
+     1
+    ],
+    [
+     "Camí Mas Teixidor, Mas Solivera",
+     1
+    ],
+    [
+     "Carrer de L Església",
+     1
+    ],
+    [
+     "Carrer de la Torre",
+     1
+    ],
+    [
+     "Carrer Mas Vinyetes",
+     1
+    ],
+    [
+     "Carrer Església",
+     1
+    ],
+    [
+     "Plaça Mossèn Ferran Dou",
+     1
+    ],
+    [
+     "Carretera de Girona A Palamós (Mas Vinyes)",
+     1
+    ],
+    [
+     "Camí de Canapost A Peralta",
+     1
+    ],
+    [
+     "Carrer Sant Antoni",
+     1
+    ],
+    [
+     "Carrer de la Riera",
+     1
+    ],
+    [
+     "Carrer Puigmal",
+     1
     ]
    ],
    "altres": [
@@ -257,8 +721,8 @@
      "places": 16
     }
    ],
-   "altes": null,
-   "baixes": null
+   "altes": 0,
+   "baixes": 0
   },
   "17901": {
    "nom": "Cruïlles, Monells i Sant Sadurní de l'Heura",
@@ -313,6 +777,114 @@
     [
      "Veïnat Rabioses, Mas Can Molinetes , Polígon 13 Parcel.La 67",
      1
+    ],
+    [
+     "Carrer Villa",
+     1
+    ],
+    [
+     "Carretera Monells-Sant Sadurní",
+     1
+    ],
+    [
+     "Barri Santa Pellaia",
+     1
+    ],
+    [
+     "Carrer Gesamí",
+     1
+    ],
+    [
+     "Disseminat Botero",
+     1
+    ],
+    [
+     "Barri Sies",
+     1
+    ],
+    [
+     "Disseminat Lledó",
+     1
+    ],
+    [
+     "Disseminat Estrabau",
+     1
+    ],
+    [
+     "Disseminat Rabioses (Can Font de Muntanya)",
+     1
+    ],
+    [
+     "Barri Font - Mas Bofí",
+     1
+    ],
+    [
+     "Carrer Portalet",
+     1
+    ],
+    [
+     "Barri Banyeres (Can Tou)",
+     1
+    ],
+    [
+     "Plaça República",
+     1
+    ],
+    [
+     "Veïnat de Rabioses ( Mas Ribas )",
+     1
+    ],
+    [
+     "Barri Banyeres - Mas Obert",
+     1
+    ],
+    [
+     "Barri Rabioses (Mas Molinas)",
+     1
+    ],
+    [
+     "Barri Rabioses (Can Roure)",
+     1
+    ],
+    [
+     "Carrer Gessamí",
+     1
+    ],
+    [
+     "Plaça Creu",
+     1
+    ],
+    [
+     "Barri de la Bont - Mas Obert",
+     1
+    ],
+    [
+     "Plaça Jaume i (Porta Bis)",
+     1
+    ],
+    [
+     "Carrer del Raval",
+     1
+    ],
+    [
+     "Barri Afores Sant Sadurni de l'Heura, Mas Puigmiquel",
+     1
+    ],
+    [
+     "Carrer de la Riera",
+     1
+    ],
+    [
+     "Plaça de l'Oli",
+     1
+    ],
+    [
+     "Carrer del Portalet",
+     1
+    ],
+    [
+     "Camí Carretera Gir-660",
+     1
     ]
    ],
    "altres": [
@@ -337,8 +909,8 @@
      "places": 4
     }
    ],
-   "altes": null,
-   "baixes": null
+   "altes": 0,
+   "baixes": 0
   }
  },
  "historic": [

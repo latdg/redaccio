@@ -154,7 +154,7 @@ def main():
     # 2. Bombers (per municipi)
     codis = ",".join(f"'{c}'" for c in MUNICIPIS)
     b = recent(baixa("g2ay-3vnj", f"codi_ine in({codis})",
-              "any,mes,codi_ine,tal_nom_alarma,tga_nom_grupo,urgents"))
+              "any,mes,codi_ine,tal_nom_alarma,tga_nom_grupo,urgents,act_dat_actuacio"))
     sortida["bombers"] = {"actualitzat": actualitzat("g2ay-3vnj"), "municipis": {}}
     fi_b = max((mes(x["any"], x["mes"]) for x in b), default=None)   # mateix període per als quatre
     for c in MUNICIPIS:
@@ -164,6 +164,10 @@ def main():
         d["urgents12"] = bloc(urgents, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tal_nom_alarma"), fi=fi_b)["total12"] if urgents else 0
         d["grups"] = bloc(seus, lambda x: mes(x["any"], x["mes"]), lambda x: x.get("tga_nom_grupo"), fi=fi_b)["tipus"]
         d["tipus"] = d["tipus"][:15]
+        # 27.10.2026: les darreres actuacions, amb el dia (la font no dona ni l'hora ni l'adreça).
+        d["darreres"] = [{"data": (x.get("act_dat_actuacio") or "")[:10], "tipus": x.get("tal_nom_alarma") or "",
+                          "grup": x.get("tga_nom_grupo") or "", "urgent": str(x.get("urgents", "")).upper().startswith("S")}
+                         for x in sorted(seus, key=lambda x: x.get("act_dat_actuacio") or "", reverse=True)[:40]]
         sortida["bombers"]["municipis"][c] = d
     print("Bombers:", len(b), "actuacions")
 

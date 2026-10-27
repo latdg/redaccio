@@ -746,7 +746,7 @@ const BLOCS_PROPIS = [
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
   // 27.10.2026: després de l'aigua potable.
   { id: "turisme", nom: "Turistes", titol: "TURISTES QUE HI ARRIBEN (INE)", enLlocDe: /^ATUR/i },
-  { id: "seguretat", nom: "Seguretat i emergències", titol: "SEGURETAT I EMERGÈNCIES (MOSSOS, BOMBERS I 112)", enLlocDe: /^ATUR/i },
+  { id: "seguretat", nom: "Seguretat i emergències", titol: "SEGURETAT I EMERGÈNCIES (MOSSOS, 112 I BOMBERS)", enLlocDe: /^ATUR/i },
   { id: "edificis", nom: "Edat dels edificis", titol: "EDAT DELS EDIFICIS (CADASTRE)", enLlocDe: /^ATUR/i },
   { id: "entitats", nom: "Entitats", titol: "ENTITATS I ASSOCIACIONS (REGISTRE D'ENTITATS)", enLlocDe: /^ATUR/i },
   // 26.10.2026: sense lloc de referència, perquè vagi sempre l'últim (cada quatre anys).
@@ -1462,7 +1462,7 @@ async function carregaEntitats() {
 // ABP (la de la Bisbal, més gran que els quatre municipis); Bombers i 112, per
 // municipi. Darrers 12 mesos amb dades, comparats amb els 12 anteriors.
 // -----------------------------------------------------------------------------
-const TITOL_SEG = "SEGURETAT I EMERGÈNCIES (MOSSOS, BOMBERS I 112)";
+const TITOL_SEG = "SEGURETAT I EMERGÈNCIES (MOSSOS, 112 I BOMBERS)";
 let SEG = null;
 function taulaTipus(tipus, n = 10, extra = null) {
   return `<div class="taula"><table><thead><tr><th>Tipus</th><th class="n">12 mesos</th><th class="n">Abans</th><th class="n">Var.</th>${extra ? extra.cap : ""}</tr></thead><tbody>` +
@@ -1485,19 +1485,23 @@ async function pintaSeguretat(codi) {
       `<h4>Fets coneguts cada mes</h4>${serieBarres(f.serie)}` +
       `<h4>Per tipus de fet</h4>${taulaTipus(f.tipus, 12, { cap: '<th class="n">Detencions</th>', fila: t => `<td class="n">${nCa(t.detencions)}</td>` })}` +
     `</article>` +
-    `<h4 style="margin-top:16px">Bombers i 112 per municipi</h4>` + triadorMun(["17022", "17057", "17902", "17901"], codi, escuts) +
-    `<article class="fitxa"><h3>🚒 Actuacions dels Bombers · ${esc(NOMS_MUN[codi])}</h3>` +
-      (b && b.serie.length ? `<p class="pob">${periodeCa(b.periode)}</p>` +
-        `<div class="xifres"><div class="xifra"><div class="etq">Actuacions</div><div class="val">${nCa(b.total12)}</div><div class="det">${variacio(b.total12, b.totalAbans12)} (abans, ${nCa(b.totalAbans12)})</div></div>` +
-        `<div class="xifra"><div class="etq">Urgents</div><div class="val">${nCa(b.urgents12)}</div><div class="det">la resta són activitats no urgents (prevenció, rutes…)</div></div></div>` +
-        `${serieBarres(b.serie)}<h4>Per tipus</h4>${taulaTipus(b.tipus, 10)}`
-        : '<p class="buit">No hi ha actuacions registrades.</p>') +
-    `</article>` +
+    `<h4 style="margin-top:16px">112 i Bombers per municipi</h4>` + triadorMun(["17022", "17057", "17902", "17901"], codi, escuts) +
     `<article class="fitxa"><h3>☎️ Incidents del 112 · ${esc(NOMS_MUN[codi])}</h3>` +
       (e && e.serie.length ? `<p class="pob">${periodeCa(e.periode)}</p>` +
         `<div class="xifres"><div class="xifra"><div class="etq">Incidents</div><div class="val">${nCa(e.total12)}</div><div class="det">${variacio(e.total12, e.totalAbans12)} (abans, ${nCa(e.totalAbans12)})</div></div></div>` +
         `${serieBarres(e.serie)}<h4>Per tipus</h4>${taulaTipus(e.tipus, 12)}`
         : '<p class="buit">No hi ha incidents registrats.</p>') +
+    `</article>` +
+    `<article class="fitxa"><h3>🚒 Actuacions dels Bombers · ${esc(NOMS_MUN[codi])}</h3>` +
+      (b && b.serie.length ? `<p class="pob">${periodeCa(b.periode)}</p>` +
+        `<div class="xifres"><div class="xifra"><div class="etq">Actuacions</div><div class="val">${nCa(b.total12)}</div><div class="det">${variacio(b.total12, b.totalAbans12)} (abans, ${nCa(b.totalAbans12)})</div></div>` +
+        `<div class="xifra"><div class="etq">Urgents</div><div class="val">${nCa(b.urgents12)}</div><div class="det">la resta són activitats no urgents (prevenció, rutes…)</div></div></div>` +
+        `${serieBarres(b.serie)}` +
+        (b.darreres && b.darreres.length ? `<h4>Darreres actuacions</h4><div class="taula"><table><thead><tr><th>Dia</th><th>Actuació</th></tr></thead><tbody>` +
+          b.darreres.slice(0, 15).map(x => `<tr><td>${x.data ? dataCa(x.data) : "—"}</td><td style="white-space:normal">${x.urgent ? "🚨 " : ""}${esc(x.tipus)}</td></tr>`).join("") +
+          `</tbody></table></div><p class="det" style="font-size:.8rem;color:#6b6b66">🚨 urgent. La font dona el dia i el tipus d'actuació, però no l'hora ni l'adreça.</p>` : "") +
+        `<h4>Per tipus (12 mesos)</h4>${taulaTipus(b.tipus, 10)}`
+        : '<p class="buit">No hi ha actuacions registrades.</p>') +
     `</article>` +
     `<p class="nota" style="color:#6b6b66;font-size:.85rem">«Var.»: variació respecte als 12 mesos anteriors (en vermell, si puja). Les barres grises de les gràfiques són l'any anterior. ` +
     `Els fets penals són els que coneixen els Mossos (denúncies i actuacions pròpies), no tots els que passen. Els incidents del 112 són els operatius gestionats per la central, no totes les trucades.</p>`;

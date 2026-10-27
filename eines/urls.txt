@@ -1,5 +1,4 @@
-# Òrgans de govern i fundadors del Registre d'entitats (27.10.2026)
-https://analisi.transparenciacatalunya.cat/resource/i46c-ebpp.json?$where=id_entitat='125304'%20OR%20id_entitat='123958'&$limit=20
-https://analisi.transparenciacatalunya.cat/resource/i46c-ebpp.json?$limit=3
-https://analisi.transparenciacatalunya.cat/resource/y6fz-g3ff.json?$select=id_entitat,nom_entitat,fundadors&$where=id_entitat='125304'%20OR%20id_entitat='123958'
-https://analisi.transparenciacatalunya.cat/api/views/i46c-ebpp.json
+# Escuts dels clubs (27.10.2026)
+https://latdg-fcf.ignasicorney.workers.dev/?tipus=classificacio&grupId=58161863
+https://latdg-fcf.ignasicorney.workers.dev/?tipus=partidos&grupId=58161863
+https://www.feb.es/segundafeb/Inicio.aspx?tabid=5

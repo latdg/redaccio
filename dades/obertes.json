@@ -1,0 +1,4632 @@
+{
+ "generat": "2026-10-27T06:05:27+00:00",
+ "municipis": {
+  "17022": "la Bisbal d'Empordà",
+  "17057": "Corçà",
+  "17902": "Forallac",
+  "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"
+ },
+ "renda": {
+  "actualitzat": "2026-10-19T08:09:48+00:00",
+  "municipis": {
+   "17022": [
+    {
+     "mes": "2024-01",
+     "titulars": 94,
+     "beneficiaris": 137,
+     "prestacio": 653
+    },
+    {
+     "mes": "2024-02",
+     "titulars": 93,
+     "beneficiaris": 131,
+     "prestacio": 620
+    },
+    {
+     "mes": "2024-03",
+     "titulars": 92,
+     "beneficiaris": 119,
+     "prestacio": 664
+    },
+    {
+     "mes": "2024-04",
+     "titulars": 91,
+     "beneficiaris": 126,
+     "prestacio": 647
+    },
+    {
+     "mes": "2024-05",
+     "titulars": 87,
+     "beneficiaris": 113,
+     "prestacio": 683
+    },
+    {
+     "mes": "2024-06",
+     "titulars": 88,
+     "beneficiaris": 111,
+     "prestacio": 637
+    },
+    {
+     "mes": "2024-07",
+     "titulars": 87,
+     "beneficiaris": 109,
+     "prestacio": 639
+    },
+    {
+     "mes": "2024-08",
+     "titulars": 85,
+     "beneficiaris": 103,
+     "prestacio": 659
+    },
+    {
+     "mes": "2024-09",
+     "titulars": 80,
+     "beneficiaris": 101,
+     "prestacio": 661
+    },
+    {
+     "mes": "2024-10",
+     "titulars": 74,
+     "beneficiaris": 89,
+     "prestacio": 626
+    },
+    {
+     "mes": "2024-11",
+     "titulars": 69,
+     "beneficiaris": 76,
+     "prestacio": 595
+    },
+    {
+     "mes": "2024-12",
+     "titulars": 71,
+     "beneficiaris": 73,
+     "prestacio": 602
+    },
+    {
+     "mes": "2025-01",
+     "titulars": 72,
+     "beneficiaris": 73,
+     "prestacio": 638
+    },
+    {
+     "mes": "2025-02",
+     "titulars": 76,
+     "beneficiaris": 77,
+     "prestacio": 658
+    },
+    {
+     "mes": "2025-03",
+     "titulars": 77,
+     "beneficiaris": 77,
+     "prestacio": 660
+    },
+    {
+     "mes": "2025-04",
+     "titulars": 75,
+     "beneficiaris": 75,
+     "prestacio": 642
+    },
+    {
+     "mes": "2025-05",
+     "titulars": 77,
+     "beneficiaris": 76,
+     "prestacio": 661
+    },
+    {
+     "mes": "2025-06",
+     "titulars": 78,
+     "beneficiaris": 76,
+     "prestacio": 669
+    },
+    {
+     "mes": "2025-07",
+     "titulars": 72,
+     "beneficiaris": 79,
+     "prestacio": 679
+    },
+    {
+     "mes": "2025-08",
+     "titulars": 73,
+     "beneficiaris": 78,
+     "prestacio": 692
+    },
+    {
+     "mes": "2025-09",
+     "titulars": 78,
+     "beneficiaris": 73,
+     "prestacio": 658
+    },
+    {
+     "mes": "2025-10",
+     "titulars": 75,
+     "beneficiaris": 69,
+     "prestacio": 649
+    },
+    {
+     "mes": "2025-11",
+     "titulars": 73,
+     "beneficiaris": 67,
+     "prestacio": 627
+    },
+    {
+     "mes": "2025-12",
+     "titulars": 65,
+     "beneficiaris": 56,
+     "prestacio": 650
+    },
+    {
+     "mes": "2026-01",
+     "titulars": 66,
+     "beneficiaris": 55,
+     "prestacio": 635
+    },
+    {
+     "mes": "2026-02",
+     "titulars": 66,
+     "beneficiaris": 55,
+     "prestacio": 689
+    },
+    {
+     "mes": "2026-03",
+     "titulars": 64,
+     "beneficiaris": 51,
+     "prestacio": 682
+    },
+    {
+     "mes": "2026-04",
+     "titulars": 60,
+     "beneficiaris": 47,
+     "prestacio": 697
+    },
+    {
+     "mes": "2026-05",
+     "titulars": 58,
+     "beneficiaris": 46,
+     "prestacio": 700
+    },
+    {
+     "mes": "2026-06",
+     "titulars": 58,
+     "beneficiaris": 48,
+     "prestacio": 729
+    },
+    {
+     "mes": "2026-07",
+     "titulars": 58,
+     "beneficiaris": 49,
+     "prestacio": 728
+    },
+    {
+     "mes": "2026-08",
+     "titulars": 56,
+     "beneficiaris": 45,
+     "prestacio": 766
+    },
+    {
+     "mes": "2026-09",
+     "titulars": 58,
+     "beneficiaris": 44,
+     "prestacio": 771
+    }
+   ],
+   "17057": [
+    {
+     "mes": "2024-01",
+     "titulars": 5,
+     "beneficiaris": null,
+     "prestacio": 480
+    },
+    {
+     "mes": "2024-02",
+     "titulars": 5,
+     "beneficiaris": null,
+     "prestacio": 338
+    },
+    {
+     "mes": "2024-03",
+     "titulars": 5,
+     "beneficiaris": null,
+     "prestacio": 375
+    },
+    {
+     "mes": "2024-04",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 426
+    },
+    {
+     "mes": "2024-05",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 426
+    },
+    {
+     "mes": "2024-06",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 426
+    },
+    {
+     "mes": "2024-07",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 426
+    },
+    {
+     "mes": "2024-08",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 429
+    },
+    {
+     "mes": "2024-09",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 211
+    },
+    {
+     "mes": "2024-10",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 211
+    },
+    {
+     "mes": "2024-11",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 204
+    },
+    {
+     "mes": "2024-12",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 204
+    },
+    {
+     "mes": "2025-01",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 221
+    },
+    {
+     "mes": "2025-02",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 228
+    },
+    {
+     "mes": "2025-03",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 224
+    },
+    {
+     "mes": "2025-04",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 224
+    },
+    {
+     "mes": "2025-05",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 224
+    },
+    {
+     "mes": "2025-06",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 205
+    },
+    {
+     "mes": "2025-07",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 205
+    },
+    {
+     "mes": "2025-08",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 120
+    },
+    {
+     "mes": "2025-09",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 108
+    },
+    {
+     "mes": "2025-10",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 108
+    },
+    {
+     "mes": "2025-11",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 108
+    },
+    {
+     "mes": "2025-12",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 108
+    },
+    {
+     "mes": "2026-01",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 108
+    },
+    {
+     "mes": "2026-02",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 131
+    },
+    {
+     "mes": "2026-03",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 112
+    },
+    {
+     "mes": "2026-04",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 80
+    },
+    {
+     "mes": "2026-05",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 80
+    },
+    {
+     "mes": "2026-06",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 80
+    },
+    {
+     "mes": "2026-07",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 80
+    },
+    {
+     "mes": "2026-08",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 80
+    },
+    {
+     "mes": "2026-09",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 131
+    }
+   ],
+   "17902": [
+    {
+     "mes": "2024-01",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 557
+    },
+    {
+     "mes": "2024-02",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 476
+    },
+    {
+     "mes": "2024-03",
+     "titulars": 5,
+     "beneficiaris": null,
+     "prestacio": 602
+    },
+    {
+     "mes": "2024-04",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 628
+    },
+    {
+     "mes": "2024-05",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 577
+    },
+    {
+     "mes": "2024-06",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 577
+    },
+    {
+     "mes": "2024-07",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 577
+    },
+    {
+     "mes": "2024-08",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 581
+    },
+    {
+     "mes": "2024-09",
+     "titulars": 8,
+     "beneficiaris": null,
+     "prestacio": 603
+    },
+    {
+     "mes": "2024-10",
+     "titulars": 8,
+     "beneficiaris": null,
+     "prestacio": 603
+    },
+    {
+     "mes": "2024-11",
+     "titulars": 8,
+     "beneficiaris": null,
+     "prestacio": 603
+    },
+    {
+     "mes": "2024-12",
+     "titulars": 8,
+     "beneficiaris": null,
+     "prestacio": 603
+    },
+    {
+     "mes": "2025-01",
+     "titulars": 8,
+     "beneficiaris": null,
+     "prestacio": 645
+    },
+    {
+     "mes": "2025-02",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 705
+    },
+    {
+     "mes": "2025-03",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 705
+    },
+    {
+     "mes": "2025-04",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 705
+    },
+    {
+     "mes": "2025-05",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 705
+    },
+    {
+     "mes": "2025-06",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 705
+    },
+    {
+     "mes": "2025-07",
+     "titulars": null,
+     "beneficiaris": 7,
+     "prestacio": 705
+    },
+    {
+     "mes": "2025-08",
+     "titulars": null,
+     "beneficiaris": 7,
+     "prestacio": 680
+    },
+    {
+     "mes": "2025-09",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 680
+    },
+    {
+     "mes": "2025-10",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 680
+    },
+    {
+     "mes": "2025-11",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 680
+    },
+    {
+     "mes": "2025-12",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 680
+    },
+    {
+     "mes": "2026-01",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 680
+    },
+    {
+     "mes": "2026-02",
+     "titulars": 7,
+     "beneficiaris": null,
+     "prestacio": 774
+    },
+    {
+     "mes": "2026-03",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 758
+    },
+    {
+     "mes": "2026-04",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 758
+    },
+    {
+     "mes": "2026-05",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 758
+    },
+    {
+     "mes": "2026-06",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 788
+    },
+    {
+     "mes": "2026-07",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 788
+    },
+    {
+     "mes": "2026-08",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 788
+    },
+    {
+     "mes": "2026-09",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 788
+    }
+   ],
+   "17901": []
+  }
+ },
+ "habitatge": {
+  "lloguer": {
+   "actualitzat": "2026-07-30T11:10:17+00:00",
+   "municipis": {
+    "17022": [
+     {
+      "any": 2022,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 44,
+      "renda": 470.75,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2022,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 59,
+      "renda": 561.78,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 215,
+      "renda": 538.65,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 162,
+      "renda": 535.48,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 104,
+      "renda": 565.21,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 46,
+      "renda": 580.54,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 58,
+      "renda": 553.04,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 58,
+      "renda": 482.19,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 53,
+      "renda": 548.33,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 203,
+      "renda": 514.96,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 160,
+      "renda": 510.28,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 111,
+      "renda": 508.89,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 65,
+      "renda": 520.2,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 46,
+      "renda": 492.91,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 49,
+      "renda": 513.42,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 43,
+      "renda": 532.37,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 105,
+      "renda": 526.58,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 137,
+      "renda": 534.25,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 75,
+      "renda": 534.37,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 31,
+      "renda": 559.49,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 44,
+      "renda": 516.67,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 30,
+      "renda": 507.09,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 32,
+      "renda": 559.43,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 35,
+      "renda": 575.776,
+      "tram": "> 450 i <= 600 euros/mes"
+     }
+    ],
+    "17057": [
+     {
+      "any": 2022,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2022,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2022,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 6,
+      "renda": 589.17,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 6,
+      "renda": 589.17,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 350 i <= 450 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 9,
+      "renda": 744.44,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 8,
+      "renda": 768.75,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 6,
+      "renda": 783.33,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 5,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 7,
+      "renda": 725,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     }
+    ],
+    "17902": [
+     {
+      "any": 2022,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2022,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 17,
+      "renda": 628.41,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 15,
+      "renda": 651.93,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 13,
+      "renda": 600.31,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 7,
+      "renda": 542.86,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 6,
+      "renda": 667.33,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 17,
+      "renda": 732.94,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 12,
+      "renda": 775,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 10,
+      "renda": 720,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 7,
+      "renda": 778.57,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 5,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 19,
+      "renda": 784.16,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 16,
+      "renda": 784.19,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 15,
+      "renda": 800.47,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 11,
+      "renda": 706.09,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 7,
+      "renda": 740.663,
+      "tram": "> 600 euros/mes"
+     }
+    ],
+    "17901": [
+     {
+      "any": 2022,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2022,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2022,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 13,
+      "renda": 793.85,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 8,
+      "renda": 906.88,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 5,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 11,
+      "renda": 708.64,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 10,
+      "renda": 689.5,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 5,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 5,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 7,
+      "renda": 1017.86,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 5,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 5,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 6,
+      "renda": 1152.667,
+      "tram": "> 600 euros/mes"
+     }
+    ]
+   }
+  },
+  "buits": {
+   "actualitzat": "2026-09-28T11:09:23+00:00",
+   "municipis": {
+    "17022": [
+     {
+      "any": 2018,
+      "habitatges": 28,
+      "exempts": 4,
+      "tenidors": 7,
+      "superficie": 3302.66
+     },
+     {
+      "any": 2019,
+      "habitatges": 25,
+      "exempts": 2,
+      "tenidors": 7,
+      "superficie": 2873.4300000000003
+     },
+     {
+      "any": 2020,
+      "habitatges": 21,
+      "exempts": 5,
+      "tenidors": 8,
+      "superficie": 1737.03
+     },
+     {
+      "any": 2021,
+      "habitatges": 22,
+      "exempts": 7,
+      "tenidors": 9,
+      "superficie": 1767.17
+     },
+     {
+      "any": 2022,
+      "habitatges": 31,
+      "exempts": 15,
+      "tenidors": 12,
+      "superficie": 2580.67
+     },
+     {
+      "any": 2023,
+      "habitatges": 36,
+      "exempts": 22,
+      "tenidors": 10,
+      "superficie": 2926.38
+     },
+     {
+      "any": 2024,
+      "habitatges": 194,
+      "exempts": 174,
+      "tenidors": 11,
+      "superficie": 18429.91
+     },
+     {
+      "any": 2025,
+      "habitatges": 40,
+      "exempts": 26,
+      "tenidors": 8,
+      "superficie": 3127.29
+     }
+    ],
+    "17057": [],
+    "17902": [
+     {
+      "any": 2018,
+      "habitatges": 3,
+      "exempts": 3,
+      "tenidors": 1,
+      "superficie": 124.92
+     },
+     {
+      "any": 2019,
+      "habitatges": 1,
+      "exempts": 1,
+      "tenidors": 1,
+      "superficie": 58.65
+     },
+     {
+      "any": 2021,
+      "habitatges": 3,
+      "exempts": 3,
+      "tenidors": 1,
+      "superficie": 123.54
+     },
+     {
+      "any": 2024,
+      "habitatges": 1,
+      "exempts": 1,
+      "tenidors": 1,
+      "superficie": 46
+     },
+     {
+      "any": 2025,
+      "habitatges": 1,
+      "exempts": 1,
+      "tenidors": 1,
+      "superficie": 59
+     }
+    ],
+    "17901": []
+   }
+  },
+  "taxa": {
+   "actualitzat": "2026-04-09T14:42:38+00:00",
+   "municipis": {},
+   "camps": [
+    "ae_autoliquidacions",
+    "ae_import_ingressat",
+    "aj_autoliquidacions",
+    "aj_import_ingressat",
+    "at_autoliquidacions",
+    "at_import_ingressat",
+    "ca_autoliquidacions",
+    "ca_import_ingressat",
+    "cr_autoliquidacions",
+    "cr_import_ingressat",
+    "eh_autoliquidacions",
+    "eh_import_ingressat",
+    "ht_autoliquidacions",
+    "ht_import_ingressat",
+    "ht_recarrec_mpal",
+    "marca",
+    "municipi",
+    "per_ode_autoliquidaci",
+    "tr_autoliquidacions",
+    "tr_import_ingressat"
+   ]
+  }
+ },
+ "ramaderia": {
+  "actualitzat": "2026-10-19T12:48:40+00:00",
+  "municipis": {
+   "17022": {
+    "explotacions": 21,
+    "especies": [
+     {
+      "especie": "Oví",
+      "explotacions": 3,
+      "ub": 5928,
+      "places": 848
+     },
+     {
+      "especie": "Porcí",
+      "explotacions": 2,
+      "ub": 2910,
+      "places": 3850
+     },
+     {
+      "especie": "Gallines i pollastres",
+      "explotacions": 1,
+      "ub": 2668,
+      "places": 5335
+     },
+     {
+      "especie": "Conill",
+      "explotacions": 2,
+      "ub": 693,
+      "places": 774
+     },
+     {
+      "especie": "Boví",
+      "explotacions": 1,
+      "ub": 320,
+      "places": 800
+     },
+     {
+      "especie": "Èquid",
+      "explotacions": 14,
+      "ub": 297,
+      "places": 75
+     },
+     {
+      "especie": "Cabrum",
+      "explotacions": 1,
+      "ub": 129,
+      "places": 27
+     }
+    ],
+    "ub": 12945,
+    "intensiu": 16
+   },
+   "17057": {
+    "explotacions": 25,
+    "especies": [
+     {
+      "especie": "Porcí",
+      "explotacions": 6,
+      "ub": 89562,
+      "places": 12034
+     },
+     {
+      "especie": "Oví",
+      "explotacions": 4,
+      "ub": 23247,
+      "places": 4079
+     },
+     {
+      "especie": "Boví",
+      "explotacions": 5,
+      "ub": 1482,
+      "places": 815
+     },
+     {
+      "especie": "Cabrum",
+      "explotacions": 4,
+      "ub": 786,
+      "places": 201
+     },
+     {
+      "especie": "Ratites",
+      "explotacions": 1,
+      "ub": 66,
+      "places": 2
+     },
+     {
+      "especie": "Èquid",
+      "explotacions": 12,
+      "ub": 49,
+      "places": 41
+     },
+     {
+      "especie": "Gallines i pollastres",
+      "explotacions": 2,
+      "ub": 27,
+      "places": 450
+     },
+     {
+      "especie": "Conill",
+      "explotacions": 1,
+      "ub": 5,
+      "places": 1
+     },
+     {
+      "especie": "Galls dindi",
+      "explotacions": 1,
+      "ub": 1,
+      "places": 1
+     },
+     {
+      "especie": "Abella",
+      "explotacions": 2,
+      "ub": 0,
+      "places": 310
+     },
+     {
+      "especie": "Ànecs",
+      "explotacions": 1,
+      "ub": 0,
+      "places": 50
+     },
+     {
+      "especie": "Llames",
+      "explotacions": 1,
+      "ub": 0,
+      "places": 1
+     }
+    ],
+    "ub": 115225,
+    "intensiu": 20
+   },
+   "17902": {
+    "explotacions": 47,
+    "especies": [
+     {
+      "especie": "Porcí",
+      "explotacions": 12,
+      "ub": 188840,
+      "places": 29392
+     },
+     {
+      "especie": "Oví",
+      "explotacions": 4,
+      "ub": 15648,
+      "places": 2120
+     },
+     {
+      "especie": "Boví",
+      "explotacions": 6,
+      "ub": 3601,
+      "places": 826
+     },
+     {
+      "especie": "Èquid",
+      "explotacions": 26,
+      "ub": 1055,
+      "places": 346
+     },
+     {
+      "especie": "Gallines i pollastres",
+      "explotacions": 2,
+      "ub": 708,
+      "places": 23300
+     },
+     {
+      "especie": "Cabrum",
+      "explotacions": 4,
+      "ub": 521,
+      "places": 103
+     },
+     {
+      "especie": "Senglar",
+      "explotacions": 1,
+      "ub": 51,
+      "places": 6
+     },
+     {
+      "especie": "Ànecs",
+      "explotacions": 1,
+      "ub": 0,
+      "places": 0
+     },
+     {
+      "especie": "Daines",
+      "explotacions": 1,
+      "ub": 0,
+      "places": 5
+     }
+    ],
+    "ub": 210424,
+    "intensiu": 39
+   },
+   "17901": {
+    "explotacions": 53,
+    "especies": [
+     {
+      "especie": "Oví",
+      "explotacions": 9,
+      "ub": 6785,
+      "places": 2351
+     },
+     {
+      "especie": "Gallines i pollastres",
+      "explotacions": 6,
+      "ub": 5842,
+      "places": 196640
+     },
+     {
+      "especie": "Cabrum",
+      "explotacions": 5,
+      "ub": 4506,
+      "places": 878
+     },
+     {
+      "especie": "Porcí",
+      "explotacions": 4,
+      "ub": 2013,
+      "places": 3845
+     },
+     {
+      "especie": "Èquid",
+      "explotacions": 33,
+      "ub": 1485,
+      "places": 293
+     },
+     {
+      "especie": "Boví",
+      "explotacions": 5,
+      "ub": 1114,
+      "places": 2059
+     },
+     {
+      "especie": "Ànecs",
+      "explotacions": 1,
+      "ub": 15,
+      "places": 50
+     },
+     {
+      "especie": "Galls dindi",
+      "explotacions": 1,
+      "ub": 2,
+      "places": 4
+     },
+     {
+      "especie": "Oques",
+      "explotacions": 1,
+      "ub": 2,
+      "places": 8
+     },
+     {
+      "especie": "Pintades",
+      "explotacions": 1,
+      "ub": 0,
+      "places": 50
+     }
+    ],
+    "ub": 21764,
+    "intensiu": 33
+   }
+  }
+ },
+ "residus": {
+  "actualitzat": "2025-12-12T12:33:51+00:00",
+  "municipis": {
+   "17022": [
+    {
+     "any": 2000,
+     "poblacio": 8007,
+     "selectiva": 4.23,
+     "kgHabAny": 540.14,
+     "kgHabDia": 1.48,
+     "total": 4324.89,
+     "fraccions": {
+      "Paper i cartró": 74.6,
+      "Vidre": 84.2,
+      "Envasos": 23.57
+     }
+    },
+    {
+     "any": 2001,
+     "poblacio": 8007,
+     "selectiva": 5.03,
+     "kgHabAny": 527.09,
+     "kgHabDia": 1.44,
+     "total": 4220.43,
+     "fraccions": {
+      "Paper i cartró": 81.91,
+      "Vidre": 91.2,
+      "Envasos": 38.71
+     }
+    },
+    {
+     "any": 2002,
+     "poblacio": 8145,
+     "selectiva": 6.61,
+     "kgHabAny": 544.23,
+     "kgHabDia": 1.49,
+     "total": 4432.73,
+     "fraccions": {
+      "Paper i cartró": 96.96,
+      "Vidre": 114.28,
+      "Envasos": 58.11,
+      "Poda i jardineria": 0.47,
+      "Voluminosos i fusta": 3.75,
+      "Tèxtil": 0.69
+     }
+    },
+    {
+     "any": 2003,
+     "poblacio": 8651,
+     "selectiva": 6.89,
+     "kgHabAny": 507.31,
+     "kgHabDia": 1.39,
+     "total": 4388.76,
+     "fraccions": {
+      "Paper i cartró": 111.13,
+      "Vidre": 119.34,
+      "Envasos": 65.35,
+      "Poda i jardineria": 0.63,
+      "Voluminosos i fusta": 4.7,
+      "Tèxtil": 0.71
+     }
+    },
+    {
+     "any": 2004,
+     "poblacio": 8885,
+     "selectiva": 7.86,
+     "kgHabAny": 504.92,
+     "kgHabDia": 1.38,
+     "total": 4486.22,
+     "fraccions": {
+      "Paper i cartró": 121.63,
+      "Vidre": 137.57,
+      "Envasos": 87.92,
+      "Poda i jardineria": 0.83,
+      "Voluminosos i fusta": 3.26,
+      "Tèxtil": 0.76
+     }
+    },
+    {
+     "any": 2005,
+     "poblacio": 9196,
+     "selectiva": 8.95,
+     "kgHabAny": 504.66,
+     "kgHabDia": 1.38,
+     "total": 4640.86,
+     "fraccions": {
+      "Paper i cartró": 154.6,
+      "Vidre": 147.02,
+      "Envasos": 86.25,
+      "Poda i jardineria": 0.79,
+      "Voluminosos i fusta": 4.37,
+      "Tèxtil": 0.68
+     }
+    },
+    {
+     "any": 2006,
+     "poblacio": 9261,
+     "selectiva": 12.09,
+     "kgHabAny": 520.94,
+     "kgHabDia": 1.43,
+     "total": 4824.47,
+     "fraccions": {
+      "Orgànica": 78.43,
+      "Paper i cartró": 208.18,
+      "Vidre": 166.87,
+      "Envasos": 102.53,
+      "Poda i jardineria": 0.82,
+      "Voluminosos i fusta": 2.75,
+      "Tèxtil": 0.74
+     }
+    },
+    {
+     "any": 2007,
+     "poblacio": 9593,
+     "selectiva": 19.06,
+     "kgHabAny": 523.78,
+     "kgHabDia": 1.44,
+     "total": 5024.66,
+     "fraccions": {
+      "Orgànica": 266.62,
+      "Paper i cartró": 252.94,
+      "Vidre": 230.1,
+      "Envasos": 176.18,
+      "Poda i jardineria": 0.66,
+      "Voluminosos i fusta": 4.42,
+      "Tèxtil": 0.63
+     }
+    },
+    {
+     "any": 2008,
+     "poblacio": 10173,
+     "selectiva": 20.88,
+     "kgHabAny": 457.25,
+     "kgHabDia": 1.25,
+     "total": 4651.62,
+     "fraccions": {
+      "Orgànica": 312.55,
+      "Paper i cartró": 251.88,
+      "Vidre": 210.09,
+      "Envasos": 166.44,
+      "Poda i jardineria": 0.3,
+      "Voluminosos i fusta": 5.83,
+      "Tèxtil": 0.8
+     }
+    },
+    {
+     "any": 2009,
+     "poblacio": 10385,
+     "selectiva": 27.54,
+     "kgHabAny": 481.67,
+     "kgHabDia": 1.32,
+     "total": 5002.16,
+     "fraccions": {
+      "Orgànica": 184.39,
+      "Paper i cartró": 244.01,
+      "Vidre": 214.58,
+      "Envasos": 202.13,
+      "Poda i jardineria": 76.94,
+      "Voluminosos i fusta": 170.72,
+      "Tèxtil": 6.14
+     }
+    },
+    {
+     "any": 2010,
+     "poblacio": 10397,
+     "selectiva": 31.6,
+     "kgHabAny": 445.14,
+     "kgHabDia": 1.22,
+     "total": 4628.11,
+     "fraccions": {
+      "Orgànica": 446.4,
+      "Paper i cartró": 233.26,
+      "Vidre": 198.09,
+      "Envasos": 184.33,
+      "Poda i jardineria": 55.01,
+      "Voluminosos i fusta": 94.36,
+      "Tèxtil": 4.58,
+      "Aparells elèctrics": 45.86
+     }
+    },
+    {
+     "any": 2011,
+     "poblacio": 10435,
+     "selectiva": 40.19,
+     "kgHabAny": 521.41,
+     "kgHabDia": 1.43,
+     "total": 5440.91,
+     "fraccions": {
+      "Orgànica": 528.95,
+      "Paper i cartró": 273.11,
+      "Vidre": 218.66,
+      "Envasos": 196.62,
+      "Poda i jardineria": 119.68,
+      "Voluminosos i fusta": 192.7,
+      "Runes": 363.95,
+      "Tèxtil": 11.68,
+      "Aparells elèctrics": 60.4
+     }
+    },
+    {
+     "any": 2012,
+     "poblacio": 10679,
+     "selectiva": 39.16,
+     "kgHabAny": 481.94,
+     "kgHabDia": 1.32,
+     "total": 5146.65,
+     "fraccions": {
+      "Orgànica": 432.81,
+      "Paper i cartró": 250.31,
+      "Vidre": 140.28,
+      "Envasos": 177.59,
+      "Poda i jardineria": 164.9,
+      "Voluminosos i fusta": 198.44,
+      "Runes": 336.57,
+      "Tèxtil": 9.4,
+      "Aparells elèctrics": 75.51
+     }
+    },
+    {
+     "any": 2013,
+     "poblacio": 10793,
+     "selectiva": 38.59,
+     "kgHabAny": 457.41,
+     "kgHabDia": 1.25,
+     "total": 4936.85,
+     "fraccions": {
+      "Orgànica": 427.08,
+      "Paper i cartró": 223.72,
+      "Vidre": 199.74,
+      "Envasos": 155.38,
+      "Poda i jardineria": 143.83,
+      "Voluminosos i fusta": 178.69,
+      "Runes": 280.94,
+      "Tèxtil": 6.19,
+      "Aparells elèctrics": 63.96
+     }
+    },
+    {
+     "any": 2014,
+     "poblacio": 10761,
+     "selectiva": 38.16,
+     "kgHabAny": 460.2,
+     "kgHabDia": 1.26,
+     "total": 4952.25,
+     "fraccions": {
+      "Orgànica": 413.27,
+      "Paper i cartró": 231.06,
+      "Vidre": 189.96,
+      "Envasos": 172.45,
+      "Poda i jardineria": 157.99,
+      "Voluminosos i fusta": 197.5,
+      "Runes": 305.69,
+      "Tèxtil": 8.07,
+      "Aparells elèctrics": 20.57
+     }
+    },
+    {
+     "any": 2015,
+     "poblacio": 10759,
+     "selectiva": 37.61,
+     "kgHabAny": 473.69,
+     "kgHabDia": 1.3,
+     "total": 5096.39,
+     "fraccions": {
+      "Orgànica": 400.53,
+      "Paper i cartró": 202.76,
+      "Vidre": 233.34,
+      "Envasos": 151.64,
+      "Poda i jardineria": 127.86,
+      "Voluminosos i fusta": 180.83,
+      "Runes": 286.08,
+      "Tèxtil": 8.42,
+      "Aparells elèctrics": 95.37
+     }
+    },
+    {
+     "any": 2016,
+     "poblacio": 10742,
+     "selectiva": 38.97,
+     "kgHabAny": 489.53,
+     "kgHabDia": 1.34,
+     "total": 5258.5,
+     "fraccions": {
+      "Orgànica": 430.87,
+      "Paper i cartró": 204.75,
+      "Vidre": 207.27,
+      "Envasos": 154.34,
+      "Poda i jardineria": 135.19,
+      "Voluminosos i fusta": 227.85,
+      "Runes": 316.58,
+      "Tèxtil": 11.53,
+      "Aparells elèctrics": 89.9
+     }
+    },
+    {
+     "any": 2017,
+     "poblacio": 10775,
+     "selectiva": 40.42,
+     "kgHabAny": 500.13,
+     "kgHabDia": 1.37,
+     "total": 5388.94,
+     "fraccions": {
+      "Orgànica": 426.66,
+      "Paper i cartró": 210.74,
+      "Vidre": 248.31,
+      "Envasos": 160.57,
+      "Poda i jardineria": 158.63,
+      "Voluminosos i fusta": 217.79,
+      "Runes": 269.24,
+      "Tèxtil": 23.21,
+      "Aparells elèctrics": 102.68
+     }
+    },
+    {
+     "any": 2018,
+     "poblacio": 10859,
+     "selectiva": 41.5,
+     "kgHabAny": 506.92,
+     "kgHabDia": 1.39,
+     "total": 5504.68,
+     "fraccions": {
+      "Orgànica": 517.13,
+      "Paper i cartró": 222.9,
+      "Vidre": 176.14,
+      "Envasos": 186.44,
+      "Poda i jardineria": 157.16,
+      "Voluminosos i fusta": 235.22,
+      "Runes": 315.91,
+      "Tèxtil": 19.76,
+      "Aparells elèctrics": 94.95
+     }
+    },
+    {
+     "any": 2019,
+     "poblacio": 10974,
+     "selectiva": 45.58,
+     "kgHabAny": 520.65,
+     "kgHabDia": 1.43,
+     "total": 5713.56,
+     "fraccions": {
+      "Orgànica": 611.41,
+      "Paper i cartró": 232.76,
+      "Vidre": 218.43,
+      "Envasos": 193.15,
+      "Poda i jardineria": 138.09,
+      "Voluminosos i fusta": 286.96,
+      "Runes": 387.27,
+      "Tèxtil": 30.76,
+      "Aparells elèctrics": 118.11
+     }
+    },
+    {
+     "any": 2020,
+     "poblacio": 11159,
+     "selectiva": 47.23,
+     "kgHabAny": 512.86,
+     "kgHabDia": 1.41,
+     "total": 5722.99,
+     "fraccions": {
+      "Orgànica": 582.77,
+      "Paper i cartró": 266.93,
+      "Vidre": 213.88,
+      "Envasos": 261.18,
+      "Poda i jardineria": 151.82,
+      "Voluminosos i fusta": 514.31,
+      "Runes": 367.07,
+      "Tèxtil": 33.76,
+      "Aparells elèctrics": 116.57
+     }
+    },
+    {
+     "any": 2021,
+     "poblacio": 11190,
+     "selectiva": 49.42,
+     "kgHabAny": 540.38,
+     "kgHabDia": 1.48,
+     "total": 6046.81,
+     "fraccions": {
+      "Orgànica": 676.82,
+      "Paper i cartró": 292.02,
+      "Vidre": 245.05,
+      "Envasos": 264.11,
+      "Poda i jardineria": 158.04,
+      "Voluminosos i fusta": 565.4,
+      "Runes": 461.13,
+      "Tèxtil": 36.62,
+      "Aparells elèctrics": 110.94
+     }
+    },
+    {
+     "any": 2022,
+     "poblacio": 11163,
+     "selectiva": 52,
+     "kgHabAny": 555.38,
+     "kgHabDia": 1.52,
+     "total": 6199.72,
+     "fraccions": {
+      "Orgànica": 732.78,
+      "Paper i cartró": 262.59,
+      "Vidre": 261.15,
+      "Envasos": 287.31,
+      "Poda i jardineria": 160.17,
+      "Voluminosos i fusta": 624.92,
+      "Runes": 588.98,
+      "Tèxtil": 46.15,
+      "Aparells elèctrics": 95.07
+     }
+    },
+    {
+     "any": 2023,
+     "poblacio": 11364,
+     "selectiva": 54.5,
+     "kgHabAny": 554.45,
+     "kgHabDia": 1.52,
+     "total": 6300.77,
+     "fraccions": {
+      "Orgànica": 627.33,
+      "Paper i cartró": 271.54,
+      "Vidre": 248.05,
+      "Envasos": 303.49,
+      "Poda i jardineria": 187.21,
+      "Voluminosos i fusta": 755.13,
+      "Runes": 694.23,
+      "Tèxtil": 57.78,
+      "Aparells elèctrics": 106.75
+     }
+    },
+    {
+     "any": 2024,
+     "poblacio": 11637,
+     "selectiva": 51.98,
+     "kgHabAny": 529.72,
+     "kgHabDia": 1.45,
+     "total": 6164.33,
+     "fraccions": {
+      "Orgànica": 574.26,
+      "Paper i cartró": 258.64,
+      "Vidre": 253.21,
+      "Envasos": 359.15,
+      "Poda i jardineria": 167.61,
+      "Voluminosos i fusta": 707.78,
+      "Runes": 544.22,
+      "Tèxtil": 59.28,
+      "Aparells elèctrics": 101.12
+     }
+    }
+   ],
+   "17057": [
+    {
+     "any": 2000,
+     "poblacio": 1151,
+     "selectiva": 6.18,
+     "kgHabAny": 554.64,
+     "kgHabDia": 1.52,
+     "total": 638.39,
+     "fraccions": {
+      "Paper i cartró": 15.49,
+      "Vidre": 18.8,
+      "Envasos": 5.11
+     }
+    },
+    {
+     "any": 2001,
+     "poblacio": 1151,
+     "selectiva": 7.67,
+     "kgHabAny": 570.8,
+     "kgHabDia": 1.56,
+     "total": 656.99,
+     "fraccions": {
+      "Paper i cartró": 18.29,
+      "Vidre": 22.2,
+      "Envasos": 9.88
+     }
+    },
+    {
+     "any": 2002,
+     "poblacio": 1143,
+     "selectiva": 8.06,
+     "kgHabAny": 623.9,
+     "kgHabDia": 1.71,
+     "total": 713.12,
+     "fraccions": {
+      "Paper i cartró": 19.86,
+      "Vidre": 22.6,
+      "Envasos": 14.95
+     }
+    },
+    {
+     "any": 2003,
+     "poblacio": 1174,
+     "selectiva": 8.03,
+     "kgHabAny": 623.27,
+     "kgHabDia": 1.71,
+     "total": 731.72,
+     "fraccions": {
+      "Paper i cartró": 20.91,
+      "Vidre": 22.8,
+      "Envasos": 14.98
+     }
+    },
+    {
+     "any": 2004,
+     "poblacio": 1201,
+     "selectiva": 8.65,
+     "kgHabAny": 615.06,
+     "kgHabDia": 1.69,
+     "total": 738.69,
+     "fraccions": {
+      "Paper i cartró": 20.3,
+      "Vidre": 29.8,
+      "Envasos": 13.75
+     }
+    },
+    {
+     "any": 2005,
+     "poblacio": 1232,
+     "selectiva": 9.29,
+     "kgHabAny": 605.28,
+     "kgHabDia": 1.66,
+     "total": 745.7,
+     "fraccions": {
+      "Paper i cartró": 24.55,
+      "Vidre": 32.4,
+      "Envasos": 12.31
+     }
+    },
+    {
+     "any": 2006,
+     "poblacio": 1261,
+     "selectiva": 12.31,
+     "kgHabAny": 616.41,
+     "kgHabDia": 1.69,
+     "total": 777.29,
+     "fraccions": {
+      "Paper i cartró": 32.87,
+      "Vidre": 44.2,
+      "Envasos": 18.58
+     }
+    },
+    {
+     "any": 2007,
+     "poblacio": 1255,
+     "selectiva": 15.15,
+     "kgHabAny": 638.78,
+     "kgHabDia": 1.75,
+     "total": 801.67,
+     "fraccions": {
+      "Orgànica": 8.93,
+      "Paper i cartró": 35.23,
+      "Vidre": 49.6,
+      "Envasos": 27.66
+     }
+    },
+    {
+     "any": 2008,
+     "poblacio": 1270,
+     "selectiva": 16.68,
+     "kgHabAny": 599.27,
+     "kgHabDia": 1.64,
+     "total": 761.08,
+     "fraccions": {
+      "Orgànica": 30.8,
+      "Paper i cartró": 33.08,
+      "Vidre": 40.4,
+      "Envasos": 22.58
+     }
+    },
+    {
+     "any": 2009,
+     "poblacio": 1280,
+     "selectiva": 16.81,
+     "kgHabAny": 533.99,
+     "kgHabDia": 1.46,
+     "total": 683.5,
+     "fraccions": {
+      "Orgànica": 31.45,
+      "Paper i cartró": 26.37,
+      "Vidre": 32,
+      "Envasos": 25.03
+     }
+    },
+    {
+     "any": 2010,
+     "poblacio": 1296,
+     "selectiva": 23,
+     "kgHabAny": 500.24,
+     "kgHabDia": 1.37,
+     "total": 648.31,
+     "fraccions": {
+      "Orgànica": 55.69,
+      "Paper i cartró": 29.26,
+      "Vidre": 39.52,
+      "Envasos": 24.55
+     }
+    },
+    {
+     "any": 2011,
+     "poblacio": 1317,
+     "selectiva": 26,
+     "kgHabAny": 482.61,
+     "kgHabDia": 1.32,
+     "total": 635.6,
+     "fraccions": {
+      "Orgànica": 66.87,
+      "Paper i cartró": 35.79,
+      "Vidre": 38.42,
+      "Envasos": 24.11
+     }
+    },
+    {
+     "any": 2012,
+     "poblacio": 1279,
+     "selectiva": 21.99,
+     "kgHabAny": 448.29,
+     "kgHabDia": 1.23,
+     "total": 573.37,
+     "fraccions": {
+      "Orgànica": 41.22,
+      "Paper i cartró": 32.31,
+      "Vidre": 22.34,
+      "Envasos": 19.84,
+      "Aparells elèctrics": 1.79
+     }
+    },
+    {
+     "any": 2013,
+     "poblacio": 1273,
+     "selectiva": 24.23,
+     "kgHabAny": 473.04,
+     "kgHabDia": 1.3,
+     "total": 602.18,
+     "fraccions": {
+      "Orgànica": 43.01,
+      "Paper i cartró": 31.63,
+      "Vidre": 40.51,
+      "Envasos": 21.09,
+      "Aparells elèctrics": 0.56
+     }
+    },
+    {
+     "any": 2014,
+     "poblacio": 1257,
+     "selectiva": 23.42,
+     "kgHabAny": 486.83,
+     "kgHabDia": 1.33,
+     "total": 611.94,
+     "fraccions": {
+      "Orgànica": 48.89,
+      "Paper i cartró": 30.92,
+      "Vidre": 29.78,
+      "Envasos": 22.76,
+      "Aparells elèctrics": 2.4
+     }
+    },
+    {
+     "any": 2015,
+     "poblacio": 1244,
+     "selectiva": 23.84,
+     "kgHabAny": 501.36,
+     "kgHabDia": 1.37,
+     "total": 623.69,
+     "fraccions": {
+      "Orgànica": 46.69,
+      "Paper i cartró": 28.77,
+      "Vidre": 40.61,
+      "Envasos": 20.58,
+      "Poda i jardineria": 0.08,
+      "Voluminosos i fusta": 0.11,
+      "Runes": 0.17,
+      "Tèxtil": 0.01,
+      "Aparells elèctrics": 2.73
+     }
+    },
+    {
+     "any": 2016,
+     "poblacio": 1249,
+     "selectiva": 22.44,
+     "kgHabAny": 544.58,
+     "kgHabDia": 1.49,
+     "total": 680.18,
+     "fraccions": {
+      "Orgànica": 48.2,
+      "Paper i cartró": 30.3,
+      "Vidre": 35.32,
+      "Envasos": 21.49,
+      "Poda i jardineria": 2.66,
+      "Voluminosos i fusta": 0.48,
+      "Runes": 0.66,
+      "Tèxtil": 2.91,
+      "Aparells elèctrics": 1.69
+     }
+    },
+    {
+     "any": 2017,
+     "poblacio": 1245,
+     "selectiva": 31.77,
+     "kgHabAny": 568.61,
+     "kgHabDia": 1.56,
+     "total": 707.92,
+     "fraccions": {
+      "Orgànica": 53.85,
+      "Paper i cartró": 27.03,
+      "Vidre": 39.75,
+      "Envasos": 20.13,
+      "Poda i jardineria": 65.26,
+      "Voluminosos i fusta": 0.89,
+      "Runes": 1.1,
+      "Tèxtil": 4.25,
+      "Aparells elèctrics": 2.8
+     }
+    },
+    {
+     "any": 2018,
+     "poblacio": 1253,
+     "selectiva": 55,
+     "kgHabAny": 418.96,
+     "kgHabDia": 1.15,
+     "total": 524.96,
+     "fraccions": {
+      "Orgànica": 104.3,
+      "Paper i cartró": 34.72,
+      "Vidre": 43.08,
+      "Envasos": 39.59,
+      "Poda i jardineria": 50.45,
+      "Voluminosos i fusta": 0.51,
+      "Runes": 0.69,
+      "Tèxtil": 4.25,
+      "Aparells elèctrics": 1.96
+     }
+    },
+    {
+     "any": 2019,
+     "poblacio": 1267,
+     "selectiva": 89.31,
+     "kgHabAny": 350.23,
+     "kgHabDia": 0.96,
+     "total": 443.74,
+     "fraccions": {
+      "Orgànica": 155.06,
+      "Paper i cartró": 56.18,
+      "Vidre": 56.78,
+      "Envasos": 62.68,
+      "Poda i jardineria": 15.22,
+      "Voluminosos i fusta": 25.11,
+      "Tèxtil": 12.33,
+      "Aparells elèctrics": 4.49
+     }
+    },
+    {
+     "any": 2020,
+     "poblacio": 1268,
+     "selectiva": 93.16,
+     "kgHabAny": 539.25,
+     "kgHabDia": 1.48,
+     "total": 683.77,
+     "fraccions": {
+      "Orgànica": 165.88,
+      "Paper i cartró": 58.57,
+      "Vidre": 69.06,
+      "Envasos": 62.8,
+      "Poda i jardineria": 71.52,
+      "Voluminosos i fusta": 92.6,
+      "Runes": 65.35,
+      "Tèxtil": 5.41,
+      "Aparells elèctrics": 6.82
+     }
+    },
+    {
+     "any": 2021,
+     "poblacio": 1275,
+     "selectiva": 93.38,
+     "kgHabAny": 568.88,
+     "kgHabDia": 1.56,
+     "total": 725.32,
+     "fraccions": {
+      "Orgànica": 174.04,
+      "Paper i cartró": 64.96,
+      "Vidre": 58.98,
+      "Envasos": 68.42,
+      "Poda i jardineria": 40.94,
+      "Voluminosos i fusta": 122.4,
+      "Runes": 101.79,
+      "Tèxtil": 6.67,
+      "Aparells elèctrics": 10.48
+     }
+    },
+    {
+     "any": 2022,
+     "poblacio": 1268,
+     "selectiva": 92.97,
+     "kgHabAny": 638.18,
+     "kgHabDia": 1.75,
+     "total": 809.22,
+     "fraccions": {
+      "Orgànica": 177.44,
+      "Paper i cartró": 75.97,
+      "Vidre": 67.76,
+      "Envasos": 63.38,
+      "Poda i jardineria": 49.4,
+      "Voluminosos i fusta": 142.04,
+      "Runes": 139.56,
+      "Tèxtil": 7.6,
+      "Aparells elèctrics": 7.76
+     }
+    },
+    {
+     "any": 2023,
+     "poblacio": 1293,
+     "selectiva": 91.11,
+     "kgHabAny": 550.56,
+     "kgHabDia": 1.51,
+     "total": 711.88,
+     "fraccions": {
+      "Orgànica": 155.24,
+      "Paper i cartró": 64.56,
+      "Vidre": 37.48,
+      "Envasos": 82.24,
+      "Poda i jardineria": 48.12,
+      "Voluminosos i fusta": 132.22,
+      "Runes": 95.45,
+      "Tèxtil": 8.81,
+      "Aparells elèctrics": 6.84
+     }
+    },
+    {
+     "any": 2024,
+     "poblacio": 1282,
+     "selectiva": 92.37,
+     "kgHabAny": 626.31,
+     "kgHabDia": 1.72,
+     "total": 802.93,
+     "fraccions": {
+      "Orgànica": 150.2,
+      "Paper i cartró": 64.09,
+      "Vidre": 38.44,
+      "Envasos": 88,
+      "Poda i jardineria": 61.98,
+      "Voluminosos i fusta": 157.47,
+      "Runes": 145.88,
+      "Tèxtil": 7.68,
+      "Aparells elèctrics": 6.93
+     }
+    }
+   ],
+   "17902": [
+    {
+     "any": 2000,
+     "poblacio": 1633,
+     "selectiva": 6.8,
+     "kgHabAny": 684.59,
+     "kgHabDia": 1.88,
+     "total": 1117.94,
+     "fraccions": {
+      "Paper i cartró": 34.84,
+      "Vidre": 33.6,
+      "Envasos": 7.48
+     }
+    },
+    {
+     "any": 2001,
+     "poblacio": 1633,
+     "selectiva": 7.39,
+     "kgHabAny": 761.33,
+     "kgHabDia": 2.09,
+     "total": 1243.25,
+     "fraccions": {
+      "Paper i cartró": 36.29,
+      "Vidre": 41,
+      "Envasos": 14.31
+     }
+    },
+    {
+     "any": 2002,
+     "poblacio": 1598,
+     "selectiva": 9.48,
+     "kgHabAny": 706.49,
+     "kgHabDia": 1.94,
+     "total": 1128.98,
+     "fraccions": {
+      "Paper i cartró": 39.56,
+      "Vidre": 45.8,
+      "Envasos": 21.24
+     }
+    },
+    {
+     "any": 2003,
+     "poblacio": 1684,
+     "selectiva": 9.03,
+     "kgHabAny": 762.54,
+     "kgHabDia": 2.09,
+     "total": 1284.11,
+     "fraccions": {
+      "Paper i cartró": 43.14,
+      "Vidre": 50.5,
+      "Envasos": 21.86
+     }
+    },
+    {
+     "any": 2004,
+     "poblacio": 1746,
+     "selectiva": 10.04,
+     "kgHabAny": 743.7,
+     "kgHabDia": 2.04,
+     "total": 1298.5,
+     "fraccions": {
+      "Paper i cartró": 50.02,
+      "Vidre": 55.8,
+      "Envasos": 23.87
+     }
+    },
+    {
+     "any": 2005,
+     "poblacio": 1745,
+     "selectiva": 11.16,
+     "kgHabAny": 774.05,
+     "kgHabDia": 2.12,
+     "total": 1350.71,
+     "fraccions": {
+      "Paper i cartró": 57.83,
+      "Vidre": 70.5,
+      "Envasos": 21.53
+     }
+    },
+    {
+     "any": 2006,
+     "poblacio": 1746,
+     "selectiva": 0.48,
+     "kgHabAny": 696.73,
+     "kgHabDia": 1.91,
+     "total": 1216.49,
+     "fraccions": {
+      "Vidre": 5.8
+     }
+    },
+    {
+     "any": 2007,
+     "poblacio": 1736,
+     "selectiva": 0.08,
+     "kgHabAny": 631.04,
+     "kgHabDia": 1.73,
+     "total": 1095.48,
+     "fraccions": {}
+    },
+    {
+     "any": 2008,
+     "poblacio": 1740,
+     "selectiva": 18.03,
+     "kgHabAny": 849.19,
+     "kgHabDia": 2.33,
+     "total": 1477.58,
+     "fraccions": {
+      "Paper i cartró": 108.79,
+      "Vidre": 91.18,
+      "Envasos": 66.41
+     }
+    },
+    {
+     "any": 2009,
+     "poblacio": 1737,
+     "selectiva": 21.08,
+     "kgHabAny": 754.4,
+     "kgHabDia": 2.07,
+     "total": 1310.39,
+     "fraccions": {
+      "Paper i cartró": 106.65,
+      "Vidre": 101.65,
+      "Envasos": 67.89
+     }
+    },
+    {
+     "any": 2010,
+     "poblacio": 1749,
+     "selectiva": 29.63,
+     "kgHabAny": 693.16,
+     "kgHabDia": 1.9,
+     "total": 1212.33,
+     "fraccions": {
+      "Orgànica": 65.76,
+      "Paper i cartró": 94.62,
+      "Vidre": 128.34,
+      "Envasos": 70.32
+     }
+    },
+    {
+     "any": 2011,
+     "poblacio": 1785,
+     "selectiva": 39.44,
+     "kgHabAny": 608.26,
+     "kgHabDia": 1.67,
+     "total": 1085.74,
+     "fraccions": {
+      "Orgànica": 185.06,
+      "Paper i cartró": 85.92,
+      "Vidre": 88.04,
+      "Envasos": 69.08
+     }
+    },
+    {
+     "any": 2012,
+     "poblacio": 1721,
+     "selectiva": 38.01,
+     "kgHabAny": 624.46,
+     "kgHabDia": 1.71,
+     "total": 1074.69,
+     "fraccions": {
+      "Orgànica": 189.94,
+      "Paper i cartró": 80.47,
+      "Vidre": 81.4,
+      "Envasos": 54.14,
+      "Aparells elèctrics": 2.41
+     }
+    },
+    {
+     "any": 2013,
+     "poblacio": 1700,
+     "selectiva": 34.36,
+     "kgHabAny": 644.9,
+     "kgHabDia": 1.77,
+     "total": 1096.32,
+     "fraccions": {
+      "Orgànica": 174.88,
+      "Paper i cartró": 70.38,
+      "Vidre": 83.56,
+      "Envasos": 47.04,
+      "Aparells elèctrics": 0.75
+     }
+    },
+    {
+     "any": 2014,
+     "poblacio": 1729,
+     "selectiva": 35.58,
+     "kgHabAny": 682.15,
+     "kgHabDia": 1.87,
+     "total": 1179.43,
+     "fraccions": {
+      "Orgànica": 198.5,
+      "Paper i cartró": 97.33,
+      "Vidre": 61.74,
+      "Envasos": 57.08,
+      "Aparells elèctrics": 4.48
+     }
+    },
+    {
+     "any": 2015,
+     "poblacio": 1705,
+     "selectiva": 43.96,
+     "kgHabAny": 766.92,
+     "kgHabDia": 2.1,
+     "total": 1307.6,
+     "fraccions": {
+      "Orgànica": 197.82,
+      "Paper i cartró": 90.19,
+      "Vidre": 84.76,
+      "Envasos": 64.83,
+      "Poda i jardineria": 6.08,
+      "Voluminosos i fusta": 47.46,
+      "Runes": 67.2,
+      "Aparells elèctrics": 6.97
+     }
+    },
+    {
+     "any": 2016,
+     "poblacio": 1723,
+     "selectiva": 50.82,
+     "kgHabAny": 796.07,
+     "kgHabDia": 2.18,
+     "total": 1371.63,
+     "fraccions": {
+      "Orgànica": 220.22,
+      "Paper i cartró": 78.44,
+      "Vidre": 93.52,
+      "Envasos": 55.23,
+      "Poda i jardineria": 16,
+      "Voluminosos i fusta": 87.82,
+      "Runes": 118.42,
+      "Aparells elèctrics": 5.74
+     }
+    },
+    {
+     "any": 2017,
+     "poblacio": 1708,
+     "selectiva": 49.85,
+     "kgHabAny": 777.83,
+     "kgHabDia": 2.13,
+     "total": 1328.54,
+     "fraccions": {
+      "Orgànica": 208.58,
+      "Paper i cartró": 87.93,
+      "Vidre": 89.06,
+      "Envasos": 68.98,
+      "Poda i jardineria": 20.48,
+      "Voluminosos i fusta": 81.58,
+      "Runes": 85.44,
+      "Aparells elèctrics": 5.74
+     }
+    },
+    {
+     "any": 2018,
+     "poblacio": 1713,
+     "selectiva": 36.67,
+     "kgHabAny": 1278.71,
+     "kgHabDia": 3.5,
+     "total": 2190.44,
+     "fraccions": {
+      "Orgànica": 249.14,
+      "Paper i cartró": 102.65,
+      "Vidre": 105.16,
+      "Envasos": 92.99,
+      "Poda i jardineria": 20.5,
+      "Voluminosos i fusta": 105.22,
+      "Runes": 108.6,
+      "Tèxtil": 1.88,
+      "Aparells elèctrics": 4.41
+     }
+    },
+    {
+     "any": 2019,
+     "poblacio": 1687,
+     "selectiva": 60.53,
+     "kgHabAny": 909.42,
+     "kgHabDia": 2.49,
+     "total": 1534.2,
+     "fraccions": {
+      "Orgànica": 271.78,
+      "Paper i cartró": 122.06,
+      "Vidre": 90.72,
+      "Envasos": 78.97,
+      "Poda i jardineria": 41.62,
+      "Voluminosos i fusta": 145.9,
+      "Runes": 120.31,
+      "Aparells elèctrics": 32.07
+     }
+    },
+    {
+     "any": 2020,
+     "poblacio": 1695,
+     "selectiva": 59.7,
+     "kgHabAny": 882.27,
+     "kgHabDia": 2.42,
+     "total": 1495.44,
+     "fraccions": {
+      "Orgànica": 224.2,
+      "Paper i cartró": 114.4,
+      "Vidre": 85.48,
+      "Envasos": 90.78,
+      "Poda i jardineria": 48.88,
+      "Voluminosos i fusta": 184.38,
+      "Runes": 119.6,
+      "Tèxtil": 0.07,
+      "Aparells elèctrics": 7.64
+     }
+    },
+    {
+     "any": 2021,
+     "poblacio": 1708,
+     "selectiva": 68.56,
+     "kgHabAny": 802.51,
+     "kgHabDia": 2.2,
+     "total": 1370.68,
+     "fraccions": {
+      "Orgànica": 270.58,
+      "Paper i cartró": 124.94,
+      "Vidre": 90.28,
+      "Envasos": 103.71,
+      "Poda i jardineria": 35.58,
+      "Voluminosos i fusta": 154.18,
+      "Runes": 132.88,
+      "Aparells elèctrics": 12.32
+     }
+    },
+    {
+     "any": 2022,
+     "poblacio": 1765,
+     "selectiva": 91.06,
+     "kgHabAny": 594.55,
+     "kgHabDia": 1.63,
+     "total": 1049.38,
+     "fraccions": {
+      "Orgànica": 275.06,
+      "Paper i cartró": 107.88,
+      "Vidre": 92.02,
+      "Envasos": 138.48,
+      "Poda i jardineria": 36.1,
+      "Voluminosos i fusta": 122.08,
+      "Runes": 160.54,
+      "Aparells elèctrics": 11.6
+     }
+    },
+    {
+     "any": 2023,
+     "poblacio": 1753,
+     "selectiva": 91.68,
+     "kgHabAny": 603.28,
+     "kgHabDia": 1.65,
+     "total": 1057.55,
+     "fraccions": {
+      "Orgànica": 277.08,
+      "Paper i cartró": 123.48,
+      "Vidre": 104.94,
+      "Envasos": 128.54,
+      "Poda i jardineria": 31.24,
+      "Voluminosos i fusta": 125.06,
+      "Runes": 161.83,
+      "Aparells elèctrics": 7.2
+     }
+    },
+    {
+     "any": 2024,
+     "poblacio": 1761,
+     "selectiva": 89.25,
+     "kgHabAny": 612.46,
+     "kgHabDia": 1.68,
+     "total": 1078.55,
+     "fraccions": {
+      "Orgànica": 243.84,
+      "Paper i cartró": 114.21,
+      "Vidre": 102.84,
+      "Envasos": 114.24,
+      "Poda i jardineria": 46.2,
+      "Voluminosos i fusta": 174.45,
+      "Runes": 136.5,
+      "Tèxtil": 2.04,
+      "Aparells elèctrics": 12
+     }
+    }
+   ],
+   "17901": []
+  },
+  "catalunya": null
+ },
+ "escoles": {
+  "actualitzatMatricula": "2026-04-23T11:01:46+00:00",
+  "actualitzatPreinscripcio": "2025-11-12T08:38:35+00:00",
+  "curs": "2025/2026",
+  "cursPreinscripcio": "2025-2026",
+  "centres": [
+   {
+    "codi": "17007300",
+    "nom": "Institut La Bisbal",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 998,
+    "nenes": 495,
+    "nens": 503,
+    "estudis": [
+     [
+      "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+      714
+     ],
+     [
+      "BATXILLERAT",
+      262
+     ],
+     [
+      "ARTS PLÀSTIQUES I DISSENY",
+      22
+     ]
+    ],
+    "unitats": 38,
+    "lat": 41.957,
+    "lon": 3.043
+   },
+   {
+    "codi": "17000411",
+    "nom": "Escola Joan de Margarit",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 320,
+    "nenes": 159,
+    "nens": 161,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      255
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      65
+     ]
+    ],
+    "unitats": 16,
+    "lat": 41.957,
+    "lon": 3.042
+   },
+   {
+    "codi": "17000421",
+    "nom": "Cor de Maria",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "titularitat": "Fundacions",
+    "alumnes": 317,
+    "nenes": 161,
+    "nens": 156,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      146
+     ],
+     [
+      "EDUCACIÓ SECUNDÀRIA OBLIGATÒRIA",
+      115
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      56
+     ]
+    ],
+    "unitats": 13,
+    "lat": 41.959,
+    "lon": 3.04
+   },
+   {
+    "codi": "17005248",
+    "nom": "Escola Mas Clarà",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 316,
+    "nenes": 156,
+    "nens": 160,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      231
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      85
+     ]
+    ],
+    "unitats": 15,
+    "lat": 41.966,
+    "lon": 3.04
+   },
+   {
+    "codi": "17009710",
+    "nom": "Escola Empordanet",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 188,
+    "nenes": 100,
+    "nens": 88,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      134
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      54
+     ]
+    ],
+    "unitats": 9,
+    "lat": 41.951,
+    "lon": 3.034
+   },
+   {
+    "codi": "17005571",
+    "nom": "Llar d'infants El Tren Petit",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "titularitat": "Corporacions Locals",
+    "alumnes": 76,
+    "nenes": 36,
+    "nens": 40,
+    "estudis": [
+     [
+      "EDUCACIÓ INFANTIL",
+      76
+     ]
+    ],
+    "unitats": 10,
+    "lat": 41.962,
+    "lon": 3.035
+   },
+   {
+    "codi": "17000998",
+    "nom": "Escola El Rodonell",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 126,
+    "nenes": 55,
+    "nens": 71,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      93
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      33
+     ]
+    ],
+    "unitats": 8,
+    "lat": 41.989,
+    "lon": 3.017
+   },
+   {
+    "codi": "17010402",
+    "nom": "Llar d'infants Municipal La Bòbila",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "titularitat": "Corporacions Locals",
+    "alumnes": 31,
+    "nenes": 15,
+    "nens": 16,
+    "estudis": [
+     [
+      "EDUCACIÓ INFANTIL",
+      31
+     ]
+    ],
+    "unitats": 3,
+    "lat": 41.989,
+    "lon": 3.014
+   },
+   {
+    "codi": "17001024",
+    "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 45,
+    "nenes": 21,
+    "nens": 24,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      29
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      16
+     ]
+    ],
+    "unitats": 3,
+    "lat": 41.955,
+    "lon": 3.011
+   },
+   {
+    "codi": "17003631",
+    "nom": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 31,
+    "nenes": 13,
+    "nens": 18,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      22
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      9
+     ]
+    ],
+    "unitats": 2,
+    "lat": 41.956,
+    "lon": 2.991
+   },
+   {
+    "codi": "17009503",
+    "nom": "Llar d'infants de Monells",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "titularitat": "Corporacions Locals",
+    "alumnes": 26,
+    "nenes": 15,
+    "nens": 11,
+    "estudis": [
+     [
+      "EDUCACIÓ INFANTIL",
+      26
+     ]
+    ],
+    "unitats": 2,
+    "lat": 41.975,
+    "lon": 2.995
+   },
+   {
+    "codi": "17008997",
+    "nom": "Escola Forallac",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 156,
+    "nenes": 67,
+    "nens": 89,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      111
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      45
+     ]
+    ],
+    "unitats": 9,
+    "lat": 41.959,
+    "lon": 3.055
+   },
+   {
+    "codi": "17010992",
+    "nom": "Llar d'infants de Forallac",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "titularitat": "Corporacions Locals",
+    "alumnes": 23,
+    "nenes": 13,
+    "nens": 10,
+    "estudis": [
+     [
+      "EDUCACIÓ INFANTIL",
+      23
+     ]
+    ],
+    "unitats": 2,
+    "lat": 41.952,
+    "lon": 3.055
+   }
+  ],
+  "evolucio": {
+   "17057": [
+    [
+     "2015/2016",
+     157
+    ],
+    [
+     "2016/2017",
+     173
+    ],
+    [
+     "2017/2018",
+     169
+    ],
+    [
+     "2018/2019",
+     171
+    ],
+    [
+     "2019/2020",
+     164
+    ],
+    [
+     "2020/2021",
+     169
+    ],
+    [
+     "2021/2022",
+     172
+    ],
+    [
+     "2022/2023",
+     169
+    ],
+    [
+     "2023/2024",
+     161
+    ],
+    [
+     "2024/2025",
+     163
+    ],
+    [
+     "2025/2026",
+     157
+    ]
+   ],
+   "17022": [
+    [
+     "2015/2016",
+     2229
+    ],
+    [
+     "2016/2017",
+     2250
+    ],
+    [
+     "2017/2018",
+     2317
+    ],
+    [
+     "2018/2019",
+     2371
+    ],
+    [
+     "2019/2020",
+     2384
+    ],
+    [
+     "2020/2021",
+     2404
+    ],
+    [
+     "2021/2022",
+     2397
+    ],
+    [
+     "2022/2023",
+     2421
+    ],
+    [
+     "2023/2024",
+     2407
+    ],
+    [
+     "2024/2025",
+     2417
+    ],
+    [
+     "2025/2026",
+     2215
+    ]
+   ],
+   "17901": [
+    [
+     "2015/2016",
+     145
+    ],
+    [
+     "2016/2017",
+     153
+    ],
+    [
+     "2017/2018",
+     156
+    ],
+    [
+     "2018/2019",
+     146
+    ],
+    [
+     "2019/2020",
+     140
+    ],
+    [
+     "2020/2021",
+     136
+    ],
+    [
+     "2021/2022",
+     129
+    ],
+    [
+     "2022/2023",
+     123
+    ],
+    [
+     "2023/2024",
+     121
+    ],
+    [
+     "2024/2025",
+     125
+    ],
+    [
+     "2025/2026",
+     102
+    ]
+   ],
+   "17902": [
+    [
+     "2015/2016",
+     159
+    ],
+    [
+     "2016/2017",
+     152
+    ],
+    [
+     "2017/2018",
+     154
+    ],
+    [
+     "2018/2019",
+     157
+    ],
+    [
+     "2019/2020",
+     159
+    ],
+    [
+     "2020/2021",
+     153
+    ],
+    [
+     "2021/2022",
+     152
+    ],
+    [
+     "2022/2023",
+     155
+    ],
+    [
+     "2023/2024",
+     177
+    ],
+    [
+     "2024/2025",
+     180
+    ],
+    [
+     "2025/2026",
+     179
+    ]
+   ]
+  },
+  "preinscripcio": [
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 19,
+    "assignacions": 19,
+    "assignacions_1a_peticio": 19,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 36,
+    "places_ofertades_a_la": 7,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 19,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 40,
+    "places_ofertades_a_la": 2,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 6,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 9,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 1
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Joan de Margarit",
+    "codi": "17000411",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 8,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 23,
+    "places_ofertades_a_la": 23,
+    "assignacions": 20,
+    "assignacions_1a_peticio": 17,
+    "assignacions_altres_peticions": 3
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 23,
+    "places_ofertades_a_la": 6,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 8,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 2,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 3,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 4,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 30,
+    "places_ofertades_a_la": 4,
+    "assignacions": 7,
+    "assignacions_1a_peticio": 7,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 30,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 30,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Cor de Maria",
+    "codi": "17000421",
+    "mun": "17022",
+    "naturalesa": "Privat",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "4",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 30,
+    "places_ofertades_a_la": 5,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 1
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 10,
+    "places_ofertades_a_la": 10,
+    "assignacions": 10,
+    "assignacions_1a_peticio": 10,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 10,
+    "places_ofertades_a_la": 4,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 16,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 11,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 14,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 16,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 15,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola El Rodonell",
+    "codi": "17000998",
+    "mun": "17057",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 18,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 5,
+    "places_ofertades_a_la": 5,
+    "assignacions": 5,
+    "assignacions_1a_peticio": 5,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 7,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 5,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 5,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 4,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 6,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 6,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 5,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Les Gavarres - ZER Empordanet-Gavarres",
+    "codi": "17001024",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 4,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 3,
+    "places_ofertades_a_la": 3,
+    "assignacions": 2,
+    "assignacions_1a_peticio": 2,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 2,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 5,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 3,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 3,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 3,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 6,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 4,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola La Pedra Dreta - ZER Empordanet-Gavarres",
+    "codi": "17003631",
+    "mun": "17901",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 3,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 40,
+    "places_ofertades_a_la": 40,
+    "assignacions": 30,
+    "assignacions_1a_peticio": 26,
+    "assignacions_altres_peticions": 4
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 18,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 38,
+    "places_ofertades_a_la": 5,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 40,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 25,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Mas Clarà",
+    "codi": "17005248",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 2,
+    "oferta_inicial_places": 50,
+    "places_ofertades_a_la": 8,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Institut La Bisbal",
+    "codi": "17007300",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "1",
+    "oferta_inicial_grups": 7,
+    "oferta_inicial_places": 189,
+    "places_ofertades_a_la": 181,
+    "assignacions": 176,
+    "assignacions_1a_peticio": 176,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Institut La Bisbal",
+    "codi": "17007300",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "2",
+    "oferta_inicial_grups": 6,
+    "oferta_inicial_places": 180,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Institut La Bisbal",
+    "codi": "17007300",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "3",
+    "oferta_inicial_grups": 6,
+    "oferta_inicial_places": 180,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Institut La Bisbal",
+    "codi": "17007300",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació secundària obligatòria",
+    "nivell": "4",
+    "oferta_inicial_grups": 6,
+    "oferta_inicial_places": 180,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 16,
+    "places_ofertades_a_la": 16,
+    "assignacions": 16,
+    "assignacions_1a_peticio": 16,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 14,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 13,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 18,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 14,
+    "places_ofertades_a_la": 1,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 16,
+    "places_ofertades_a_la": 1,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 19,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 19,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Forallac",
+    "codi": "17008997",
+    "mun": "17902",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 23,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 20,
+    "assignacions": 16,
+    "assignacions_1a_peticio": 16,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 19,
+    "places_ofertades_a_la": 1,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 19,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 20,
+    "places_ofertades_a_la": 1,
+    "assignacions": 1,
+    "assignacions_1a_peticio": 1,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 22,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 23,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 24,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 22,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola Empordanet",
+    "codi": "17009710",
+    "mun": "17022",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 22,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   }
+  ],
+  "campsPreinscripcio": [
+   "assignacions",
+   "assignacions_1a_peticio",
+   "assignacions_altres_peticions",
+   "oferta_inicial_grups",
+   "oferta_inicial_places",
+   "places_ofertades_a_la"
+  ]
+ }
+}

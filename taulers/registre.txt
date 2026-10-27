@@ -1,4 +1,4 @@
-Pàgina 1: 3 anuncis; primeres dates: ['2026-10-08', '2026-10-08', '2026-09-08']
+Pàgina 1: 3 anuncis; primeres dates: ['2026-10-09', '2026-10-09', '2026-09-09']
 Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
       <title>Edicte d’aprovació inicial de la Relació de llocs de treball, de l’Instrument d’ordenació del personal directiu i de la Plantilla de personal de 2027</title>
       <link>https://tauler.seu-e.cat/detall?idEns=9813510007&amp;idEdicte=651737</link>

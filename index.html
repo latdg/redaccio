@@ -6,9 +6,6 @@
 <meta name="color-scheme" content="light only">
 <meta name="robots" content="noindex, nofollow">
 <title>La TdG redacció</title>
-<!-- MAPES (27.10.2026): edat dels edificis -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 /* Blocs del 27.10.2026: triador de municipi amb escuts, mapa i gràfics de barres */
 .tria-mun{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
@@ -186,9 +183,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="aigua"><h2>💧 Aigua potable</h2><p class="buit">Carregant…</p></section>
   <section id="dades-municipals"><h2>🏦 Dades municipals</h2><p class="buit">Carregant…</p></section>
   <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
-  <section id="turisme"><h2>🧳 Turistes que hi arriben</h2><p class="buit">Carregant…</p></section>
   <section id="seguretat"><h2>🚨 Seguretat i emergències</h2><p class="buit">Carregant…</p></section>
-  <section id="edificis"><h2>🏘️ Edat dels edificis</h2><p class="buit">Carregant…</p></section>
   <section id="entitats"><h2>🤝 Entitats i associacions</h2><p class="buit">Carregant…</p></section>
   <section id="eleccions"><h2>🗳️ Resultats electorals</h2><p class="buit">Carregant…</p></section>
   <section id="congres"><h2>🏛️ Congrés dels Diputats</h2><p class="buit">Carregant…</p></section>
@@ -745,9 +740,7 @@ const BLOCS_PROPIS = [
   { id: "hut", nom: "Habitatges turístics", titol: "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
   // 27.10.2026: després de l'aigua potable.
-  { id: "turisme", nom: "Turistes", titol: "TURISTES QUE HI ARRIBEN (INE)", enLlocDe: /^ATUR/i },
   { id: "seguretat", nom: "Seguretat i emergències", titol: "SEGURETAT I EMERGÈNCIES (MOSSOS, 112 I BOMBERS)", enLlocDe: /^ATUR/i },
-  { id: "edificis", nom: "Edat dels edificis", titol: "EDAT DELS EDIFICIS (CADASTRE)", enLlocDe: /^ATUR/i },
   { id: "entitats", nom: "Entitats", titol: "ENTITATS I ASSOCIACIONS (REGISTRE D'ENTITATS)", enLlocDe: /^ATUR/i },
   // 26.10.2026: sense lloc de referència, perquè vagi sempre l'últim (cada quatre anys).
   { id: "eleccions", nom: "Eleccions", titol: "RESULTATS ELECTORALS (MESA A MESA)" },
@@ -1244,138 +1237,6 @@ function serieBarres(serie, n = 24) {
 }
 
 // -----------------------------------------------------------------------------
-// EDAT DELS EDIFICIS (27.10.2026): Cadastre (INSPIRE). dades/edificis.json amb
-// el resum i dades/edificis/<codi>.geojson amb els edificis, que desa el
-// workflow «Edat dels edificis» (edificis/edificis.py).
-// -----------------------------------------------------------------------------
-const TITOL_EDIF = "EDAT DELS EDIFICIS (CADASTRE)";
-const COLORS_EP = ["#4a1f14", "#7a2e1d", "#b4462c", "#d9774a", "#ecb27a", "#8fb8c4", "#2f6f8a"];
-let EDIF = null, MAPA_EDIF = null, CAPA_EDIF = null;
-const colorAny = (any, epoques) => {
-  if (!any) return "#9a958a";
-  const lim = [1900, 1940, 1960, 1980, 2000, 2010];
-  let i = lim.findIndex(l => any < l);
-  if (i === -1) i = lim.length;
-  return COLORS_EP[i];
-};
-const enllacCadastre = ref => ref && ref.length >= 14
-  ? `https://www1.sedecatastro.gob.es/CYCBienInmueble/OVCListaBienes.aspx?rc1=${encodeURIComponent(ref.slice(0, 7))}&rc2=${encodeURIComponent(ref.slice(7, 14))}` : null;
-
-async function pintaEdificis(codi) {
-  const el = document.getElementById("edificis");
-  const escuts = await carregaEscuts();
-  const codis = ["17022", "17057", "17902", "17901"].filter(c => EDIF.municipis[c]);
-  const m = EDIF.municipis[codi];
-  const maxE = Math.max(1, ...m.epoques.map(e => e.edificis));
-  el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🏘️ ") + TITOL_EDIF}</h2>` +
-    `<p class="font">Cadastre actualitzat el ${m.actualitzatCadastre ? dataCa(m.actualitzatCadastre) : "—"} · revisat el ${dataIso(EDIF.generat)} · Font: Direcció General del Cadastre</p>` +
-    triadorMun(codis, codi, escuts) +
-    `<div class="xifres">` +
-      `<div class="xifra"><div class="etq">Edificis</div><div class="val">${nCa(m.edificis)}</div><div class="det">${nCa(m.habitatges)} habitatges</div></div>` +
-      `<div class="xifra"><div class="etq">Any mitjà de construcció</div><div class="val">${m.mediana || "—"}</div><div class="det">la meitat dels edificis són d'abans d'aquest any</div></div>` +
-      `<div class="xifra"><div class="etq">Construïts els últims 10 anys</div><div class="val">${nCa(m.ultims10anys)}</div><div class="det">${m.ruina ? nCa(m.ruina) + " en estat de ruïna" : "cap en estat de ruïna"}</div></div>` +
-    `</div>` +
-    `<h4>Edificis i habitatges per època de construcció</h4>` +
-    `<div class="barres" style="grid-template-columns:auto minmax(40px,1fr) auto">` +
-      m.epoques.map((e, i) => `<span><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${COLORS_EP[i]};margin-right:5px"></i>${esc(e.epoca)}</span>` +
-        `<span class="barra" style="width:${(e.edificis / maxE * 100).toFixed(0)}%;background:${COLORS_EP[i]}"></span>` +
-        `<span class="num">${nCa(e.edificis)} <span class="var">· ${nCa(e.habitatges)} hab.</span></span>`).join("") +
-    `</div>` +
-    `<h4>Usos</h4><p class="det" style="font-size:.88rem">${m.usos.map(([u, n]) => `${esc(u)}: <b>${nCa(n)}</b>`).join(" · ")}</p>` +
-    `<div id="mapaEdificis" class="mapa-redaccio"></div>` +
-    `<div class="llegenda-ep">${EDIF.epoques.map((e, i) => `<span><i style="background:${COLORS_EP[i]}"></i>${esc(e)}</span>`).join("")}<span><i style="background:#9a958a"></i>sense any</span></div>` +
-    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Any de construcció segons el Cadastre (el de la construcció principal; les reformes no hi compten). ` +
-    (m.any1900 ? `Molts edificis antics hi consten amb l'any 1900 quan no se'n sap la data (aquí, ${nCa(m.any1900)}): la franja 1900-1939 n'està inflada. ` : "") +
-    `Toca un edifici per veure'n l'any, l'ús i l'enllaç a la fitxa del Cadastre.</p>`;
-  el.querySelectorAll(".tria-mun button").forEach(b => b.onclick = () => pintaEdificis(b.dataset.mun));
-  if (typeof L === "undefined") return;
-  if (MAPA_EDIF) { MAPA_EDIF.remove(); MAPA_EDIF = null; }
-  MAPA_EDIF = L.map("mapaEdificis", { preferCanvas: true, scrollWheelZoom: false, zoomSnap: 0.25 });
-  MAPA_EDIF.attributionControl.setPrefix("").addAttribution("Edificis: Direcció General del Cadastre · © OpenStreetMap");
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, opacity: .45 }).addTo(MAPA_EDIF);
-  MAPA_EDIF.setView([41.96, 3.04], 14);
-  try {
-    const geo = await obtenir(`dades/edificis/${codi}.geojson`);
-    CAPA_EDIF = L.geoJSON(geo, {
-      style: f => ({ color: colorAny(f.properties.any), weight: .4, fillColor: colorAny(f.properties.any), fillOpacity: .85 }),
-      onEachFeature: (f, l) => {
-        const p = f.properties, url = enllacCadastre(p.ref);
-        l.bindPopup(`<b>${p.any ? "Construït el " + p.any : "Sense any al Cadastre"}</b>` +
-          (p.us ? `<br>${esc(p.us)}` : "") + (p.hab ? ` · ${nCa(p.hab)} habitatge${p.hab === 1 ? "" : "s"}` : "") +
-          (p.plantes ? ` · ${p.plantes} planta${p.plantes === 1 ? "" : "s"}` : "") + (p.ruina ? "<br><i>En estat de ruïna</i>" : "") +
-          (url ? `<br><a href="${url}" target="_blank" rel="noopener">Fitxa del Cadastre</a>` : ""));
-      }
-    }).addTo(MAPA_EDIF);
-    MAPA_EDIF.fitBounds(CAPA_EDIF.getBounds(), { padding: [10, 10] });
-    setTimeout(() => MAPA_EDIF && MAPA_EDIF.invalidateSize(), 300);
-  } catch (e) {}
-}
-
-async function carregaEdificis() {
-  const el = document.getElementById("edificis");
-  if (!el) return;
-  try { EDIF = await obtenir("dades/edificis.json"); } catch (e) { EDIF = null; }
-  if (!EDIF || !EDIF.municipis || !Object.keys(EDIF.municipis).length) {
-    el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🏘️ ") + TITOL_EDIF}</h2><p class="buit">Encara no s'han baixat les dades del Cadastre.</p>`;
-    return;
-  }
-  pintaEdificis(EDIF.municipis["17022"] ? "17022" : Object.keys(EDIF.municipis)[0]);
-}
-
-// -----------------------------------------------------------------------------
-// MOBILITAT I TURISME (27.10.2026): dades/turisme.json, que desa el workflow
-// «Mobilitat i turisme» (turisme/turisme.py) amb l'estadística experimental de
-// l'INE feta amb telèfons mòbils. Quants turistes hi arriben cada mes i d'on
-// vénen, i on viatgen els veïns (si l'INE en deixa baixar la taula).
-// -----------------------------------------------------------------------------
-const TITOL_TUR = "TURISTES QUE HI ARRIBEN (INE)";
-let TUR = null;
-const netLloc = t => String(t || "").replace(/^\d+\s+/, "");
-function fitxaTurisme(titol, d, verb) {
-  if (!d) return "";
-  const max = Math.max(1, ...d.llocs.map(x => x[1]));
-  return `<article class="fitxa"><h3>${titol}</h3>` +
-    `<p class="pob">${periodeCa(d.periode)}</p>` +
-    `<div class="xifres"><div class="xifra"><div class="etq">${verb} en 12 mesos</div><div class="val">${nCa(d.total12)}</div>` +
-    `<div class="det">${d.totalAbans12 !== null && d.totalAbans12 !== undefined ? `${variacio(d.total12, d.totalAbans12).replace(/avall|amunt/g, m => m === "avall" ? "amunt" : "avall")} respecte als 12 mesos anteriors` : "encara no hi ha un any anterior complet"}</div></div>` +
-    `<div class="xifra"><div class="etq">Darrer mes (${esc(nomMes(d.darrerMes))})</div><div class="val">${nCa((d.serie[d.serie.length - 1] || [])[1])}</div></div></div>` +
-    `<h4>Cada mes</h4>${serieBarres(d.serie)}` +
-    (d.llocs.length ? `<h4>${verb === "Turistes" ? "D'on vénen" : "On van"}</h4><div class="barres" style="grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto">` +
-      d.llocs.filter(x => x[1] > 0).slice(0, 10).map(([n, v]) => `<span>${esc(netLloc(n))}</span><span class="barra" style="width:${(v / max * 100).toFixed(0)}%"></span><span class="num">${nCa(v)}</span>`).join("") + `</div>` : "") +
-    `</article>`;
-}
-async function pintaTurisme(codi) {
-  const el = document.getElementById("turisme");
-  const escuts = await carregaEscuts();
-  const t = TUR.taules, g = k => t[k] && t[k].ok ? (t[k].municipis || {})[codi] : null;
-  const codis = ["17022", "17057", "17902", "17901"].filter(c => Object.values(t).some(x => x.ok && x.municipis && x.municipis[c]));
-  const noDisp = Object.values(t).filter(x => !x.ok).map(x => x.nom.charAt(0).toLowerCase() + x.nom.slice(1));
-  el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🧳 ") + TITOL_TUR}</h2>` +
-    `<p class="font">Revisat el ${dataIso(TUR.generat)} · Font: <a href="https://www.ine.es/experimental/turismo_moviles/experimental_turismo_moviles.htm" target="_blank" rel="noopener">INE, estadística experimental de turisme amb telèfons mòbils</a></p>` +
-    triadorMun(codis.length ? codis : ["17022"], codi, escuts) +
-    (fitxaTurisme(`🇪🇸 Turistes de la resta de l'Estat · ${esc(NOMS_MUN[codi])}`, g("nacionals"), "Turistes") +
-     fitxaTurisme(`🌍 Turistes estrangers · ${esc(NOMS_MUN[codi])}`, g("estrangers"), "Turistes") +
-     fitxaTurisme(`🧳 Veïns que fan turisme a la resta de l'Estat`, g("veinsEstat"), "Viatges") +
-     fitxaTurisme(`✈️ Veïns que viatgen a l'estranger`, g("veinsEstranger"), "Viatges") ||
-     '<p class="buit">L\'INE no dona dades d\'aquest municipi (massa pocs casos).</p>') +
-    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Com es compta: l'INE fa servir les dades anònimes de les companyies de telefonia mòbil. Si el mòbil d'algú que viu en un altre municipi passa la nit aquí, compta com un turista (sigui en un hotel, un pis turístic, una segona residència o a casa de família). ` +
-    `Quan hi ha massa pocs casos, l'INE no dona la xifra (per això algun origen o algun mes pot faltar). ` +
-    `Els desplaçaments diaris (anar a treballar, a estudiar…) són d'una altra estadística, la del Ministeri de Transports, que no deixa baixar les dades des de GitHub.` +
-    (noDisp.length ? ` Ara mateix l'INE no deixa baixar aquestes taules: ${esc(noDisp.join("; "))}.` : "") + `</p>`;
-  el.querySelectorAll(".tria-mun button").forEach(x => x.onclick = () => pintaTurisme(x.dataset.mun));
-}
-async function carregaTurisme() {
-  const el = document.getElementById("turisme");
-  if (!el) return;
-  try { TUR = await obtenir("dades/turisme.json"); } catch (e) { TUR = null; }
-  if (!TUR || !TUR.taules || !Object.values(TUR.taules).some(x => x.ok)) {
-    el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🧳 ") + TITOL_TUR}</h2><p class="buit">Encara no s'han baixat les dades de l'INE.</p>`;
-    return;
-  }
-  pintaTurisme("17022");
-}
-
-// -----------------------------------------------------------------------------
 // ENTITATS I ASSOCIACIONS (27.10.2026): dades/entitats.json, que desa el
 // workflow «Entitats i associacions» (entitats/entitats.py) a partir del
 // Registre d'entitats. Amb l'adreça, el telèfon, la junta i els fundadors (27.10.2026).
@@ -1681,9 +1542,7 @@ async function inicia() {
   carregaJSON(dia, "loteries.json", ["loteries"]);
   carregaHut();
   carregaEleccions();
-  carregaTurisme();
   carregaSeguretat();
-  carregaEdificis();
   carregaEntitats();
 }
 inicia();

@@ -1,0 +1,41 @@
+# Dades obertes per a la redacció — La TdG · 27.10.2026
+# Renda garantida, habitatge (lloguer, buits, taxa turística), ramaderia,
+# residus i escoles (dades/obertes.json). Cada dilluns; també a mà.
+name: Dades obertes (redacció)
+
+on:
+  schedule:
+    - cron: "11 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: obertes
+  cancel-in-progress: false
+
+jobs:
+  obertes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Genera i desa
+        run: |
+          python obertes/obertes.py 2>&1 | tee obertes/registre.txt
+          git config user.name "La TdG (dades obertes)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add obertes/registre.txt; git add dades/obertes.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
+          git commit -qm "Dades obertes de la redacció ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
+          for intent in 1 2 3 4 5 6; do
+            git push -q origin HEAD:main && exit 0
+            sleep $((intent * 10))
+            git fetch -q origin main && git rebase -q origin/main || { git rebase --abort; exit 1; }
+          done
+          echo "No s'han pogut pujar els canvis"; exit 1

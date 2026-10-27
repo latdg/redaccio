@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-26T23:18:11+00:00",
+ "generat": "2026-10-27T06:00:24+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -1242,6 +1242,248 @@
       "abans": 4,
       "darrerMes": 0
      }
+    ],
+    "darreres": [
+     {
+      "data": "2026-08-16",
+      "tipus": "Dispositiu activitats culturals, fires, correfocs, esportives",
+      "grup": "dispositiu preventiu",
+      "urgent": false
+     },
+     {
+      "data": "2026-08-15",
+      "tipus": "Dispositiu activitats culturals, fires, correfocs, esportives",
+      "grup": "dispositiu preventiu",
+      "urgent": false
+     },
+     {
+      "data": "2026-08-14",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-10",
+      "tipus": "Visita element de risc",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-08-10",
+      "tipus": "Ruta forestal i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-08-08",
+      "tipus": "Varis (barraca, caseta d'obres,...)",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-08",
+      "tipus": "Industrial o magatzem",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-07",
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-06",
+      "tipus": "Inundació d'aigua",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-28",
+      "tipus": "Pràctiques de mitjans aeris",
+      "grup": "pràctiques",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-27",
+      "tipus": "Visita element de risc",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-26",
+      "tipus": "Ruta forestal i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-26",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-25",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-25",
+      "tipus": "Rescat persones en ascensor",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-24",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-23",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-23",
+      "tipus": "Visita element de risc",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-21",
+      "tipus": "Varis (barraca, caseta d'obres,...)",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-20",
+      "tipus": "Ruta forestal i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-19",
+      "tipus": "Inundació d'aigua",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-13",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-13",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-06",
+      "tipus": "Ruta forestal i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-04",
+      "tipus": "Pràctiques orientació i cartografia",
+      "grup": "pràctiques",
+      "urgent": false
+     },
+     {
+      "data": "2026-07-03",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-01",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-01",
+      "tipus": "Salvament en edifici esfondrat",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-29",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-28",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-23",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-23",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     }
     ]
    },
    "17057": {
@@ -1559,6 +1801,248 @@
       "n": 1,
       "abans": 1,
       "darrerMes": 0
+     }
+    ],
+    "darreres": [
+     {
+      "data": "2026-08-07",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-26",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-11",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-09",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-09",
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-25",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Recerca persones perdudes o desaparegudes",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-05-28",
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-14",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-31",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-31",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-29",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-21",
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-16",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-02-05",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-02-03",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-02-01",
+      "tipus": "Inundació d'aigua",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-31",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-29",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-01-07",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-05",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2025-12-24",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2025-12-22",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-11-29",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2025-11-22",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2025-09-15",
+      "tipus": "Persones amb comportament alterat",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2025-09-11",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-08-31",
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-08-24",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-07-28",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2025-07-20",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-07-06",
+      "tipus": "Inundació d'aigua",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2025-06-27",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2025-06-27",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2025-06-05",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-06-03",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2025-05-24",
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2025-05-21",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2025-04-24",
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "grup": "salvaments",
+      "urgent": true
      }
     ]
    },
@@ -1883,6 +2367,248 @@
       "n": 2,
       "abans": 0,
       "darrerMes": 0
+     }
+    ],
+    "darreres": [
+     {
+      "data": "2026-08-16",
+      "tipus": "Incendi d'infraestructura elèctrica",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-13",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-13",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-10",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-09",
+      "tipus": "Salvament i/o rescat de muntanya",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-09",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-08",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-08",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-30",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-28",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-25",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-21",
+      "tipus": "Varis (barraca, caseta d'obres,...)",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-17",
+      "tipus": "Rescat urbà (precipitats, obertura de pisos risc persones)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-06",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-25",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-24",
+      "tipus": "Salvament i/o rescat de muntanya",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-23",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-19",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-01",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-05-02",
+      "tipus": "Pràctiques conducció",
+      "grup": "pràctiques",
+      "urgent": false
+     },
+     {
+      "data": "2026-04-26",
+      "tipus": "Salvament i/o rescat de muntanya",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-26",
+      "tipus": "Rescat persones en ascensor",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-18",
+      "tipus": "Pràctiques d'assistència tècnica",
+      "grup": "pràctiques",
+      "urgent": false
+     },
+     {
+      "data": "2026-04-17",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-08",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-02",
+      "tipus": "Varis (barraca, caseta d'obres,...)",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-29",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-29",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-17",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-16",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-14",
+      "tipus": "Omplir i manteniment de basses i dipòsits",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-02-04",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-02-03",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-29",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-23",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-23",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-01-21",
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-16",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
      }
     ]
    },
@@ -2219,6 +2945,248 @@
       "n": 0,
       "abans": 0,
       "darrerMes": 0
+     }
+    ],
+    "darreres": [
+     {
+      "data": "2026-08-06",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-08-04",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-29",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-18",
+      "tipus": "Incendi vegetació urbana",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-14",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-12",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-11",
+      "tipus": "Salvament i/o rescat de muntanya",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-11",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-02",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-02",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-07-01",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-19",
+      "tipus": "Incendi vegetació forestal",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-18",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-13",
+      "tipus": "Salvament i/o rescat de muntanya",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-05-23",
+      "tipus": "Estassades, aclarides,... en vegetació forestal",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-05-22",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-05-02",
+      "tipus": "Industrial o magatzem",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-05-02",
+      "tipus": "Salvament i/o rescat de muntanya",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-05-02",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-27",
+      "tipus": "Salvament animals (excepte abelles)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-07",
+      "tipus": "Salvament animals (excepte abelles)",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2026-04-05",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-31",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-04",
+      "tipus": "Omplir i manteniment de basses i dipòsits",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-02-19",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-01-20",
+      "tipus": "Inundació d'aigua",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-01-10",
+      "tipus": "Recerca persones perdudes o desaparegudes",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2025-12-28",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2025-12-26",
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-12-04",
+      "tipus": "Industrial o magatzem",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2025-11-26",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2025-11-23",
+      "tipus": "Incendi vegetació urbana",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2025-10-11",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
      }
     ]
    }

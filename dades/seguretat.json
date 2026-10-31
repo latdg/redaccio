@@ -1,10 +1,11 @@
 {
- "generat": "2026-10-27T06:17:32+00:00",
+ "generat": "2026-10-31T05:32:32+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
   "17902": "Forallac",
-  "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"
+  "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+  "17205": "Ullastret"
  },
  "fetsPenals": {
   "abp": "ABP Baix Empordà - La Bisbal",
@@ -3488,6 +3489,464 @@
       "urgent": true
      }
     ]
+   },
+   "17205": {
+    "serie": [
+     [
+      "2023-01",
+      1
+     ],
+     [
+      "2023-02",
+      1
+     ],
+     [
+      "2023-03",
+      0
+     ],
+     [
+      "2023-04",
+      0
+     ],
+     [
+      "2023-05",
+      1
+     ],
+     [
+      "2023-06",
+      0
+     ],
+     [
+      "2023-07",
+      4
+     ],
+     [
+      "2023-08",
+      0
+     ],
+     [
+      "2023-09",
+      1
+     ],
+     [
+      "2023-10",
+      0
+     ],
+     [
+      "2023-11",
+      1
+     ],
+     [
+      "2023-12",
+      1
+     ],
+     [
+      "2024-01",
+      1
+     ],
+     [
+      "2024-02",
+      0
+     ],
+     [
+      "2024-03",
+      0
+     ],
+     [
+      "2024-04",
+      0
+     ],
+     [
+      "2024-05",
+      1
+     ],
+     [
+      "2024-06",
+      0
+     ],
+     [
+      "2024-07",
+      1
+     ],
+     [
+      "2024-08",
+      0
+     ],
+     [
+      "2024-09",
+      1
+     ],
+     [
+      "2024-10",
+      0
+     ],
+     [
+      "2024-11",
+      0
+     ],
+     [
+      "2024-12",
+      0
+     ],
+     [
+      "2025-01",
+      3
+     ],
+     [
+      "2025-02",
+      0
+     ],
+     [
+      "2025-03",
+      0
+     ],
+     [
+      "2025-04",
+      0
+     ],
+     [
+      "2025-05",
+      0
+     ],
+     [
+      "2025-06",
+      1
+     ],
+     [
+      "2025-07",
+      1
+     ],
+     [
+      "2025-08",
+      0
+     ],
+     [
+      "2025-09",
+      0
+     ],
+     [
+      "2025-10",
+      0
+     ],
+     [
+      "2025-11",
+      0
+     ],
+     [
+      "2025-12",
+      0
+     ],
+     [
+      "2026-01",
+      0
+     ],
+     [
+      "2026-02",
+      1
+     ],
+     [
+      "2026-03",
+      4
+     ],
+     [
+      "2026-04",
+      1
+     ],
+     [
+      "2026-05",
+      0
+     ],
+     [
+      "2026-06",
+      3
+     ],
+     [
+      "2026-07",
+      0
+     ],
+     [
+      "2026-08",
+      0
+     ]
+    ],
+    "darrerMes": "2026-08",
+    "periode": [
+     "2025-09",
+     "2026-08"
+    ],
+    "total12": 9,
+    "totalAbans12": 6,
+    "tipus": [
+     {
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Altra assistència tècnica urgent",
+      "n": 3,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta urbana i coneixement del territori",
+      "n": 2,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi vegetació agrícola",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi en edifici",
+      "n": 0,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "n": 0,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Ruta forestal i coneixement del territori",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Recerca persones perdudes o desaparegudes",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi d'infraestructura elèctrica",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Incendi de contenidor de residus",
+      "n": 0,
+      "abans": 1,
+      "darrerMes": 0
+     }
+    ],
+    "urgents12": 7,
+    "grups": [
+     {
+      "tipus": "mobilitat",
+      "n": 3,
+      "abans": 3,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "assistència tècnica",
+      "n": 3,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "activitat no urgent",
+      "n": 2,
+      "abans": 1,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "incendi vegetació",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "incendi urbà",
+      "n": 0,
+      "abans": 2,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "salvaments",
+      "n": 0,
+      "abans": 0,
+      "darrerMes": 0
+     }
+    ],
+    "darreres": [
+     {
+      "data": "2026-06-26",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-13",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-06-11",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2026-04-19",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-31",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-17",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-15",
+      "tipus": "Altra assistència tècnica urgent",
+      "grup": "assistència tècnica",
+      "urgent": true
+     },
+     {
+      "data": "2026-03-10",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2026-02-25",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2025-07-16",
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-06-17",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2025-01-16",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2025-01-16",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2025-01-04",
+      "tipus": "Incendi de contenidor de residus",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2024-09-06",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2024-07-25",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2024-05-07",
+      "tipus": "Incendi d'infraestructura elèctrica",
+      "grup": "incendi urbà",
+      "urgent": true
+     },
+     {
+      "data": "2024-01-25",
+      "tipus": "Recerca persones perdudes o desaparegudes",
+      "grup": "salvaments",
+      "urgent": true
+     },
+     {
+      "data": "2023-12-22",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2023-11-22",
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2023-09-14",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2023-07-31",
+      "tipus": "Ruta urbana i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2023-07-28",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2023-07-28",
+      "tipus": "Incendi vegetació agrícola",
+      "grup": "incendi vegetació",
+      "urgent": true
+     },
+     {
+      "data": "2023-07-28",
+      "tipus": "Ruta forestal i coneixement del territori",
+      "grup": "activitat no urgent",
+      "urgent": false
+     },
+     {
+      "data": "2023-05-02",
+      "tipus": "Neteja de calçada, sense accident de trànsit",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2023-02-13",
+      "tipus": "Accident trànsit amb ferits i/o atrapats",
+      "grup": "mobilitat",
+      "urgent": true
+     },
+     {
+      "data": "2023-01-22",
+      "tipus": "Incendi en edifici",
+      "grup": "incendi urbà",
+      "urgent": true
+     }
+    ]
    }
   }
  },
@@ -4502,6 +4961,259 @@
       "tipus": "Fuita (aigua, gas, altres)",
       "n": 0,
       "abans": 2,
+      "darrerMes": 0
+     }
+    ]
+   },
+   "17205": {
+    "serie": [
+     [
+      "2023-01",
+      4
+     ],
+     [
+      "2023-02",
+      3
+     ],
+     [
+      "2023-03",
+      5
+     ],
+     [
+      "2023-04",
+      2
+     ],
+     [
+      "2023-05",
+      2
+     ],
+     [
+      "2023-06",
+      6
+     ],
+     [
+      "2023-07",
+      8
+     ],
+     [
+      "2023-08",
+      9
+     ],
+     [
+      "2023-09",
+      7
+     ],
+     [
+      "2023-10",
+      4
+     ],
+     [
+      "2023-11",
+      5
+     ],
+     [
+      "2023-12",
+      4
+     ],
+     [
+      "2024-01",
+      5
+     ],
+     [
+      "2024-02",
+      4
+     ],
+     [
+      "2024-03",
+      7
+     ],
+     [
+      "2024-04",
+      1
+     ],
+     [
+      "2024-05",
+      3
+     ],
+     [
+      "2024-06",
+      6
+     ],
+     [
+      "2024-07",
+      7
+     ],
+     [
+      "2024-08",
+      4
+     ],
+     [
+      "2024-09",
+      4
+     ],
+     [
+      "2024-10",
+      3
+     ],
+     [
+      "2024-11",
+      3
+     ],
+     [
+      "2024-12",
+      1
+     ],
+     [
+      "2025-01",
+      5
+     ],
+     [
+      "2025-02",
+      3
+     ],
+     [
+      "2025-03",
+      2
+     ],
+     [
+      "2025-04",
+      5
+     ],
+     [
+      "2025-05",
+      7
+     ],
+     [
+      "2025-06",
+      4
+     ],
+     [
+      "2025-07",
+      8
+     ],
+     [
+      "2025-08",
+      10
+     ],
+     [
+      "2025-09",
+      5
+     ],
+     [
+      "2025-10",
+      6
+     ],
+     [
+      "2025-11",
+      4
+     ],
+     [
+      "2025-12",
+      7
+     ],
+     [
+      "2026-01",
+      10
+     ],
+     [
+      "2026-02",
+      4
+     ],
+     [
+      "2026-03",
+      7
+     ],
+     [
+      "2026-04",
+      5
+     ],
+     [
+      "2026-05",
+      4
+     ],
+     [
+      "2026-06",
+      6
+     ],
+     [
+      "2026-07",
+      18
+     ],
+     [
+      "2026-08",
+      10
+     ],
+     [
+      "2026-09",
+      11
+     ]
+    ],
+    "darrerMes": "2026-09",
+    "periode": [
+     "2025-10",
+     "2026-09"
+    ],
+    "total12": 92,
+    "totalAbans12": 56,
+    "tipus": [
+     {
+      "tipus": "Trànsit",
+      "n": 27,
+      "abans": 13,
+      "darrerMes": 3
+     },
+     {
+      "tipus": "Assistència sanitària",
+      "n": 20,
+      "abans": 11,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "Altres incidències",
+      "n": 13,
+      "abans": 10,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "Incendi",
+      "n": 7,
+      "abans": 3,
+      "darrerMes": 2
+     },
+     {
+      "tipus": "Seguretat",
+      "n": 7,
+      "abans": 14,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Meteorologia",
+      "n": 7,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Civisme",
+      "n": 6,
+      "abans": 3,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Medi ambient",
+      "n": 3,
+      "abans": 2,
+      "darrerMes": 1
+     },
+     {
+      "tipus": "Accident",
+      "n": 1,
+      "abans": 0,
+      "darrerMes": 0
+     },
+     {
+      "tipus": "Fuita (aigua, gas, altres)",
+      "n": 1,
+      "abans": 0,
       "darrerMes": 0
      }
     ]

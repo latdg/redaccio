@@ -1,0 +1,16 @@
+# Sonda dels resultats electorals (31.10.2026). Només a mà.
+name: Sonda eleccions
+on: { workflow_dispatch: {} }
+permissions: { contents: write }
+jobs:
+  sonda:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - run: node eleccions/sonda.mjs || true
+      - run: |
+          git config user.name "La TdG (sonda)"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add eleccions/sonda.json && git commit -qm "Sonda eleccions" && for i in 1 2 3 4; do git pull -q --rebase && git push -q && break; sleep 5; done || true

@@ -226,6 +226,40 @@ def csv_gencat(zf, quin):
     return [dict(zip(cap, l.split(";"))) for l in files[1:] if l.strip()]
 
 
+def municipi_gencat(codi, m5, nom_mun):
+    """Resultats d'un municipi sencer (sense meses) a partir de l'API de vots."""
+    r = requests.get(f"{GENCAT}/proces/{codi}/territori/MU-{m5}/vot", headers=CAPCALERES, timeout=60)
+    if r.status_code != 200:
+        return None
+    llista = r.json() or []
+    if not llista:
+        return None
+    cens = emesos = valids = None
+    for x in llista:
+        v = x.get("vots") or 0
+        if v and x.get("percentatgeCens") and not cens:
+            cens = round(v / x["percentatgeCens"])
+        if v and x.get("percentatgeEmesos") and not emesos:
+            emesos = round(v / x["percentatgeEmesos"])
+        if v and x.get("percentatgeValids") and not valids:
+            valids = round(v / x["percentatgeValids"])
+    cand = sum((x.get("vots") or 0) for x in llista)
+    valids = valids or cand
+    emesos = emesos or valids
+    resultats = []
+    for x in llista:
+        c = x.get("candidatura") or {}
+        sig = (c.get("sigles") or c.get("nom") or "").strip()
+        if (x.get("vots") or 0) > 0:
+            resultats.append({"codi": sig, "sigles": sig, "nom": (c.get("nom") or "").strip(), "vots": x["vots"],
+                              "pct": round(x["vots"] / valids * 100, 2) if valids else 0})
+    resultats.sort(key=lambda x: -x["vots"])
+    return {"nom": nom_mun, "cens": cens or 0, "votants": emesos,
+            "participacio": round(emesos / cens * 100, 2) if cens else 0,
+            "blanc": max(0, valids - cand), "nuls": max(0, emesos - valids), "valids": valids, "regidors": None,
+            "resultats": resultats, "seccions": [], "senseMeses": True}
+
+
 def processa_gencat(codi, nom, data, tipus, nomes=None):
     municipis = {}
     for m3, (m5, nom_mun) in MUNICIPIS.items():
@@ -239,6 +273,11 @@ def processa_gencat(codi, nom, data, tipus, nomes=None):
         part = csv_gencat(zf, "Participaci")
         vots = csv_gencat(zf, "Vots-ME")
         if not part:
+            # 31.10.2026: les eleccions més antigues (1976-1983) no hi són mesa a mesa:
+            # s'agafen els resultats del municipi, sense detall per secció.
+            m = municipi_gencat(codi, m5, nom_mun)
+            if m:
+                municipis[m5] = m
             continue
         clau = lambda x: (x.get("Districte", "").strip() or "01") + "-" + x.get("Secció", "").strip()
         mesos = {}
@@ -284,8 +323,10 @@ def processa_gencat(codi, nom, data, tipus, nomes=None):
     if not municipis:
         return None
     print(nom, {m: (d["participacio"], d["resultats"][0]["sigles"] if d["resultats"] else "") for m, d in municipis.items()})
+    sense = all(m.get("senseMeses") for m in municipis.values())
     return {"id": codi, "tipus": tipus, "nom": nom, "data": data[:7],
-            "font": "Generalitat de Catalunya (resultats.dadeselectorals.gencat.cat), mesa a mesa", "municipis": municipis}
+            "font": "Generalitat de Catalunya (resultats.dadeselectorals.gencat.cat), " +
+                    ("per municipi (sense detall per secció)" if sense else "mesa a mesa"), "municipis": municipis}
 
 
 def eleccions_gencat(ja_hi_son):

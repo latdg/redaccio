@@ -1550,7 +1550,7 @@ function pintaEleccio(id, oberts) {
   const titol = (el.dataset.numero ? el.dataset.numero + " " : "🗳️ ") + TITOL_ELEC;
   el.innerHTML = `<h2>${titol}</h2>` +
     // 31.10.2026: cada elecció diu d'on ve (Ministeri o Generalitat).
-    `<p class="font">Font: ${/generalitat/i.test(e.font || "") ? '<a href="https://resultats.dadeselectorals.gencat.cat/" target="_blank" rel="noopener">Generalitat de Catalunya</a>' : '<a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">Ministeri de l\'Interior</a>'}, resultats oficials mesa a mesa</p>` +
+    `<p class="font">Font: ${/generalitat/i.test(e.font || "") ? '<a href="https://resultats.dadeselectorals.gencat.cat/" target="_blank" rel="noopener">Generalitat de Catalunya</a>' : '<a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">Ministeri de l\'Interior</a>'}, resultats oficials ${/sense detall/i.test(e.font || "") ? "per municipi (d'aquesta elecció no es publiquen mesa a mesa)" : "mesa a mesa"}</p>` +
     `<div class="sv-eines" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">` +
       // 31.10.2026: totes les eleccions, agrupades per tipus (de la més recent a la més antiga).
       `<select id="triaEleccio" aria-label="Elecció">${TIPUS_ELEC.filter(([t]) => ELEC.eleccions.some(x => x.tipus === t)).map(([t, nomT]) =>

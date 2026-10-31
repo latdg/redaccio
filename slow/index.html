@@ -89,7 +89,7 @@ const TROSSOS = [
 const PAGINA = { R: "../", A: "../../tauler/" };
 // 31.10.2026: es canvia a cada canvi de les pàgines, perquè el navegador no faci servir
 // una còpia antiga (que no sabria triar els blocs i els mostraria tots, repetits).
-const VERSIO = "20261031d";
+const VERSIO = "20261031e";
 const PARTS = TROSSOS.map(([pag, blocs], i) => {
   const altres = TROSSOS.filter(([p], j) => p === pag && j !== i).flatMap(([, b]) => b);
   const ultim = TROSSOS.map(([p]) => p).lastIndexOf(pag) === i;

@@ -1908,14 +1908,15 @@ function taulaTipus(tipus, n = 10, extra = null) {
     tipus.filter(t => t.n || t.abans).slice(0, n).map(t => `<tr><td style="white-space:normal;min-width:150px">${esc(t.tipus)}</td><td class="n"><b>${nCa(t.n)}</b></td><td class="n">${nCa(t.abans)}</td><td class="n">${variacio(t.n, t.abans)}</td>${extra ? extra.fila(t) : ""}</tr>`).join("") +
     `</tbody></table></div>`;
 }
-// 27.10.2026: els fets penals a la vista; el 112 i els Bombers, en fitxes plegades per municipi.
+// 27.10.2026: el 112 i els Bombers, en fitxes plegades per municipi.
 async function pintaSeguretat() {
   const el = document.getElementById("seguretat");
   const f = SEG.fetsPenals;
   const MUNS_SEG = ["17022", "17902", "17057", "17901", "17205"];
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🚨 ") + TITOL_SEG}</h2>` +
     `<p class="font">Revisat el ${dataIso(SEG.generat)} · Font: dades obertes de la Generalitat (Mossos d'Esquadra, Bombers i CAT112)</p>` +
-    `<article class="fitxa"><h3>👮 Fets penals · ${esc(f.abp)}</h3>` +
+    // 31.10.2026: els fets penals, plegats; s'obren amb un clic.
+    `<details class="fitxa plegable"><summary><h3>👮 Fets penals · ${esc(f.abp)}</h3><span class="resum-mun">${nCa(f.total12)} fets en 12 mesos</span></summary>` +
       `<p class="pob">${periodeCa(f.periode)}, comparat amb els 12 mesos anteriors. L'àrea bàsica policial és més gran que els cinc municipis: no hi ha dades per municipi.</p>` +
       `<div class="xifres">` +
         `<div class="xifra"><div class="etq">Fets coneguts</div><div class="val">${nCa(f.total12)}</div><div class="det">${variacio(f.total12, f.totalAbans12)} (abans, ${nCa(f.totalAbans12)})</div></div>` +
@@ -1935,7 +1936,7 @@ async function pintaSeguretat() {
       `<h4 style="margin-top:14px">Els darrers 12 mesos</h4>` +
       `<h4>Fets coneguts cada mes</h4>${serieBarres(f.serie)}` +
       `<h4>Per tipus de fet (12 mesos)</h4>${taulaTipus(f.tipus, 12, { cap: '<th class="n">Detencions</th>', fila: t => `<td class="n">${nCa(t.detencions)}</td>` })}` +
-    `</article>` +
+    `</details>` +
     // 27.10.2026: el 112 i els Bombers, cadascun amb les quatre fitxes plegades.
     `<h3 style="margin:18px 0 0">☎️ Incidents del 112 per municipi</h3>` +
     plegaMun(MUNS_SEG, c => { const x = SEG.e112.municipis[c]; return x && x.serie.length ? `${nCa(x.total12)} incidents en 12 mesos` : ""; }, "112") +

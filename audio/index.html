@@ -159,8 +159,26 @@ function triaMotor(m) {
   else $("params").innerHTML = `<p class="font" style="margin:0">Per canviar-ne la velocitat o el to, obre-la a l'editor (Effects › Speed / Pitch).</p>`;
 }
 
-// Aina: es llegeix l'API de l'espai i es fa el formulari amb els seus camps.
+// Aina: veus de l'espai (spk_to_id_3.json). La temperatura (0,2) i la velocitat (0,89)
+// queden fixes, amb els valors per defecte de l'espai. 31.10.2026
+const VEUS_AINA = [
+  ["central", "grau", "Central · Grau (home)"],
+  ["central", "elia", "Central · Elia (dona)"],
+  ["nord-occidental", "pere", "Nord-occidental · Pere (home)"],
+  ["nord-occidental", "emma", "Nord-occidental · Emma (dona)"],
+  ["valencia", "lluc", "Valencià · Lluc (home)"],
+  ["valencia", "gina", "Valencià · Gina (dona)"],
+  ["balear", "quim", "Balear · Quim (home)"],
+  ["balear", "olga", "Balear · Olga (dona)"]
+];
+const TEMPERATURA_AINA = 0.2, VELOCITAT_AINA = 0.89, MAX_AINA = 500;
+
 async function preparaAina() {
+  if (MOTOR === "aina") {
+    const desada = llegeix("veuAina") || "0";
+    $("params").innerHTML = `<label>Veu<select id="veuAina">${VEUS_AINA.map((v, i) => `<option value="${i}"${String(i) === desada ? " selected" : ""}>${esc(v[2])}</option>`).join("")}</select></label>`;
+    $("veuAina").addEventListener("change", e => escriu("veuAina", e.target.value));
+  }
   $("estat").textContent = "Connectant amb el Projecte Aina…";
   try {
     if (!AINA) {
@@ -169,23 +187,8 @@ async function preparaAina() {
       const info = await AINA.view_api();
       const noms = Object.keys(info.named_endpoints || {});
       const ep = noms.find(n => /tts|synth|predict|generat|infer/i.test(n)) || noms[0];
-      AINA_API = { nom: ep, params: (info.named_endpoints[ep] || {}).parameters || [] };
+      AINA_API = { nom: ep };
     }
-    if (MOTOR !== "aina") return;
-    $("params").innerHTML = AINA_API.params.map((p, i) => {
-      const t = p.type || {}, nom = p.label || p.parameter_name || ("Camp " + (i + 1));
-      const def = p.parameter_has_default ? p.parameter_default : p.example_input;
-      if (/text/i.test(nom) && t.type === "string" && !t.enum) return "";   // el text és la caixa de dalt
-      // 31.10.2026: si es pot triar l'accent, per defecte el català central.
-      if (t.enum) {
-        const central = t.enum.find(o => /central/i.test(String(o)));
-        const tria = central && /accent|variant|dialect|variet/i.test(nom + " " + (p.parameter_name || "")) ? central : def;
-        return `<label>${esc(nom)}<select data-i="${i}">${t.enum.map(o => `<option${o === tria ? " selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
-      }
-      if (t.type === "number") return `<label>${esc(nom)}<input type="number" step="any" data-i="${i}" value="${esc(def ?? "")}"></label>`;
-      if (t.type === "boolean") return `<label>${esc(nom)}<input type="checkbox" data-i="${i}"${def ? " checked" : ""}></label>`;
-      return `<label>${esc(nom)}<input type="text" data-i="${i}" value="${esc(def ?? "")}"></label>`;
-    }).join("");
     $("estat").textContent = "";
   } catch (e) {
     console.error(e);
@@ -194,15 +197,12 @@ async function preparaAina() {
 }
 
 async function generaAina(text) {
+  if (text.length > MAX_AINA) throw new Error(`L'Aina només accepta ${MAX_AINA} caràcters per locució i el text en té ${text.length}. Parteix-lo en trossos o fes servir Piper.`);
   if (!AINA_API) await preparaAina();
   if (!AINA_API) throw new Error("El servei del Projecte Aina no respon.");
-  const valors = {};
-  AINA_API.params.forEach((p, i) => {
-    const el = $("params").querySelector(`[data-i="${i}"]`);
-    const clau = p.parameter_name || i;
-    if (!el) { valors[clau] = text; return; }
-    valors[clau] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value) : el.value;
-  });
+  const [accent, veu] = VEUS_AINA[Number(($("veuAina") || {}).value || 0)] || VEUS_AINA[0];
+  // Ordre dels camps de l'espai: text, accent, veu, temperatura, velocitat.
+  const valors = [text, accent, veu, TEMPERATURA_AINA, VELOCITAT_AINA];
   $("estat").textContent = "Generant la veu al servidor del Projecte Aina… (pot trigar uns segons; si l'espai dormia, una mica més)";
   const r = await AINA.predict(AINA_API.nom, valors);
   const sortida = (r.data || []).find(x => x && (x.url || x.path)) || (r.data || [])[0];

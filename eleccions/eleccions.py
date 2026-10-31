@@ -72,6 +72,27 @@ CARPETES = {"04": "municipales", "02": "congreso", "07": "europeas"}
 ZIPS = ARREL / "eleccions" / "zips"   # ZIP baixats a mà del Ministeri (que no deixa connectar des de GitHub)
 
 
+MINISTERI_OK = None   # 31.10.2026: es prova una sola vegada si el Ministeri respon des d'aquí
+INICI = datetime.now(timezone.utc)
+MAX_MINUTS = 30        # 31.10.2026: passat aquest temps es desa i es deixa la resta per a la tanda següent
+
+
+def ministeri_respon():
+    global MINISTERI_OK
+    if MINISTERI_OK is None:
+        try:
+            requests.head(URL.format(tipus="04", any="2023", mes="05"), headers=CAPCALERES, timeout=(10, 15))
+            MINISTERI_OK = True
+        except Exception:
+            MINISTERI_OK = False
+        print("Ministeri:", "respon" if MINISTERI_OK else "no respon; es fa servir el mirall")
+    return MINISTERI_OK
+
+
+def temps_esgotat():
+    return (datetime.now(timezone.utc) - INICI).total_seconds() > MAX_MINUTS * 60
+
+
 def fitxers(tipus, any_, mes):
     """Torna (font, funció que llegeix un fitxer .DAT pel prefix). Prova, per ordre:
     el Ministeri, un ZIP pujat a eleccions/zips/ i el mirall de JaimeObregon/infoelectoral."""
@@ -80,7 +101,7 @@ def fitxers(tipus, any_, mes):
     zf = None
     if local.exists():
         zf, font = zipfile.ZipFile(local), "infoelectoral.interior.gob.es (" + nom_zip + ")"
-    else:
+    elif ministeri_respon():
         try:
             r = requests.get(URL.format(tipus=tipus, any=any_, mes=mes), headers=CAPCALERES, timeout=(20, 300))
             r.raise_for_status()
@@ -95,7 +116,7 @@ def fitxers(tipus, any_, mes):
 
     def llegeix_mirall(prefix):
         r = requests.get(MIRALL.format(carpeta=CARPETES[tipus], tipus=tipus, any=any_, mes=mes, fitxer=prefix + ".DAT"),
-                         headers=CAPCALERES, timeout=300)
+                         headers=CAPCALERES, timeout=(20, 600))
         if r.status_code == 404:
             return []
         r.raise_for_status()
@@ -292,20 +313,34 @@ def eleccions_gencat(ja_hi_son):
     return surt
 
 
+def desa(eleccions):
+    llista = sorted(eleccions, key=lambda e: e["data"], reverse=True)
+    SORTIDA.write_text(json.dumps({
+        "generat": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "font": "Ministeri de l'Interior (infoelectoral.interior.gob.es) i Generalitat de Catalunya, resultats mesa a mesa",
+        "eleccions": llista,
+    }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+
+
 def main():
     anterior = {}
     if SORTIDA.exists():
         anterior = {e["id"]: e for e in json.loads(SORTIDA.read_text(encoding="utf-8")).get("eleccions", [])}
     eleccions, errors = [], []
+    pendents = []
     for t, a, m, n in ELECCIONS:
         ident = f"{t}{a}{m}"
         if ident in anterior and "--forca" not in sys.argv:
             eleccions.append(anterior[ident])   # ja baixada: les dades no canvien
             continue
+        if temps_esgotat():
+            pendents.append(n)
+            continue
         try:
             e = processa(t, a, m, n)
             if e:
                 eleccions.append(e)
+                desa(eleccions + [x for k, x in anterior.items() if k not in {y["id"] for y in eleccions}])
         except Exception as err:
             print("No s'ha pogut baixar", n, err)
             errors.append(f"{n}: {type(err).__name__}: {err}")
@@ -319,6 +354,8 @@ def main():
         processos = []
     lletra_de = {v: k for k, v in EQUIV_MINISTERI.items()}
     for e in eleccions:
+        if temps_esgotat():
+            break
         falten = [m5 for m5, _ in MUNICIPIS.values() if m5 not in e["municipis"]]
         lletra = lletra_de.get(e["id"][:2])
         if not falten or not lletra:
@@ -341,10 +378,14 @@ def main():
             if codi in anterior and "--forca" not in sys.argv:
                 eleccions.append(anterior[codi])
                 continue
+            if temps_esgotat():
+                pendents.append(nom)
+                continue
             try:
                 e = processa_gencat(codi, nom, data, tipus)
                 if e:
                     eleccions.append(e)
+                    desa(eleccions)
             except Exception as err:
                 print("No s'ha pogut baixar", nom, err)
                 errors.append(f"{nom}: {type(err).__name__}: {err}")
@@ -353,16 +394,18 @@ def main():
     except Exception as err:
         errors.append(f"Generalitat: {type(err).__name__}: {err}")
     eleccions.sort(key=lambda e: e["data"], reverse=True)
+    if pendents:
+        errors.append("Pendents per a la tanda següent (temps esgotat): " + ", ".join(pendents))
+        print("::warning::Queden eleccions per baixar: es tornarà a llançar sol.")
+        (ARREL / "eleccions" / "pendents.txt").write_text("\n".join(pendents) + "\n", encoding="utf-8")
+    else:
+        (ARREL / "eleccions" / "pendents.txt").unlink(missing_ok=True)
     (ARREL / "eleccions" / "diagnosi.txt").write_text(
         datetime.now(timezone.utc).isoformat(timespec="seconds") + "\n" + ("\n".join(errors) or "Cap error") + "\n", encoding="utf-8")
     if not eleccions:
         print("Cap elecció: no es toca dades/eleccions.json.")
         return
-    SORTIDA.write_text(json.dumps({
-        "generat": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "font": "Ministeri de l'Interior (infoelectoral.interior.gob.es) i Generalitat de Catalunya, resultats mesa a mesa",
-        "eleccions": eleccions,
-    }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    desa(eleccions)
 
 
 if __name__ == "__main__":

@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  actions: write   # 31.10.2026: per tornar-se a llançar si queden eleccions per baixar
 
 concurrency:
   group: eleccions
@@ -25,7 +26,7 @@ concurrency:
 jobs:
   eleccions:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -40,7 +41,7 @@ jobs:
           git config user.name "La TdG (eleccions)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # 27.10.2026: si un altre procés ha pujat canvis alhora, es torna a provar; si no hi ha manera, el workflow falla (no es perd en silenci).
-          git add eleccions/diagnosi.txt eleccions/connexio.txt; [ -f dades/eleccions.json ] && git add dades/eleccions.json
+          git add -A eleccions/diagnosi.txt eleccions/connexio.txt eleccions/pendents.txt 2>/dev/null; git add eleccions/diagnosi.txt eleccions/connexio.txt; [ -f dades/eleccions.json ] && git add dades/eleccions.json
           if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
           git commit -qm "Resultats electorals ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
           for intent in 1 2 3 4 5 6; do
@@ -49,3 +50,9 @@ jobs:
             git fetch -q origin main && git rebase -q origin/main || { git rebase --abort; exit 1; }
           done
           echo "No s'han pogut pujar els canvis"; exit 1
+      # 31.10.2026: si s'ha esgotat el temps i en queden per baixar, es torna a llançar sol.
+      - name: Continua si en queden
+        if: ${{ hashFiles('eleccions/pendents.txt') != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run eleccions.yml --ref main -R ${{ github.repository }}

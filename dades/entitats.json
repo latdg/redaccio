@@ -1,6 +1,6 @@
 {
- "generat": "2026-10-27T04:38:38+00:00",
- "actualitzatFont": "2026-10-26T19:05:56+00:00",
+ "generat": "2026-10-31T05:32:32+00:00",
+ "actualitzatFont": "2026-10-30T19:06:24+00:00",
  "font": "Registre d'entitats de Catalunya (Departament de Justícia), dades obertes de la Generalitat",
  "primeraRevisio": false,
  "municipis": {
@@ -8299,6 +8299,210 @@
     }
    ],
    "noves": []
+  },
+  "17205": {
+   "nom": "Ullastret",
+   "total": 2,
+   "inactives": 0,
+   "tipus": [
+    [
+     "Associació",
+     2
+    ]
+   ],
+   "ambits": [
+    [
+     "Ensenyament, formació i investigació",
+     1
+    ],
+    [
+     "Cultura",
+     1
+    ]
+   ],
+   "perAny": [
+    [
+     "2012",
+     0
+    ],
+    [
+     "2013",
+     0
+    ],
+    [
+     "2014",
+     0
+    ],
+    [
+     "2015",
+     0
+    ],
+    [
+     "2016",
+     0
+    ],
+    [
+     "2017",
+     0
+    ],
+    [
+     "2018",
+     0
+    ],
+    [
+     "2019",
+     0
+    ],
+    [
+     "2020",
+     0
+    ],
+    [
+     "2021",
+     0
+    ],
+    [
+     "2022",
+     0
+    ],
+    [
+     "2023",
+     0
+    ],
+    [
+     "2024",
+     0
+    ],
+    [
+     "2025",
+     1
+    ],
+    [
+     "2026",
+     0
+    ]
+   ],
+   "recents": [],
+   "totes": [
+    {
+     "id": "22593",
+     "nom": "Associació de Mares i Pares d'Alumnes del CEIP l'Estany d'Ullastret",
+     "tipus": "Associació",
+     "data": "1985-05-30",
+     "nucli": "Ullastret",
+     "adreca": "Carrer Tramuntana, 19",
+     "cp": "17114",
+     "telefon": "",
+     "ambit": "Ensenyament, formació i investigació",
+     "detall": "Pares d'alumnes",
+     "finalitats": "L'associació assumeix els objectius següents:a) Donar suport i assistència als membres de l'associació i, en general, als pares i mares d'alumnes,tutors i tutores, professorat i alumnat del centre i els seus òrgans de govern i de participació, en totallò que fa referència a l'educació dels seus fills i filles i, en general, de tot l'alumnat matriculat alcentre.b) Promoure la participació dels pare…",
+     "utilitatPublica": false,
+     "fundadors": "",
+     "junta": [
+      {
+       "carrec": "Presidenta",
+       "persona": "Maria Àngels Castilla Ojeda"
+      },
+      {
+       "carrec": "Secretària",
+       "persona": "Michelle Mary Hallum"
+      },
+      {
+       "carrec": "Tresorer",
+       "persona": "Daniel Marull Reig"
+      }
+     ]
+    },
+    {
+     "id": "121370",
+     "nom": "Associació La Barraca del Musen",
+     "tipus": "Associació",
+     "data": "2025-07-21",
+     "nucli": "Ullastret",
+     "adreca": "Carrer Tramuntana, 14",
+     "cp": "17114",
+     "telefon": "",
+     "ambit": "Cultura",
+     "detall": "Culturals diverses · foment d'activitats · veïns",
+     "finalitats": "Promoure activitatas culturals, recuperar activitats històriques i crear-ne de noves. Per aconseugir les seves finalitas, l'associació du a terme les activitats següents:Col·laborar en la festa major d'Ullastret, col·laborar en totes les activitats que es realitzen al poble i promoure'n de noves. En queda exclòs tot ánim de lucre.",
+     "utilitatPublica": false,
+     "fundadors": "",
+     "junta": [
+      {
+       "carrec": "President",
+       "persona": "Eloi Saló Torres"
+      },
+      {
+       "carrec": "Secretari",
+       "persona": "Francesc Gandin Luna"
+      },
+      {
+       "carrec": "Tresorer",
+       "persona": "Santi Salo Torres"
+      }
+     ]
+    }
+   ],
+   "noves": [
+    {
+     "id": "121370",
+     "nom": "Associació La Barraca del Musen",
+     "tipus": "Associació",
+     "data": "2025-07-21",
+     "nucli": "Ullastret",
+     "adreca": "Carrer Tramuntana, 14",
+     "cp": "17114",
+     "telefon": "",
+     "ambit": "Cultura",
+     "detall": "Culturals diverses · foment d'activitats · veïns",
+     "finalitats": "Promoure activitatas culturals, recuperar activitats històriques i crear-ne de noves. Per aconseugir les seves finalitas, l'associació du a terme les activitats següents:Col·laborar en la festa major d'Ullastret, col·laborar en totes les activitats que es realitzen al poble i promoure'n de noves. En queda exclòs tot ánim de lucre.",
+     "utilitatPublica": false,
+     "fundadors": "",
+     "junta": [
+      {
+       "carrec": "President",
+       "persona": "Eloi Saló Torres"
+      },
+      {
+       "carrec": "Secretari",
+       "persona": "Francesc Gandin Luna"
+      },
+      {
+       "carrec": "Tresorer",
+       "persona": "Santi Salo Torres"
+      }
+     ]
+    },
+    {
+     "id": "22593",
+     "nom": "Associació de Mares i Pares d'Alumnes del CEIP l'Estany d'Ullastret",
+     "tipus": "Associació",
+     "data": "1985-05-30",
+     "nucli": "Ullastret",
+     "adreca": "Carrer Tramuntana, 19",
+     "cp": "17114",
+     "telefon": "",
+     "ambit": "Ensenyament, formació i investigació",
+     "detall": "Pares d'alumnes",
+     "finalitats": "L'associació assumeix els objectius següents:a) Donar suport i assistència als membres de l'associació i, en general, als pares i mares d'alumnes,tutors i tutores, professorat i alumnat del centre i els seus òrgans de govern i de participació, en totallò que fa referència a l'educació dels seus fills i filles i, en general, de tot l'alumnat matriculat alcentre.b) Promoure la participació dels pare…",
+     "utilitatPublica": false,
+     "fundadors": "",
+     "junta": [
+      {
+       "carrec": "Presidenta",
+       "persona": "Maria Àngels Castilla Ojeda"
+      },
+      {
+       "carrec": "Secretària",
+       "persona": "Michelle Mary Hallum"
+      },
+      {
+       "carrec": "Tresorer",
+       "persona": "Daniel Marull Reig"
+      }
+     ]
+    }
+   ]
   }
  }
 }

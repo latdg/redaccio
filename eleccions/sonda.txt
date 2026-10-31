@@ -1,0 +1,17 @@
+gencat: 57 ['A19801', 'G19771', 'G19791', 'G19821', 'M19791', 'M19831', 'R19791', 'R19781', 'R19761']
+G19771 export: 200 b'PK' 183
+   G19771-Participació-ME17022.csv b'\xef\xbb\xbf'
+G19771 municipi: {"nom": "la Bisbal", "cens": 4899, "votants": 4206, "participacio": 85.85, "blanc": 2, "nuls": 57, "valids": 4149, "regidors": null, "resultats": [{"codi": "PSC", "sigles": "PSC", "nom": "Partit dels Socialistes de Catalunya (PSC-PSOE)", "vots": 1169, "pct": 28.18}, {"codi": "PDC", "sigles": "PDC", "nom": "Pacte Democràtic per Catalunya", "vots": 802, "pct": 19.33}, {"codi": "PSUC", "sigles": "PSU
+G19771 processa: {"id": "G19771", "tipus": "congres", "nom": "prova", "data": "1977-06", "font": "Generalitat de Catalunya (resultats.dadeselectorals.gencat.cat), per municipi (sense detall per secció)", "municipis": {"17022": {"nom": "la Bisbal d'Empordà", "cens": 4899, "votants": 4206, "participacio": 85.85, "blan
+A19801 export: 200 b'PK' 183
+   A19801-Participació-ME17022.csv b'\xef\xbb\xbf'
+A19801 municipi: {"nom": "la Bisbal", "cens": 5565, "votants": 4068, "participacio": 73.1, "blanc": 9, "nuls": 16, "valids": 4052, "regidors": null, "resultats": [{"codi": "CiU", "sigles": "CiU", "nom": "Convergència i Unió", "vots": 962, "pct": 23.74}, {"codi": "ERC", "sigles": "ERC", "nom": "Esquerra Republicana de Catalunya", "vots": 941, "pct": 23.22}, {"codi": "PSC", "sigles": "PSC", "nom": "Partit dels Socia
+A19801 processa: {"id": "A19801", "tipus": "congres", "nom": "prova", "data": "1977-06", "font": "Generalitat de Catalunya (resultats.dadeselectorals.gencat.cat), per municipi (sense detall per secció)", "municipis": {"17022": {"nom": "la Bisbal d'Empordà", "cens": 5565, "votants": 4068, "participacio": 73.1, "blanc
+M19791 export: 200 b'PK' 183
+   M19791-Participació-ME17022.csv b'\xef\xbb\xbf'
+M19791 municipi: {"nom": "la Bisbal", "cens": 5413, "votants": 4245, "participacio": 78.42, "blanc": 10, "nuls": 28, "valids": 4217, "regidors": null, "resultats": [{"codi": "ERC-FNC", "sigles": "ERC-FNC", "nom": "Esquerra Republicana de Catalunya - FNC", "vots": 1158, "pct": 27.46}, {"codi": "PSUC", "sigles": "PSUC", "nom": "Partit Socialista Unificat de Catalunya", "vots": 812, "pct": 19.26}, {"codi": "PSC", "si
+M19791 processa: {"id": "M19791", "tipus": "congres", "nom": "prova", "data": "1977-06", "font": "Generalitat de Catalunya (resultats.dadeselectorals.gencat.cat), per municipi (sense detall per secció)", "municipis": {"17022": {"nom": "la Bisbal d'Empordà", "cens": 5413, "votants": 4245, "participacio": 78.42, "blan
+R19761 export: 200 b'PK' 183
+   R19761-Participació-ME17022.csv b'\xef\xbb\xbf'
+R19761 municipi: {"nom": "la Bisbal", "cens": 4911, "votants": 4144, "participacio": 84.38, "blanc": 170, "nuls": 4, "valids": 4140, "regidors": null, "resultats": [{"codi": "SÍ", "sigles": "SÍ", "nom": "Sí", "vots": 3927, "pct": 94.86}, {"codi": "NO", "sigles": "NO", "nom": "No", "vots": 43, "pct": 1.04}], "seccions": [], "senseMeses": true}
+R19761 processa: {"id": "R19761", "tipus": "congres", "nom": "prova", "data": "1977-06", "font": "Generalitat de Catalunya (resultats.dadeselectorals.gencat.cat), per municipi (sense detall per secció)", "municipis": {"17022": {"nom": "la Bisbal d'Empordà", "cens": 4911, "votants": 4144, "participacio": 84.38, "blan

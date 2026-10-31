@@ -2150,6 +2150,9 @@
 			mt_context.addOption ('Fade Out', function () {
 				doContextClip (function () { applyFx ('FadeOut'); });
 			}, false);
+			mt_context.addOption ('Paste to New Channel', function () {
+				doContextClip (function () { pasteClip ( true ); });
+			}, false);
 			mt_context.onOpen = function ( menu, div ) {
 				var a = div.childNodes;
 				var x = xfadeState ( context_clip );
@@ -2164,6 +2167,10 @@
 			}, false);
 			mt_lane_context.addOption ('Add New Channel Here', function () {
 				addTrack ( context_index );
+			}, false);
+			mt_lane_context.addOption ('Paste to New Channel', function () {
+				if (context_track) selected_track = context_track;
+				pasteClip ( true );
 			}, false);
 			mt_lane_context.addOption ('Reset Zoom', function () {
 				app.fireEvent ('RequestZoomUI', 0);
@@ -3851,15 +3858,29 @@
 			return true;
 		}
 
-		function pasteClip () {
+		// to_new: enganxa el que s'ha copiat en un canal nou (sota el seleccionat). La TdG, 31.10.2026
+		function pasteClip ( to_new ) {
 			var meta = clip_copy;
 			var buffer = meta ? meta.buffer : app.engine.GetCopyBuff && app.engine.GetCopyBuff ();
-			if (!buffer) return true;
-
-			var track = selected_track || (tracks[0] && tracks[0].id);
-			if (!track) return true;
+			if (!buffer) {
+				if (to_new) OneUp ('Copy a clip or a selection first', 1400);
+				return true;
+			}
 
 			var prev = cloneState ();
+			var track;
+			if (to_new === true) {
+				var tr = makeTrack ();
+				tr.name = 'Channel ' + (tracks.length + 1);
+				var at = tracks.indexOf ( findTrack ( selected_track ) );
+				tracks.splice ( at >= 0 ? at + 1 : tracks.length, 0, tr );
+				track = tr.id;
+			}
+			else {
+				track = selected_track || (tracks[0] && tracks[0].id);
+			}
+			if (!track) return true;
+
 			var clip = makeClip ( track, marker, buffer, meta ? meta.name : 'Paste' );
 			if (meta) {
 				clip.in = meta.in;
@@ -3872,12 +3893,48 @@
 			selected_clip = clip.id;
 			clearRegion ();
 			setMarkerTime ( clip.start );
-			pushState ( prev, 'Paste Clip' );
+			pushState ( prev, to_new === true ? 'Paste to New Channel' : 'Paste Clip' );
 			queuePlayRefresh ( true );
 			render ();
+			if (to_new === true) scrollTrackIntoView ( track );
 			app.fireEvent ('DidSelectClip', clip);
 			app.fireEvent ('DidUpdateMultitrack');
-			OneUp ('Pasted clip', 900);
+			OneUp (to_new === true ? 'Pasted to a new channel' : 'Pasted clip', 900);
+			return true;
+		}
+
+		// Projecte nou i buit: treu tots els clips i deixa dos canals buits.
+		// Es pot desfer amb Undo. La TdG, 31.10.2026
+		function NewProject ( no_confirm ) {
+			if (rec) {
+				OneUp ('Stop the recording first', 1400);
+				return false;
+			}
+			if (clips.length && !no_confirm &&
+				!w.confirm ('Start a new empty project? The current one will be cleared (you can still use Undo).'))
+				return false;
+
+			Stop ();
+			stopFxPreview ( true );
+			cancelActiveDrag ();
+			var prev = cloneState ();
+			editing_clip = null;
+			clearSelectedClip ( true );
+			clearRegion ();
+			clips = [];
+			xfades = {};
+			tracks = [ makeTrack ('Channel 1'), makeTrack ('Channel 2') ];
+			selected_track = tracks[0].id;
+			marker = 0;
+			cursor = 0;
+			if (app.mrk && app.mrk.loadMt) app.mrk.loadMt ([], false);
+			pushState ( prev, 'New Project' );
+			main && (main.scrollTop = 0, main.scrollLeft = 0);
+			render ();
+			updatePlayhead ();
+			emitState ();
+			app.fireEvent ('DidUpdateMultitrack');
+			OneUp ('New empty project', 1000);
 			return true;
 		}
 
@@ -5261,6 +5318,7 @@
 		}
 
 		q.IsOn = IsOn;
+		q.NewProject = NewProject;
 		q.ExportSession = ExportSession;
 		q.LoadSessionBuffer = LoadSessionBuffer;
 		q.LoadSessionFiles = LoadSessionFiles;
@@ -5461,6 +5519,9 @@
 			}
 			if (id === 'RequestActionPaste') {
 				return pasteClip ();
+			}
+			if (id === 'RequestActionPasteNewTrack') {
+				return pasteClip ( true );
 			}
 			if (id === 'RequestActionSilence') {
 				return addSilence ( arg1, arg2 );

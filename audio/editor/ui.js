@@ -589,6 +589,23 @@
 						}
 					},
 
+					// Projecte nou i buit, sense gravar (o esborrar el que hi ha). La TdG, 31.10.2026
+					{
+						name: 'New Empty Project',
+						action: function ( e ) {
+							var mt = app.multitrack;
+							if (mt && mt.IsOn && mt.IsOn ()) {
+								mt.NewProject ();
+								return ;
+							}
+							if (app.engine && app.engine.is_ready &&
+								!w.confirm ('Start a new empty project? The current audio will be cleared.'))
+								return ;
+							app.fireEvent ('RequestStop');
+							w.location.reload ();
+						}
+					},
+
 					{
 						name: 'Save Draft Locally',
 						clss: 'pk_inact',
@@ -1091,6 +1108,17 @@
 									obj.classList.remove ('pk_inact');
 								}
 							});
+						}
+					},
+
+					// Enganxa el que s'ha copiat en un canal nou del multipista. La TdG, 31.10.2026
+					{
+						name: 'Paste to New Channel',
+						action: function () {
+							var mt = app.multitrack;
+							if (!mt) return ;
+							if (!mt.IsOn ()) mt.Toggle (true);
+							app.fireEvent ('RequestActionPasteNewTrack');
 						}
 					},
 

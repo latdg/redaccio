@@ -777,7 +777,7 @@ function blocsDelResum(body) {
     if (node.nodeType === 1) {
       const m = text.match(RX_NUMERO);
       if (m && node.tagName === "DIV" && text.length < 200) {
-        actual = { numero: m[1], titol: m[2].replace(/\s+/g, " ").trim(), nodes: [] };
+        actual = { numero: m[1], titol: m[2].replace(/\s+/g, " ").trim().replace(/^(TAULERS D.ANUNCIS)\s*\(ÚLTIMA SETMANA\)$/i, "$1"), nodes: [] };
         blocs.push(actual);
         return;
       }
@@ -813,9 +813,9 @@ if (INCRUSTAT) document.documentElement.classList.add("incrustat");
 //   primer: va al principi, amb el número 0.
 // Si no es troba l'apartat de referència, van al final.
 const BLOCS_PROPIS = [
-  { id: "loteries", nom: "Loteries", titol: "LOTERIES (PREMIS VENUTS A LA ZONA)", primer: true },
-  { id: "congres", nom: "Congrés", titol: "CONGRÉS DELS DIPUTATS (ESMENTS DELS MUNICIPIS)", abans: /^GENERALITAT/i },
-  { id: "parlament", nom: "Parlament", titol: "PARLAMENT DE CATALUNYA (ESMENTS DELS MUNICIPIS)", despres: /^GENERALITAT/i },
+  { id: "loteries", nom: "Loteries", titol: "LOTERIES", primer: true },
+  { id: "congres", nom: "Congrés", titol: "CONGRÉS DELS DIPUTATS", abans: /^GENERALITAT/i },
+  { id: "parlament", nom: "Parlament", titol: "PARLAMENT DE CATALUNYA", despres: /^GENERALITAT/i },
   { id: "dades-municipals", nom: "Dades municipals", titol: "DADES MUNICIPALS (ENDEUTAMENT, PRESSUPOST I LIQUIDACIÓ)", enLlocDe: /^ATUR/i },
   // 27.10.2026: renda garantida, al costat de les dades municipals.
   { id: "renda", nom: "Renda garantida", titol: "RENDA GARANTIDA DE CIUTADANIA", enLlocDe: /^ATUR/i },

@@ -4,6 +4,22 @@
 	<title>AudioMass - Audio Editor</title>
 	<link href="ico.png" rel="shortcut icon">
 	<meta charset="utf-8" />
+	<script>
+	// Brave (Shields, bloqueig d'empremtes) altera les dades d'àudio cada cop que es llegeixen
+	// amb getChannelData, i com que l'editor les llegeix contínuament mentre reprodueix,
+	// el so es va apagant. Es llegeix cada canal una sola vegada i després es reaprofita.
+	// Als altres navegadors no canvia res (ja tornen sempre el mateix array). La TdG, 01.11.2026
+	(function () {
+		var P = window.AudioBuffer && AudioBuffer.prototype;
+		if (!P || !P.getChannelData || !window.WeakMap) return;
+		var orig = P.getChannelData, cache = new WeakMap();
+		P.getChannelData = function (ch) {
+			var arr = cache.get(this);
+			if (!arr) { arr = []; cache.set(this, arr); }
+			return arr[ch] || (arr[ch] = orig.call(this, ch));
+		};
+	})();
+	</script>
 	<link rel="manifest" href="manifest.json">
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />

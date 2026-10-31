@@ -61,9 +61,7 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:32px;padding-top:8px}
   <nav id="nav"></nav>
 </header>
 
-<p class="titol-part">De La TdG redacció</p>
 <iframe class="part" id="redaccio" title="Blocs slow de La TdG redacció" src="../?slow&amp;incrustat" scrolling="no"></iframe>
-<p class="titol-part">De La TdG ampliada</p>
 <iframe class="part" id="ampliada" title="Blocs slow de La TdG ampliada" src="../../tauler/?slow&amp;incrustat" scrolling="no"></iframe>
 
 <footer>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
@@ -81,21 +79,24 @@ function ajusta(fr) {
   } catch (e) { /* si un dia no fos la mateixa adreça, es queda amb l'alçada per defecte */ }
 }
 
+// 31.10.2026: les etiquetes són les mateixes que fa servir cada panell a la seva barra
+// (sense emoticones, inicial majúscula), totes seguides, sense dir d'on vénen.
 function navegacio() {
   const nav = document.getElementById("nav");
   let h = "";
-  PARTS.forEach(([id, nom]) => {
+  PARTS.forEach(([id]) => {
     const fr = document.getElementById(id);
     let doc = null;
     try { doc = fr.contentDocument; } catch (e) {}
     if (!doc) return;
-    const seccions = Array.from(doc.querySelectorAll("main section[id]")).filter(s => !s.hidden && s.offsetParent !== null && s.querySelector("h2"));
-    if (!seccions.length) return;
-    h += `<span class="grup">${nom}</span>` + seccions.map(s => {
-      const t = s.querySelector("h2").textContent.replace(/^[\d️⃣\s]+/, "").replace(/\s+/g, " ").trim();
-      const curt = t.length > 34 ? t.slice(0, 32).replace(/\s+\S*$/, "") + "…" : t;
-      return `<a href="#" data-part="${id}" data-sec="${s.id}">${curt.replace(/[<>&]/g, "")}</a>`;
-    }).join("");
+    Array.from(doc.querySelectorAll('header nav a[href^="#"]')).forEach(a => {
+      const sec = doc.getElementById(a.getAttribute("href").slice(1));
+      if (!sec || sec.hidden || sec.offsetParent === null) return;
+      let t = a.textContent.replace(/[^\p{L}\p{N}(),'’·\- ]/gu, "").replace(/\s+/g, " ").trim();
+      if (!t) return;
+      t = t.charAt(0).toUpperCase() + t.slice(1);
+      h += `<a href="#" data-part="${id}" data-sec="${sec.id}">${t.replace(/[<>&]/g, "")}</a>`;
+    });
   });
   nav.innerHTML = h;
   nav.querySelectorAll("a").forEach(a => a.onclick = ev => {

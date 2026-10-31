@@ -29,6 +29,8 @@ header{padding-top:24px}
 /* 31.10.2026: dins de La TdG slow (iframe) no surten la capçalera ni el peu. */
 .incrustat header,.incrustat #sobre,.incrustat footer,.incrustat .peu-tdg{display:none!important}
 .incrustat main{padding-top:0}
+/* 31.10.2026: mentre no ha triat els seus blocs, el tros de La TdG slow no ensenya res. */
+html.triant main{display:none}
 [hidden]{display:none!important}
 h1{margin:0;font-size:1.6rem}
 .sub{color:var(--suau);margin:4px 0 12px}
@@ -878,6 +880,7 @@ const BLOCS_PROPIS = [
 // no són a cap tros (&altres), perquè un bloc nou no quedi mai amagat.
 const BLOCS_TRIATS = (PARAMS.get("blocs") || "").split(",").filter(Boolean);
 const BLOCS_ALTRES = (PARAMS.get("altres") || "").split(",").filter(Boolean);
+if (MODE_SLOW && BLOCS_TRIATS.length) document.documentElement.classList.add("triant");
 function clauDelBloc(titol) {
   if (/^CONTRACTACI/i.test(titol)) return "contractacio";
   if (/^PUOSC/i.test(titol)) return "puosc";
@@ -899,6 +902,8 @@ function triaBlocsSlow() {
   const enllacos = Array.from(nav.querySelectorAll("a"));
   nav.innerHTML = "";
   ordre.forEach(el => { const a = enllacos.find(x => x.getAttribute("href") === "#" + el.id); if (a) nav.appendChild(a); });
+  document.documentElement.classList.remove("triant");
+  document.documentElement.dataset.triat = "1";
 }
 
 async function carregaResum(dia) {

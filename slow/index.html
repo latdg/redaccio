@@ -88,7 +88,7 @@ const TROSSOS = [
 const PAGINA = { R: "../", A: "../../tauler/" };
 // 31.10.2026: es canvia a cada canvi de les pàgines, perquè el navegador no faci servir
 // una còpia antiga (que no sabria triar els blocs i els mostraria tots, repetits).
-const VERSIO = "20261031b";
+const VERSIO = "20261031d";
 const PARTS = TROSSOS.map(([pag, blocs], i) => {
   const altres = TROSSOS.filter(([p], j) => p === pag && j !== i).flatMap(([, b]) => b);
   const ultim = TROSSOS.map(([p]) => p).lastIndexOf(pag) === i;
@@ -119,7 +119,8 @@ function treuRepetits() {
   PARTS.forEach(([id]) => {
     let doc = null;
     try { doc = document.getElementById(id).contentDocument; } catch (e) {}
-    if (!doc) return;
+    // Només els trossos que ja han triat els seus blocs (abans es veurien tots).
+    if (!doc || !doc.documentElement.dataset.triat) return;
     doc.querySelectorAll("main section").forEach(s => {
       if (s.hidden) return;
       const h2 = s.querySelector("h2");
@@ -130,8 +131,13 @@ function treuRepetits() {
   });
 }
 
+// La navegació es refà cada cop que canvia el contingut (les dades arriben a poc a poc).
+let tempsNav = null;
+const refesNav = () => { clearTimeout(tempsNav); tempsNav = setTimeout(navegacio, 300); };
+
 function ajusta(fr) {
   treuRepetits();
+  refesNav();
   try {
     const doc = fr.contentDocument;
     if (!doc || !doc.body) return;
@@ -155,9 +161,13 @@ function navegacio() {
     let doc = null;
     try { doc = fr.contentDocument; } catch (e) {}
     if (!doc) return;
-    Array.from(doc.querySelectorAll('header nav a[href^="#"]')).forEach(a => {
-      const sec = doc.getElementById(a.getAttribute("href").slice(1));
-      if (!sec || sec.hidden || sec.offsetParent === null) return;
+    // 31.10.2026: un enllaç per cada bloc visible, en l'ordre en què surt (no el
+    // contenidor general «Resum», que no és cap apartat).
+    const enllacos = Array.from(doc.querySelectorAll('header nav a[href^="#"]'));
+    Array.from(doc.querySelectorAll("main section[id]")).forEach(sec => {
+      if (sec.hidden || sec.offsetParent === null) return;
+      const a = enllacos.find(x => x.getAttribute("href") === "#" + sec.id);
+      if (!a) return;
       let t = a.textContent.replace(/[^\p{L}\p{N}(),'’·\- ]/gu, "").replace(/\s+/g, " ").trim();
       if (!t) return;
       t = t.charAt(0).toUpperCase() + t.slice(1);
@@ -189,7 +199,7 @@ PARTS.forEach(([id]) => {
       }, true);
     } catch (e) {}
     // La navegació es refà mentre les dades van arribant.
-    [800, 2500, 6000].forEach(ms => setTimeout(() => { ajusta(fr); navegacio(); }, ms));
+    [800, 2500, 6000, 12000, 20000].forEach(ms => setTimeout(() => { ajusta(fr); navegacio(); }, ms));
   });
 });
 </script>

@@ -51,6 +51,10 @@ a{color:var(--accent)}
 .alerta{border-left:4px solid var(--accent);padding-left:10px}
 .buit{color:var(--suau)}
 footer{color:var(--suau);font-size:.85rem;padding-bottom:32px}
+/* 31.10.2026: peu més enganxat al darrer bloc; crèdit dels escuts i gentilesa, un a sota de l'altre. */
+main{padding-bottom:4px}
+footer .credits-escuts{margin:0}
+.incrustat main{padding-bottom:0}
 .capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .capcalera .dreta{margin-left:auto}
 .capcalera .acces{font-size:1.6rem;line-height:1;text-decoration:none}
@@ -239,7 +243,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="parlament"><h2>🏛️ Parlament de Catalunya</h2><p class="buit">Carregant…</p></section>
   <section id="loteries"><h2>🍀 Loteries</h2><p class="buit">Carregant…</p></section>
 </main>
-<footer>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
+<footer><p class="credits-escuts">Escuts: Wikimedia Commons (<a href="https://commons.wikimedia.org/wiki/File:Escut_de_la_Bisbal_d%27Empord%C3%A0.svg" target="_blank" rel="noopener">Public domain</a>, <a href="https://commons.wikimedia.org/wiki/File:Escut_de_Cor%C3%A7%C3%A0.svg" target="_blank" rel="noopener">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Escudo_de_Ullastret.svg" target="_blank" rel="noopener">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Escut_de_Forallac.svg" target="_blank" rel="noopener">CC BY-SA 4.0</a>; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament).</p>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
 
 <script>
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));

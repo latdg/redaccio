@@ -23,7 +23,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 header,footer{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
-header{padding-top:24px}
+header{padding-top:24px;padding-bottom:16px}
 h1{margin:0;font-size:1.6rem}
 .sub{color:var(--suau);margin:4px 0 12px}
 .capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
@@ -35,6 +35,7 @@ nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
 nav a{color:var(--text);text-decoration:none;font-size:.85rem;padding:3px 10px;border:1px solid var(--linia);border-radius:999px;background:var(--targeta);white-space:nowrap}
 nav a:hover{color:var(--accent);border-color:var(--accent)}
 nav .grup{flex-basis:100%;font-size:.8rem;color:var(--suau);margin-top:6px}
+#parts{display:grid;gap:16px}
 .part{display:block;width:100%;border:0;height:400px;background:transparent;overflow:hidden}
 .titol-part{max-width:1100px;margin:16px auto 0;padding:0 16px;font-size:.85rem;color:var(--suau);text-transform:uppercase;letter-spacing:.04em}
 footer{color:var(--suau);font-size:.85rem;padding-bottom:32px;padding-top:8px}
@@ -85,10 +86,13 @@ const TROSSOS = [
   ["R", ["residus", "ramaderia", "seguretat", "escoles", "entitats", "eleccions"]],
 ];
 const PAGINA = { R: "../", A: "../../tauler/" };
+// 31.10.2026: es canvia a cada canvi de les pàgines, perquè el navegador no faci servir
+// una còpia antiga (que no sabria triar els blocs i els mostraria tots, repetits).
+const VERSIO = "20261031b";
 const PARTS = TROSSOS.map(([pag, blocs], i) => {
   const altres = TROSSOS.filter(([p], j) => p === pag && j !== i).flatMap(([, b]) => b);
   const ultim = TROSSOS.map(([p]) => p).lastIndexOf(pag) === i;
-  const src = PAGINA[pag] + "?slow&incrustat&blocs=" + blocs.join(",") + (altres.length ? "&altres=" + altres.join(",") : "") + (ultim ? "&resta" : "");
+  const src = PAGINA[pag] + "?slow&incrustat&blocs=" + blocs.join(",") + (altres.length ? "&altres=" + altres.join(",") : "") + (ultim ? "&resta" : "") + "&v=" + VERSIO;
   const fr = document.createElement("iframe");
   fr.className = "part"; fr.id = "part" + i; fr.scrolling = "no";
   fr.title = "Blocs slow de " + (pag === "R" ? "La TdG redacció" : "La TdG ampliada");
@@ -109,7 +113,25 @@ fetch("../escuts/credits.json?v=" + Date.now()).then(r => r.json()).then(c => {
 // Cada part creix tant com el seu contingut (són de la mateixa adreça, latdg.github.io),
 // i la barra de navegació porta a cada bloc de dins.
 
+// 31.10.2026: per si de cas, un bloc que ja surt en un tros anterior no es repeteix.
+function treuRepetits() {
+  const vistos = new Set();
+  PARTS.forEach(([id]) => {
+    let doc = null;
+    try { doc = document.getElementById(id).contentDocument; } catch (e) {}
+    if (!doc) return;
+    doc.querySelectorAll("main section").forEach(s => {
+      if (s.hidden) return;
+      const h2 = s.querySelector("h2");
+      const clau = s.dataset.clau || (h2 ? h2.textContent.replace(/[^\p{L}\p{N}]/gu, "").toLowerCase() : "");
+      if (!clau) return;
+      if (vistos.has(clau)) s.hidden = true; else vistos.add(clau);
+    });
+  });
+}
+
 function ajusta(fr) {
+  treuRepetits();
   try {
     const doc = fr.contentDocument;
     if (!doc || !doc.body) return;

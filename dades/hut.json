@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-27T08:13:21+00:00",
+ "generat": "2026-10-31T05:32:31+00:00",
  "actualitzatFont": "2026-10-05T06:24:56+00:00",
  "comparatAmb": "2026-10-05T06:24:56+00:00",
  "font": "Registre de Turisme de Catalunya (Departament d'Empresa i Treball), dades obertes de la Generalitat",
@@ -910,6 +910,93 @@
     }
    ],
    "altes": 0,
+   "baixes": 0
+  },
+  "17205": {
+   "nom": "Ullastret",
+   "hut": 18,
+   "places": 27,
+   "lloc": 27,
+   "carrers": [
+    [
+     "Carrer Bous",
+     2
+    ],
+    [
+     "Carrer Creu",
+     2
+    ],
+    [
+     "Carrer Firal",
+     2
+    ],
+    [
+     "Camí Castell d'Empordà",
+     1
+    ],
+    [
+     "Camí Mas Blanc",
+     1
+    ],
+    [
+     "Carrer Hospital",
+     1
+    ],
+    [
+     "Carrer Valls",
+     1
+    ],
+    [
+     "Carrer Major",
+     1
+    ],
+    [
+     "Carrer Marcel Rallo",
+     1
+    ],
+    [
+     "Plaça de la Llotja",
+     1
+    ],
+    [
+     "Camí Afores (Mas Blau)",
+     1
+    ],
+    [
+     "Xalet Mas Blanc",
+     1
+    ],
+    [
+     "Carrer de Josep Romaguera i Vila",
+     1
+    ],
+    [
+     "Carrer Marcel Ralló Mas",
+     1
+    ],
+    [
+     "Carrer Fort",
+     1
+    ]
+   ],
+   "altres": [
+    {
+     "tipus": "Cases de pagès o establiments d'agroturisme",
+     "n": 2,
+     "places": 11
+    },
+    {
+     "tipus": "Hotel",
+     "n": 1,
+     "places": 8
+    },
+    {
+     "tipus": "Allotjaments rurals",
+     "n": 1,
+     "places": 4
+    }
+   ],
+   "altes": 18,
    "baixes": 0
   }
  },

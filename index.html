@@ -26,6 +26,10 @@
 body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 header,main,footer{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
 header{padding-top:24px}
+/* 31.10.2026: dins de La TdG slow (iframe) no surten la capçalera ni el peu. */
+.incrustat header,.incrustat #sobre,.incrustat footer,.incrustat .peu-tdg{display:none!important}
+.incrustat main{padding-top:0}
+[hidden]{display:none!important}
 h1{margin:0;font-size:1.6rem}
 .sub{color:var(--suau);margin:4px 0 12px}
 select{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text)}
@@ -196,6 +200,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
     <div class="eines dreta">
       <label id="selector" hidden>Dia: <select id="dia"></select></label>
       <a href="https://latdg.github.io/tauler/" target="_blank" rel="noopener">La TdG ampliada ↗</a>
+      <a href="slow/" title="Blocs de menys actualització, per analitzar">La TdG slow 🐢</a>
     </div>
   </div>
   <p class="sub" id="sub">Carregant…</p>
@@ -771,6 +776,18 @@ function blocsDelResum(body) {
 // Número en forma de tecla: 13 -> "1️⃣3️⃣".
 const tecla = n => String(n).split("").map(d => d + "\uFE0F\u20E3").join("");
 
+// 31.10.2026: LA TdG SLOW. Des del bloc de la contractació pública (l'11) fins al
+// final, els blocs van al panell «La TdG slow» (slow/), que és aquesta mateixa
+// pàgina amb ?slow. Aquí, sense ?slow, es mostren només els blocs del 0 al 10.
+const PARAMS = new URLSearchParams(location.search);
+const MODE_SLOW = PARAMS.has("slow");
+const INCRUSTAT = PARAMS.has("incrustat");
+const RX_INICI_SLOW = /^CONTRACTACI/i;
+// Si el resum no porta l'apartat de la contractació, aquests blocs propis són slow.
+const PROPIS_SLOW = ["dades-municipals", "renda", "hut", "turisme", "habitatge", "aigua", "ramaderia",
+  "residus", "seguretat", "entitats", "escoles", "eleccions"];
+if (INCRUSTAT) document.documentElement.classList.add("incrustat");
+
 // Blocs propis del panell que van dins del resum, amb el lloc on van:
 //   abans / despres: abans o després de l'apartat del correu que coincideixi;
 //   enLlocDe: ocupen el lloc d'aquell apartat, que deixa de sortir;
@@ -861,11 +878,17 @@ async function carregaResum(dia) {
     // Numeració seguida (1, 2, 3...), encara que s'hagin tret apartats. Si hi
     // ha un bloc «primer» (Loteries), aquest porta el 0.
     const inici = BLOCS_PROPIS.some(p => p.primer) ? 0 : 1;
+    // 31.10.2026: on comença la part «slow» (vegeu MODE_SLOW).
+    const tall = ordre.findIndex(o => o.bloc && RX_INICI_SLOW.test(o.bloc.titol));
     ordre.forEach((o, i) => {
       const numero = tecla(i + inici);
+      const esSlow = tall >= 0 ? i >= tall : PROPIS_SLOW.includes(o.propi);
+      const visible = MODE_SLOW ? esSlow : !esSlow;
 
       if (o.propi) {
         const el = document.getElementById(o.propi);
+        el.hidden = !visible;
+        if (!visible) return;
         el.classList.add("resum");
         el.dataset.numero = numero;
         el.dataset.titol = o.titol;
@@ -876,6 +899,7 @@ async function carregaResum(dia) {
         return;
       }
 
+      if (!visible) return;
       const b = o.bloc;
       const id = "resum-" + (i + 1);
       const sec = document.createElement("section");
@@ -905,8 +929,9 @@ async function carregaResum(dia) {
     estat.resum = hora(generat);
     afegeixActesAlResum();
   } catch (e) {
-    cont.innerHTML = '<section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Aquest dia no hi ha cap resum desat.</p></section>';
-    BLOCS_PROPIS.forEach(p => nav.insertAdjacentHTML("beforeend", `<a href="#${p.id}">${p.nom}</a>`));
+    cont.innerHTML = MODE_SLOW ? "" : '<section class="resum"><h2>📰 Resum informatiu</h2><p class="buit">Aquest dia no hi ha cap resum desat.</p></section>';
+    BLOCS_PROPIS.filter(p => PROPIS_SLOW.includes(p.id) === MODE_SLOW).forEach(p => nav.insertAdjacentHTML("beforeend", `<a href="#${p.id}">${p.nom}</a>`));
+    BLOCS_PROPIS.forEach(p => { const el = document.getElementById(p.id); if (el) el.hidden = PROPIS_SLOW.includes(p.id) !== MODE_SLOW; });
   }
   pintaSub(dia);
 }
@@ -2092,7 +2117,8 @@ async function inicia() {
 
   sel.innerHTML = dies.map(x => `<option value="${x}">${dataCa(x)}</option>`).join("");
   document.getElementById("selector").hidden = false;
-  sel.onchange = () => { location.search = "?dia=" + sel.value; };
+  // 31.10.2026: es conserven ?slow i ?incrustat en canviar de dia.
+  sel.onchange = () => { const p = new URLSearchParams(location.search); p.set("dia", sel.value); location.search = p.toString(); };
 
   const dia = triat && dies.includes(triat) ? triat : dies[0];
   sel.value = dia;

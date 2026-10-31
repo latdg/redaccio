@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>La TdG slow</title>
+<!--
+  LA TdG SLOW — La TdG · 31.10.2026
+  Blocs de menys actualització, per analitzar a la redacció. No té dades pròpies:
+  reuneix, amb la mateixa capçalera, els blocs «slow» de La TdG redacció (des de la
+  contractació pública, l'11, fins al final) i els de La TdG ampliada (edat dels
+  edificis, piezòmetres, plaques solars i consum elèctric, preu de l'aigua, atur i
+  afiliació). Cada part és la seva pàgina de sempre carregada amb ?slow&incrustat,
+  de manera que qualsevol millora d'aquells blocs surt aquí sola.
+-->
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,footer{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px}
+h1{margin:0;font-size:1.6rem}
+.sub{color:var(--suau);margin:4px 0 12px}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
+.podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
+.podcast svg{display:block;width:50px;height:50px}
+a{color:var(--accent)}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+nav a{color:var(--text);text-decoration:none;font-size:.85rem;padding:3px 10px;border:1px solid var(--linia);border-radius:999px;background:var(--targeta);white-space:nowrap}
+nav a:hover{color:var(--accent);border-color:var(--accent)}
+nav .grup{flex-basis:100%;font-size:.8rem;color:var(--suau);margin-top:6px}
+.part{display:block;width:100%;border:0;height:400px;background:transparent;overflow:hidden}
+.titol-part{max-width:1100px;margin:16px auto 0;padding:0 16px;font-size:.85rem;color:var(--suau);text-transform:uppercase;letter-spacing:.04em}
+footer{color:var(--suau);font-size:.85rem;padding-bottom:32px;padding-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <a class="podcast" href="https://laguait.cat/latdg" target="_blank" rel="noopener" title="Visita el pòdcast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Visita el pòdcast">
+        <path d="M2 11a10 10 0 015-8.662" stroke="#e30613"/>
+        <path d="M22 11a10 10 0 00-5-8.662" stroke="#e30613"/>
+        <path d="M6 11a6 6 0 013-5.197" stroke="currentColor"/>
+        <path d="M18 11a6 6 0 00-3-5.197" stroke="currentColor"/>
+        <rect x="10" y="9" width="4" height="8" rx="2" stroke="currentColor"/>
+        <path d="M12 17v4" stroke="currentColor"/>
+        <path d="M9 21h6" stroke="currentColor"/>
+      </svg>
+    </a>
+    <h1>La TdG slow 🐢</h1>
+    <div class="dreta">
+      <a href="../">← La TdG redacció</a>
+      <a href="https://latdg.github.io/tauler/" target="_blank" rel="noopener">La TdG ampliada ↗</a>
+    </div>
+  </div>
+  <p class="sub">Blocs de menys actualització, amb dades per analitzar a la redacció.</p>
+  <nav id="nav"></nav>
+</header>
+
+<p class="titol-part">De La TdG redacció</p>
+<iframe class="part" id="redaccio" title="Blocs slow de La TdG redacció" src="../?slow&amp;incrustat" scrolling="no"></iframe>
+<p class="titol-part">De La TdG ampliada</p>
+<iframe class="part" id="ampliada" title="Blocs slow de La TdG ampliada" src="../../tauler/?slow&amp;incrustat" scrolling="no"></iframe>
+
+<footer>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
+
+<script>
+// Cada part creix tant com el seu contingut (són de la mateixa adreça, latdg.github.io),
+// i la barra de navegació porta a cada bloc de dins.
+const PARTS = [["redaccio", "Redacció"], ["ampliada", "Ampliada"]];
+
+function ajusta(fr) {
+  try {
+    const doc = fr.contentDocument;
+    if (!doc || !doc.body) return;
+    fr.style.height = Math.max(doc.documentElement.scrollHeight, doc.body.scrollHeight) + "px";
+  } catch (e) { /* si un dia no fos la mateixa adreça, es queda amb l'alçada per defecte */ }
+}
+
+function navegacio() {
+  const nav = document.getElementById("nav");
+  let h = "";
+  PARTS.forEach(([id, nom]) => {
+    const fr = document.getElementById(id);
+    let doc = null;
+    try { doc = fr.contentDocument; } catch (e) {}
+    if (!doc) return;
+    const seccions = Array.from(doc.querySelectorAll("main section[id]")).filter(s => !s.hidden && s.offsetParent !== null && s.querySelector("h2"));
+    if (!seccions.length) return;
+    h += `<span class="grup">${nom}</span>` + seccions.map(s => {
+      const t = s.querySelector("h2").textContent.replace(/^[\d️⃣\s]+/, "").replace(/\s+/g, " ").trim();
+      const curt = t.length > 34 ? t.slice(0, 32).replace(/\s+\S*$/, "") + "…" : t;
+      return `<a href="#" data-part="${id}" data-sec="${s.id}">${curt.replace(/[<>&]/g, "")}</a>`;
+    }).join("");
+  });
+  nav.innerHTML = h;
+  nav.querySelectorAll("a").forEach(a => a.onclick = ev => {
+    ev.preventDefault();
+    const fr = document.getElementById(a.dataset.part);
+    const s = fr.contentDocument.getElementById(a.dataset.sec);
+    if (!s) return;
+    window.scrollTo({ top: fr.getBoundingClientRect().top + window.scrollY + s.getBoundingClientRect().top - 12, behavior: "smooth" });
+  });
+}
+
+PARTS.forEach(([id]) => {
+  const fr = document.getElementById(id);
+  fr.addEventListener("load", () => {
+    ajusta(fr);
+    try {
+      new ResizeObserver(() => { ajusta(fr); }).observe(fr.contentDocument.body);
+      // Els enllaços de dins que porten a una altra pàgina s'obren fora de l'iframe.
+      fr.contentDocument.addEventListener("click", ev => {
+        const a = ev.target.closest && ev.target.closest("a[href]");
+        if (a && !a.getAttribute("href").startsWith("#") && !a.target) a.target = "_top";
+      }, true);
+    } catch (e) {}
+    // La navegació es refà mentre les dades van arribant.
+    [800, 2500, 6000].forEach(ms => setTimeout(() => { ajusta(fr); navegacio(); }, ms));
+  });
+});
+</script>
+</body>
+</html>

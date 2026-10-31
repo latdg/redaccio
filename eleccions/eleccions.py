@@ -26,6 +26,7 @@ MUNICIPIS = {   # codi INE de 3 xifres dins la província -> codi de 5 i nom
     "057": ("17057", "Corçà"),
     "902": ("17902", "Forallac"),
     "901": ("17901", "Cruïlles, Monells i Sant Sadurní de l'Heura"),
+    "205": ("17205", "Ullastret"),   # 31.10.2026
 }
 # (tipus, any, mes, nom). 04 municipals, 02 Congrés, 07 Parlament Europeu.
 ELECCIONS = [

@@ -28,6 +28,7 @@ MUNICIPIS = {
     "17057": "Corçà",
     "17902": "Forallac",
     "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+    "17205": "Ullastret",   # 31.10.2026
 }
 CAMPS = ("tipus_establiment,n_mero_inscripci,estat,tipus_de_via,nom_de_la_via,municipi,"
          "codi_municipi_idescat,comarca,grup,modalitat,total_places,total_estances")

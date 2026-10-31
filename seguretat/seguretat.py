@@ -25,7 +25,8 @@ VISTA = "https://analisi.transparenciacatalunya.cat/api/views/{id}.json"
 CAPCALERES = {"User-Agent": "LaTdG-redaccio (https://latdg.github.io/redaccio/)"}
 ABP = "ABP Baix Empordà - La Bisbal"
 MUNICIPIS = {"17022": ("la Bisbal d'Empordà", "BISBAL D"), "17057": ("Corçà", "CORCA"),
-             "17902": ("Forallac", "FORALLAC"), "17901": ("Cruïlles, Monells i Sant Sadurní de l'Heura", "CRUILLES")}
+             "17902": ("Forallac", "FORALLAC"), "17901": ("Cruïlles, Monells i Sant Sadurní de l'Heura", "CRUILLES"),
+             "17205": ("Ullastret", "ULLASTRET")}
 ANY_INICI = datetime.now().year - 3
 
 

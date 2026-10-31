@@ -19,9 +19,10 @@ MUNICIPIS = {
     "17902": ["Escut de Forallac.svg"],
     "17901": ["Escut de Cruïlles, Monells i Sant Sadurní de l'Heura.svg",
               "Escut de Cruïlles, Monells i Sant Sadurní.svg"],
+    "17205": ["Escudo de Ullastret.svg", "Escut d'Ullastret.svg"],   # 31.10.2026
 }
 NOMS = {"17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac",
-        "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"}
+        "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura", "17205": "Ullastret"}
 
 
 def info(titol):

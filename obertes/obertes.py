@@ -28,10 +28,10 @@ API = "https://analisi.transparenciacatalunya.cat/resource/{id}.json"
 VISTA = "https://analisi.transparenciacatalunya.cat/api/views/{id}.json"
 CAPCALERES = {"User-Agent": "LaTdG-redaccio (https://latdg.github.io/redaccio/)"}
 MUNICIPIS = {"17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac",
-             "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"}
+             "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura", "17205": "Ullastret"}
 # Codis de 6 xifres (amb el dígit de control de l'Idescat)
-CODI6 = {"17022": "170221", "17057": "170577", "17902": "179026", "17901": "179011"}
-PARAULA = {"17022": "BISBAL D", "17057": "CORCA", "17902": "FORALLAC", "17901": "CRUILLES"}
+CODI6 = {"17022": "170221", "17057": "170577", "17902": "179026", "17901": "179011", "17205": "172057"}
+PARAULA = {"17022": "BISBAL D", "17057": "CORCA", "17902": "FORALLAC", "17901": "CRUILLES", "17205": "ULLASTRET"}
 
 
 def pla(t):

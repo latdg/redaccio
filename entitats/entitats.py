@@ -35,8 +35,9 @@ NUCLIS = {
     "17902": ["forallac", "fonteta", "peratallada", "vulpellac", "canapost", "sant climent de peralta"],
     "17901": ["cruilles, monells i sant sadurni de l'heura", "cruilles", "monells", "sant sadurni de l'heura",
               "sant miquel de cruilles", "santa pellaia"],
+    "17205": ["ullastret"],   # 31.10.2026
 }
-NOMS = {"17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"}
+NOMS = {"17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura", "17205": "Ullastret"}
 
 
 def pla(t):

@@ -999,12 +999,12 @@ const LOGOS_MITJANS = [
 ];
 // 27.10.2026: blocs 3 i 4, sempre en aquest ordre: la Bisbal, Forallac, Corçà, Cruïlles, Monells i
 // Sant Sadurní de l'Heura, el Consell Comarcal i el Consorci de les Gavarres.
-const ORDRE_ADMINS = ["17022", "17902", "17057", "17901", "ccbe", "gavarres"];
+const ORDRE_ADMINS = ["17022", "17902", "17057", "17901", "17205", "ccbe", "gavarres"];
 const rangAdmin = nom => { const i = ORDRE_ADMINS.indexOf(codiPerNom(nom)); return i < 0 ? 99 : i; };
 // Els taulers dels municipis porten «Ajuntament de…», com a l'espai web.
 const nomAdmin = nom => {
   const c = codiPerNom(nom);
-  return ["17022", "17057", "17902", "17901"].includes(c) && !/^ajuntament/i.test(nom) ? "Ajuntament de " + NOMS_MUN[c] : nom;
+  return ["17022", "17902", "17057", "17901", "17205"].includes(c) && !/^ajuntament/i.test(nom) ? "Ajuntament de " + NOMS_MUN[c] : nom;
 };
 let TAULER_GAV = null, HIST_PREMSA = null;
 // Bloc 1: les notícies dels dies anteriors (fins a sis), per mitjà, per tenir-les a «Anteriors».
@@ -1204,14 +1204,14 @@ function taulaCapitols(titol, pres, liq, camp, campTotal) {
 
 // 27.10.2026: capçalera plegable amb l'escut i el nom del municipi.
 // 27.10.2026: tamb\u00e9 l'isotip (el logotip sense text) del Consell Comarcal i del Consorci de les Gavarres.
-const FITXER_ESCUT = { "17022": "17022.svg", "17057": "17057.svg", "17902": "17902.svg", "17901": "17901.png", "ccbe": "ccbe.png", "gavarres": "gavarres.png" };
+const FITXER_ESCUT = { "17022": "17022.svg", "17057": "17057.svg", "17902": "17902.svg", "17901": "17901.png", "17205": "17205.svg", "ccbe": "ccbe.png", "gavarres": "gavarres.png" };
 const codiPerNom = nom => {
   const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   return t.includes("consell comarcal") ? "ccbe" : t.includes("gavarres") ? "gavarres" :
-    t.includes("bisbal") ? "17022" : t.includes("corca") ? "17057" : t.includes("forallac") ? "17902" : t.includes("cruilles") ? "17901" : null;
+    t.includes("bisbal") ? "17022" : t.includes("corca") ? "17057" : t.includes("forallac") ? "17902" : t.includes("cruilles") ? "17901" : t.includes("ullastret") ? "17205" : null;
 };
 // Ordre fix de les fitxes: els quatre municipis, el Consell Comarcal i el Consorci de les Gavarres.
-const ORDRE_ENS = ["17022", "17057", "17902", "17901", "ccbe", "gavarres"];
+const ORDRE_ENS = ["17022", "17902", "17057", "17901", "17205", "ccbe", "gavarres"];
 const rangEns = nom => { const i = ORDRE_ENS.indexOf(codiPerNom(nom)); return i < 0 ? 99 : i; };
 // Fitxa plegada per a un ens qualsevol (pel nom); el contingut es pinta en obrir-la.
 // Blocs 11 i 13: els municipis, amb «Ajuntament de…» (el data-ens es queda amb el nom de les dades, per filtrar).
@@ -1348,9 +1348,9 @@ async function carregaHut() {
   el.innerHTML = `<h2>${titol()}</h2>` +
     `<p class="font">Registre actualitzat el ${dataIso(d.actualitzatFont || d.generat)} · revisat el ${dataIso(d.generat)} · Font: ` +
     `<a href="https://analisi.transparenciacatalunya.cat/Turisme/Establiments-d-allotjament-tur-stic-inscrits-al-Re/t2h3-cgys" target="_blank" rel="noopener">${esc(d.font)}</a></p>` +
-    `<p>Als quatre municipis hi ha <b>${nCa(total)}</b> habitatges d'ús turístic donats d'alta. A tot el Baix Empordà n'hi ha ${nCa(d.comarca.hut)}; ` +
+    `<p>Als cinc municipis hi ha <b>${nCa(total)}</b> habitatges d'ús turístic donats d'alta. A tot el Baix Empordà n'hi ha ${nCa(d.comarca.hut)}; ` +
     `on més: ${d.comarca.primers.map(([n, v]) => `${esc(n)} (${nCa(v)})`).join(", ")}.</p>` + PISTA_PLEGA +
-    ["17022", "17057", "17902", "17901"].filter(c => d.municipis[c]).map(c => fitxaHut(c, d.municipis[c], d)).join("") +
+    ["17022", "17902", "17057", "17901", "17205"].filter(c => d.municipis[c]).map(c => fitxaHut(c, d.municipis[c], d)).join("") +
     `<p class="nota" style="color:#6b6b66;font-size:.85rem">Habitatges inscrits i no donats de baixa al registre. Les altes i baixes es compten entre dues actualitzacions del registre (la Generalitat l'actualitza més o menys cada mes). Les places dels HUT no es mostren perquè el registre no les té de tots.</p>`;
 }
 
@@ -1362,7 +1362,7 @@ async function carregaHut() {
 // mateix tipus i el detall per secció censal.
 // -----------------------------------------------------------------------------
 const TITOL_ELEC = "RESULTATS ELECTORALS (MESA A MESA)";
-const ORDRE_MUN = ["17022", "17057", "17902", "17901"];
+const ORDRE_MUN = ["17022", "17902", "17057", "17901", "17205"];
 const pctCa = (v, d = 1) => Number(v || 0).toLocaleString("ca-ES", { minimumFractionDigits: d, maximumFractionDigits: d }) + " %";
 let ELEC = null, ESCUTS = {};
 
@@ -1469,8 +1469,8 @@ function carregaEscuts() {
   }).catch(() => ({}));
   return ESCUTS_P;
 }
-const NOMS_MUN = { "17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura" };
-const NOMS_CURTS_MUN = { "17022": "la Bisbal", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura" };
+const NOMS_MUN = { "17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura", "17205": "Ullastret" };
+const NOMS_CURTS_MUN = { "17022": "la Bisbal", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura", "17205": "Ullastret" };
 function triadorMun(codis, actiu, escuts) {
   return `<div class="tria-mun">` + codis.map(c => `<button type="button" data-mun="${c}" class="${c === actiu ? "actiu" : ""}">` +
     (escuts[c] ? `<img src="escuts/${escuts[c].local || c + ".svg"}" alt="">` : `<span class="sense-escut"></span>`) + esc(NOMS_CURTS_MUN[c] || c) + `</button>`).join("") + `</div>`;
@@ -1540,7 +1540,7 @@ function targetaEntitat(f, recent, nova) {
 // 27.10.2026: les quatre fitxes plegades; en obrir-ne una, es pinta amb el seu cercador.
 async function pintaEntitats() {
   const el = document.getElementById("entitats");
-  const codis = ["17022", "17057", "17902", "17901"].filter(c => ENT.municipis[c]);
+  const codis = ["17022", "17902", "17057", "17901", "17205"].filter(c => ENT.municipis[c]);
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🤝 ") + TITOL_ENT}</h2>` +
     `<p class="font">${ENT.actualitzatFont ? "Registre actualitzat el " + dataIso(ENT.actualitzatFont) + " · " : ""}revisat el ${dataIso(ENT.generat)} · Font: ${esc(ENT.font)}</p>` +
     plegaMun(codis, c => { const m = ENT.municipis[c]; return `${nCa(m.total)} entitats` + (m.recents && m.recents.length ? ` · ${nCa(m.recents.length)} en 12 mesos` : ""); }) +
@@ -1604,7 +1604,7 @@ async function carregaEntitats() {
 // -----------------------------------------------------------------------------
 // SEGURETAT I EMERGÈNCIES (27.10.2026): dades/seguretat.json, que desa el
 // workflow «Seguretat i emergències» (seguretat/seguretat.py). Fets penals per
-// ABP (la de la Bisbal, més gran que els quatre municipis); Bombers i 112, per
+// ABP (la de la Bisbal, més gran que els cinc municipis); Bombers i 112, per
 // municipi. Darrers 12 mesos amb dades, comparats amb els 12 anteriors.
 // -----------------------------------------------------------------------------
 const TITOL_SEG = "SEGURETAT I EMERGÈNCIES (MOSSOS, 112 I BOMBERS)";
@@ -1618,11 +1618,11 @@ function taulaTipus(tipus, n = 10, extra = null) {
 async function pintaSeguretat() {
   const el = document.getElementById("seguretat");
   const f = SEG.fetsPenals;
-  const MUNS_SEG = ["17022", "17057", "17902", "17901"];
+  const MUNS_SEG = ["17022", "17902", "17057", "17901", "17205"];
   el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🚨 ") + TITOL_SEG}</h2>` +
     `<p class="font">Revisat el ${dataIso(SEG.generat)} · Font: dades obertes de la Generalitat (Mossos d'Esquadra, Bombers i CAT112)</p>` +
     `<article class="fitxa"><h3>👮 Fets penals · ${esc(f.abp)}</h3>` +
-      `<p class="pob">${periodeCa(f.periode)}, comparat amb els 12 mesos anteriors. L'àrea bàsica policial és més gran que els quatre municipis: no hi ha dades per municipi.</p>` +
+      `<p class="pob">${periodeCa(f.periode)}, comparat amb els 12 mesos anteriors. L'àrea bàsica policial és més gran que els cinc municipis: no hi ha dades per municipi.</p>` +
       `<div class="xifres">` +
         `<div class="xifra"><div class="etq">Fets coneguts</div><div class="val">${nCa(f.total12)}</div><div class="det">${variacio(f.total12, f.totalAbans12)} (abans, ${nCa(f.totalAbans12)})</div></div>` +
         `<div class="xifra"><div class="etq">Fets resolts</div><div class="val">${nCa(f.resolts12)}</div><div class="det">${f.total12 ? pctCa(f.resolts12 / f.total12 * 100, 0) + " dels coneguts" : ""}</div></div>` +
@@ -1688,7 +1688,7 @@ async function carregaSeguretat() {
 // «Dades obertes (redacció)» (obertes/obertes.py) cada dilluns.
 // -----------------------------------------------------------------------------
 let OB = null;
-const MUNS4 = ["17022", "17057", "17902", "17901"];
+const MUNS4 = ["17022", "17902", "17057", "17901", "17205"];
 const decCa = (n, d = 1) => Number(n || 0).toLocaleString("ca-ES", { minimumFractionDigits: d, maximumFractionDigits: d });
 const notaOb = t => `<p class="nota" style="color:#6b6b66;font-size:.85rem">${t}</p>`;
 function serieAnysOb(serie) {   // [[etiqueta, valor], ...]

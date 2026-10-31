@@ -1,8 +1,9 @@
 # =============================================================================
-# E-TAULER DEL CONSORCI DE LES GAVARRES — La TdG · 27.10.2026
+# E-TAULERS DE SEU-E.CAT — La TdG · 27.10.2026
 # Llegeix el canal RSS de l'e-tauler (seu-e.cat) i en desa els anuncis de
-# l'última setmana a dades/tauler-gavarres.json. El panell els posa al bloc dels
-# taulers d'anuncis, després del Consell Comarcal.
+# l'última setmana a dades/tauler-<clau>.json. El panell els posa al bloc dels
+# taulers d'anuncis, cadascun al seu lloc.
+# 31.10.2026: a més del Consorci de les Gavarres, l'Ajuntament d'Ullastret.
 # =============================================================================
 import json
 import re
@@ -17,8 +18,10 @@ HORA_LOCAL = ZoneInfo("Europe/Madrid")   # el canal dona les dates en hora de Gr
 import requests
 
 ARREL = Path(__file__).resolve().parent.parent
-SORTIDA = ARREL / "dades" / "tauler-gavarres.json"
-RSS = "https://tauler.seu-e.cat/api/rss?ens=9813510007&locale=ca&page={p}"
+# (clau del fitxer, codi de l'ens a seu-e.cat, nom)
+ENS = [("gavarres", "9813510007", "Consorci de les Gavarres"),
+       ("ullastret", "1720570005", "Ajuntament d'Ullastret")]
+RSS = "https://tauler.seu-e.cat/api/rss?ens={ens}&locale=ca&page={p}"
 CAPCALERES = {"User-Agent": "Mozilla/5.0 (LaTdG-redaccio; latdg@laguait.cat)"}
 DIES = 7
 
@@ -47,16 +50,16 @@ def data_item(it):
     return None
 
 
-def main():
+def llegeix(clau, ens, nom):
     limit = (datetime.now(HORA_LOCAL) - timedelta(days=DIES)).date()
     items, vistos, darrer = [], set(), None
     for p in range(1, 4):   # com a molt tres pàgines; s'atura quan arriba a anuncis d'abans de la setmana
-        r = requests.get(RSS.format(p=p), headers=CAPCALERES, timeout=60)
+        r = requests.get(RSS.format(ens=ens, p=p), headers=CAPCALERES, timeout=60)
         r.raise_for_status()
         arrel = ET.fromstring(r.content)
         pagina = arrel.findall(".//item")
         # Registre: quants anuncis porta la pàgina i les dates dels primers (per veure-ho al workflow).
-        print(f"Pàgina {p}: {len(pagina)} anuncis; primeres dates: {[str(data_item(x)) for x in pagina[:5]]}")
+        print(f"{nom} · pàgina {p}: {len(pagina)} anuncis; primeres dates: {[str(data_item(x)) for x in pagina[:5]]}")
         if p == 1 and pagina:
             print("Primer anunci tal com arriba:", ET.tostring(pagina[0], encoding="unicode")[:800])
         if not pagina:
@@ -80,10 +83,23 @@ def main():
         if antics:
             break
     items.sort(key=lambda x: x["data"], reverse=True)
-    print(f"Consorci de les Gavarres: {len(items)} anuncis de l'última setmana")
-    SORTIDA.write_text(json.dumps({"generat": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                                   "font": "https://tauler.seu-e.cat/inici?idEns=9813510007",
+    print(f"{nom}: {len(items)} anuncis de l'última setmana")
+    (ARREL / "dades" / f"tauler-{clau}.json").write_text(json.dumps({"generat": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                   "font": f"https://tauler.seu-e.cat/inici?idEns={ens}",
                                    "items": items, "darrer": darrer}, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def main():
+    errors = 0
+    for clau, ens, nom in ENS:
+        # Si un e-tauler falla, l'altre es desa igualment.
+        try:
+            llegeix(clau, ens, nom)
+        except Exception as e:
+            errors += 1
+            print(f"{nom}: error en llegir l'e-tauler: {e}")
+    if errors == len(ENS):
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":

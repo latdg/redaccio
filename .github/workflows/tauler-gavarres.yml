@@ -1,7 +1,7 @@
-# E-tauler del Consorci de les Gavarres — La TdG · 27.10.2026
-# Anuncis de l'última setmana (dades/tauler-gavarres.json), a les mateixes
+# E-taulers del Consorci de les Gavarres i de l'Ajuntament d'Ullastret — La TdG · 27.10.2026 (Ullastret, 31.10.2026)
+# Anuncis de l'última setmana (dades/tauler-gavarres.json i dades/tauler-ullastret.json), a les mateixes
 # hores que el resum del panell (6, 9, 12, 15, 18 i 23 h, hora d'hivern).
-name: E-tauler del Consorci de les Gavarres
+name: E-taulers (Consorci de les Gavarres i Ullastret)
 
 on:
   schedule:
@@ -30,9 +30,9 @@ jobs:
           python taulers/gavarres.py 2>&1 | tee taulers/registre.txt
           git config user.name "La TdG (e-tauler Gavarres)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dades/tauler-gavarres.json taulers/registre.txt
+          git add dades/tauler-gavarres.json dades/tauler-ullastret.json taulers/registre.txt
           if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
-          git commit -qm "E-tauler del Consorci de les Gavarres ($(TZ=Europe/Madrid date '+%d.%m.%Y %H.%M'))"
+          git commit -qm "E-taulers (Gavarres i Ullastret) ($(TZ=Europe/Madrid date '+%d.%m.%Y %H.%M'))"
           for intent in 1 2 3 4 5 6; do
             git push -q origin HEAD:main && exit 0
             sleep $((intent * 10))

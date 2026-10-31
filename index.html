@@ -878,8 +878,9 @@ async function carregaResum(dia) {
     if (!blocs.length) throw new Error("sense apartats");
     // 27.10.2026: per saber què és nou, els enllaços del resum del dia anterior.
     DIA_RESUM = dia;
-    [CLAUS_ABANS, HIST_PREMSA, TAULER_GAV] = await Promise.all([
-      clausDiaAnterior(dia), historicPremsa(dia), obtenir("dades/tauler-gavarres.json").catch(() => null)]);
+    [CLAUS_ABANS, HIST_PREMSA, TAULER_GAV, TAULER_ULL] = await Promise.all([
+      clausDiaAnterior(dia), historicPremsa(dia), obtenir("dades/tauler-gavarres.json").catch(() => null),
+      obtenir("dades/tauler-ullastret.json").catch(() => null)]);
 
     // Es treuen els blocs del resum, però no els propis del panell.
     Array.from(cont.children).forEach(c => { if (!propis.includes(c.id)) c.remove(); });
@@ -1047,7 +1048,8 @@ function esNou(item) {
   const d = DIA_RESUM.split("-").reverse().join(".");   // 2026-10-27 → 27.10.2026
   // Les actes del Ple no vénen del resum (no hi són mai el dia anterior): noves, només si són del dia.
   // També l'e-tauler del Consorci de les Gavarres (ve d'un altre fitxer): per data.
-  if (CLAUS_ABANS && !/Acta del Ple|idEns=9813510007/.test(item)) return !CLAUS_ABANS.has(clauItem(item));
+  // 31.10.2026: també l'e-tauler d'Ullastret (idEns=1720570005).
+  if (CLAUS_ABANS && !/Acta del Ple|idEns=9813510007|idEns=1720570005/.test(item)) return !CLAUS_ABANS.has(clauItem(item));
   return !!d && item.includes(d);
 }
 function partsGrup(html) {
@@ -1085,9 +1087,9 @@ const rangAdmin = nom => { const i = ORDRE_ADMINS.indexOf(codiPerNom(nom)); retu
 // Els taulers dels municipis porten «Ajuntament de…», com a l'espai web.
 const nomAdmin = nom => {
   const c = codiPerNom(nom);
-  return ["17022", "17902", "17057", "17901", "17205"].includes(c) && !/^ajuntament/i.test(nom) ? "Ajuntament de " + NOMS_MUN[c] : nom;
+  return ["17022", "17902", "17057", "17901", "17205"].includes(c) && !/^ajuntament/i.test(nom) ? "Ajuntament " + (/^[aeiouàèéíòóú]/i.test(NOMS_MUN[c]) ? "d'" : "de ") + NOMS_MUN[c] : nom;
 };
-let TAULER_GAV = null, HIST_PREMSA = null;
+let TAULER_GAV = null, TAULER_ULL = null, HIST_PREMSA = null;
 // Bloc 1: les notícies dels dies anteriors (fins a sis), per mitjà, per tenir-les a «Anteriors».
 async function historicPremsa(dia) {
   // 31.10.2026: separat per a la premsa local i la generalista.
@@ -1153,7 +1155,10 @@ function plegaNovetats(sec) {
   const tipus = sec.dataset.novetats || "";
   const HIST = HIST_PREMSA ? (HIST_PREMSA[sec.dataset.premsa || "local"] || {}) : null;
   const { intro, grups } = grupsDelText(cos._original);
-  if (!grups.length) return;   // format desconegut: es deixa com estava
+  // 31.10.2026: a la premsa, encara que avui no hi hagi cap notícia, es mostren els
+  // mitjans dels dies anteriors amb les seves notícies a «Anteriors».
+  const ambHistoric = tipus === "premsa" && HIST && Object.keys(HIST).length;
+  if (!grups.length && !ambHistoric && tipus !== "taulers") return;   // format desconegut: es deixa com estava
   // 27.10.2026: la boleta vermella només va al recompte de novetats, no davant dels titulars.
   const senseBoleta = x => String(x).replace(/<span class="tdg-boleta-avui"><\/span>\s*/g, "");
   grups.forEach(g => g.items = g.items.map(senseBoleta));
@@ -1162,6 +1167,10 @@ function plegaNovetats(sec) {
   // Taulers: «Ajuntament de…» i, si el resum no el porta, l'e-tauler del Consorci de les Gavarres.
   if (tipus === "taulers") {
     grups.forEach(g => g.nom = nomAdmin(g.nom));
+    // 31.10.2026: l'e-tauler de l'Ajuntament d'Ullastret (seu-e.cat), com el del Consorci de les Gavarres.
+    if (TAULER_ULL && TAULER_ULL.items && String(TAULER_ULL.generat || "").slice(0, 10) === DIA_RESUM && !grups.some(g => codiPerNom(g.nom) === "17205"))
+      grups.push({ nom: "Ajuntament d'Ullastret", items: (TAULER_ULL.items.length ? TAULER_ULL.items : (TAULER_ULL.darrer ? [TAULER_ULL.darrer] : [])).map(x =>
+        `▪ <a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.titol)}</a>${x.data ? ` (${x.data.split("-").reverse().join(".")})` : ""}`) });
     // (només al resum del dia en què s'ha llegit l'e-tauler, no en dies antics)
     if (TAULER_GAV && TAULER_GAV.items && String(TAULER_GAV.generat || "").slice(0, 10) === DIA_RESUM && !grups.some(g => codiPerNom(g.nom) === "gavarres"))
       // Si la setmana és buida, el darrer anunci publicat (queda a «Anteriors», perquè és antic).

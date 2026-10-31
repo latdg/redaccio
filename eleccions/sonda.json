@@ -1,0 +1,349 @@
+[
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/",
+  "s": 200,
+  "t": "text/html",
+  "mostra": ""
+ },
+ {
+  "u": "https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap",
+  "s": 200,
+  "t": "text/css; charset=utf-8",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsives/common/js/entorn_config.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsives/common/js/jquery.min.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsives/common/js/generic_responsive.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsives/common/js/master.responsive.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsive/fpca_peu_faldoLlista/js/fpca_peu_faldoLlista.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsive/fpca_peu/js/fpca_peu.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsive/fpca_subcapcalera/js/fpca_subcapcalera.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsives/common/js/master.min.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsive/fpca_capcalera/js/fpca_capcalera.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/web/resources/fwkResponsives/common/js/jquery-ui.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://fonts.googleapis.com/css?family=Open+Sans&display=swap",
+  "s": 200,
+  "t": "text/css; charset=utf-8",
+  "mostra": ""
+ },
+ {
+  "u": "https://www.googletagmanager.com/gtm.js?id=GTM-NH8MVLN",
+  "s": 200,
+  "t": "application/javascript; charset=UTF-8",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/runtime.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/polyfills.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://www.googletagmanager.com/gtm.js?id=GTM-NJV37X7&gtm=4e6as1",
+  "s": 200,
+  "t": "application/javascript; charset=UTF-8",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/main.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/assets/i18n/ca.json",
+  "s": 200,
+  "t": "application/json",
+  "mostra": "{\n  \"INICI\": {\n    \"DADES_TOTES_CONVOCATORIES\": \"Dades electorals de totes les convocatòries\",\n    \"DADES_DARRERES_CONVOCATORIES\": \"Dades electorals de les darreres convocatòries\",\n    \"VEURE\": \"Mostra\",\n    \"ESCULL_ANY\": \"Escolliu la data: \",\n    \"ESCULL_NIVELL\": \"Escolliu el nivell territorial: \",\n    \"ESCULL_NIVELLS\": \"Escolliu els nivells territorials\",\n    \"RESULTATS_CERCA\": \"Resultats de la cerca\",\n    \"CERCA\": \"Cerca\"\n  },\n  \"COMMON\": {\n    \"VEURE_RESULTATS\": \"Mostra els resultats\",\n    \"MAJORIA_ABSOLUTA\": \"Majoria absoluta\",\n    \"ELECTES\": \"electes\",\n    \"ESCONS\": \"escons\",\n    \"PERCENT\": \"%\",\n    \"SIGLES\": \"Sigles\",\n    \"VOTS\": \"Vots\",\n    \"TEXT_CER\": \"CER: Cens d'espanyols residents a l'Estat espanyol.\",\n    \"TEXT_CERA\": \"CERA: Cens d'espanyols residents absents.\",\n    \"DESCARREGA\": \"Descarrega les dades\",\n    \"TANCA\": \"Tanca\",\n    \"CANDIDATURES\": \"Candidatures\",\n    \"CANDIDATURA\": \"Candidatura\",\n    \"OPCIO\": \"Opció\",\n    \"VEURE_CERA\": \"Mostra el CERA\",\n    \"AVANS_TOTAL_HORES\": \"24 hores\",\n    \"DIPUTATS\": \"Diputats\"\n  },\n  \"DADES\": {\n    \"DADES\": \"DADES\",\n    \"LLEGENDA\": \"sobre vots a candidatures\",\n    \"ELECTES\": \"ELECTES\",\n    \"MAPES\": \"MAPES\",\n    \"RESULTATS\": \"RESULTATS\",\n    \"CANDIDATURES\": \"CANDIDATURES\",\n    \"DADES_DE\": \"Dades de\",\n    \"CATALUNYA\": \"Catalunya\",\n    \"ARAN\": \"Aran\",\n    \"CERCA_PER_TERRITORI\": \"Cerca per territori\",\n    \"NIVELL_TERRITORIAL\": \"Cerca per nivell territorial\",\n    \"ELECCIONS\": \"Eleccions\",\n    \"COMPARA\": \"Compara amb\",\n    \"DETALL_M"
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/webelec/api/carto-datasets",
+  "s": 200,
+  "t": "application/json;charset=UTF-8",
+  "mostra": "{\"CANDIDATURA_MES_VOTADA\":\"mesvotats1_1\",\"SEGONA_CANDIDATURA_MES_VOTADA\":\"mesvotats2_1\",\"PARTICIPACIO\":\"kavlxobakkixi5apu_qotq\",\"TEMATIC_CANDIDATURA\":\"tematiccandidatura_1\"}"
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/webelec/api/proces",
+  "s": 200,
+  "t": "application/json;charset=UTF-8",
+  "mostra": "[{\"codi\":\"A20031\",\"nom\":\"Eleccions al Parlament de Catalunya 2003\",\"data\":1068940800000,\"tipusProcesElectoral\":{\"codi\":\"A\",\"nom\":\"Eleccions al Parlament de Catalunya\"},\"circumscripcio\":{\"codi\":\"PR\",\"nom\":\"Província\",\"teMapa\":null},\"urlElectes\":\"http://eleccions.gencat.cat/web/.content/00_carrecs_electes/parlament/A20031_parlament_catalunya_2003.pdf\",\"geoCarto\":\"pre2023\"},{\"codi\":\"A20061\",\"nom\":\"Eleccions al Parlament de Catalunya 2006\",\"data\":1162339200000,\"tipusProcesElectoral\":{\"codi\":\"A\",\"nom\":\"Eleccions al Parlament de Catalunya\"},\"circumscripcio\":{\"codi\":\"PR\",\"nom\":\"Província\",\"teMapa\":null},\"urlElectes\":\"http://eleccions.gencat.cat/web/.content/00_carrecs_electes/parlament/A20061_parlament_catalunya_2006.pdf\",\"geoCarto\":\"pre2023\"},{\"codi\":\"A20101\",\"nom\":\"Eleccions al Parlament de Catalunya \",\"data\":1290902400000,\"tipusProcesElectoral\":{\"codi\":\"A\",\"nom\":\"Eleccions al Parlament de Catalunya\"},\"circumscripcio\":{\"codi\":\"PR\",\"nom\":\"Província\",\"teMapa\":null},\"urlElectes\":\"http://eleccions.gencat.cat/web/.content/00_carrecs_electes/parlament/A20101_parlament_catalunya_2010.pdf\",\"geoCarto\":\"pre2023\"},{\"codi\":\"A20121\",\"nom\":\"Eleccions al Parlament de Catalunya \",\"data\":1353801600000,\"tipusProcesElectoral\":{\"codi\":\"A\",\"nom\":\"Eleccions al Parlament de Catalunya\"},\"circumscripcio\":{\"codi\":\"PR\",\"nom\":\"Província\",\"teMapa\":null},\"urlElectes\":\"http://eleccions.gencat.cat/web/.content/00_carrecs_electes/parlament/A20121_parlament_catalunya_2012.pdf\",\"geoCarto\":\"pre2023\"},{\"codi\":\"A20171"
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/webelec/api/tipusProces",
+  "s": 200,
+  "t": "application/json;charset=UTF-8",
+  "mostra": "[{\"codi\":\"A\",\"nom\":\"Eleccions al Parlament de Catalunya\"},{\"codi\":\"G\",\"nom\":\"Eleccions Generals\"},{\"codi\":\"S\",\"nom\":\"Eleccions al Senat\"},{\"codi\":\"M\",\"nom\":\"Eleccions Municipals\"},{\"codi\":\"E\",\"nom\":\"Eleccions al Parlament Europeu\"},{\"codi\":\"V\",\"nom\":\"Eleccions al Consell General d'Aran\"},{\"codi\":\"C\",\"nom\":\"Eleccions a Consells Comarcals\"},{\"codi\":\"D\",\"nom\":\"Eleccions a Diputacions Provincials\"},{\"codi\":\"R\",\"nom\":\"Referèndum\"}]"
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/6.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/webelec/api/proces/A20241/nivellTerritorial?requireMapa=false",
+  "s": 200,
+  "t": "application/json;charset=UTF-8",
+  "mostra": "[{\"codi\":\"CA\",\"nom\":\"Catalunya\",\"teMapa\":false},{\"codi\":\"PR\",\"nom\":\"Província\",\"teMapa\":true},{\"codi\":\"VE\",\"nom\":\"Vegueria\",\"teMapa\":false},{\"codi\":\"CO\",\"nom\":\"Comarca\",\"teMapa\":true},{\"codi\":\"MU\",\"nom\":\"Municipi\",\"teMapa\":true},{\"codi\":\"DM\",\"nom\":\"Districte Municipal\",\"teMapa\":false},{\"codi\":\"SE\",\"nom\":\"Secció\",\"teMapa\":false},{\"codi\":\"ME\",\"nom\":\"Mesa\",\"teMapa\":false}]"
+ },
+ {
+  "u": "https://gencat.containers.piwik.pro/eb50131d-1482-4c39-a0fa-835d5e4dacd6.js",
+  "s": 200,
+  "t": "application/javascript; charset=utf-8",
+  "mostra": ""
+ },
+ {
+  "u": "https://resultats.dadeselectorals.gencat.cat/webelec/api/proces/A20241/nivellTerritorial/CA/vot",
+  "s": 200,
+  "t": "application/json;charset=UTF-8",
+  "mostra": "[{\"procesElectoral\":{\"codi\":\"A20241\",\"nom\":\"Eleccions al Parlament de Catalunya\",\"data\":1715472000000,\"tipusProcesElectoral\":{\"codi\":\"A\",\"nom\":\"Eleccions al Parlament de Catalunya\"},\"circumscripcio\":{\"codi\":\"PR\",\"nom\":\"Província\",\"teMapa\":true},\"urlElectes\":\"http://eleccions.gencat.cat/web/.content/00_carrecs_electes/parlament/A20241_parlament_catalunya_2024.pdf\",\"geoCarto\":\"post2023\"},\"territori\":{\"codi\":\"9\",\"nom\":\"Catalunya\",\"nivellTerritorial\":{\"codi\":\"CA\",\"nom\":null,\"teMapa\":null}},\"candidatura\":{\"id\":6,\"nom\":\"Partit dels Socialistes de Catalunya (PSC-PSOE)\",\"sigles\":\"PSC\",\"color\":\"#E20A16\",\"logotip\":\"http://eleccions.gencat.cat/web/.content/00_logos_candidatures/parlament/2024/PSC.png\",\"grupId\":null},\"candidat\":null,\"vots\":882589,\"votsCera\":5433,\"escons\":42,\"percentatgeValids\":0.27961266,\"percentatgeCandidatures\":0.28283548,\"percentatgeCens\":0.15336166,\"percentatgeEmesos\":0.2772702,\"percentatgeValidsCera\":0.26393005,\"percentatgeCandidaturesCera\":0.26515374,\"percentatgeCensCera\":0.01844233,\"percentatgeEmesosCera\":0.2616548},{\"procesElectoral\":{\"codi\":\"A20241\",\"nom\":\"Eleccions al Parlament de Catalunya\",\"data\":1715472000000,\"tipusProcesElectoral\":{\"codi\":\"A\",\"nom\":\"Eleccions al Parlament de Catalunya\"},\"circumscripcio\":{\"codi\":\"PR\",\"nom\":\"Província\",\"teMapa\":true},\"urlElectes\":\"http://eleccions.gencat.cat/web/.content/00_carrecs_electes/parlament/A20241_parlament_catalunya_2024.pdf\",\"geoCarto\":\"post2023\"},\"territori\":{\"codi\":\"9\",\"nom\":\"Catalunya\",\"nivellTerritorial\":{\"codi"
+ },
+ {
+  "u": "https://gencat.containers.piwik.pro/eb50131d-1482-4c39-a0fa-835d5e4dacd6/privacy-templates.json",
+  "s": 200,
+  "t": "application/json; charset=utf-8",
+  "mostra": "{\"oc\":{\"data_subject_request\":{\"styles\":\"<style>div.ppms_cm_data_subject_widget__wrapper,form.ppms_cm_data_subject_form,input.ppms_cm_data_subject_form_submit,textarea.ppms_cm_data_subject_form_textarea,label.ppms_cm_data_subject_form_label,div.ppms_cm_data_subject_form_select_wrapper,div.ppms_select_component_extendable,div.ppms_select_component_extended_item,div.ppms_select_component_extended_item,div.ppms_select_component_extended_item,div.ppms_select_component_btn,span.ppms_select_component-btn-chevron,label.ppms_cm_data_subject_form_label,input.ppms_cm_data_subject_form_input,label.ppms_cm_data_subject_form_label,p.paragraph,h3.header3 {align-content: initial !important; align-items: initial !important; align-self: initial !important; animation: initial !important; appearance: initial !important; backface-visibility: initial !important; background-blend-mode: initial !important; background: none !important; binding: initial !important; block-size: initial !important; border-block-end: initial !important; border-block-start: initial !important; border-collapse: initial !important; border-inline-end: initial !important; border-inline-start: initial !important; border-radius: initial !important; border-spacing: initial !important; border: 0px !important; bottom: initial !important; box-align: initial !important; box-decoration-break: initial !important; box-direction: initial !important; box-flex: initial !important; box-ordinal-group: initial !important; box-orient: initia"
+ },
+ {
+  "u": "https://www.youtube.com/iframe_api",
+  "s": 200,
+  "t": "text/javascript; charset=utf-8",
+  "mostra": ""
+ },
+ {
+  "u": "https://www.youtube.com/s/player/11a45ffb/www-widgetapi.vflset/www-widgetapi.js",
+  "s": 200,
+  "t": "text/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.containers.piwik.pro/ppms.js",
+  "s": 200,
+  "t": "application/javascript",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "u": "https://gencat.piwik.pro/ppms.php",
+  "s": 202,
+  "t": "",
+  "mostra": ""
+ },
+ {
+  "enllacos": [
+   {
+    "t": "Saltar al contingut principal",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#main"
+   },
+   {
+    "t": "Contacte",
+    "h": "https://ovt.gencat.cat/gsitfc/AppJava/generic/conqxsGeneric.do?webFormId=391&set-locale=ca_ES&topicLevel1.id=500&topicLevel2.id=567"
+   },
+   {
+    "t": "",
+    "h": "https://web.gencat.cat/"
+   },
+   {
+    "t": "Processos electorals",
+    "h": "https://eleccions.gencat.cat/ca/resultats-i-eleccions-anteriors"
+   },
+   {
+    "t": "Processos electorals",
+    "h": "https://eleccions.gencat.cat/ca/resultats-i-eleccions-anteriors"
+   },
+   {
+    "t": "Eleccions al Parlament de Catalunya 2024",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=A&proces=A20241#dades"
+   },
+   {
+    "t": "Eleccions Generals 2023",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=G&proces=G20231#dades"
+   },
+   {
+    "t": "Eleccions Senat 2023",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=S&proces=S20231#dades"
+   },
+   {
+    "t": "Eleccions municipals 2023",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=M&proces=M20231#dades"
+   },
+   {
+    "t": "Eleccions al Parlament Europeu 2024",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=E&proces=E20241#dades"
+   },
+   {
+    "t": "Eleccions al Consell General d'Aran 2023",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=V&proces=V20231#dades"
+   },
+   {
+    "t": "Eleccions a Consells Comarcals 2023",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=C&proces=C20231#dades"
+   },
+   {
+    "t": "Eleccions a Diputacions Provincials 2023",
+    "h": "https://resultats.dadeselectorals.gencat.cat/#/dades?tipusProces=D&proces=D20231#dades"
+   },
+   {
+    "t": "",
+    "h": "https://x.com/gencat"
+   },
+   {
+    "t": "",
+    "h": "https://www.facebook.com/gencat"
+   },
+   {
+    "t": "",
+    "h": "https://www.instagram.com/gencat"
+   },
+   {
+    "t": "",
+    "h": "https://gen.cat/telegram"
+   },
+   {
+    "t": "",
+    "h": "https://web.gencat.cat/"
+   },
+   {
+    "t": "Avís legal",
+    "h": "https://web.gencat.cat/ca/avis-legal"
+   },
+   {
+    "t": "Política de galetes",
+    "h": "https://web.gencat.cat/ca/politica-galetes"
+   },
+   {
+    "t": "Accessibilitat",
+    "h": "https://web.gencat.cat/ca/menu-ajuda/ajuda/accessibilitat/"
+   },
+   {
+    "t": "Mapa web",
+    "h": "https://eleccions.gencat.cat/ca/ajuda/mapaweb/"
+   }
+  ]
+ },
+ {
+  "html": "<!DOCTYPE html><html lang=\"ca-ES\" xml:lang=\"ca-ES\"><head>\n  <meta charset=\"UTF-8\">\n  <meta content=\"IE=edge\" http-equiv=\"X-UA-Compatible\">\n  <meta content=\"width=device-width, initial-scale=1.0\" name=\"viewport\">\n  <meta content=\"ca\" name=\"WT.z_idioma\">\n\n  <!---->\n  <title>Resultats electorals.</title>\n  <link href=\"http://eleccions.gencat.cat/es/resultats-electorals/index.html\" hreflang=\"es\" rel=\"alternate\">\n  <link href=\"http://eleccions.gencat.cat/oc/resultats-electorals/index.html\" hreflang=\"oc\" rel=\"alternate\">\n  <!-- Google Tag Manager -->\n  <script type=\"text/javascript\" async=\"\" defer=\"\" src=\"https://gencat.containers.piwik.pro/ppms.js\"></script><script type=\"text/javascript\" id=\"www-widgetapi-script\" src=\"https://www.youtube.com/s/player/11a45ffb/www-widgetapi.vflset/www-widgetapi.js\" async=\"\"></script><script type=\"text/javascript\" async=\"\" defer=\"\" src=\"https://gencat.containers.piwik.pro/ppms.js\"></script><script src=\"//www.youtube.com/iframe_api\" async=\"\"></script><script async=\"\" src=\"https://gencat.containers.piwik.pro/eb50131d-1482-4c39-a0fa-835d5e4dacd6.js\"></script><script type=\"text/javascript\" async=\"\" src=\"https://www.googletagmanager.com/gtm.js?id=GTM-NJV37X7&amp;gtm=4e6as1\"></script><script async=\"\" src=\"https://www.googletagmanager.com/gtm.js?id=GTM-NH8MVLN\"></script><script>(function (w, d, s, l, i) {\n    w[l] = w[l] || [];\n    w[l].push({\n      'gtm.start':\n        new Date().getTime(), event: 'gtm.js'\n    });\n    var f = d.getElementsByTagName(s)[0],\n      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';\n    j.async = true;\n    j.src =\n      'https://www.googletagmanager.com/gtm.js?id=' + i + dl;\n    f.parentNode.insertBefore(j, f);\n  })(window, document, 'script', 'dataLayer', 'GTM-NH8MVLN');</script>\n  <!-- End Google Tag Manager -->\n  <!-- Google Fonts – Open Sans (Gencat Design System) -->\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin=\"\">\n  <link href=\"https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&amp;display=swap\" rel=\"stylesheet\">\n\n  <link href=\"assets/web/resources/fwkResponsives/common/img/favicon.ico\" rel=\"shortcut icon\" type=\"image/x-icon\">\n  <link href=\"assets/web/resources/fwkResponsives/common/css/bootstrap.min.css\" rel=\"stylesheet\" type=\"text/css\">\n  <link href=\"assets/web/resources/fwkResponsives/common/css/styles.css\" rel=\"stylesheet\" type=\"text/css\">\n  <link href=\"assets/web/resources/fwkResponsives/common/css/leaflet.min.css\" rel=\"stylesheet\" type=\"text/css\">\n  <link href=\"assets/web/resources/fwkResponsives/common/css/master.responsive.css\" rel=\"stylesheet\" type=\"text/css\">\n  <!--[if IE 9]>\n  <link href=\"assets/web/resources/fwkResponsives/common/css/master.min.css\" rel=\"stylesheet\" type=\"text/css\"/>\n  <link href=\"assets/web/resources/fwkResponsives/common/css/style_IE9.css\" rel=\"stylesheet\" type=\"text/css\"/>\n  <![endif]-->\n  <script src=\"assets/web/resources/fwkResponsives/common/js/jquery.min.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsives/common/js/jquery-ui.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsives/common/js/master.min.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsives/common/js/entorn_config.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsives/common/js/generic_responsive.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsives/common/js/master.responsive.js\" type=\"text/javascript\"></script>\n  <!--[if lt IE 9]>\n  <link href=\"assets/web/resources/fwkResponsives/common/css/style_IE8.css\" rel=\"stylesheet\" type=\"text/css\"/>\n  <script type=\"text/javascript\" src=\"assets/web/resources/fwkResponsives/common/js/respond.min.js\"></script>\n  <script type=\"text/javascript\" src=\"assets/web/resources/fwkResponsives/common/js/modernizr.js\"></script>\n  <![endif]-->\n\n  <link href=\"assets/web/resources/fwkResponsive/fpca_peu_faldoLlista/css/fpca_peu_faldoLlista.css\" rel=\"stylesheet\" type=\"text/css\">\n  <link href=\"assets/web/resources/fwkResponsive/fpca_peu/css/fpca_peu.css\" rel=\"stylesheet\" type=\"text/css\">\n  <link href=\"assets/web/resources/fwkResponsive/fpca_capcalera/css/capcalera.css\" rel=\"stylesheet\" type=\"text/css\">\n  <link href=\"assets/web/resources/fwkResponsive/fpca_subcapcalera/css/fpca_subcapcalera.css\" rel=\"stylesheet\" type=\"text/css\">\n  <script src=\"assets/web/resources/fwkResponsive/fpca_peu_faldoLlista/js/fpca_peu_faldoLlista.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsive/fpca_peu/js/fpca_peu.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsive/fpca_capcalera/js/fpca_capcalera.js\" type=\"text/javascript\"></script>\n  <script src=\"assets/web/resources/fwkResponsive/fpca_subcapcalera/js/fpca_subcapcalera.js\" type=\"text/javascript\"></script>\n  <link href=\"assets/web/resources/fwkResponsives/common/css/print.css\" rel=\"stylesheet\" type=\"text/css\">\n  <meta content=\"Resultats electorals\" property=\"og:title\">\n  <meta content=\"http://eleccions.gencat.cat/ca/resultats-electorals/index.html\" property=\"og:url\">\n  <meta content=\"\" property=\"og:type\">\n  <meta content=\"Processos electorals\" property=\"og:site_name\">\n  <meta content=\"http://eleccions.gencat.cat/web/resources/fwk/comuns/img/avatar.jpg\" property=\"og:image\">\n  <meta content=\"https://eleccions.gencat.cat/web/resources/fwk/comuns/img/avatar.jpg\" property=\"og:image:secure_url\">\n  <meta content=\"640\" property=\"og:image:width\">\n  <meta content=\"442\" property=\"og:image:height\">\n  <meta content=\"Resultats electorals\" name=\"twitter:title\">\n  <meta content=\"summary\" name=\"twitter:card\">\n  <meta content=\"@gencat\" name=\"twitter:site\">\n  <meta content=\"http://eleccions.gencat.cat/web/resources/fwk/comuns/img/avatar.jpg\" name=\"twitter:image\">\n<link rel=\"stylesheet\" href=\"styles.css\"><style></style><style>.gc-skip-link[_ngconten"
+ }
+]

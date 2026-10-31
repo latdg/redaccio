@@ -78,6 +78,13 @@ details.fitxa.plegable>summary .resum-mun{color:var(--suau);font-size:.85rem;tex
 details.fitxa.plegable>summary::after{content:"▸";color:var(--accent);font-size:1.1rem;transition:transform .2s}
 details.fitxa.plegable[open]>summary::after{transform:rotate(90deg)}
 details.fitxa.plegable[open]>summary{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--linia)}
+/* 31.10.2026: al mòbil, la línia grisa del resum baixa a sota del nom (abans s'amuntegava). */
+@media (max-width:700px){
+  details.fitxa.plegable>summary,details.plegable>summary{flex-wrap:wrap;row-gap:2px}
+  details.fitxa.plegable>summary h3,details.plegable>summary b{flex:1 1 0}
+  details.fitxa.plegable>summary::after,details.plegable>summary::after{order:2}
+  details.fitxa.plegable>summary .resum-mun,details.plegable>summary .resum-mun{order:3;flex:1 0 100%;text-align:left;line-height:1.35}
+}
 .escut-mun{height:32px;width:auto;flex:none}
 .pista-plega{color:var(--suau);font-size:.85rem;margin:6px 0 0}
 /* 27.10.2026: blocs 1, 3 i 4: un grup per mitjà o administració; les novetats a la vista, la resta plegada */
@@ -85,6 +92,7 @@ details.fitxa.plegable[open]>summary{margin-bottom:12px;padding-bottom:10px;bord
 .grup-nov .cap{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .grup-nov .cap>span{color:var(--suau);font-size:.85rem}
 .grup-nov .cap>span.nom-grup{display:flex;align-items:center;gap:10px;color:var(--text);font-size:1rem}
+section.resum .cos .grup-nov img.icona-mitja{height:22px;width:22px;object-fit:contain;display:inline-block;vertical-align:-5px;margin-right:6px;border-radius:4px}
 section.resum .cos .grup-nov img.logo-mitja{height:26px;width:auto;max-width:180px;object-fit:contain;display:block}
 section.resum .cos .grup-nov img.escut-mun{height:32px;width:auto;max-width:72px;object-fit:contain}
 .grup-nov.sense-nou .cap b{color:var(--suau)}
@@ -363,6 +371,40 @@ function contractacioEnTargetes(cos) {
 }
 
 // -----------------------------------------------------------------------------
+// PUOSC EN TARGETES (31.10.2026): una fitxa plegada per municipi (escut i nom,
+// amb el nombre d'obres i l'import total); en obrir-la, cada obra en una targeta
+// amb l'any previst i l'import.
+// -----------------------------------------------------------------------------
+function puoscEnTargetes(cos) {
+  const lis = Array.from(cos.querySelectorAll("li"));
+  if (!lis.length) return;
+  const per = {};
+  lis.forEach(li => {
+    const st = li.querySelector("strong");
+    if (!st) return;
+    const mun = st.textContent.trim();
+    const resta = li.textContent.slice(li.textContent.indexOf(mun) + mun.length);
+    const any = (resta.match(/\((\d{4})\)/) || [])[1] || "";
+    const imp = (resta.match(/—\s*([\d.,]+\s*€)\s*$/) || [])[1] || "";
+    const titol = resta.replace(/^\s*(\(\d{4}\))?\s*:\s*/, "").replace(/\s*—\s*[\d.,]+\s*€\s*$/, "").trim();
+    const euros = Number(imp.replace(/[^\d,]/g, "").replace(",", ".")) || 0;
+    (per[mun] = per[mun] || []).push({ any, imp, titol, euros });
+  });
+  const noms = Object.keys(per).sort((a, b) => rangEns(a) - rangEns(b));
+  if (!noms.length) return;
+  const peu = Array.from(cos.querySelectorAll("p")).filter(p => /Font:/i.test(p.textContent)).map(p => p.outerHTML).join("");
+  const total = n => per[n].reduce((t, x) => t + x.euros, 0);
+  cos.innerHTML = PISTA_PLEGA + noms.map(n => fitxaPlegadaEns(n,
+    `${per[n].length} ${per[n].length === 1 ? "obra" : "obres"} · ${eurosCurt(total(n))}`, false)).join("") + peu;
+  activaEns(cos, (mun, caixa) => {
+    caixa.innerHTML = '<div class="tg-llista">' + per[mun].sort((a, b) => (a.any || "9") .localeCompare(b.any || "9")).map(x =>
+      `<article class="tg"><div class="tg-cap">${x.any ? `<span>📅 Previst per al ${esc(x.any)}</span>` : ""}</div>` +
+      `<div class="tg-text">${esc(x.titol)}</div>` +
+      `<div class="tg-peu"><span class="tg-qui">🏗️ PUOSC</span>${x.imp ? `<span class="tg-import">${esc(x.imp)}</span>` : ""}</div></article>`).join("") + "</div>";
+  });
+}
+
+// -----------------------------------------------------------------------------
 // CONTRACTACIÓ DE TOT L'ANY (21.10.2026): si hi ha dades/contractacio-any.json
 // (el desen els bots a GitHub), el bloc mostra tota la contractació de l'any:
 // totals per municipi (clicables), filtre per administració, cerca, i la tria
@@ -397,7 +439,7 @@ async function contractacioAny(sec) {
   const cos = sec.querySelector(".cos");
   const ordreEns = Object.keys(perMun).sort((a, b) => rangEns(a) - rangEns(b) || perMun[b].n - perMun[a].n);
   cos.innerHTML = `<p style="margin:4px 0 0">Aquest any, <b>${totes.length}</b> contractes per valor de <b>${eurosCurt(totalAny)}</b>.</p>` + PISTA_PLEGA +
-    ordreEns.map(m => fitxaPlegadaEns(m, `${perMun[m].n} contractes · ${eurosCurt(perMun[m].total)}`)).join("") +
+    ordreEns.map(m => fitxaPlegadaEns(m, `${perMun[m].n} contractes · ${eurosCurt(perMun[m].total)}`, false)).join("") +
     `<p class="sv-nota">Font: Plataforma de Serveis de Contractació Pública (dades obertes de la Generalitat). Anuncis, adjudicacions, formalitzacions i contractes menors publicats des de l'1 de gener.` +
     (d.complet === false ? " Atenció: a la darrera actualització alguna consulta va fallar i pot faltar algun contracte." : "") + `</p>`;
   activaEns(cos, (mun, caixa) => contractesEns(mun, caixa));
@@ -890,10 +932,11 @@ async function carregaResum(dia) {
         el.hidden = !visible;
         if (!visible) return;
         el.classList.add("resum");
-        el.dataset.numero = numero;
+        // 31.10.2026: cap panell porta números de secció.
+        delete el.dataset.numero;
         el.dataset.titol = o.titol;
         const h2 = el.querySelector("h2");
-        if (h2) h2.textContent = numero + " " + o.titol;
+        if (h2) h2.textContent = o.titol;
         cont.appendChild(el);
         nav.insertAdjacentHTML("beforeend", `<a href="#${o.propi}">${o.nom}</a>`);
         return;
@@ -905,7 +948,7 @@ async function carregaResum(dia) {
       const sec = document.createElement("section");
       sec.className = "resum";
       sec.id = id;
-      sec.innerHTML = `<h2>${numero} ${esc(b.titol)}</h2>` +
+      sec.innerHTML = `<h2>${esc(b.titol)}</h2>` +
         (generat ? `<p class="font">Actualitzat el ${esc(quan(generat))}</p>` : "") +
         '<div class="cos"></div>';
       const cos = sec.querySelector(".cos");
@@ -915,9 +958,12 @@ async function carregaResum(dia) {
         b.nodes.forEach(n => cos.appendChild(document.importNode(n, true)));
         enllacarTextos(cos);
         if (/^CONTRACTACI/i.test(b.titol)) { contractacioEnTargetes(cos); contractacioAny(sec); }
+        // 31.10.2026: PUOSC, una fitxa plegada per municipi amb les obres en targetes.
+        if (/^PUOSC/i.test(b.titol)) { try { puoscEnTargetes(cos); } catch (err) { console.error(err); } }
         // 27.10.2026: premsa local, webs de les administracions i taulers: novetats a la vista, la resta plegada.
         if (BLOCS_NOVETATS.some(rx => rx.test(b.titol))) {
           sec.dataset.novetats = /^PREMSA/i.test(b.titol) ? "premsa" : /^TAULER/i.test(b.titol) ? "taulers" : "web";
+          sec.dataset.premsa = /^PREMSA GENERALISTA/i.test(b.titol) ? "gen" : "local";
           try { plegaNovetats(sec); } catch (err) { console.error(err); }
         }
       }
@@ -967,7 +1013,9 @@ async function carregaJSON(dia, fitxer, ids, clauEstat) {
 // resta queda plegada a «Anteriors». Sense el dia anterior, és nou el que porta
 // la data del dia.
 // -----------------------------------------------------------------------------
-const BLOCS_NOVETATS = [/^PREMSA LOCAL/i, /^ESPAIS? WEB/i, /^TAULERS? D/i];
+// 31.10.2026: la premsa generalista es comporta com la local (novetats a la vista,
+// «Anteriors» amb els darrers dies i el logotip de cada mitjà).
+const BLOCS_NOVETATS = [/^PREMSA LOCAL/i, /^PREMSA GENERALISTA/i, /^ESPAIS? WEB/i, /^TAULERS? D/i];
 let CLAUS_ABANS = null, DIA_RESUM = "";
 // La clau d'un element és la primera adreça web que porta (enllaç o text); si no en porta, el text.
 const RX_URL = /https?:\/\/[^\s"'<>]+/g;
@@ -1034,24 +1082,55 @@ const nomAdmin = nom => {
 let TAULER_GAV = null, HIST_PREMSA = null;
 // Bloc 1: les notícies dels dies anteriors (fins a sis), per mitjà, per tenir-les a «Anteriors».
 async function historicPremsa(dia) {
-  const per = {};
+  // 31.10.2026: separat per a la premsa local i la generalista.
+  const PER = { local: {}, gen: {} };
   try {
     const dies = (await obtenir("dades/dies.json")).filter(x => x < dia).sort().reverse().slice(0, 6);
     for (const d of dies) {
       try {
         const doc = new DOMParser().parseFromString(await obtenir(`dades/${d}/resum.html`, "text"), "text/html");
-        const b = blocsDelResum(doc.body).find(x => /^PREMSA LOCAL/i.test(x.titol));
-        if (!b) continue;
+        const b = blocsDelResum(doc.body).filter(x => /^PREMSA (LOCAL|GENERALISTA)/i.test(x.titol));
+        if (!b.length) continue;
+        b.forEach(bb => {
+        const clauBloc = /GENERALISTA/i.test(bb.titol) ? "gen" : "local";
+        const per = PER[clauBloc];
         const div = document.createElement("div");
-        b.nodes.forEach(n => div.appendChild(document.importNode(n, true)));
+        bb.nodes.forEach(n => div.appendChild(document.importNode(n, true)));
         enllacarTextos(div);
         grupsDelText(div.innerHTML).grups.forEach(g => (per[g.nom] = per[g.nom] || []).push(...g.items));
+        });
       } catch (e) {}
     }
   } catch (e) {}
-  return per;
+  return PER;
 }
-function marcaGrup(nom) {
+// 31.10.2026: premsa generalista. Logotip (la icona del web del mitjà) i nom net. Els que
+// arriben per Bing porten el domini com a nom («cadenaser.com»): aquí surten amb el nom del mitjà.
+const MITJANS_GEN = [
+  [/vilaweb/, "vilaweb.cat", "VilaWeb"], [/naci[oó] digital|naciodigital/, "naciodigital.cat", "Nació Digital"],
+  [/^ara\.cat|^ara$/, "ara.cat", "Ara"], [/peri[oó]dico/, "elperiodico.cat", "El Periódico"],
+  [/vanguardia/, "lavanguardia.com", "La Vanguardia"], [/el pa[ií]s|elpais/, "elpais.com", "El País"],
+  [/el caso|elcaso/, "elcaso.elnacional.cat", "El Caso"], [/el nacional|elnacional/, "elnacional.cat", "El Nacional"],
+  [/rac1/, "rac1.cat", "RAC1"], [/elm[oó]n/, "elmon.cat", "El Món"], [/directa/, "directa.cat", "Directa"],
+  [/elcr[ií]tic/, "elcritic.cat", "El Crític"], [/infolibre/, "infolibre.es", "infoLibre"],
+  [/antena ?3/, "antena3.com", "Antena 3 Notícies"], [/lasexta/, "lasexta.com", "laSexta"],
+  [/cadena ?ser|cadenaser/, "cadenaser.com", "Cadena SER"], [/3cat|ccma|324/, "3cat.cat", "3Cat"],
+  [/europa ?press|europapress/, "europapress.es", "Europa Press"], [/elpuntavui|punt avui/, "elpuntavui.cat", "El Punt Avui"],
+  [/rtve/, "rtve.es", "RTVE"], [/catalunya ?r[aà]dio|catradio/, "catradio.cat", "Catalunya Ràdio"],
+  [/el ?mundo/, "elmundo.es", "El Mundo"], [/abc\.es/, "abc.es", "ABC"], [/20minutos/, "20minutos.es", "20minutos"],
+  [/elDiario|eldiario/i, "eldiario.es", "elDiario.es"], [/agencia ?catalana|acn\.cat|\bacn\b/, "acn.cat", "ACN"],
+  [/regi[oó]7/, "regio7.cat", "Regió7"], [/el ?temps/, "eltemps.cat", "El Temps"], [/betev[eé]/, "beteve.cat", "betevé"],
+];
+function marcaMitjaGeneralista(nom) {
+  const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const m = MITJANS_GEN.find(([rx]) => rx.test(t));
+  const domini = m ? m[1] : (/^[a-z0-9.-]+\.[a-z]{2,}$/.test(t) ? t : "");
+  const nomNet = m ? m[2] : nom;
+  const icona = domini ? `<img class="icona-mitja" src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(domini)}&sz=64" alt="" onerror="this.remove()">` : "";
+  return icona + `<b>${esc(nomNet)}</b>`;
+}
+function marcaGrup(nom, tipusPremsa) {
+  if (tipusPremsa === "gen") return marcaMitjaGeneralista(nom);
   nom = String(nom || "").replace(/Sant Sadurní(?! de l'Heura)/, "Sant Sadurní de l'Heura");   // el nom, sempre sencer
   const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const l = LOGOS_MITJANS.find(([rx]) => rx.test(t));
@@ -1064,6 +1143,7 @@ function plegaNovetats(sec) {
   if (!cos) return;
   if (cos._original === undefined) cos._original = cos.innerHTML;
   const tipus = sec.dataset.novetats || "";
+  const HIST = HIST_PREMSA ? (HIST_PREMSA[sec.dataset.premsa || "local"] || {}) : null;
   const { intro, grups } = grupsDelText(cos._original);
   if (!grups.length) return;   // format desconegut: es deixa com estava
   // 27.10.2026: la boleta vermella només va al recompte de novetats, no davant dels titulars.
@@ -1080,19 +1160,19 @@ function plegaNovetats(sec) {
   }
   if (tipus === "taulers" || tipus === "web") grups.sort((a, b) => rangAdmin(a.nom) - rangAdmin(b.nom));
   // Premsa local: també els mitjans que avui no hi surten però sí els dies anteriors.
-  if (tipus === "premsa" && HIST_PREMSA) Object.keys(HIST_PREMSA).forEach(n => { if (!grups.some(g => g.nom === n)) grups.push({ nom: n, items: [] }); });
+  if (tipus === "premsa" && HIST) Object.keys(HIST).forEach(n => { if (!grups.some(g => g.nom === n)) grups.push({ nom: n, items: [] }); });
   const introText = intro.replace(/<[^>]+>/g, "").trim();
   let totalNous = 0;
   const html = grups.map(g => {
     const nous = g.items.filter(esNou), vells = g.items.filter(x => !esNou(x));
     // Premsa local: a «Anteriors», també les notícies dels sis dies anteriors (sense repetir-ne cap).
-    if (tipus === "premsa" && HIST_PREMSA && HIST_PREMSA[g.nom]) {
+    if (tipus === "premsa" && HIST && HIST[g.nom]) {
       const vistes = new Set(g.items.map(clauItem));
-      HIST_PREMSA[g.nom].forEach(x => { const k = clauItem(x); if (!vistes.has(k)) { vistes.add(k); vells.push(x); } });
+      HIST[g.nom].forEach(x => { const k = clauItem(x); if (!vistes.has(k)) { vistes.add(k); vells.push(x); } });
     }
     g.total = nous.length + vells.length;
     totalNous += nous.length;
-    return `<div class="grup-nov${nous.length ? "" : " sense-nou"}"><div class="cap"><span class="nom-grup">${marcaGrup(g.nom)}</span>` +
+    return `<div class="grup-nov${nous.length ? "" : " sense-nou"}"><div class="cap"><span class="nom-grup">${marcaGrup(g.nom, sec.dataset.premsa)}</span>` +
       `<span>${nous.length ? `<span class="tdg-boleta-avui"></span>${nous.length} ${nous.length === 1 ? "novetat" : "novetats"}` : "Sense novetats"}` +
       `${g.total ? ` · ${g.total} en total` : ""}</span></div>` +
       nous.map(x => `<div class="item">${x}</div>`).join("") +
@@ -1240,7 +1320,9 @@ const ORDRE_ENS = ["17022", "17902", "17057", "17901", "17205", "ccbe", "gavarre
 const rangEns = nom => { const i = ORDRE_ENS.indexOf(codiPerNom(nom)); return i < 0 ? 99 : i; };
 // Fitxa plegada per a un ens qualsevol (pel nom); el contingut es pinta en obrir-la.
 // Blocs 11 i 13: els municipis, amb «Ajuntament de…» (el data-ens es queda amb el nom de les dades, per filtrar).
-const fitxaPlegadaEns = (nom, detall) => `<details class="fitxa plegable" data-ens="${esc(nom)}">${capPlegable(nomAdmin(nom), codiPerNom(nom), detall)}<div class="cos-plega"></div></details>`;
+// 31.10.2026: amb ambAjuntament = false (bloc 11, PUOSC), només el nom del municipi, sencer.
+const nomMunicipiSol = nom => { const c = codiPerNom(nom); return NOMS_MUN[c] || nom; };
+const fitxaPlegadaEns = (nom, detall, ambAjuntament = true) => `<details class="fitxa plegable" data-ens="${esc(nom)}">${capPlegable(ambAjuntament ? nomAdmin(nom) : nomMunicipiSol(nom), codiPerNom(nom), detall)}<div class="cos-plega"></div></details>`;
 function activaEns(arrel, pinta) {
   arrel.querySelectorAll("details[data-ens]").forEach(d => d.addEventListener("toggle", () => {
     if (!d.open || d.dataset.fet) return;

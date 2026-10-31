@@ -39,6 +39,10 @@ button:disabled{opacity:.45;cursor:default}
 .noticia{border-left:4px solid var(--accent)}
 .noticia .cap{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .noticia .cap h2{margin-right:auto}
+.nota{border-left:4px solid #8a8a84}
+.nota .cap{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.nota .text{min-height:120px}
+#notesBox{margin-top:16px}
 .peu{position:fixed;left:0;right:0;bottom:0;background:var(--targeta);border-top:1px solid var(--linia);padding:10px 16px;z-index:5}
 .peu .dins{max-width:900px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .peu #estat{flex:1 1 200px;font-size:.9rem;color:var(--suau)}
@@ -99,6 +103,17 @@ button:disabled{opacity:.45;cursor:default}
     </section>
 
     <div id="noticies" style="display:grid;gap:16px"></div>
+
+    <!-- 31.10.2026: NOTES sense data, per anar desenvolupant temes. Es desen soles. -->
+    <section id="notesBox">
+      <div class="cap" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <h2 style="margin:0">🗒️ Notes per desenvolupar temes</h2>
+        <span class="font" id="notesEstat" style="margin:0 0 0 auto"></span>
+      </div>
+      <p class="font">No van a cap guió. Es desen soles mentre escrius. Amb 📅 en pots passar una a un dia com a notícia.</p>
+      <button type="button" class="suau" id="afegeixNota">➕ Afegeix una nota</button>
+    </section>
+    <div id="notes" style="display:grid;gap:16px"></div>
   </div>
 </main>
 
@@ -124,6 +139,9 @@ const dataCa = s => s.split("-").reverse().join(".");
 const nouId = () => Math.random().toString(36).slice(2, 12);
 
 let PIN = "", DIA = "", SHA = null, BRUT = false, DIES_AMB = [];
+// 31.10.2026: les notes es desen com un «dia» que el guió no arriba a llegir mai.
+const NOTES_DIA = "2099-12-31";
+let NOTES_SHA = null, NOTES_TEMPS = null, NOTES_DESANT = false, NOTES_PENDENT = false;
 
 async function crida(cos) {
   const r = await fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: PIN, ...cos }) });
@@ -151,7 +169,8 @@ async function entra() {
     escriu(CLAU_DESADA, $("recorda").checked ? PIN : "");
     $("clauBox").hidden = true; $("panell").hidden = false; $("peu").hidden = false;
     const demanat = (location.hash.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
-    carregaDia(demanat || iso(new Date()));
+    carregaDia(demanat && demanat !== NOTES_DIA ? demanat : iso(new Date()));
+    carregaNotes();
   } catch (e) {
     PIN = "";
     $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message);
@@ -161,7 +180,7 @@ async function entra() {
 // --- Dies ---
 function pintaDies() {
   const avui = iso(new Date());
-  const llista = Array.from(new Set(DIES_AMB.filter(d => d >= avui).concat([DIA]))).sort().slice(0, 30);
+  const llista = Array.from(new Set(DIES_AMB.filter(d => d >= avui && d !== NOTES_DIA).concat([DIA]))).sort().slice(0, 30);
   $("dies").innerHTML = llista.map(d => {
     const dt = new Date(d + "T00:00:00");
     const amb = DIES_AMB.includes(d);
@@ -369,7 +388,7 @@ function estatEines() {
   const sel = document.getSelection(), caixa = sel.anchorNode && (sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement).closest(".text");
   document.querySelectorAll(".eines button[data-cmd]").forEach(b => b.classList.remove("on"));
   if (!caixa) return;
-  caixa.closest(".noticia").querySelectorAll(".eines button[data-cmd]").forEach(b => {
+  caixa.closest(".noticia, .nota").querySelectorAll(".eines button[data-cmd]").forEach(b => {
     if (b.dataset.cmd !== "removeFormat") b.classList.toggle("on", document.queryCommandState(b.dataset.cmd));
   });
 }
@@ -398,6 +417,105 @@ $("entra").onclick = entra;
 $("pin").onkeydown = e => { if (e.key === "Enter") entra(); };
 document.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && PIN) { e.preventDefault(); if (BRUT) desa(); } });
 window.addEventListener("beforeunload", e => { if (BRUT) { e.preventDefault(); e.returnValue = ""; } });
+
+// --- Notes sense data (31.10.2026) ---
+function afegeixNota(n = { id: nouId(), titol: "", text: "" }, focus = true) {
+  const s = document.createElement("section");
+  s.className = "nota";
+  s.dataset.id = n.id || nouId();
+  s.innerHTML = `<div class="cap"><input class="titol-nota" type="text" maxlength="200" placeholder="Tema (opcional)" value="${esc(n.titol || "")}"
+        style="flex:1;min-width:0;font:inherit;font-weight:600;padding:6px 8px;border:1px solid var(--linia,#e3e1db);border-radius:8px">
+      <span class="compta"></span>
+      <button type="button" class="icona" data-n="dia" title="Passa-la a un dia com a notícia">📅</button>
+      <button type="button" class="icona" data-n="treu" title="Esborra">🗑️</button></div>
+    <div class="eines">
+      <button type="button" data-cmd="bold" title="Negreta (Ctrl+B)"><b>N</b></button>
+      <button type="button" data-cmd="italic" title="Cursiva (Ctrl+I)"><i>C</i></button>
+      <button type="button" data-cmd="underline" title="Subratllat (Ctrl+U)"><u>S</u></button>
+      <button type="button" data-cmd="removeFormat" title="Treu el format del que hagis seleccionat">✕ format</button>
+    </div>
+    <div class="text" contenteditable="true" spellcheck="true" lang="ca" data-ph="Idees, dades, contactes, enllaços…">${marcaAHtml(n.text)}</div>`;
+  $("notes").prepend(s);
+  compta(s);
+  if (focus) s.querySelector(".titol-nota").focus();
+}
+function recullNotes() {
+  return Array.from(document.querySelectorAll(".nota")).map(s => ({
+    id: s.dataset.id, titol: s.querySelector(".titol-nota").value.trim(), text: htmlAMarca(s.querySelector(".text"))
+  })).filter(n => n.text || n.titol);
+}
+async function carregaNotes() {
+  $("notes").innerHTML = "";
+  $("notesEstat").textContent = "Carregant…";
+  try {
+    const d = await crida({ accio: "noticies-llegeix", dia: NOTES_DIA });
+    NOTES_SHA = d.sha;
+    d.noticies.slice().reverse().forEach(n => afegeixNota(n, false));
+    $("notesEstat").textContent = d.noticies.length ? (d.actualitzat ? "Desades el " + quan(d.actualitzat) + "." : "") : "Encara no hi ha cap nota.";
+  } catch (e) { $("notesEstat").textContent = "❌ " + e.message; }
+}
+function notesCanviades() {
+  $("notesEstat").textContent = "✏️ Desant d'aquí a un moment…";
+  clearTimeout(NOTES_TEMPS);
+  NOTES_TEMPS = setTimeout(desaNotes, 1500);
+}
+async function desaNotes() {
+  if (NOTES_DESANT) { NOTES_PENDENT = true; return; }
+  NOTES_DESANT = true;
+  $("notesEstat").textContent = "Desant…";
+  try {
+    const d = await crida({ accio: "noticies-desa", dia: NOTES_DIA, noticies: recullNotes(), sha: NOTES_SHA });
+    NOTES_SHA = d.sha;
+    $("notesEstat").textContent = "✅ Desades a les " + quan(d.actualitzat || new Date().toISOString()).split(" a les ")[1] + ".";
+  } catch (e) {
+    $("notesEstat").textContent = "❌ No s'han pogut desar: " + e.message + (e.conflicte ? " (s'han canviat des d'una altra pantalla: torna a carregar la pàgina)" : "");
+  } finally {
+    NOTES_DESANT = false;
+    if (NOTES_PENDENT) { NOTES_PENDENT = false; desaNotes(); }
+  }
+}
+$("afegeixNota").onclick = () => { afegeixNota(); };
+$("notes").addEventListener("input", e => { const s = e.target.closest(".nota"); if (s) compta(s); notesCanviades(); });
+$("notes").addEventListener("mousedown", e => { if (e.target.closest("button[data-cmd]")) e.preventDefault(); });
+$("notes").addEventListener("paste", e => {
+  if (!e.target.closest(".text")) return;
+  e.preventDefault();
+  document.execCommand("insertText", false, (e.clipboardData || window.clipboardData).getData("text/plain").replace(/\r\n/g, "\n"));
+});
+$("notes").addEventListener("click", async e => {
+  const c = e.target.closest("button[data-cmd]");
+  if (c) {
+    const caixa = c.closest(".nota").querySelector(".text");
+    if (!caixa.contains(document.getSelection().anchorNode)) caixa.focus();
+    document.execCommand(c.dataset.cmd, false, null);
+    notesCanviades();
+    return;
+  }
+  const b = e.target.closest("button[data-n]");
+  if (!b) return;
+  const s = b.closest(".nota");
+  if (b.dataset.n === "treu") {
+    if ((s.innerText || "").trim() && !confirm("Vols esborrar aquesta nota?")) return;
+    s.remove(); notesCanviades();
+  }
+  if (b.dataset.n === "dia") {
+    const desti = prompt("A quin dia la vols passar com a notícia? (dd.mm.aaaa)", "");
+    if (!desti) return;
+    const m = desti.trim().match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{2,4})$/);
+    if (!m) { alert("Escriu la data com 27.10.2026."); return; }
+    const dia = (m[3].length === 2 ? "20" + m[3] : m[3]) + "-" + dos(m[2]) + "-" + dos(m[1]);
+    if (dia === DIA && BRUT) { alert("Desa primer els canvis d'aquest dia."); return; }
+    const text = htmlAMarca(s.querySelector(".text"));
+    if (!text) { alert("La nota no té text."); return; }
+    try {
+      const altre = await crida({ accio: "noticies-llegeix", dia });
+      await crida({ accio: "noticies-desa", dia, noticies: altre.noticies.concat([{ id: nouId(), text }]), sha: altre.sha });
+      if (!DIES_AMB.includes(dia)) DIES_AMB.push(dia);
+      if (confirm("Passada al " + dataCa(dia) + ". Vols treure-la de les notes?")) { s.remove(); await desaNotes(); }
+      if (dia === DIA) carregaDia(dia); else pintaDies();
+    } catch (err) { alert("❌ " + err.message); }
+  }
+});
 
 const desada = llegeix(CLAU_DESADA);
 $("recorda").checked = !!desada;

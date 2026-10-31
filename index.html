@@ -1120,7 +1120,7 @@ const LOGOS_MITJANS = [
   [/diari\s*de\s*girona/, "diari-de-girona.png"], [/gerio/, "gerio.png"], [/punt\s*avui/, "el-punt-avui.png"],
 ];
 // 27.10.2026: blocs 3 i 4, sempre en aquest ordre: la Bisbal, Forallac, Corçà, Cruïlles, Monells i
-// Sant Sadurní de l'Heura, el Consell Comarcal i el Consorci de les Gavarres.
+// Sant Sadurní de l'Heura, Ullastret (l'últim dels ajuntaments, 31.10.2026), el Consell Comarcal i el Consorci de les Gavarres.
 const ORDRE_ADMINS = ["17022", "17902", "17057", "17901", "17205", "ccbe", "gavarres"];
 const rangAdmin = nom => { const i = ORDRE_ADMINS.indexOf(codiPerNom(nom)); return i < 0 ? 99 : i; };
 // Els taulers dels municipis porten «Ajuntament de…», com a l'espai web.
@@ -1198,6 +1198,8 @@ function plegaNovetats(sec) {
   // 27.10.2026: la boleta vermella només va al recompte de novetats, no davant dels titulars.
   const senseBoleta = x => String(x).replace(/<span class="tdg-boleta-avui"><\/span>\s*/g, "");
   grups.forEach(g => g.items = g.items.map(senseBoleta));
+  // 31.10.2026: «No s'han trobat notícies» no és cap notícia (no comptava com a novetat per error).
+  grups.forEach(g => g.items = g.items.filter(x => !/^\s*No s.han trobat/i.test(String(x).replace(/<[^>]+>/g, ""))));
   // Taulers: «Ajuntament de…» i, si el resum no el porta, l'e-tauler del Consorci de les Gavarres.
   if (tipus === "taulers") {
     grups.forEach(g => g.nom = nomAdmin(g.nom));

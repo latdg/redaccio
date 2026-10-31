@@ -1,23 +1,15 @@
-// Sonda (31.10.2026): carrega resultats.dadeselectorals.gencat.cat i anota les peticions de dades.
-import { chromium } from "playwright";
+// Sonda 2 (31.10.2026): rutes de l'API webelec i una prova per municipi.
 import fs from "fs";
-const b = await chromium.launch();
-const p = await b.newPage();
-const reqs = [];
-p.on("response", async r => {
-  const u = r.url(), t = r.headers()["content-type"] || "";
-  if (/\.(png|jpg|svg|woff2?|css|ico)(\?|$)/i.test(u)) return;
-  let mostra = "";
-  if (/json|xml|csv|text\/plain/.test(t)) { try { mostra = (await r.text()).slice(0, 1500); } catch (e) {} }
-  reqs.push({ u, s: r.status(), t, mostra });
-});
-const pagines = ["https://resultats.dadeselectorals.gencat.cat/#/", "https://resultats.dadeselectorals.gencat.cat/#/cerca?q=Ullastret"];
-for (const url of pagines) { try { await p.goto(url, { waitUntil: "networkidle", timeout: 60000 }); await p.waitForTimeout(5000); } catch (e) { reqs.push({ error: String(e), url }); } }
-// Mira de clicar algun enllaç de municipi o elecció per veure més peticions
-try {
-  const enllacos = await p.$$eval("a", as => as.map(a => ({ t: a.innerText.trim().slice(0, 60), h: a.href })).filter(x => x.h).slice(0, 80));
-  reqs.push({ enllacos });
-  const html = await p.content(); reqs.push({ html: html.slice(0, 6000) });
-} catch (e) {}
-fs.writeFileSync("eleccions/sonda.json", JSON.stringify(reqs, null, 1));
-await b.close();
+const B = "https://resultats.dadeselectorals.gencat.cat";
+const out = {};
+const js = await (await fetch(B + "/main.js")).text();
+out.rutes = [...new Set((js.match(/.{0,160}webelec\/api.{0,220}/g) || []).concat(js.match(/.{0,120}nivellTerritorial.{0,200}/g) || []))].slice(0, 80);
+const prova = async u => { try { const r = await fetch(B + u); out[u] = r.status + " " + (await r.text()).slice(0, 2500); } catch (e) { out[u] = String(e); } };
+await prova("/webelec/api/proces/M20231/nivellTerritorial/MU/territori");
+await prova("/webelec/api/proces/M20231/nivellTerritorial/MU");
+await prova("/webelec/api/proces/A20241/nivellTerritorial/MU/territori?nom=Ullastret");
+await prova("/webelec/api/proces/A20241/nivellTerritorial/MU/172057/vot");
+await prova("/webelec/api/proces/A20241/nivellTerritorial/MU/territori/172057/vot");
+await prova("/webelec/api/proces/A20241/nivellTerritorial/MU/17205/vot");
+await prova("/webelec/api/proces/A20241/nivellTerritorial/CA/vot");
+fs.writeFileSync("eleccions/sonda.json", JSON.stringify(out, null, 1));

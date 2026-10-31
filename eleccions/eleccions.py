@@ -228,7 +228,7 @@ def csv_gencat(zf, quin):
 
 def municipi_gencat(codi, m5, nom_mun):
     """Resultats d'un municipi sencer (sense meses) a partir de l'API de vots."""
-    r = requests.get(f"{GENCAT}/proces/{codi}/territori/MU-{m5}/vot", headers=CAPCALERES, timeout=60)
+    r = requests.get(f"{GENCAT}/proces/{codi}/territori/MU-{m5}/vot", headers=CAPCALERES, timeout=(15, 40))
     if r.status_code != 200:
         return None
     llista = r.json() or []
@@ -265,9 +265,20 @@ def processa_gencat(codi, nom, data, tipus, nomes=None):
     for m3, (m5, nom_mun) in MUNICIPIS.items():
         if nomes and m5 not in nomes:
             continue
-        r = requests.get(f"{GENCAT}/proces/{codi}/nivellTerritorial/ME/territori/{m5}/exportacio",
-                         headers=CAPCALERES, timeout=120)
-        if r.status_code != 200 or r.content[:2] != b"PK":
+        # 31.10.2026: si l'exportació mesa a mesa no respon o no hi és, resultats del municipi.
+        try:
+            r = requests.get(f"{GENCAT}/proces/{codi}/nivellTerritorial/ME/territori/{m5}/exportacio",
+                             headers=CAPCALERES, timeout=(15, 40))
+            ok = r.status_code == 200 and r.content[:2] == b"PK"
+        except requests.RequestException:
+            ok = False
+        if not ok:
+            try:
+                m = municipi_gencat(codi, m5, nom_mun)
+            except requests.RequestException:
+                m = None
+            if m:
+                municipis[m5] = m
             continue
         zf = zipfile.ZipFile(io.BytesIO(r.content))
         part = csv_gencat(zf, "Participaci")

@@ -87,6 +87,16 @@ audio{width:100%;margin-top:10px}
 
   <div id="panell" hidden style="display:grid;gap:16px">
     <section>
+      <div class="fila" style="justify-content:space-between">
+        <h2 style="margin:0">✂️ Editor</h2>
+        <a href="editor/" target="_blank" rel="noopener">Obre'l a pantalla completa ↗</a>
+      </div>
+      <p class="font" style="margin:4px 0 10px">Arrossega-hi un fitxer d'àudio o fes servir «File» per obrir-ne un. Selecciona un tros amb el ratolí per retallar-lo, copiar-lo o aplicar-hi efectes; «File › Export» per desar-lo en MP3 o WAV.</p>
+      <iframe class="editor" id="editor" title="Editor d'àudio" src="about:blank" allow="microphone"></iframe>
+      <p class="font">Editor: <a href="https://github.com/pkalogiros/AudioMass" target="_blank" rel="noopener">AudioMass</a> (codi obert, llicència MIT). Veus: <a href="https://huggingface.co/projecte-aina" target="_blank" rel="noopener">Projecte Aina</a> (BSC) i <a href="https://github.com/rhasspy/piper" target="_blank" rel="noopener">Piper</a> amb les veus de la UPC.</p>
+    </section>
+
+    <section>
       <h2>🗣️ Locució</h2>
       <div class="motors" id="motors">
         <button type="button" data-m="aina" class="actiu">Aina · Matxa (més qualitat)</button>
@@ -105,16 +115,6 @@ audio{width:100%;margin-top:10px}
       <p class="font" id="estat"></p>
       <audio id="reproductor" controls hidden></audio>
       <p class="font">Consell: separa les frases llargues amb punts i escriu les xifres i les sigles tal com s'han de llegir (per exemple, «la C-66» → «la ce seixanta-sis»).</p>
-    </section>
-
-    <section>
-      <div class="fila" style="justify-content:space-between">
-        <h2 style="margin:0">✂️ Editor</h2>
-        <a href="editor/" target="_blank" rel="noopener">Obre'l a pantalla completa ↗</a>
-      </div>
-      <p class="font" style="margin:4px 0 10px">Arrossega-hi un fitxer d'àudio o fes servir «File» per obrir-ne un. Selecciona un tros amb el ratolí per retallar-lo, copiar-lo o aplicar-hi efectes; «File › Export» per desar-lo en MP3 o WAV.</p>
-      <iframe class="editor" id="editor" title="Editor d'àudio" src="about:blank" allow="microphone"></iframe>
-      <p class="font">Editor: <a href="https://github.com/pkalogiros/AudioMass" target="_blank" rel="noopener">AudioMass</a> (codi obert, llicència MIT). Veus: <a href="https://huggingface.co/projecte-aina" target="_blank" rel="noopener">Projecte Aina</a> (BSC) i <a href="https://github.com/rhasspy/piper" target="_blank" rel="noopener">Piper</a> amb les veus de la UPC.</p>
     </section>
   </div>
 </main>
@@ -176,7 +176,12 @@ async function preparaAina() {
       const t = p.type || {}, nom = p.label || p.parameter_name || ("Camp " + (i + 1));
       const def = p.parameter_has_default ? p.parameter_default : p.example_input;
       if (/text/i.test(nom) && t.type === "string" && !t.enum) return "";   // el text és la caixa de dalt
-      if (t.enum) return `<label>${esc(nom)}<select data-i="${i}">${t.enum.map(o => `<option${o === def ? " selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
+      // 31.10.2026: si es pot triar l'accent, per defecte el català central.
+      if (t.enum) {
+        const central = t.enum.find(o => /central/i.test(String(o)));
+        const tria = central && /accent|variant|dialect|variet/i.test(nom + " " + (p.parameter_name || "")) ? central : def;
+        return `<label>${esc(nom)}<select data-i="${i}">${t.enum.map(o => `<option${o === tria ? " selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
+      }
       if (t.type === "number") return `<label>${esc(nom)}<input type="number" step="any" data-i="${i}" value="${esc(def ?? "")}"></label>`;
       if (t.type === "boolean") return `<label>${esc(nom)}<input type="checkbox" data-i="${i}"${def ? " checked" : ""}></label>`;
       return `<label>${esc(nom)}<input type="text" data-i="${i}" value="${esc(def ?? "")}"></label>`;

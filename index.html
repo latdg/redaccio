@@ -973,6 +973,8 @@ async function carregaResum(dia) {
         if (/^CONTRACTACI/i.test(b.titol)) { contractacioEnTargetes(cos); contractacioAny(sec); }
         // 31.10.2026: PUOSC, una fitxa plegada per municipi amb les obres en targetes.
         if (/^PUOSC/i.test(b.titol)) { try { puoscEnTargetes(cos); } catch (err) { console.error(err); } }
+        // 31.10.2026: BOE, Generalitat, DOGC i BOP, en fitxes amb novetats i «Anteriors».
+        if (BLOCS_FITXA.some(rx => rx.test(b.titol))) fitxesButlleti(sec, b.titol, dia).catch(err => console.error(err));
         // 27.10.2026: premsa local, webs de les administracions i taulers: novetats a la vista, la resta plegada.
         if (BLOCS_NOVETATS.some(rx => rx.test(b.titol))) {
           sec.dataset.novetats = /^PREMSA/i.test(b.titol) ? "premsa" : /^TAULER/i.test(b.titol) ? "taulers" : "web";
@@ -1007,6 +1009,8 @@ async function carregaJSON(dia, fitxer, ids, clauEstat) {
       if (s.id === "aigua-sinac") { aiguaSinac = s; return; }
       if (s.id === "aigua-mancomunitat") { aiguaManc = s; return; }
       pintaSeccio(s, d.generat);
+      // 31.10.2026: Loteries, Parlament i Congrés, en fitxes amb novetats i «Anteriors».
+      if (JSON_FITXA[s.id]) fitxesJSON(document.getElementById(s.id), s, dia).catch(err => console.error(err));
     });
     if (aiguaSinac || aiguaManc) pintaAigua(d.generat);
     // Les seccions que no venen en aquest fitxer (dies antics, per exemple).
@@ -1208,6 +1212,160 @@ function plegaNovetats(sec) {
   cos.innerHTML = (introText && tipus !== "premsa" ? `<p class="pob" style="margin:4px 0 0">${esc(introText.replace(/:\s*$/, ""))}</p>` : "") +
     `<p class="pista-plega">${totalNous ? `${totalNous} ${totalNous === 1 ? "novetat" : "novetats"} respecte al dia anterior. ` : "Cap novetat respecte al dia anterior. "}La resta, a «Anteriors».</p>` + html;
   if (typeof normalitzaDates === "function") normalitzaDates(cos);
+}
+
+// -----------------------------------------------------------------------------
+// 31.10.2026: LOTERIES, BOE, CONGRÉS, GENERALITAT, PARLAMENT, DOGC I BOP EN FITXES,
+// com la premsa i l'espai web: una fitxa per municipi o ens (amb l'escut), les
+// novetats a la vista i la resta plegada a «Anteriors», amb el que ha sortit els
+// sis dies anteriors (amb la data del dia que va sortir).
+// -----------------------------------------------------------------------------
+const BLOCS_FITXA = [/^BOE\b/i, /^GENERALITAT/i, /^DOGC\b/i, /^BOP\b/i];
+const JSON_FITXA = { loteries: "loteries.json", parlament: "parlament.json", congres: "extres.json" };
+const CAU_FITXA = {};
+const baixaFitxa = (cami, tipus) => CAU_FITXA[cami] || (CAU_FITXA[cami] = obtenir(cami, tipus).catch(() => null));
+async function diesFitxa(dia) {
+  const dies = await baixaFitxa("dades/dies.json");
+  return (dies || []).filter(x => x < dia).sort().reverse().slice(0, 6);
+}
+const diaPunts = d => String(d || "").split("-").reverse().join(".");
+// Nom de la fitxa d'un ens, sencer i amb majúscula.
+function nomFitxaEns(codi) {
+  if (codi === "ccbe") return "Consell Comarcal del Baix Empordà";
+  if (codi === "gavarres") return "Consorci de les Gavarres";
+  const n = NOMS_MUN[codi] || "";
+  return n.charAt(0).toUpperCase() + n.slice(1);
+}
+// A quin ens es refereix un element: la «Cita» del BOE, la capçalera del DOGC o el principi del text.
+function codiElement(text, capcalera) {
+  const net = String(text || "").replace(/<[^>]+>/g, " ");
+  const cita = net.match(/Cita:\s*([^\n]{1,120})/);
+  return (cita && codiPerNom(cita[1])) || codiPerNom(capcalera) || codiPerNom(net.slice(0, 300));
+}
+// Elements d'un apartat del resum (BOE, Generalitat, DOGC, BOP): els que comencen amb • o ▪.
+// La resta de línies (avui no hi ha DOGC, s'han revisat tants anuncis...) són notes.
+function elementsButlleti(html) {
+  const s = String(html)
+    .replace(/<div[^>]*>\s*<strong>([^<]{1,80})<\/strong>\s*<\/div>/gi, "\u0002\u0001$1\u0002")
+    .replace(/<\/?(?:div|p)\b[^>]*>/gi, "\u0002")
+    .replace(/(?:<br\s*\/?>\s*){2,}/gi, "\u0002");
+  const items = [], notes = [];
+  let cap = "";
+  s.split("\u0002").forEach(t => {
+    t = t.trim();
+    const net = t.replace(/<[^>]+>/g, "").trim();
+    if (!net) return;
+    if (t.startsWith("\u0001")) { cap = net.replace(/^\u0001/, ""); return; }
+    if (/^[•▪]/.test(net)) items.push({ html: t.replace(/^(\s*<[^>]+>)*\s*[•▪]\s*/, m => m.replace(/[•▪]\s*$/, "")), cap });
+    else notes.push(t);
+  });
+  return { items, notes };
+}
+function elementsJSON(s, id) {
+  let items = (s && s.items) || [];
+  if (id === "congres") {
+    const any = String(new Date().getFullYear());
+    items = items.filter(it => {
+      const m = String(it.text || "").match(/Data:\s*\d{1,2}[.\/-]\d{1,2}[.\/-](\d{4})/);
+      return !m || m[1] === any;
+    });
+  }
+  return items.map(it => {
+    const text = String(it.text || "").trim();
+    const primera = text.split("\n")[0];
+    return { html: linkify(text).replace(/\n/g, "<br>"), cap: primera, clau: clauItem(text), primera };
+  });
+}
+async function historicFitxa(dia, obte) {
+  const per = [];
+  for (const d of await diesFitxa(dia)) {
+    try { const r = await obte(d); if (r) per.push({ dia: d, items: r }); } catch (e) {}
+  }
+  return per;
+}
+function pintaFitxes(caixa, avui, nous, hist, notes) {
+  // Cada element, amb el primer dia que va sortir (dels set dies que es miren).
+  const vistos = new Map();
+  hist.forEach(h => h.items.forEach(x => { const k = x.clau || clauItem(x.html); vistos.set(k, { ...x, dia: h.dia }); }));   // més antic al final: guanya
+  const grups = {};
+  const posa = (x, nou) => {
+    const codi = codiElement(x.primera || x.html, x.cap);
+    const nom = codi ? nomFitxaEns(codi) : (x.cap && !/^[🏛🍀]/u.test(x.cap) && x.cap.length < 60 ? x.cap : "Altres");
+    const g = grups[nom] = grups[nom] || { nom, codi, nous: [], vells: [] };
+    (nou ? g.nous : g.vells).push(x);
+  };
+  const posades = new Set();
+  avui.forEach(x => {
+    const k = x.clau || clauItem(x.html);
+    if (posades.has(k)) return;
+    posades.add(k);
+    const nou = nous(x);
+    const v = vistos.get(k);
+    posa(nou ? x : { ...x, dia: v ? v.dia : "" }, nou);
+  });
+  vistos.forEach((x, k) => { if (!posades.has(k)) { posades.add(k); posa(x, false); } });
+  const llista = Object.values(grups).sort((a, b) => (a.codi ? rangAdmin(a.nom) : 98) - (b.codi ? rangAdmin(b.nom) : 98));
+  // Els anteriors, del més recent al més antic.
+  llista.forEach(g => g.vells.sort((a, b) => String(b.dia || "9").localeCompare(String(a.dia || "9"))));
+  const item = x => `<div class="item">${x.dia ? `<b>${diaPunts(x.dia)}</b> — ` : ""}${x.html}</div>`;
+  let totalNous = 0;
+  const html = llista.map(g => {
+    totalNous += g.nous.length;
+    const total = g.nous.length + g.vells.length;
+    return `<div class="grup-nov${g.nous.length ? "" : " sense-nou"}"><div class="cap"><span class="nom-grup">${escutPetit(g.codi)}<b>${esc(g.nom)}</b></span>` +
+      `<span>${g.nous.length ? `<span class="tdg-boleta-avui"></span>${g.nous.length} ${g.nous.length === 1 ? "novetat" : "novetats"}` : "Sense novetats"}` +
+      ` · ${total} en total</span></div>` +
+      g.nous.map(x => `<div class="item">${x.html}</div>`).join("") +
+      (g.vells.length ? `<details class="anteriors"><summary>Anteriors (${g.vells.length})</summary>${g.vells.map(item).join("")}</details>` : "") +
+      `</div>`;
+  }).join("");
+  caixa.innerHTML = notes.map(n => `<p class="buit">${n}</p>`).join("") +
+    `<p class="pista-plega">${totalNous ? `${totalNous} ${totalNous === 1 ? "novetat" : "novetats"} respecte al dia anterior. ` : "Cap novetat respecte al dia anterior. "}` +
+    (llista.length ? "La resta, a «Anteriors»." : "Res els set darrers dies.") + `</p>` + html;
+  if (typeof normalitzaDates === "function") normalitzaDates(caixa);
+}
+// Apartats del resum.
+async function fitxesButlleti(sec, titol, dia) {
+  const cos = sec.querySelector(".cos");
+  if (!cos) return;
+  const original = cos.innerHTML;
+  const rx = BLOCS_FITXA.find(r => r.test(titol));
+  const { items, notes } = elementsButlleti(original);
+  const hist = await historicFitxa(dia, async d => {
+    const t = await baixaFitxa(`dades/${d}/resum.html`, "text");
+    if (!t) return null;
+    const doc = new DOMParser().parseFromString(t, "text/html");
+    const b = blocsDelResum(doc.body).find(x => rx.test(x.titol));
+    if (!b) return null;
+    const div = document.createElement("div");
+    b.nodes.forEach(n => div.appendChild(document.importNode(n, true)));
+    enllacarTextos(div);
+    return elementsButlleti(div.innerHTML).items;
+  });
+  pintaFitxes(cos, items, esNou, hist, notes);
+}
+// Blocs propis que venen dels JSON (Loteries, Parlament i Congrés).
+async function fitxesJSON(el, s, dia) {
+  const id = s.id, fitxer = JSON_FITXA[id];
+  const avui = elementsJSON(s, id);
+  const seccio = async d => {
+    const j = await baixaFitxa(`dades/${d}/${fitxer}`);
+    const x = j && (j.seccions || []).find(z => z.id === id);
+    return x ? elementsJSON(x, id) : null;
+  };
+  const hist = await historicFitxa(dia, seccio);
+  // Loteries i Parlament: cada dia porta només els avisos nous. El Congrés porta la llista sencera:
+  // és nou el que no hi era el dia abans.
+  let nous = () => true;
+  if (id === "congres") {
+    const ahir = hist[0] ? new Set(hist[0].items.map(x => x.clau)) : null;
+    nous = x => (ahir ? !ahir.has(x.clau) : true);
+  }
+  el.querySelectorAll(".targeta, p.buit, .fitxes-avisos").forEach(n => n.remove());
+  const caixa = document.createElement("div");
+  caixa.className = "fitxes-avisos";
+  el.appendChild(caixa);
+  pintaFitxes(caixa, avui, nous, hist, s.nota ? [linkify(s.nota)] : []);
 }
 
 // -----------------------------------------------------------------------------

@@ -41,7 +41,7 @@ jobs:
           git config user.name "La TdG (eleccions)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # 27.10.2026: si un altre procés ha pujat canvis alhora, es torna a provar; si no hi ha manera, el workflow falla (no es perd en silenci).
-          git add -A eleccions/;   # 31.10.2026: també pendents.txt (o que s'hagi esborrat) [ -f dades/eleccions.json ] && git add dades/eleccions.json
+          git add -A eleccions/; [ -f dades/eleccions.json ] && git add dades/eleccions.json
           if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
           git commit -qm "Resultats electorals ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
           for intent in 1 2 3 4 5 6; do

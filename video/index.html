@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>Estudi de vídeo</title>
+<!--
+  ESTUDI DE VÍDEO — La TdG · 31.10.2026
+  Pàgina amb clau (la mateixa que l'estudi d'àudio). Tot es fa en aquest navegador amb
+  ffmpeg (ffmpeg.wasm, copiat a ffmpeg/): els vídeos no es pugen enlloc.
+   1. VÍDEO: retalla (inici i final), comprimeix per a les xarxes, canvia el format
+      (vertical 9:16 o quadrat, retallant o amb fons difuminat), posa el logotip de
+      La TdG i incrusta subtítols a partir d'un .srt (el del bot de transcripcions).
+      Si només cal retallar, ho pot fer sense recomprimir (al moment).
+   2. VÍDEO D'UN ÀUDIO: àudio + fons amb la capçalera de La TdG, un títol i l'ona
+      movent-se, per a les xarxes que no reprodueixen àudio sol. També admet .srt.
+  Els fitxers molt grans (un ple sencer) van lents al navegador: per a aquests, el
+  convertidor de GitHub o l'ordinador de casa.
+-->
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px}
+main{display:grid;gap:16px;padding-top:16px;padding-bottom:32px}
+h1{margin:0;font-size:1.6rem}
+h2{margin:0 0 8px;font-size:1.1rem}
+.sub{color:var(--suau);margin:4px 0 12px}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto}
+.podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
+.podcast svg{display:block;width:50px;height:50px}
+a{color:var(--accent)}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;min-width:0}
+[hidden]{display:none!important}
+input,select,textarea,button{font:inherit;padding:6px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text)}
+input[type=file]{max-width:100%}
+button{background:var(--accent);border-color:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+button.suau{background:var(--targeta);color:var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+.fila{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.font{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+#clauBox{border-color:var(--accent)}
+.pestanyes{display:flex;gap:6px;flex-wrap:wrap}
+.pestanyes button{background:var(--targeta);color:var(--text);border-color:var(--linia);border-radius:999px;font-weight:500}
+.pestanyes button.actiu{background:var(--accent);border-color:var(--accent);color:#fff}
+.params{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:12px 0}
+.params label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--suau)}
+.params label.check{flex-direction:row;align-items:center;gap:8px;color:var(--text);font-size:.95rem}
+.temps{display:flex;gap:6px;align-items:center}
+.temps input{width:7.5em}
+.temps button{padding:6px 8px;font-size:.85rem}
+video,audio{width:100%;max-height:60vh;margin-top:10px;background:#000;border-radius:8px}
+audio{background:none}
+.barra{height:6px;background:var(--linia);border-radius:3px;overflow:hidden;margin-top:10px}
+.barra span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.resultat{border-top:1px solid var(--linia);margin-top:14px;padding-top:12px}
+canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-radius:8px;margin-top:10px}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <a class="podcast" href="https://laguait.cat/latdg" target="_blank" rel="noopener" title="Visita el pòdcast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Visita el pòdcast">
+        <path d="M2 11a10 10 0 015-8.662" stroke="#e30613"/><path d="M22 11a10 10 0 00-5-8.662" stroke="#e30613"/>
+        <path d="M6 11a6 6 0 013-5.197" stroke="currentColor"/><path d="M18 11a6 6 0 00-3-5.197" stroke="currentColor"/>
+        <rect x="10" y="9" width="4" height="8" rx="2" stroke="currentColor"/><path d="M12 17v4" stroke="currentColor"/><path d="M9 21h6" stroke="currentColor"/>
+      </svg>
+    </a>
+    <h1>🎬 Estudi de vídeo</h1>
+    <a class="dreta" href="../">← La TdG redacció</a>
+  </div>
+  <p class="sub">Retalls, formats per a les xarxes, subtítols i vídeos a partir d'un àudio, tot al navegador.</p>
+</header>
+
+<main>
+  <section id="clauBox">
+    <h2>🔒 Clau</h2>
+    <div class="fila" style="margin-top:10px">
+      <input type="password" id="pin" placeholder="Clau" autocomplete="current-password" size="10">
+      <button type="button" id="entra">Entra</button>
+      <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="recorda"> Recorda-la en aquest navegador</label>
+    </div>
+    <p class="font" id="clauEstat"></p>
+  </section>
+
+  <div id="panell" hidden style="display:grid;gap:16px">
+    <div class="pestanyes" id="pestanyes">
+      <button type="button" data-p="video" class="actiu">✂️ Vídeo</button>
+      <button type="button" data-p="audio">🎙️ Vídeo d'un àudio</button>
+    </div>
+
+    <!-- 1. VÍDEO -->
+    <section id="p-video">
+      <h2>✂️ Vídeo: retalla, comprimeix, format, logotip i subtítols</h2>
+      <input type="file" id="vFitxer" accept="video/*,.mkv,.mov">
+      <video id="vMostra" controls playsinline hidden></video>
+      <div class="params" id="vParams" hidden>
+        <label>Inici
+          <span class="temps"><input id="vInici" value="0:00" inputmode="decimal"><button type="button" class="suau" data-marca="vInici" data-de="vMostra" title="Agafa el moment on és el vídeo">⏱️ Ara</button></span>
+        </label>
+        <label>Final
+          <span class="temps"><input id="vFinal" value="" inputmode="decimal"><button type="button" class="suau" data-marca="vFinal" data-de="vMostra" title="Agafa el moment on és el vídeo">⏱️ Ara</button></span>
+        </label>
+        <label>Format
+          <select id="vFormat">
+            <option value="original">Com l'original</option>
+            <option value="vertical-difuminat">Vertical 9:16 · amb fons difuminat</option>
+            <option value="vertical-retall">Vertical 9:16 · retallat al centre</option>
+            <option value="quadrat-difuminat">Quadrat · amb fons difuminat</option>
+            <option value="quadrat-retall">Quadrat · retallat al centre</option>
+          </select>
+        </label>
+        <label>Mida
+          <select id="vMida">
+            <option value="720" selected>Xarxes (720p)</option>
+            <option value="1080">Alta (1080p, més lent)</option>
+            <option value="480">Lleuger (480p, per a WhatsApp)</option>
+          </select>
+        </label>
+        <label>Subtítols (.srt, opcional)
+          <input type="file" id="vSrt" accept=".srt,.vtt,text/plain">
+        </label>
+        <label class="check"><input type="checkbox" id="vLogo"> Logotip de La TdG a la cantonada</label>
+        <label class="check"><input type="checkbox" id="vCopia"> Només retalla, sense recomprimir (al moment)</label>
+      </div>
+      <div class="fila" id="vBotons" hidden>
+        <button type="button" id="vFes">🎬 Fes el vídeo</button>
+        <button type="button" class="suau" id="vAtura" hidden>✋ Atura</button>
+      </div>
+      <div class="barra" id="vBarra" hidden><span></span></div>
+      <p class="font" id="vEstat"></p>
+      <div class="resultat" id="vResultat" hidden>
+        <video id="vSortida" controls playsinline></video>
+        <div class="fila" style="margin-top:10px"><button type="button" id="vBaixa">⬇️ Descarrega</button><span class="font" id="vInfo" style="margin:0"></span></div>
+      </div>
+      <p class="font">«Només retalla» talla pel fotograma clau més proper, i per això l'inici pot moure's un segon o dos. Si cal precisió, deixa-ho desmarcat. Els subtítols han de començar a comptar des del principi del vídeo original: si en retalles un tros, ja es desplacen sols.</p>
+    </section>
+
+    <!-- 2. VÍDEO D'UN ÀUDIO -->
+    <section id="p-audio" hidden>
+      <h2>🎙️ Vídeo d'un àudio</h2>
+      <input type="file" id="aFitxer" accept="audio/*,.mp3,.wav,.m4a,.ogg,.opus,.aac">
+      <audio id="aMostra" controls hidden></audio>
+      <div class="params" id="aParams" hidden>
+        <label>Títol
+          <input id="aTitol" placeholder="Per exemple: L'alcalde explica el nou pressupost" maxlength="140">
+        </label>
+        <label>Línia petita
+          <input id="aPeu" maxlength="80">
+        </label>
+        <label>Format
+          <select id="aFormat">
+            <option value="quadrat">Quadrat (720 × 720)</option>
+            <option value="vertical">Vertical 9:16 (720 × 1280)</option>
+            <option value="horitzontal">Horitzontal (1280 × 720)</option>
+          </select>
+        </label>
+        <label>Inici
+          <span class="temps"><input id="aInici" value="0:00" inputmode="decimal"><button type="button" class="suau" data-marca="aInici" data-de="aMostra">⏱️ Ara</button></span>
+        </label>
+        <label>Final
+          <span class="temps"><input id="aFinal" value="" inputmode="decimal"><button type="button" class="suau" data-marca="aFinal" data-de="aMostra">⏱️ Ara</button></span>
+        </label>
+        <label>Subtítols (.srt, opcional)
+          <input type="file" id="aSrt" accept=".srt,.vtt,text/plain">
+        </label>
+      </div>
+      <canvas class="mostra" id="aFons" hidden></canvas>
+      <div class="fila" id="aBotons" hidden>
+        <button type="button" id="aFes">🎬 Fes el vídeo</button>
+        <button type="button" class="suau" id="aAtura" hidden>✋ Atura</button>
+      </div>
+      <div class="barra" id="aBarra" hidden><span></span></div>
+      <p class="font" id="aEstat"></p>
+      <div class="resultat" id="aResultat" hidden>
+        <video id="aSortida" controls playsinline></video>
+        <div class="fila" style="margin-top:10px"><button type="button" id="aBaixa">⬇️ Descarrega</button><span class="font" id="aInfo" style="margin:0"></span></div>
+      </div>
+    </section>
+
+    <p class="font">Motor: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
+  </div>
+</main>
+
+<script src="ffmpeg/ffmpeg.js"></script>
+<script type="module">
+const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
+const CLAU_DESADA = "llampsPin";
+const ACCENT = "#b4462c", VERMELL = "#e30613", FONS = "#f6f5f2", TEXT = "#1d1d1b";
+const $ = id => document.getElementById(id);
+const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+const z = n => String(n).padStart(2, "0");
+const avui = () => { const d = new Date(); return `${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}`; };
+
+// --- Clau (es comprova amb el Worker de l'agenda, com a l'estudi d'àudio) ---
+async function entra() {
+  const pin = $("pin").value.trim();
+  if (!pin) { $("clauEstat").textContent = "Escriu la clau."; return; }
+  $("clauEstat").textContent = "Comprovant…";
+  try {
+    const r = await fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin, accio: "noticies-dies" }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.ok) throw new Error(d.error || "Clau incorrecta.");
+    escriu(CLAU_DESADA, $("recorda").checked ? pin : "");
+    $("clauBox").hidden = true; $("panell").hidden = false;
+  } catch (e) {
+    $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message);
+  }
+}
+
+// --- Motor ffmpeg (es carrega la primera vegada que es fa un vídeo) ---
+let FF = null, FF_CARREGANT = null, EN_MARXA = null;
+async function motor(estat) {
+  if (FF) return FF;
+  if (!FF_CARREGANT) FF_CARREGANT = (async () => {
+    estat("Carregant el motor de vídeo (la primera vegada, uns 32 MB)…");
+    const ff = new FFmpegWASM.FFmpeg();
+    await ff.load({
+      coreURL: new URL("ffmpeg/ffmpeg-core.js", location.href).href,
+      wasmURL: new URL("ffmpeg/ffmpeg-core.wasm", location.href).href
+    });
+    await ff.createDir("/fonts");
+    const lletra = new Uint8Array(await (await fetch("ffmpeg/DejaVuSans-Bold.ttf")).arrayBuffer());
+    await ff.writeFile("/fonts/DejaVuSans-Bold.ttf", lletra);
+    FF = ff; return ff;
+  })();
+  try { return await FF_CARREGANT; } catch (e) { FF_CARREGANT = null; throw e; }
+}
+// Cada feina munta el fitxer en una carpeta pròpia (/in1, /in2…), perquè una carpeta
+// que no s'ha pogut desmuntar no faci petar la següent.
+let N_DIR = 0;
+async function munta(ff, f) {
+  const dir = "/in" + (++N_DIR);
+  await ff.createDir(dir);
+  await ff.mount("WORKERFS", { files: [f] }, dir);
+  return dir;
+}
+async function desmunta(dir) {
+  if (!FF || !dir) return;
+  await FF.unmount(dir).catch(() => {});
+  await FF.deleteDir(dir).catch(() => {});
+}
+function atura() {
+  if (FF) { try { FF.terminate(); } catch (e) {} }
+  FF = null; FF_CARREGANT = null;
+  if (EN_MARXA) EN_MARXA.aturat = true;
+}
+
+// --- Temps: accepta «75», «1:15», «1:15,5» o «0:01:15» ---
+function llegeixTemps(t) {
+  t = String(t || "").trim().replace(",", ".");
+  if (!t) return null;
+  const parts = t.split(":").map(Number);
+  if (parts.some(isNaN)) return NaN;
+  return parts.reduce((a, b) => a * 60 + b, 0);
+}
+function escriuTemps(s) {
+  s = Math.max(0, s);
+  const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), seg = s % 60;
+  const ss = (Math.round(seg * 10) / 10).toFixed(1).replace(/\.0$/, "").replace(".", ",");
+  const ssP = seg < 10 ? "0" + ss : ss;
+  return h ? `${h}:${z(m)}:${ssP}` : `${m}:${ssP}`;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-marca]");
+  if (!b) return;
+  $(b.dataset.marca).value = escriuTemps($(b.dataset.de).currentTime || 0);
+});
+function tram(inici, final, durada) {
+  const a = llegeixTemps($(inici).value) ?? 0;
+  let b = llegeixTemps($(final).value);
+  if (b == null) b = durada;
+  if (isNaN(a) || isNaN(b)) throw new Error("No entenc l'inici o el final. Escriu-ho com 1:15 o 75.");
+  if (b - a < 0.5) throw new Error("El final ha de ser almenys mig segon després de l'inici.");
+  return [a, Math.min(b, durada || b)];
+}
+
+// --- Subtítols: llegeix .srt o .vtt i el desplaça si s'ha retallat l'inici ---
+function srtDesplacat(text, desde) {
+  const aSeg = t => { const m = t.trim().replace(",", ".").match(/(?:(\d+):)?(\d+):(\d+(?:\.\d+)?)/); return m ? (+(m[1] || 0)) * 3600 + (+m[2]) * 60 + (+m[3]) : 0; };
+  const aSrt = s => { s = Math.max(0, s); const ms = Math.round(s * 1000); return `${z(Math.floor(ms / 3600000))}:${z(Math.floor(ms / 60000) % 60)}:${z(Math.floor(ms / 1000) % 60)},${String(ms % 1000).padStart(3, "0")}`; };
+  const blocs = text.replace(/\r/g, "").replace(/^WEBVTT[^\n]*\n/, "").split(/\n\s*\n/);
+  let n = 0; const sortida = [];
+  for (const bloc of blocs) {
+    const linies = bloc.split("\n").filter(l => l.trim() !== "");
+    const i = linies.findIndex(l => l.includes("-->"));
+    if (i < 0) continue;
+    const [ini, fi] = linies[i].split("-->");
+    const a = aSeg(ini) - desde, b = aSeg(fi.split(/\s+/).filter(Boolean)[0] || "") - desde;
+    if (b <= 0) continue;
+    const text = linies.slice(i + 1).join("\n");
+    if (!text) continue;
+    sortida.push(`${++n}\n${aSrt(a)} --> ${aSrt(b)}\n${text}`);
+  }
+  return sortida.join("\n\n") + "\n";
+}
+async function preparaSubtitols(ff, input, desde) {
+  const f = $(input).files[0];
+  if (!f) return null;
+  const srt = srtDesplacat(await f.text(), desde);
+  if (!srt.trim()) throw new Error("El fitxer de subtítols no té cap línia dins del tros triat.");
+  await ff.writeFile("/s.srt", new TextEncoder().encode(srt));
+  return "/s.srt";
+}
+// Mida en unitats de libass (288 d'alçada). marge = distància des de baix.
+const filtreSubtitols = (mida, marge) =>
+  `subtitles=/s.srt:fontsdir=/fonts:force_style='FontName=DejaVu Sans,Bold=1,Fontsize=${mida},PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=1.6,Shadow=0,MarginV=${marge}'`;
+
+// --- Dibuix: micròfon de La TdG (el mateix SVG de la capçalera) ---
+function dibuixaMicro(ctx, x, y, mida, tinta) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(mida / 24, mida / 24);
+  ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  const traç = (d, color) => { ctx.strokeStyle = color; ctx.stroke(new Path2D(d)); };
+  traç("M2 11a10 10 0 015-8.662", VERMELL); traç("M22 11a10 10 0 00-5-8.662", VERMELL);
+  traç("M6 11a6 6 0 013-5.197", tinta); traç("M18 11a6 6 0 00-3-5.197", tinta);
+  traç("M12 9a2 2 0 012 2v4a2 2 0 01-4 0v-4a2 2 0 012-2z", tinta);
+  traç("M12 17v4", tinta); traç("M9 21h6", tinta);
+  ctx.restore();
+}
+async function logoPng(ample) {
+  const c = document.createElement("canvas");
+  const h = Math.round(ample * 0.42);
+  c.width = ample; c.height = h;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "rgba(255,255,255,0.88)";
+  ctx.beginPath(); ctx.roundRect(0, 0, ample, h, h * 0.22); ctx.fill();
+  dibuixaMicro(ctx, h * 0.14, h * 0.12, h * 0.76, TEXT);
+  ctx.fillStyle = TEXT; ctx.textBaseline = "middle";
+  ctx.font = `800 ${Math.round(h * 0.46)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
+  ctx.fillText("La TdG", h * 1.0, h * 0.53, ample - h * 1.1);
+  return new Uint8Array(await (await new Promise(r => c.toBlob(r, "image/png"))).arrayBuffer());
+}
+
+// --- Progrés ---
+function seguiment(ff, barra, estat, durada, etiqueta) {
+  const t0 = performance.now();
+  $(barra).hidden = false; $(barra).firstElementChild.style.width = "0";
+  const f = ({ time }) => {
+    const fet = Math.min(1, Math.max(0, (time / 1e6) / durada));
+    if (!isFinite(fet)) return;
+    $(barra).firstElementChild.style.width = Math.round(fet * 100) + "%";
+    const passat = (performance.now() - t0) / 1000;
+    const falta = fet > 0.03 ? Math.round(passat * (1 - fet) / fet) : null;
+    estat(`${etiqueta} ${Math.round(fet * 100)} %` + (falta != null ? ` · falten uns ${falta >= 90 ? Math.round(falta / 60) + " min" : falta + " s"}` : ""));
+  };
+  ff.on("progress", f);
+  return () => { ff.off("progress", f); $(barra).hidden = true; return Math.round((performance.now() - t0) / 1000); };
+}
+const mb = n => (n / 1048576).toLocaleString("ca", { maximumFractionDigits: 1 }) + " MB";
+const parell = n => Math.round(n / 2) * 2;
+
+// ================= 1. VÍDEO =================
+let V_URL = null, V_RES = null, V_NOM = "";
+const vEstat = t => { $("vEstat").textContent = t; };
+
+$("vFitxer").onchange = () => {
+  const f = $("vFitxer").files[0];
+  $("vResultat").hidden = true;
+  if (!f) return;
+  if (V_URL) URL.revokeObjectURL(V_URL);
+  V_URL = URL.createObjectURL(f);
+  const v = $("vMostra"); v.src = V_URL; v.hidden = false;
+  $("vParams").hidden = false; $("vBotons").hidden = false;
+  $("vInici").value = "0:00"; $("vFinal").value = "";
+  v.onloadedmetadata = () => { $("vFinal").value = escriuTemps(v.duration); };
+  vEstat(f.size > 700 * 1048576 ? `⚠️ Fa ${mb(f.size)}: al navegador anirà lent. Si és un ple sencer, millor el convertidor.` : `${f.name} · ${mb(f.size)}`);
+};
+const actualitzaCopia = () => {
+  const potCopiar = $("vFormat").value === "original" && !$("vLogo").checked && !$("vSrt").files.length;
+  $("vCopia").disabled = !potCopiar;
+  if (!potCopiar) $("vCopia").checked = false;
+  $("vMida").disabled = $("vCopia").checked;
+};
+["vFormat", "vLogo", "vSrt", "vCopia"].forEach(id => $(id).addEventListener("change", actualitzaCopia));
+
+async function fesVideo() {
+  const f = $("vFitxer").files[0];
+  if (!f) return;
+  const v = $("vMostra");
+  let ini, fi;
+  try { [ini, fi] = tram("vInici", "vFinal", v.duration); } catch (e) { vEstat("❌ " + e.message); return; }
+  const durada = fi - ini;
+  $("vFes").disabled = true; $("vAtura").hidden = false; $("vResultat").hidden = true;
+  const feina = EN_MARXA = { aturat: false };
+  let ff, dir = null, acaba = () => 0;
+  try {
+    ff = await motor(vEstat);
+    dir = await munta(ff, f);
+    const entrada = dir + "/" + f.name;
+    const copia = $("vCopia").checked;
+    const ext = copia ? ((f.name.match(/\.(mp4|mov|mkv|webm|m4v)$/i) || [, "mp4"])[1].toLowerCase()) : "mp4";
+    const sortida = "/sortida." + ext;
+    let args;
+    if (copia) {
+      args = ["-ss", String(ini), "-i", entrada, "-t", String(durada), "-map", "0:v?", "-map", "0:a?", "-c", "copy", "-avoid_negative_ts", "make_zero", "-y", sortida];
+    } else {
+      const L = Number($("vMida").value);
+      const format = $("vFormat").value;
+      const [tipus, mode] = format.split("-");
+      let W, H, cadena;
+      if (tipus === "original") {
+        const vertical = v.videoHeight > v.videoWidth;
+        W = vertical ? Math.min(L, v.videoWidth) : parell(v.videoWidth * Math.min(L, v.videoHeight) / v.videoHeight);
+        H = vertical ? parell(v.videoHeight * W / v.videoWidth) : Math.min(L, v.videoHeight);
+        W = parell(W); H = parell(H);
+        cadena = `[0:v]scale=${W}:${H},setsar=1[base]`;
+      } else {
+        W = L; H = tipus === "vertical" ? parell(L * 16 / 9) : L;
+        if (mode === "retall") {
+          cadena = `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1[base]`;
+        } else {
+          const w4 = parell(W / 4), h4 = parell(H / 4);
+          cadena = `[0:v]split[a][b];[a]scale=${w4}:${h4}:force_original_aspect_ratio=increase,crop=${w4}:${h4},boxblur=8:2,scale=${W}:${H}[fons];` +
+                   `[b]scale=${W}:${H}:force_original_aspect_ratio=decrease[pp];[fons][pp]overlay=(W-w)/2:(H-h)/2,setsar=1[base]`;
+        }
+      }
+      let ultim = "base";
+      const entrades = ["-ss", String(ini), "-i", entrada];
+      if ($("vLogo").checked) {
+        const ample = parell(Math.max(110, W * (tipus === "original" ? 0.16 : 0.26)));
+        await ff.writeFile("/logo.png", await logoPng(ample));
+        entrades.push("-i", "/logo.png");
+        const m = Math.round(W * 0.03);
+        cadena += `;[${ultim}][1:v]overlay=W-w-${m}:${m}[amblogo]`; ultim = "amblogo";
+      }
+      if (await preparaSubtitols(ff, "vSrt", ini)) {
+        const [mida, marge] = tipus === "vertical" ? [11, 70] : tipus === "quadrat" ? [13, 28] : [16, 18];
+        cadena += `;[${ultim}]${filtreSubtitols(mida, marge)}[ambsub]`; ultim = "ambsub";
+      }
+      cadena += `;[${ultim}]format=yuv420p[sort]`;
+      args = [...entrades, "-t", String(durada), "-filter_complex", cadena, "-map", "[sort]", "-map", "0:a?",
+              "-c:v", "libx264", "-preset", "veryfast", "-crf", L >= 1080 ? "23" : "26", "-c:a", "aac", "-b:a", "128k", "-ac", "2",
+              "-movflags", "+faststart", "-y", sortida];
+    }
+    acaba = seguiment(ff, "vBarra", vEstat, durada, copia ? "Retallant…" : "Fent el vídeo…");
+    vEstat(copia ? "Retallant…" : "Fent el vídeo… (el primer percentatge pot trigar)");
+    const codi = await ff.exec(args);
+    const segons = acaba();
+    if (feina.aturat) return;
+    if (codi !== 0) throw new Error("FFmpeg no ha pogut fer el vídeo (codi " + codi + "). Prova-ho sense subtítols o amb un altre format.");
+    const dades = await ff.readFile(sortida);
+    await ff.deleteFile(sortida).catch(() => {});
+    V_RES = new Blob([dades.buffer], { type: ext === "mp4" || ext === "m4v" ? "video/mp4" : ext === "webm" ? "video/webm" : "video/" + ext });
+    V_NOM = `video_${avui()}_${f.name.replace(/\.[^.]+$/, "").replace(/[^A-Za-z0-9]+/g, "_").slice(0, 30)}.${ext}`;
+    const out = $("vSortida");
+    if (out.src) URL.revokeObjectURL(out.src);
+    out.src = URL.createObjectURL(V_RES);
+    $("vResultat").hidden = false;
+    $("vInfo").textContent = `${mb(V_RES.size)} · ${escriuTemps(durada)}`;
+    vEstat(`✅ Fet en ${segons} s.`);
+  } catch (e) {
+    acaba();
+    if (!feina.aturat) { console.error(e); vEstat("❌ " + (e.message || e)); }
+  } finally {
+    await desmunta(dir);
+    if (FF) { await FF.deleteFile("/s.srt").catch(() => {}); await FF.deleteFile("/logo.png").catch(() => {}); }
+    $("vFes").disabled = false; $("vAtura").hidden = true;
+  }
+}
+$("vFes").onclick = fesVideo;
+$("vAtura").onclick = () => { atura(); vEstat("Aturat."); $("vBarra").hidden = true; $("vFes").disabled = false; $("vAtura").hidden = true; };
+$("vBaixa").onclick = () => baixa(V_RES, V_NOM);
+
+// ================= 2. VÍDEO D'UN ÀUDIO =================
+let A_URL = null, A_RES = null, A_NOM = "";
+const aEstat = t => { $("aEstat").textContent = t; };
+const MIDES = { quadrat: [720, 720], vertical: [720, 1280], horitzontal: [1280, 720] };
+
+function partLinies(ctx, text, ample) {
+  const paraules = text.split(/\s+/).filter(Boolean), linies = [];
+  let l = "";
+  for (const p of paraules) {
+    const prova = l ? l + " " + p : p;
+    if (ctx.measureText(prova).width > ample && l) { linies.push(l); l = p; } else l = prova;
+  }
+  if (l) linies.push(l);
+  return linies;
+}
+// Fons: capçalera de La TdG, títol i línia petita; a baix queda la franja de l'ona.
+function dibuixaFons() {
+  const [W, H] = MIDES[$("aFormat").value];
+  const c = $("aFons"); c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  const u = Math.min(W, H) / 720;
+  ctx.fillStyle = FONS; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = ACCENT; ctx.fillRect(0, 0, W, Math.round(10 * u));
+  const marge = Math.round(56 * u);
+  dibuixaMicro(ctx, marge, marge, 72 * u, TEXT);
+  ctx.fillStyle = TEXT; ctx.textBaseline = "middle";
+  ctx.font = `800 ${Math.round(44 * u)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
+  ctx.fillText("La TdG", marge + 88 * u, marge + 38 * u);
+  ctx.fillStyle = "#6b6b66"; ctx.font = `500 ${Math.round(22 * u)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
+  ctx.fillText("La Torre de Guaita", marge + 90 * u, marge + 74 * u);
+  // Títol
+  const titol = $("aTitol").value.trim();
+  const zonaOna = waveZona(W, H);
+  const dalt = marge + 130 * u, baix = zonaOna.y - 30 * u;
+  let mida = 58 * u, linies = [];
+  ctx.textBaseline = "alphabetic";
+  do {
+    ctx.font = `800 ${Math.round(mida)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
+    linies = partLinies(ctx, titol, W - marge * 2);
+    if (linies.length * mida * 1.18 <= (baix - dalt) * 0.8) break;
+    mida -= 3 * u;
+  } while (mida > 26 * u);
+  ctx.fillStyle = TEXT;
+  const alt = linies.length * mida * 1.18;
+  let y = dalt + Math.max(0, ((baix - dalt) * 0.85 - alt) / 2) + mida;
+  for (const l of linies) { ctx.fillText(l, marge, y); y += mida * 1.18; }
+  const peu = $("aPeu").value.trim();
+  if (peu) {
+    ctx.fillStyle = ACCENT; ctx.font = `600 ${Math.round(26 * u)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
+    ctx.fillText(peu, marge, y + 6 * u, W - marge * 2);
+  }
+  // Línia de base de l'ona
+  ctx.strokeStyle = "#e3e1db"; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(marge, zonaOna.y + zonaOna.h / 2); ctx.lineTo(W - marge, zonaOna.y + zonaOna.h / 2); ctx.stroke();
+  return [W, H];
+}
+const waveZona = (W, H) => { const h = parell(Math.min(W, H) * 0.2); return { y: parell(H - h - Math.min(W, H) * 0.08), h }; };
+
+$("aFitxer").onchange = () => {
+  const f = $("aFitxer").files[0];
+  $("aResultat").hidden = true;
+  if (!f) return;
+  if (A_URL) URL.revokeObjectURL(A_URL);
+  A_URL = URL.createObjectURL(f);
+  const a = $("aMostra"); a.src = A_URL; a.hidden = false;
+  $("aParams").hidden = false; $("aBotons").hidden = false; $("aFons").hidden = false;
+  if (!$("aPeu").value) $("aPeu").value = "laguait.cat/latdg · " + avui();
+  $("aInici").value = "0:00"; $("aFinal").value = "";
+  a.onloadedmetadata = () => { $("aFinal").value = escriuTemps(a.duration); };
+  dibuixaFons();
+  aEstat(`${f.name} · ${mb(f.size)}`);
+};
+["aTitol", "aPeu", "aFormat"].forEach(id => $(id).addEventListener("input", () => { if ($("aFitxer").files[0]) dibuixaFons(); }));
+
+async function fesAudio() {
+  const f = $("aFitxer").files[0];
+  if (!f) return;
+  let ini, fi;
+  try { [ini, fi] = tram("aInici", "aFinal", $("aMostra").duration); } catch (e) { aEstat("❌ " + e.message); return; }
+  const durada = fi - ini;
+  $("aFes").disabled = true; $("aAtura").hidden = false; $("aResultat").hidden = true;
+  const feina = EN_MARXA = { aturat: false };
+  let ff, dir = null, acaba = () => 0;
+  try {
+    const [W, H] = dibuixaFons();
+    const zona = waveZona(W, H);
+    const fons = new Uint8Array(await (await new Promise(r => $("aFons").toBlob(r, "image/png"))).arrayBuffer());
+    ff = await motor(aEstat);
+    dir = await munta(ff, f);
+    await ff.writeFile("/fons.png", fons);
+    const marge = Math.round(56 * Math.min(W, H) / 720);
+    const ampleOna = parell(W - marge * 2);
+    let cadena = `[0:a]aformat=channel_layouts=mono,showwaves=s=${ampleOna}x${zona.h}:mode=cline:rate=25:scale=sqrt:colors=0xb4462c,format=rgba[ona];` +
+                 `[1:v][ona]overlay=${marge}:${zona.y}:shortest=1[base]`;
+    let ultim = "base";
+    if (await preparaSubtitols(ff, "aSrt", ini)) {
+      // Els subtítols van just damunt de l'ona, sobre una franja fosca (BorderStyle=3).
+      const margeV = Math.round((H - zona.y + 12) / H * 288);
+      cadena += `;[${ultim}]subtitles=/s.srt:fontsdir=/fonts:force_style='FontName=DejaVu Sans,Bold=1,Fontsize=${W > H ? 15 : H > W ? 10 : 13},PrimaryColour=&H00FFFFFF,BackColour=&H40000000,OutlineColour=&H40000000,BorderStyle=3,Outline=2,Shadow=0,MarginV=${margeV}'[ambsub]`;
+      ultim = "ambsub";
+    }
+    cadena += `;[${ultim}]format=yuv420p[sort]`;
+    const args = ["-ss", String(ini), "-t", String(durada), "-i", dir + "/" + f.name, "-loop", "1", "-framerate", "25", "-i", "/fons.png",
+                  "-filter_complex", cadena, "-map", "[sort]", "-map", "0:a",
+                  "-c:v", "libx264", "-preset", "veryfast", "-crf", "28", "-c:a", "aac", "-b:a", "128k",
+                  "-t", String(durada), "-movflags", "+faststart", "-y", "/audiovideo.mp4"];
+    acaba = seguiment(ff, "aBarra", aEstat, durada, "Fent el vídeo…");
+    aEstat("Fent el vídeo…");
+    const codi = await ff.exec(args);
+    const segons = acaba();
+    if (feina.aturat) return;
+    if (codi !== 0) throw new Error("FFmpeg no ha pogut fer el vídeo (codi " + codi + ").");
+    const dades = await ff.readFile("/audiovideo.mp4");
+    await ff.deleteFile("/audiovideo.mp4").catch(() => {});
+    A_RES = new Blob([dades.buffer], { type: "video/mp4" });
+    A_NOM = `video_audio_${avui()}_${($("aTitol").value.trim() || f.name.replace(/\.[^.]+$/, "")).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9]+/g, "_").slice(0, 30)}.mp4`;
+    const out = $("aSortida");
+    if (out.src) URL.revokeObjectURL(out.src);
+    out.src = URL.createObjectURL(A_RES);
+    $("aResultat").hidden = false;
+    $("aInfo").textContent = `${mb(A_RES.size)} · ${escriuTemps(durada)}`;
+    aEstat(`✅ Fet en ${segons} s.`);
+  } catch (e) {
+    acaba();
+    if (!feina.aturat) { console.error(e); aEstat("❌ " + (e.message || e)); }
+  } finally {
+    await desmunta(dir);
+    if (FF) { await FF.deleteFile("/s.srt").catch(() => {}); await FF.deleteFile("/fons.png").catch(() => {}); }
+    $("aFes").disabled = false; $("aAtura").hidden = true;
+  }
+}
+$("aFes").onclick = fesAudio;
+$("aAtura").onclick = () => { atura(); aEstat("Aturat."); $("aBarra").hidden = true; $("aFes").disabled = false; $("aAtura").hidden = true; };
+$("aBaixa").onclick = () => baixa(A_RES, A_NOM);
+
+function baixa(blob, nom) {
+  if (!blob) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = nom; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+}
+
+// --- Pestanyes ---
+$("pestanyes").onclick = e => {
+  const b = e.target.closest("button[data-p]");
+  if (!b) return;
+  document.querySelectorAll("#pestanyes button").forEach(x => x.classList.toggle("actiu", x === b));
+  $("p-video").hidden = b.dataset.p !== "video";
+  $("p-audio").hidden = b.dataset.p !== "audio";
+};
+
+$("entra").onclick = entra;
+$("pin").onkeydown = e => { if (e.key === "Enter") entra(); };
+const desada = llegeix(CLAU_DESADA);
+$("recorda").checked = !!desada;
+if (desada) { $("pin").value = desada; entra(); }
+actualitzaCopia();
+</script>
+</body>
+</html>

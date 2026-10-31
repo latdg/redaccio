@@ -187,7 +187,16 @@ async function preparaAina() {
       const info = await AINA.view_api();
       const noms = Object.keys(info.named_endpoints || {});
       const ep = noms.find(n => /tts|synth|predict|generat|infer/i.test(n)) || noms[0];
-      AINA_API = { nom: ep };
+      // L'espai arrenca amb l'accent balear i només accepta les veus d'aquest accent
+      // ("quim", "olga") fins que es canvia l'accent. Busquem el pas que ho fa
+      // (un sol camp, l'accent) per cridar-lo abans de generar. 31.10.2026
+      const tots = [
+        ...Object.entries(info.named_endpoints || {}),
+        ...Object.entries(info.unnamed_endpoints || {}).map(([k, v]) => [Number(k), v])
+      ];
+      const canvi = tots.find(([n, d]) => n !== ep && (d.parameters || []).length === 1 &&
+        /accent|dialect|varietat|variant/i.test(JSON.stringify(d.parameters[0])));
+      AINA_API = { nom: ep, canviAccent: canvi ? canvi[0] : null };
     }
     $("estat").textContent = "";
   } catch (e) {
@@ -204,6 +213,10 @@ async function generaAina(text) {
   // Ordre dels camps de l'espai: text, accent, veu, temperatura, velocitat.
   const valors = [text, accent, veu, TEMPERATURA_AINA, VELOCITAT_AINA];
   $("estat").textContent = "Generant la veu al servidor del Projecte Aina… (pot trigar uns segons; si l'espai dormia, una mica més)";
+  if (AINA_API.canviAccent !== null && AINA_API.accent !== accent) {
+    await AINA.predict(AINA_API.canviAccent, [accent]);
+    AINA_API.accent = accent;
+  }
   const r = await AINA.predict(AINA_API.nom, valors);
   const sortida = (r.data || []).find(x => x && (x.url || x.path)) || (r.data || [])[0];
   const url = sortida && (sortida.url || sortida);

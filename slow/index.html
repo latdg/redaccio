@@ -14,6 +14,9 @@
   edificis, piezòmetres, plaques solars i consum elèctric, preu de l'aigua, atur i
   afiliació). Cada part és la seva pàgina de sempre carregada amb ?slow&incrustat,
   de manera que qualsevol millora d'aquells blocs surt aquí sola.
+  31.10.2026: els blocs van per àmbits (vegeu TROSSOS): cada tros és un iframe amb
+  &blocs=... i els fitxers de dades es baixen un sol cop per a tots (window.__cauSlow).
+  Els crèdits dels escuts, al peu.
 -->
 <style>
 :root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
@@ -61,15 +64,50 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:32px;padding-top:8px}
   <nav id="nav"></nav>
 </header>
 
-<iframe class="part" id="redaccio" title="Blocs slow de La TdG redacció" src="../?slow&amp;incrustat" scrolling="no"></iframe>
-<iframe class="part" id="ampliada" title="Blocs slow de La TdG ampliada" src="../../tauler/?slow&amp;incrustat" scrolling="no"></iframe>
+<div id="parts"></div>
 
-<footer>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
+<footer><p id="creditsEscuts"></p>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
 
 <script>
+// 31.10.2026: ORDRE PER ÀMBITS. Cada tros és una de les dues pàgines amb els blocs
+// indicats, en aquest ordre. R = La TdG redacció, A = La TdG ampliada. Els resultats
+// electorals sempre al final. Un bloc slow nou que no sigui aquí surt igualment (a
+// l'últim tros de cada pàgina, abans de les eleccions).
+const TROSSOS = [
+  // Diners públics: dades municipals, contractació, subvencions, obres (PUOSC); rendes.
+  ["R", ["dades-municipals", "contractacio", "subvencions", "puosc", "renda"]],
+  // Treball; habitatge (edat dels edificis, lloguer i pisos buits, ús turístic) i turisme.
+  ["A", ["atur", "edificis"]],
+  ["R", ["habitatge", "hut", "turisme", "aigua"]],
+  // Aigua (potable, preu, subterrània) i energia.
+  ["A", ["preu-aigua", "piezometres", "energia"]],
+  // Residus, ramaderia, seguretat, escoles, entitats i, per acabar, les eleccions.
+  ["R", ["residus", "ramaderia", "seguretat", "escoles", "entitats", "eleccions"]],
+];
+const PAGINA = { R: "../", A: "../../tauler/" };
+const PARTS = TROSSOS.map(([pag, blocs], i) => {
+  const altres = TROSSOS.filter(([p], j) => p === pag && j !== i).flatMap(([, b]) => b);
+  const ultim = TROSSOS.map(([p]) => p).lastIndexOf(pag) === i;
+  const src = PAGINA[pag] + "?slow&incrustat&blocs=" + blocs.join(",") + (altres.length ? "&altres=" + altres.join(",") : "") + (ultim ? "&resta" : "");
+  const fr = document.createElement("iframe");
+  fr.className = "part"; fr.id = "part" + i; fr.scrolling = "no";
+  fr.title = "Blocs slow de " + (pag === "R" ? "La TdG redacció" : "La TdG ampliada");
+  fr.src = src;
+  document.getElementById("parts").appendChild(fr);
+  return [fr.id];
+});
+
+// Crèdits dels escuts (abans dins dels resultats electorals).
+fetch("../escuts/credits.json?v=" + Date.now()).then(r => r.json()).then(c => {
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, x => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[x]));
+  const v = Object.entries(c).filter(([k]) => !k.startsWith("_")).map(([, x]) => x);
+  const commons = v.filter(x => x && x.pagina).map(x => `<a href="${esc(x.pagina)}" target="_blank" rel="noopener">${esc(x.llicencia || "Commons")}</a>`).join(", ");
+  const local = c["17901"] && c["17901"].local ? "; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament" : "";
+  if (commons) document.getElementById("creditsEscuts").innerHTML = `Escuts: Wikimedia Commons (${commons}${local}).`;
+}).catch(() => {});
+
 // Cada part creix tant com el seu contingut (són de la mateixa adreça, latdg.github.io),
 // i la barra de navegació porta a cada bloc de dins.
-const PARTS = [["redaccio", "Redacció"], ["ampliada", "Ampliada"]];
 
 function ajusta(fr) {
   try {
@@ -80,7 +118,8 @@ function ajusta(fr) {
     // un espai buit enorme quan els blocs es plegaven o carregaven més curts.
     const blocs = Array.from(doc.querySelectorAll("main > *, main section")).filter(x => !x.hidden && x.offsetParent !== null);
     const fi = blocs.reduce((m, x) => Math.max(m, x.getBoundingClientRect().bottom), 0) + (doc.defaultView.scrollY || 0);
-    if (fi > 0) fr.style.height = Math.ceil(fi + 16) + "px";
+    // Un tros sense cap bloc visible (encara carregant o sense dades) no ocupa lloc.
+    fr.style.height = fi > 0 ? Math.ceil(fi + 16) + "px" : "0px";
   } catch (e) { /* si un dia no fos la mateixa adreça, es queda amb l'alçada per defecte */ }
 }
 

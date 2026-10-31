@@ -777,7 +777,7 @@ function blocsDelResum(body) {
     if (node.nodeType === 1) {
       const m = text.match(RX_NUMERO);
       if (m && node.tagName === "DIV" && text.length < 200) {
-        actual = { numero: m[1], titol: m[2].replace(/\s+/g, " ").trim().replace(/^(TAULERS D.ANUNCIS)\s*\(ÚLTIMA SETMANA\)$/i, "$1"), nodes: [] };
+        actual = { numero: m[1], titol: m[2].replace(/\s+/g, " ").trim().replace(/^(TAULERS D.ANUNCIS)\s*\(ÚLTIMA SETMANA\)$/i, "$1").replace(/^(PUOSC\s*—\s*OBRES PREVISTES)\s+ALS\s+\d+\s+MUNICIPIS$/i, "$1"), nodes: [] };
         blocs.push(actual);
         return;
       }
@@ -822,7 +822,7 @@ const BLOCS_PROPIS = [
   // 26.10.2026: just després de les dades municipals.
   { id: "hut", nom: "Habitatges turístics", titol: "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS", enLlocDe: /^ATUR/i },
   // 27.10.2026: turistes que hi arriben (torna de La TdG ampliada), després dels habitatges turístics.
-  { id: "turisme", nom: "Turistes", titol: "TURISTES QUE HI ARRIBEN (TELEFONIA MÒBIL)", enLlocDe: /^ATUR/i },
+  { id: "turisme", nom: "Turistes", titol: "TURISTES QUE PERNOCTEN (TELEFONIA MÒBIL)", enLlocDe: /^ATUR/i },
   // 27.10.2026: lloguer i habitatges buits, al costat dels habitatges turístics.
   { id: "habitatge", nom: "Lloguer i pisos buits", titol: "LLOGUER I HABITATGES BUITS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
@@ -2151,7 +2151,7 @@ async function carregaObertes() {
 // (dades/turisme.json, INE, telefonia mòbil). La sèrie comença el juliol de 2019:
 // es compara cada any amb els mateixos mesos dels anys anteriors.
 // -----------------------------------------------------------------------------
-const TITOL_TUR = "TURISTES QUE HI ARRIBEN (TELEFONIA MÒBIL)";
+const TITOL_TUR = "TURISTES QUE PERNOCTEN (TELEFONIA MÒBIL)";
 const FONT_TUR = "https://raw.githubusercontent.com/latdg/tauler/main/dades/turisme.json";
 let TUR = null;
 const pctTur = (n, abans) => {

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>Estudi d'àudio</title>
+<!--
+  ESTUDI D'ÀUDIO — La TdG · 31.10.2026
+  Pàgina amb clau (la mateixa dels llamps, l'agenda i les notícies) amb:
+   1. LOCUCIÓ (text a veu en català):
+      - Aina · Matxa (Projecte Aina, BSC): la de més qualitat, amb diferents veus i
+        accents. Es fa al servidor públic del Projecte Aina a Hugging Face
+        (projecte-aina/matxa-alvocat-tts-ca); els camps del formulari es llegeixen
+        sols de l'API de l'espai, per si hi canvien alguna cosa.
+      - Piper (Ona i Pau, UPC): es fa al mateix navegador, sense enviar el text
+        enlloc. La primera vegada baixa la veu (uns 60 MB) i després la desa.
+   2. EDITOR: AudioMass (codi obert, MIT), copiat a editor/ tal com és. Retalla,
+      enganxa, normalitza, treu soroll, canvia volum i velocitat, i exporta MP3/WAV.
+      La locució es pot obrir a l'editor amb un botó.
+-->
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px}
+main{display:grid;gap:16px;padding-top:16px;padding-bottom:32px}
+h1{margin:0;font-size:1.6rem}
+h2{margin:0 0 8px;font-size:1.1rem}
+.sub{color:var(--suau);margin:4px 0 12px}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto}
+.podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
+.podcast svg{display:block;width:50px;height:50px}
+a{color:var(--accent)}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;min-width:0}
+[hidden]{display:none!important}
+input,select,textarea,button{font:inherit;padding:6px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text)}
+button{background:var(--accent);border-color:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+button.suau{background:var(--targeta);color:var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+textarea{width:100%;min-height:180px;resize:vertical;line-height:1.55}
+.fila{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.font{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+#clauBox{border-color:var(--accent)}
+.motors{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.motors button{background:var(--targeta);color:var(--text);border-color:var(--linia);border-radius:999px;font-weight:500;font-size:.9rem}
+.motors button.actiu{background:var(--accent);border-color:var(--accent);color:#fff}
+.params{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}
+.params label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--suau)}
+.params input[type=range]{padding:0}
+.barra{height:6px;background:var(--linia);border-radius:3px;overflow:hidden;margin-top:8px}
+.barra span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+audio{width:100%;margin-top:10px}
+.editor{width:100%;height:78vh;min-height:520px;border:1px solid var(--linia);border-radius:10px;background:#222}
+.compta{font-size:.8rem;color:var(--suau)}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <a class="podcast" href="https://laguait.cat/latdg" target="_blank" rel="noopener" title="Visita el pòdcast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Visita el pòdcast">
+        <path d="M2 11a10 10 0 015-8.662" stroke="#e30613"/><path d="M22 11a10 10 0 00-5-8.662" stroke="#e30613"/>
+        <path d="M6 11a6 6 0 013-5.197" stroke="currentColor"/><path d="M18 11a6 6 0 00-3-5.197" stroke="currentColor"/>
+        <rect x="10" y="9" width="4" height="8" rx="2" stroke="currentColor"/><path d="M12 17v4" stroke="currentColor"/><path d="M9 21h6" stroke="currentColor"/>
+      </svg>
+    </a>
+    <h1>🎚️ Estudi d'àudio</h1>
+    <a class="dreta" href="../">← La TdG redacció</a>
+  </div>
+  <p class="sub">Locucions en català a partir d'un text i editor d'àudio, tot al navegador.</p>
+</header>
+
+<main>
+  <section id="clauBox">
+    <h2>🔒 Clau</h2>
+    <div class="fila" style="margin-top:10px">
+      <input type="password" id="pin" placeholder="Clau" autocomplete="current-password" size="10">
+      <button type="button" id="entra">Entra</button>
+      <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="recorda"> Recorda-la en aquest navegador</label>
+    </div>
+    <p class="font" id="clauEstat"></p>
+  </section>
+
+  <div id="panell" hidden style="display:grid;gap:16px">
+    <section>
+      <h2>🗣️ Locució</h2>
+      <div class="motors" id="motors">
+        <button type="button" data-m="aina" class="actiu">Aina · Matxa (més qualitat)</button>
+        <button type="button" data-m="ca_ES-upc_ona-medium">Piper · Ona (al navegador)</button>
+        <button type="button" data-m="ca_ES-upc_pau-x_low">Piper · Pau (al navegador)</button>
+      </div>
+      <textarea id="text" lang="ca" spellcheck="true" placeholder="Escriu o enganxa el text que s'ha de locutar…"></textarea>
+      <div class="fila" style="justify-content:space-between"><span class="compta" id="compta"></span><span class="compta" id="nota"></span></div>
+      <div class="params" id="params"></div>
+      <div class="fila">
+        <button type="button" id="genera">▶️ Genera la locució</button>
+        <button type="button" class="suau" id="descarrega" disabled>⬇️ Descarrega</button>
+        <button type="button" class="suau" id="aEditor" disabled>✂️ Obre-la a l'editor</button>
+      </div>
+      <div class="barra" id="barra" hidden><span></span></div>
+      <p class="font" id="estat"></p>
+      <audio id="reproductor" controls hidden></audio>
+      <p class="font">Consell: separa les frases llargues amb punts i escriu les xifres i les sigles tal com s'han de llegir (per exemple, «la C-66» → «la ce seixanta-sis»).</p>
+    </section>
+
+    <section>
+      <div class="fila" style="justify-content:space-between">
+        <h2 style="margin:0">✂️ Editor</h2>
+        <a href="editor/" target="_blank" rel="noopener">Obre'l a pantalla completa ↗</a>
+      </div>
+      <p class="font" style="margin:4px 0 10px">Arrossega-hi un fitxer d'àudio o fes servir «File» per obrir-ne un. Selecciona un tros amb el ratolí per retallar-lo, copiar-lo o aplicar-hi efectes; «File › Export» per desar-lo en MP3 o WAV.</p>
+      <iframe class="editor" id="editor" title="Editor d'àudio" src="about:blank" allow="microphone"></iframe>
+      <p class="font">Editor: <a href="https://github.com/pkalogiros/AudioMass" target="_blank" rel="noopener">AudioMass</a> (codi obert, llicència MIT). Veus: <a href="https://huggingface.co/projecte-aina" target="_blank" rel="noopener">Projecte Aina</a> (BSC) i <a href="https://github.com/rhasspy/piper" target="_blank" rel="noopener">Piper</a> amb les veus de la UPC.</p>
+    </section>
+  </div>
+</main>
+
+<script type="module">
+const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
+const CLAU_DESADA = "llampsPin";
+const ESPAI_AINA = "projecte-aina/matxa-alvocat-tts-ca";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+
+let PIN = "", MOTOR = "aina", DARRER = null, AINA = null, AINA_API = null;
+
+// --- Clau (es comprova amb el Worker de l'agenda, com a les notícies) ---
+async function entra() {
+  PIN = $("pin").value.trim();
+  if (!PIN) { $("clauEstat").textContent = "Escriu la clau."; return; }
+  $("clauEstat").textContent = "Comprovant…";
+  try {
+    const r = await fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: PIN, accio: "noticies-dies" }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.ok) throw new Error(d.error || "Clau incorrecta.");
+    escriu(CLAU_DESADA, $("recorda").checked ? PIN : "");
+    $("clauBox").hidden = true; $("panell").hidden = false;
+    $("editor").src = "editor/";
+    triaMotor("aina");
+  } catch (e) {
+    PIN = "";
+    $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message);
+  }
+}
+
+// --- Motors ---
+function triaMotor(m) {
+  MOTOR = m;
+  document.querySelectorAll("#motors button").forEach(b => b.classList.toggle("actiu", b.dataset.m === m));
+  $("params").innerHTML = "";
+  $("nota").textContent = m === "aina" ? "Es fa al servidor del Projecte Aina (Hugging Face)." : "Es fa en aquest navegador: el text no surt de l'ordinador.";
+  if (m === "aina") preparaAina();
+  else $("params").innerHTML = `<p class="font" style="margin:0">Per canviar-ne la velocitat o el to, obre-la a l'editor (Effects › Speed / Pitch).</p>`;
+}
+
+// Aina: es llegeix l'API de l'espai i es fa el formulari amb els seus camps.
+async function preparaAina() {
+  $("estat").textContent = "Connectant amb el Projecte Aina…";
+  try {
+    if (!AINA) {
+      const { Client } = await import("https://cdn.jsdelivr.net/npm/@gradio/client@2.7.1/+esm");
+      AINA = await Client.connect(ESPAI_AINA);
+      const info = await AINA.view_api();
+      const noms = Object.keys(info.named_endpoints || {});
+      const ep = noms.find(n => /tts|synth|predict|generat|infer/i.test(n)) || noms[0];
+      AINA_API = { nom: ep, params: (info.named_endpoints[ep] || {}).parameters || [] };
+    }
+    if (MOTOR !== "aina") return;
+    $("params").innerHTML = AINA_API.params.map((p, i) => {
+      const t = p.type || {}, nom = p.label || p.parameter_name || ("Camp " + (i + 1));
+      const def = p.parameter_has_default ? p.parameter_default : p.example_input;
+      if (/text/i.test(nom) && t.type === "string" && !t.enum) return "";   // el text és la caixa de dalt
+      if (t.enum) return `<label>${esc(nom)}<select data-i="${i}">${t.enum.map(o => `<option${o === def ? " selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
+      if (t.type === "number") return `<label>${esc(nom)}<input type="number" step="any" data-i="${i}" value="${esc(def ?? "")}"></label>`;
+      if (t.type === "boolean") return `<label>${esc(nom)}<input type="checkbox" data-i="${i}"${def ? " checked" : ""}></label>`;
+      return `<label>${esc(nom)}<input type="text" data-i="${i}" value="${esc(def ?? "")}"></label>`;
+    }).join("");
+    $("estat").textContent = "";
+  } catch (e) {
+    console.error(e);
+    $("estat").textContent = "⚠️ Ara mateix no es pot connectar amb el Projecte Aina (" + (e.message || e) + "). Pots fer servir Piper, que funciona al navegador.";
+  }
+}
+
+async function generaAina(text) {
+  if (!AINA_API) await preparaAina();
+  if (!AINA_API) throw new Error("El servei del Projecte Aina no respon.");
+  const valors = {};
+  AINA_API.params.forEach((p, i) => {
+    const el = $("params").querySelector(`[data-i="${i}"]`);
+    const clau = p.parameter_name || i;
+    if (!el) { valors[clau] = text; return; }
+    valors[clau] = el.type === "checkbox" ? el.checked : el.type === "number" ? Number(el.value) : el.value;
+  });
+  $("estat").textContent = "Generant la veu al servidor del Projecte Aina… (pot trigar uns segons; si l'espai dormia, una mica més)";
+  const r = await AINA.predict(AINA_API.nom, valors);
+  const sortida = (r.data || []).find(x => x && (x.url || x.path)) || (r.data || [])[0];
+  const url = sortida && (sortida.url || sortida);
+  if (!url || typeof url !== "string") throw new Error("El servidor no ha tornat cap àudio.");
+  const resp = await fetch(url);
+  return await resp.blob();
+}
+
+let PIPER = null;
+async function generaPiper(text, veu) {
+  if (!PIPER) PIPER = await import("https://cdn.jsdelivr.net/npm/@mintplex-labs/piper-tts-web@1.0.4/+esm");
+  $("barra").hidden = false;
+  const guardades = await PIPER.stored().catch(() => []);
+  if (!guardades.includes(veu)) {
+    $("estat").textContent = "Baixant la veu (només la primera vegada)…";
+    await PIPER.download(veu, p => {
+      if (p.total) $("barra").firstElementChild.style.width = Math.round(p.loaded * 100 / p.total) + "%";
+    });
+  }
+  $("estat").textContent = "Generant la veu en aquest navegador…";
+  const wav = await PIPER.predict({ text, voiceId: veu });
+  return wav;
+}
+
+async function genera() {
+  const text = $("text").value.trim();
+  if (!text) { $("estat").textContent = "Escriu primer el text."; return; }
+  $("genera").disabled = true; $("descarrega").disabled = true; $("aEditor").disabled = true;
+  $("barra").hidden = true; $("barra").firstElementChild.style.width = "0";
+  const t0 = performance.now();
+  try {
+    const blob = MOTOR === "aina" ? await generaAina(text) : await generaPiper(text, MOTOR);
+    DARRER = blob;
+    const a = $("reproductor");
+    if (a.src) URL.revokeObjectURL(a.src);
+    a.src = URL.createObjectURL(blob); a.hidden = false; a.play().catch(() => {});
+    $("descarrega").disabled = false; $("aEditor").disabled = false;
+    $("estat").textContent = "✅ Fet en " + Math.round((performance.now() - t0) / 1000) + " s.";
+  } catch (e) {
+    console.error(e);
+    $("estat").textContent = "❌ " + (e.message || e) + (MOTOR === "aina" ? " Prova-ho amb Piper." : "");
+  } finally { $("genera").disabled = false; $("barra").hidden = true; }
+}
+
+function nomFitxer() {
+  const d = new Date(), z = n => String(n).padStart(2, "0");
+  const inici = $("text").value.trim().slice(0, 30).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9]+/g, "_").replace(/^_|_$/g, "");
+  return `locucio_${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}_${inici || "text"}.wav`;
+}
+
+$("descarrega").onclick = () => {
+  if (!DARRER) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(DARRER); a.download = nomFitxer(); a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+};
+$("aEditor").onclick = () => {
+  if (!DARRER) return;
+  try {
+    const w = $("editor").contentWindow;
+    const fitxer = new File([DARRER], nomFitxer(), { type: DARRER.type && /audio/.test(DARRER.type) ? DARRER.type : "audio/wav" });
+    w.PKAudioEditor.engine.LoadFile({ files: [fitxer] });
+    $("editor").scrollIntoView({ behavior: "smooth" });
+  } catch (e) {
+    $("estat").textContent = "No s'ha pogut obrir a l'editor: descarrega-la i arrossega-la a l'editor.";
+  }
+};
+$("text").addEventListener("input", () => {
+  const t = $("text").value.trim(), p = t ? t.split(/\s+/).length : 0;
+  $("compta").textContent = p ? `${p} paraules · ~${Math.max(1, Math.round(p / 2.6))} s de locució` : "";
+});
+$("motors").onclick = e => { const b = e.target.closest("button[data-m]"); if (b) triaMotor(b.dataset.m); };
+$("genera").onclick = genera;
+$("entra").onclick = entra;
+$("pin").onkeydown = e => { if (e.key === "Enter") entra(); };
+const desada = llegeix(CLAU_DESADA);
+$("recorda").checked = !!desada;
+if (desada) { $("pin").value = desada; entra(); }
+</script>
+</body>
+</html>

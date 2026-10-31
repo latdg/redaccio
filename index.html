@@ -26,14 +26,6 @@
 body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
 header,main,footer{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
 header{padding-top:24px}
-/* 31.10.2026: tots els resultats de la Generalitat */
-details.gencat-el{border-top:1px solid var(--linia);padding:8px 0}
-details.gencat-el>summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
-details.gencat-el>summary .resum-mun{color:var(--suau);font-size:.85rem}
-.taula-elec{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px}
-.taula-elec th,.taula-elec td{text-align:left;padding:4px 6px;border-bottom:1px solid var(--linia);vertical-align:top}
-.taula-elec td:nth-child(n+2),.taula-elec th:nth-child(n+2){text-align:right;white-space:nowrap}
-.pastilla{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:0}
 /* 31.10.2026: dins de La TdG slow (iframe) no surten la capçalera ni el peu. */
 .incrustat header,.incrustat #sobre,.incrustat footer,.incrustat .peu-tdg{display:none!important}
 .incrustat main{padding-top:0}
@@ -1523,13 +1515,15 @@ function fitxaEleccio(codi, m, e, ant) {
       `<div class="xifra"><div class="etq">Participació</div><div class="val">${pctCa(m.participacio)}</div>` +
         `<div class="det">${nCa(m.votants)} de ${nCa(m.cens)} electors${difPart !== null ? ` · <span class="${difPart >= 0 ? "amunt" : "avall"}">${difPart >= 0 ? "+" : "−"}${Math.abs(difPart).toLocaleString("ca-ES", { maximumFractionDigits: 1 })} punts</span>` : ""}</div></div>` +
       `<div class="xifra"><div class="etq">Guanyador</div><div class="val" style="font-size:1.1rem">${esc(m.resultats[0] ? m.resultats[0].sigles : "—")}</div>` +
-        `<div class="det">${m.resultats[0] ? pctCa(m.resultats[0].pct) + (mun ? ` · ${m.resultats[0].electes} de ${m.regidors} regidors` : "") : ""}</div></div>` +
+        `<div class="det">${m.resultats[0] ? pctCa(m.resultats[0].pct) + (mun && m.regidors ? ` · ${m.resultats[0].electes} de ${m.regidors} regidors` : "") : ""}</div></div>` +
       `<div class="xifra"><div class="etq">Vots en blanc i nuls</div><div class="val">${nCa(m.blanc)} · ${nCa(m.nuls)}</div><div class="det">${pctCa(m.blanc / (m.valids || 1) * 100)} en blanc (sobre vots vàlids)</div></div>` +
     `</div>` +
     `<div class="taula"><table><thead><tr><th>Candidatura</th><th class="elec-barra"></th><th class="n">Vots</th><th class="n">%</th>${mun ? '<th class="n">Regidors</th>' : ""}<th class="n">Dif.</th></tr></thead><tbody>${files}</tbody></table></div>` +
     seccions + `</article>`;
 }
 
+const TIPUS_ELEC = [["municipals", "Municipals"], ["parlament", "Parlament de Catalunya"], ["congres", "Congrés"],
+  ["europees", "Parlament Europeu"], ["referendum", "Referèndums"]];
 function pintaEleccio(id, oberts) {
   const el = document.getElementById("eleccions");
   const e = ELEC.eleccions.find(x => x.id === id) || ELEC.eleccions[0];
@@ -1539,9 +1533,13 @@ function pintaEleccio(id, oberts) {
   const credEscuts = Object.values(ESCUTS).filter(c => c && c.pagina).map(c => `<a href="${esc(c.pagina)}" target="_blank" rel="noopener">${esc(c.llicencia || "Commons")}</a>`).join(", ") +
     (ESCUTS["17901"] && ESCUTS["17901"].local ? "; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament" : "");
   el.innerHTML = `<h2>${titol}</h2>` +
-    `<p class="font">Font: <a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">Ministeri de l'Interior</a>, resultats oficials mesa a mesa</p>` +
+    // 31.10.2026: cada elecció diu d'on ve (Ministeri o Generalitat).
+    `<p class="font">Font: ${/generalitat/i.test(e.font || "") ? '<a href="https://resultats.dadeselectorals.gencat.cat/" target="_blank" rel="noopener">Generalitat de Catalunya</a>' : '<a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">Ministeri de l\'Interior</a>'}, resultats oficials mesa a mesa</p>` +
     `<div class="sv-eines" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0">` +
-      `<select id="triaEleccio" aria-label="Elecció">${ELEC.eleccions.map(x => `<option value="${x.id}"${x.id === e.id ? " selected" : ""}>${esc(x.nom)}</option>`).join("")}</select>` +
+      // 31.10.2026: totes les eleccions, agrupades per tipus (de la més recent a la més antiga).
+      `<select id="triaEleccio" aria-label="Elecció">${TIPUS_ELEC.filter(([t]) => ELEC.eleccions.some(x => x.tipus === t)).map(([t, nomT]) =>
+        `<optgroup label="${esc(nomT)}">` + ELEC.eleccions.filter(x => x.tipus === t).sort((a, b) => b.data.localeCompare(a.data)).map(x =>
+          `<option value="${x.id}"${x.id === e.id ? " selected" : ""}>${esc(x.nom)}</option>`).join("") + `</optgroup>`).join("")}</select>` +
       (ant ? `<span class="var" style="color:#6b6b66;font-size:.85rem">Diferències respecte a: ${esc(ant.nom)}</span>` : "") +
     `</div>` +
     (() => {
@@ -1552,62 +1550,14 @@ function pintaEleccio(id, oberts) {
     })() +
     `<p class="nota" style="color:#6b6b66;font-size:.85rem">Percentatges sobre vots vàlids (candidatures i blanc). La participació no inclou el vot dels residents a l'estranger (CERA), que el Ministeri no reparteix per meses. ` +
     `«Dif.» són punts percentuals respecte a l'elecció anterior del mateix tipus; «nova», candidatura que no s'hi va presentar amb les mateixes sigles. ` +
-    `Les eleccions al Parlament de Catalunya no hi són: les publica la Generalitat.` +
+    `Congrés, municipals i europees, del Ministeri de l'Interior quan el té mesa a mesa; el Parlament de Catalunya, els referèndums i la resta, de la Generalitat.` +
     (credEscuts ? ` Escuts: Wikimedia Commons (${credEscuts}).` : "") + `</p>`;
   activaPlega(el, (c, caixa) => caixa.innerHTML = fitxaEleccio(c, e.municipis[c], e, ant && ant.municipis[c] ? ant.municipis[c] : null));
   // En canviar d'elecció, les fitxes que hi havia obertes es tornen a obrir.
   (oberts || []).forEach(c => { const d = el.querySelector(`details[data-plega="${c}"]`); if (d) d.open = true; });
   document.getElementById("triaEleccio").onchange = ev => pintaEleccio(ev.target.value,
     [...el.querySelectorAll("details[data-plega]:not([data-grup])[open]")].map(d => d.dataset.plega));
-  afegeixGencat(el);
 }
-
-// -----------------------------------------------------------------------------
-// TOTS ELS RESULTATS DE LA GENERALITAT (31.10.2026): dades/eleccions-gencat.json
-// (eleccions/gencat.py). Un sol desplegable per municipi amb totes les eleccions
-// que hi ha publicades (Parlament, Generals, Senat, Municipals, Europees...).
-// -----------------------------------------------------------------------------
-let GENCAT_P = null;
-async function afegeixGencat(el) {
-  if (!GENCAT_P) GENCAT_P = obtenir("dades/eleccions-gencat.json").catch(() => null);
-  const g = await GENCAT_P;
-  if (!g || !g.municipis || el.querySelector(".gencat-hist")) return;
-  const codis = ORDRE_MUN.filter(c => (g.municipis[c] || []).length);
-  if (!codis.length) return;
-  const caixa = document.createElement("div");
-  caixa.className = "gencat-hist";
-  const anys = c => { const l = g.municipis[c]; return l.length + " eleccions · " + l[l.length - 1].data.slice(0, 4) + "-" + l[0].data.slice(0, 4); };
-  caixa.innerHTML = `<h3 style="margin:18px 0 4px">Totes les eleccions, municipi per municipi</h3>` +
-    `<p class="font">Font: <a href="${esc(g.font)}" target="_blank" rel="noopener">Generalitat de Catalunya, resultats electorals</a>. Totes les convocatòries publicades.</p>` +
-    plegaMun(codis, anys, "gencat").replace(PISTA_PLEGA, "");
-  el.appendChild(caixa);
-  activaPlega(caixa, (c, cos) => cos.innerHTML = fitxaGencat(g.municipis[c]), "gencat");
-}
-function fitxaGencat(llista) {
-  const pc = x => x == null ? "—" : (x * 100).toLocaleString("ca-ES", { maximumFractionDigits: 1 }) + " %";
-  const tipus = [...new Set(llista.map(e => e.tipusNom))];
-  return `<div class="sv-eines gencat-filtre"><button type="button" class="actiu" data-t="">Totes · ${llista.length}</button>` +
-    tipus.map(t => `<button type="button" data-t="${esc(t)}">${esc(t.replace(/^Eleccions (al |a les |a )?/i, ""))} · ${llista.filter(e => e.tipusNom === t).length}</button>`).join("") + `</div>` +
-    llista.map(e => {
-      const c = e.candidatures || [], g1 = c[0];
-      return `<details class="gencat-el" data-t="${esc(e.tipusNom)}"><summary><b>${esc(e.nom)} ${esc(e.data.slice(0, 4))}</b>` +
-        `<span class="resum-mun">${esc(e.data.split("-").reverse().join("."))}${g1 ? " · " + esc(g1.sigles || g1.candidat || g1.nom) + " " + pc(g1.pct) : ""}${e.participacio ? " · participació " + pc(e.participacio) : ""}</span></summary>` +
-        `<table class="taula-elec"><thead><tr><th>Candidatura</th><th>Vots</th><th>%</th>${c.some(x => x.escons) ? "<th>Escons</th>" : ""}</tr></thead><tbody>` +
-        c.map(x => `<tr><td><span class="pastilla" style="background:${esc(x.color || "#ccc")}"></span>${esc(x.candidat ? x.candidat + " (" + (x.sigles || x.nom) + ")" : (x.sigles || x.nom))}` +
-          `${x.nom && x.sigles && x.nom !== x.sigles ? `<br><small style="color:var(--suau)">${esc(x.nom)}</small>` : ""}</td>` +
-          `<td>${(x.vots || 0).toLocaleString("ca-ES")}</td><td>${pc(x.pct)}</td>${c.some(y => y.escons) ? `<td>${x.escons ?? ""}</td>` : ""}</tr>`).join("") +
-        `</tbody></table>` +
-        `<p class="font">${e.cens ? "Cens: " + e.cens.toLocaleString("ca-ES") + " · " : ""}${e.emesos ? "Vots emesos: " + e.emesos.toLocaleString("ca-ES") + " · " : ""}Vots a candidatures: ${(e.votsCandidatures || 0).toLocaleString("ca-ES")}` +
-        `${e.electes ? ` · <a href="${esc(e.electes.replace(/^http:/, "https:"))}" target="_blank" rel="noopener">electes</a>` : ""}</p></details>`;
-    }).join("");
-}
-document.addEventListener("click", ev => {
-  const b = ev.target.closest(".gencat-filtre button");
-  if (!b) return;
-  const cos = b.closest(".cos-plega");
-  b.parentNode.querySelectorAll("button").forEach(x => x.classList.toggle("actiu", x === b));
-  cos.querySelectorAll("details.gencat-el").forEach(d => d.hidden = !!b.dataset.t && d.dataset.t !== b.dataset.t);
-});
 
 async function carregaEleccions() {
   const el = document.getElementById("eleccions");

@@ -38,7 +38,26 @@ ELECCIONS = [
     ("07", "2019", "05", "Europees 2019"),
     ("02", "2019", "04", "Congrés abril 2019"),
     ("04", "2015", "05", "Municipals 2015"),
+    # 31.10.2026: totes les que el Ministeri té mesa a mesa (mirall de JaimeObregon/infoelectoral).
+    ("02", "2016", "06", "Congrés 2016"), ("02", "2015", "12", "Congrés 2015"), ("02", "2011", "11", "Congrés 2011"),
+    ("02", "2008", "03", "Congrés 2008"), ("02", "2004", "03", "Congrés 2004"), ("02", "2000", "03", "Congrés 2000"),
+    ("02", "1996", "03", "Congrés 1996"), ("02", "1986", "06", "Congrés 1986"), ("02", "1982", "10", "Congrés 1982"),
+    ("04", "2011", "05", "Municipals 2011"), ("04", "2007", "05", "Municipals 2007"), ("04", "2003", "05", "Municipals 2003"),
+    ("04", "1999", "06", "Municipals 1999"), ("04", "1995", "05", "Municipals 1995"), ("04", "1991", "05", "Municipals 1991"),
+    ("04", "1987", "06", "Municipals 1987"),
+    ("07", "2014", "05", "Europees 2014"), ("07", "2009", "06", "Europees 2009"), ("07", "2004", "06", "Europees 2004"),
+    ("07", "1999", "06", "Europees 1999"), ("07", "1994", "06", "Europees 1994"), ("07", "1989", "06", "Europees 1989"),
+    ("07", "1987", "06", "Europees 1987"),
 ]
+
+# 31.10.2026: la resta, de la Generalitat (resultats.dadeselectorals.gencat.cat), també
+# mesa a mesa: totes les del Parlament de Catalunya, els referèndums i les generals,
+# municipals i europees que el Ministeri no té mesa a mesa. Una elecció que ja ve del
+# Ministeri (mateix tipus, any i mes) no es torna a baixar de la Generalitat.
+GENCAT = "https://resultats.dadeselectorals.gencat.cat/webelec/api"
+GENCAT_TIPUS = {"A": ("parlament", "Parlament"), "G": ("congres", "Congrés"), "M": ("municipals", "Municipals"),
+                "E": ("europees", "Europees"), "R": ("referendum", "")}
+EQUIV_MINISTERI = {"G": "02", "M": "04", "E": "07"}
 TIPUS = {"04": "municipals", "02": "congres", "07": "europees"}
 CAPCALERES = {"User-Agent": "LaTdG-redaccio (https://latdg.github.io/redaccio/)"}
 
@@ -175,6 +194,104 @@ def processa(tipus, any_, mes, nom):
     }
 
 
+def csv_gencat(zf, quin):
+    nom = next((n for n in zf.namelist() if quin in n), None)
+    if not nom:
+        return []
+    files = zf.read(nom).decode("utf-8-sig", errors="replace").splitlines()
+    if not files:
+        return []
+    cap = files[0].split(";")
+    return [dict(zip(cap, l.split(";"))) for l in files[1:] if l.strip()]
+
+
+def processa_gencat(codi, nom, data, tipus, nomes=None):
+    municipis = {}
+    for m3, (m5, nom_mun) in MUNICIPIS.items():
+        if nomes and m5 not in nomes:
+            continue
+        r = requests.get(f"{GENCAT}/proces/{codi}/nivellTerritorial/ME/territori/{m5}/exportacio",
+                         headers=CAPCALERES, timeout=120)
+        if r.status_code != 200 or r.content[:2] != b"PK":
+            continue
+        zf = zipfile.ZipFile(io.BytesIO(r.content))
+        part = csv_gencat(zf, "Participaci")
+        vots = csv_gencat(zf, "Vots-ME")
+        if not part:
+            continue
+        clau = lambda x: (x.get("Districte", "").strip() or "01") + "-" + x.get("Secció", "").strip()
+        mesos = {}
+        for x in part:
+            k = (clau(x), x.get("Mesa", "").strip())
+            mesos[k] = {"cens": enter(x.get("Cens", "")), "nuls": enter(x.get("Vots nuls", "")),
+                        "blanc": enter(x.get("Vots en blanc", "")), "cand": enter(x.get("Vots a candidatures", "")), "vots": {}}
+        noms = {}
+        for x in vots:
+            k = (clau(x), x.get("Mesa", "").strip())
+            sig = (x.get("Sigles Candidatura") or x.get("Nom Candidatura") or "").strip()
+            noms[sig] = (x.get("Nom Candidatura") or "").strip()
+            if k in mesos:
+                mesos[k]["vots"][sig] = mesos[k]["vots"].get(sig, 0) + enter(x.get("Vots", ""))
+        llista = list(mesos.values())
+        cens = sum(m["cens"] for m in llista)
+        blanc, nuls, cand = (sum(m[k] for m in llista) for k in ("blanc", "nuls", "cand"))
+        votants, valids = blanc + nuls + cand, blanc + cand
+        tot = {}
+        for m in llista:
+            for c, v in m["vots"].items():
+                tot[c] = tot.get(c, 0) + v
+        resultats = sorted(({"codi": c, "sigles": c, "nom": noms.get(c, ""), "vots": v,
+                             "pct": round(v / valids * 100, 2) if valids else 0} for c, v in tot.items() if v > 0),
+                           key=lambda x: -x["vots"])
+        seccions = []
+        for sec in sorted({k[0] for k in mesos}):
+            seves = [v for k, v in mesos.items() if k[0] == sec]
+            sc = sum(m["cens"] for m in seves)
+            sv = sum(m["blanc"] + m["nuls"] + m["cand"] for m in seves)
+            svots = {}
+            for m in seves:
+                for c, v in m["vots"].items():
+                    svots[c] = svots.get(c, 0) + v
+            seccions.append({"seccio": sec, "meses": len(seves), "cens": sc, "votants": sv,
+                             "participacio": round(sv / sc * 100, 2) if sc else 0,
+                             "vots": {c: v for c, v in sorted(svots.items(), key=lambda x: -x[1]) if v > 0},
+                             "valids": sum(m["blanc"] + m["cand"] for m in seves)})
+        municipis[m5] = {"nom": nom_mun, "cens": cens, "votants": votants,
+                         "participacio": round(votants / cens * 100, 2) if cens else 0,
+                         "blanc": blanc, "nuls": nuls, "valids": valids, "regidors": None,
+                         "resultats": resultats, "seccions": seccions}
+    if not municipis:
+        return None
+    print(nom, {m: (d["participacio"], d["resultats"][0]["sigles"] if d["resultats"] else "") for m, d in municipis.items()})
+    return {"id": codi, "tipus": tipus, "nom": nom, "data": data[:7],
+            "font": "Generalitat de Catalunya (resultats.dadeselectorals.gencat.cat), mesa a mesa", "municipis": municipis}
+
+
+def eleccions_gencat(ja_hi_son):
+    """(codi, nom, data, tipus) de cada procés de la Generalitat que s'ha d'afegir."""
+    r = requests.get(GENCAT + "/proces", headers=CAPCALERES, timeout=60)
+    r.raise_for_status()
+    surt = []
+    for p in r.json():
+        lletra = (p.get("tipusProcesElectoral") or {}).get("codi", "")
+        if lletra not in GENCAT_TIPUS:
+            continue
+        data = datetime.fromtimestamp((p.get("data") or 0) / 1000, timezone.utc).strftime("%Y-%m-%d")
+        equiv = EQUIV_MINISTERI.get(lletra)
+        if equiv and any(i.startswith(equiv + data[:4]) for i in ja_hi_son):
+            continue   # ja la tenim del Ministeri
+        tipus, prefix = GENCAT_TIPUS[lletra]
+        if lletra == "R":
+            nom = (p.get("nom") or "Referèndum").strip()
+            nom = nom if nom[-4:].isdigit() else nom + " " + data[:4]
+        else:
+            nom = prefix + " " + data[:4]
+            if lletra == "G" and sum(1 for q in r.json() if q["codi"][:5] == p["codi"][:5]) > 1:
+                nom = prefix + " " + ("abril " if p["codi"].endswith("1") else "novembre ") + data[:4]
+        surt.append((p["codi"], nom, data, tipus))
+    return surt
+
+
 def main():
     anterior = {}
     if SORTIDA.exists():
@@ -194,6 +311,48 @@ def main():
             errors.append(f"{n}: {type(err).__name__}: {err}")
             if ident in anterior:
                 eleccions.append(anterior[ident])
+    # 31.10.2026: si a una elecció del Ministeri hi falta algun municipi (per exemple,
+    # Ullastret a les municipals del 2023), s'agafa de la Generalitat, mesa a mesa.
+    try:
+        processos = requests.get(GENCAT + "/proces", headers=CAPCALERES, timeout=60).json()
+    except Exception:
+        processos = []
+    lletra_de = {v: k for k, v in EQUIV_MINISTERI.items()}
+    for e in eleccions:
+        falten = [m5 for m5, _ in MUNICIPIS.values() if m5 not in e["municipis"]]
+        lletra = lletra_de.get(e["id"][:2])
+        if not falten or not lletra:
+            continue
+        p = next((q for q in processos if q["codi"][0] == lletra and
+                  datetime.fromtimestamp((q.get("data") or 0) / 1000, timezone.utc).strftime("%Y-%m") == e["data"]), None)
+        if not p:
+            continue
+        try:
+            extra = processa_gencat(p["codi"], e["nom"], e["data"], e["tipus"], nomes=falten)
+            if extra:
+                e["municipis"].update(extra["municipis"])
+                e["completatAmb"] = "Generalitat (" + ", ".join(m["nom"] for m in extra["municipis"].values()) + ")"
+        except Exception as err:
+            errors.append(f"{e['nom']} (completar): {type(err).__name__}: {err}")
+
+    # 31.10.2026: les de la Generalitat que no són del Ministeri.
+    try:
+        for codi, nom, data, tipus in eleccions_gencat({e["id"] for e in eleccions}):
+            if codi in anterior and "--forca" not in sys.argv:
+                eleccions.append(anterior[codi])
+                continue
+            try:
+                e = processa_gencat(codi, nom, data, tipus)
+                if e:
+                    eleccions.append(e)
+            except Exception as err:
+                print("No s'ha pogut baixar", nom, err)
+                errors.append(f"{nom}: {type(err).__name__}: {err}")
+                if codi in anterior:
+                    eleccions.append(anterior[codi])
+    except Exception as err:
+        errors.append(f"Generalitat: {type(err).__name__}: {err}")
+    eleccions.sort(key=lambda e: e["data"], reverse=True)
     (ARREL / "eleccions" / "diagnosi.txt").write_text(
         datetime.now(timezone.utc).isoformat(timespec="seconds") + "\n" + ("\n".join(errors) or "Cap error") + "\n", encoding="utf-8")
     if not eleccions:
@@ -201,7 +360,7 @@ def main():
         return
     SORTIDA.write_text(json.dumps({
         "generat": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "font": "Ministeri de l'Interior (infoelectoral.interior.gob.es), resultats mesa a mesa",
+        "font": "Ministeri de l'Interior (infoelectoral.interior.gob.es) i Generalitat de Catalunya, resultats mesa a mesa",
         "eleccions": eleccions,
     }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 

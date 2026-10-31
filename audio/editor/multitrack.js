@@ -237,7 +237,7 @@
 		function makeTrack ( name ) {
 			return {
 				id: 'mt' + (track_uid++),
-				name: name || ('Channel ' + track_uid),
+				name: name || ('Canal ' + track_uid),
 				mute: false,
 				solo: false,
 				vol: 1,
@@ -696,7 +696,7 @@
 		function addTrack ( index ) {
 			var prev = cloneState ();
 			var tr = makeTrack ();
-			tr.name = 'Channel ' + (tracks.length + 1);
+			tr.name = 'Canal ' + (tracks.length + 1);
 			if (index === undefined) tracks.push ( tr );
 			else tracks.splice ( Math.max (0, Math.min (index, tracks.length)), 0, tr );
 			selected_track = tr.id;
@@ -3871,7 +3871,7 @@
 			var track;
 			if (to_new === true) {
 				var tr = makeTrack ();
-				tr.name = 'Channel ' + (tracks.length + 1);
+				tr.name = 'Canal ' + (tracks.length + 1);
 				var at = tracks.indexOf ( findTrack ( selected_track ) );
 				tracks.splice ( at >= 0 ? at + 1 : tracks.length, 0, tr );
 				track = tr.id;
@@ -3923,7 +3923,7 @@
 			clearRegion ();
 			clips = [];
 			xfades = {};
-			tracks = [ makeTrack ('Channel 1'), makeTrack ('Channel 2') ];
+			tracks = [ makeTrack ('Canal 1'), makeTrack ('Canal 2') ];
 			selected_track = tracks[0].id;
 			marker = 0;
 			cursor = 0;
@@ -5594,8 +5594,8 @@
 			editing_clip = null;
 		});
 
-		tracks.push ( makeTrack ('Channel 1') );
-		tracks.push ( makeTrack ('Channel 2') );
+		tracks.push ( makeTrack ('Canal 1') );
+		tracks.push ( makeTrack ('Canal 2') );
 		selected_track = tracks[0].id;
 		build ();
 	}

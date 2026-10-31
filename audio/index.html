@@ -91,7 +91,7 @@ audio{width:100%;margin-top:10px}
         <h2 style="margin:0">✂️ Editor</h2>
         <a href="editor/" target="_blank" rel="noopener">Obre'l a pantalla completa ↗</a>
       </div>
-      <p class="font" style="margin:4px 0 10px">Arrossega-hi un fitxer d'àudio o fes servir «File» per obrir-ne un. Selecciona un tros amb el ratolí per retallar-lo, copiar-lo o aplicar-hi efectes; «File › Export» per desar-lo en MP3 o WAV.</p>
+      <p class="font" style="margin:4px 0 10px">Arrossega-hi un fitxer d'àudio o fes servir «Fitxer» per obrir-ne un. Selecciona un tros amb el ratolí per retallar-lo, copiar-lo o aplicar-hi efectes; «Fitxer › Exporta / Descarrega» per desar-lo en MP3 o WAV.</p>
       <iframe class="editor" id="editor" title="Editor d'àudio" src="about:blank" allow="microphone"></iframe>
       <p class="font">Editor: <a href="https://github.com/pkalogiros/AudioMass" target="_blank" rel="noopener">AudioMass</a> (codi obert, llicència MIT). Veus: <a href="https://huggingface.co/projecte-aina" target="_blank" rel="noopener">Projecte Aina</a> (BSC) i <a href="https://github.com/rhasspy/piper" target="_blank" rel="noopener">Piper</a> amb les veus de la UPC.</p>
     </section>
@@ -156,7 +156,7 @@ function triaMotor(m) {
   $("params").innerHTML = "";
   $("nota").textContent = m === "aina" ? "Es fa al servidor del Projecte Aina (Hugging Face)." : "Es fa en aquest navegador: el text no surt de l'ordinador.";
   if (m === "aina") preparaAina();
-  else $("params").innerHTML = `<p class="font" style="margin:0">Per canviar-ne la velocitat o el to, obre-la a l'editor (Effects › Speed / Pitch).</p>`;
+  else $("params").innerHTML = `<p class="font" style="margin:0">Per canviar-ne la velocitat o el to, obre-la a l'editor (Efectes › Velocitat de reproducció).</p>`;
 }
 
 // Aina: veus de l'espai (spk_to_id_3.json). La temperatura (0,2) i la velocitat (0,89)

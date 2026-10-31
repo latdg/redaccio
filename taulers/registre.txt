@@ -1,4 +1,4 @@
-Pàgina 1: 4 anuncis; primeres dates: ['2026-10-29', '2026-10-09', '2026-10-09', '2026-09-09']
+Consorci de les Gavarres · pàgina 1: 4 anuncis; primeres dates: ['2026-10-29', '2026-10-09', '2026-10-09', '2026-09-09']
 Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
       <title>Adhesió al sistemes intern d'alertes de la Diputació de Girona</title>
       <link>https://tauler.seu-e.cat/detall?idEns=9813510007&amp;idEdicte=655696</link>
@@ -9,3 +9,14 @@ Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
     </item>
     
 Consorci de les Gavarres: 1 anuncis de l'última setmana
+Ajuntament d'Ullastret · pàgina 1: 41 anuncis; primeres dates: ['2026-10-06', '2026-10-06', '2026-08-04', '2026-08-04', '2026-07-28']
+Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <title>EXPOSICIÓ PÚBLICA NOMBRE ELECTORS</title>
+      <link>https://tauler.seu-e.cat/detall?idEns=1720570005&amp;idEdicte=1720570005_735070</link>
+      <description>En compliment de la Resolució de 24 de febrer de 2006, s'exposa el nombre d'electors i electores del municipi.</description>
+      <pubDate>Mon, 05 Oct 2026 22:00:00 GMT</pubDate>
+      <guid>https://tauler.seu-e.cat/detall?idEns=1720570005&amp;idEdicte=1720570005_735070</guid>
+      <dc:date>2026-10-05T22:00:00Z</dc:date>
+    </item>
+    
+Ajuntament d'Ullastret: 0 anuncis de l'última setmana

@@ -1,10 +1,11 @@
 {
- "generat": "2026-10-27T09:15:30+00:00",
+ "generat": "2026-10-31T05:32:28+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
   "17902": "Forallac",
-  "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura"
+  "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+  "17205": "Ullastret"
  },
  "renda": {
   "actualitzat": "2026-10-19T08:09:48+00:00",
@@ -808,7 +809,8 @@
      "beneficiaris": null,
      "prestacio": 760
     }
-   ]
+   ],
+   "17205": []
   }
  },
  "habitatge": {
@@ -1590,6 +1592,200 @@
       "renda": 1152.667,
       "tram": "> 600 euros/mes"
      }
+    ],
+    "17205": [
+     {
+      "any": 2020,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 500 i <= 650 euros/mes"
+     },
+     {
+      "any": 2020,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 650 euros/mes"
+     },
+     {
+      "any": 2020,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 500 i <= 650 euros/mes"
+     },
+     {
+      "any": 2020,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 650 euros/mes"
+     },
+     {
+      "any": 2021,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 3,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2021,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2021,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2021,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 650 euros/mes"
+     },
+     {
+      "any": 2021,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2023,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2024,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-desembre",
+      "contractes": 6,
+      "renda": 1183.33,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-setembre",
+      "contractes": 2,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 3,
+      "periode": "juliol-setembre",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2025,
+      "trimestre": 4,
+      "periode": "octubre-desembre",
+      "contractes": 4,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     }
     ]
    }
   },
@@ -1692,7 +1888,16 @@
       "superficie": 59
      }
     ],
-    "17901": []
+    "17901": [],
+    "17205": [
+     {
+      "any": 2021,
+      "habitatges": 1,
+      "exempts": 1,
+      "tenidors": 1,
+      "superficie": 368.63
+     }
+    ]
    }
   }
  },
@@ -1912,6 +2117,22 @@
      }
     ],
     "intensiu": 33
+   },
+   "17205": {
+    "explotacions": 6,
+    "especies": [
+     {
+      "especie": "Èquid",
+      "explotacions": 4,
+      "places": 36
+     },
+     {
+      "especie": "Porcí",
+      "explotacions": 2,
+      "places": 1406
+     }
+    ],
+    "intensiu": 6
    }
   }
  },
@@ -3581,6 +3802,441 @@
       "Aparells elèctrics": 11.25
      }
     }
+   ],
+   "17205": [
+    {
+     "any": 2000,
+     "poblacio": 243,
+     "selectiva": 11.36,
+     "kgHabAny": 616.76,
+     "kgHabDia": 1.69,
+     "total": 149.87,
+     "fraccions": {
+      "Paper i cartró": 6.29,
+      "Vidre": 9,
+      "Envasos": 1.73
+     }
+    },
+    {
+     "any": 2001,
+     "poblacio": 243,
+     "selectiva": 13.94,
+     "kgHabAny": 695.83,
+     "kgHabDia": 1.91,
+     "total": 169.09,
+     "fraccions": {
+      "Paper i cartró": 8.07,
+      "Vidre": 13,
+      "Envasos": 2.5
+     }
+    },
+    {
+     "any": 2002,
+     "poblacio": 225,
+     "selectiva": 21.3,
+     "kgHabAny": 529.02,
+     "kgHabDia": 1.45,
+     "total": 119.03,
+     "fraccions": {
+      "Paper i cartró": 8.62,
+      "Vidre": 12.8,
+      "Envasos": 3.42
+     }
+    },
+    {
+     "any": 2003,
+     "poblacio": 230,
+     "selectiva": 20.53,
+     "kgHabAny": 505.33,
+     "kgHabDia": 1.38,
+     "total": 116.23,
+     "fraccions": {
+      "Paper i cartró": 8.64,
+      "Vidre": 10.8,
+      "Envasos": 4.29,
+      "Voluminosos i fusta": 0.11,
+      "Tèxtil": 0.01
+     }
+    },
+    {
+     "any": 2004,
+     "poblacio": 221,
+     "selectiva": 24.34,
+     "kgHabAny": 544.1,
+     "kgHabDia": 1.49,
+     "total": 120.25,
+     "fraccions": {
+      "Paper i cartró": 9.02,
+      "Vidre": 16.32,
+      "Envasos": 3.64,
+      "Poda i jardineria": 0.01,
+      "Voluminosos i fusta": 0.27
+     }
+    },
+    {
+     "any": 2005,
+     "poblacio": 226,
+     "selectiva": 21.66,
+     "kgHabAny": 573.08,
+     "kgHabDia": 1.57,
+     "total": 129.52,
+     "fraccions": {
+      "Paper i cartró": 9.56,
+      "Vidre": 13.63,
+      "Envasos": 3.69,
+      "Poda i jardineria": 0.02,
+      "Voluminosos i fusta": 0.22,
+      "Tèxtil": 0.01
+     }
+    },
+    {
+     "any": 2006,
+     "poblacio": 233,
+     "selectiva": 48.28,
+     "kgHabAny": 724.22,
+     "kgHabDia": 1.98,
+     "total": 168.74,
+     "fraccions": {
+      "Orgànica": 13.34,
+      "Paper i cartró": 30.1,
+      "Vidre": 21.24,
+      "Envasos": 13.9,
+      "Poda i jardineria": 0.01,
+      "Voluminosos i fusta": 0.71,
+      "Tèxtil": 0.01
+     }
+    },
+    {
+     "any": 2007,
+     "poblacio": 218,
+     "selectiva": 37.9,
+     "kgHabAny": 662.19,
+     "kgHabDia": 1.81,
+     "total": 144.36,
+     "fraccions": {
+      "Orgànica": 19.1,
+      "Paper i cartró": 11.29,
+      "Vidre": 15.14,
+      "Envasos": 6.27,
+      "Poda i jardineria": 0.03,
+      "Voluminosos i fusta": 0.98,
+      "Tèxtil": 0.01
+     }
+    },
+    {
+     "any": 2008,
+     "poblacio": 227,
+     "selectiva": 36.33,
+     "kgHabAny": 671.94,
+     "kgHabDia": 1.84,
+     "total": 152.53,
+     "fraccions": {
+      "Orgànica": 20.09,
+      "Paper i cartró": 13.18,
+      "Vidre": 11.88,
+      "Envasos": 8.18,
+      "Poda i jardineria": 0.02,
+      "Voluminosos i fusta": 0.41,
+      "Tèxtil": 0.06
+     }
+    },
+    {
+     "any": 2009,
+     "poblacio": 239,
+     "selectiva": 36.98,
+     "kgHabAny": 602.1,
+     "kgHabDia": 1.65,
+     "total": 143.9,
+     "fraccions": {
+      "Orgànica": 20.97,
+      "Paper i cartró": 10.24,
+      "Vidre": 13.6,
+      "Envasos": 8.4
+     }
+    },
+    {
+     "any": 2010,
+     "poblacio": 250,
+     "selectiva": 38.14,
+     "kgHabAny": 550.27,
+     "kgHabDia": 1.51,
+     "total": 137.57,
+     "fraccions": {
+      "Orgànica": 10.77,
+      "Paper i cartró": 11.54,
+      "Vidre": 12.88,
+      "Envasos": 7.68,
+      "Poda i jardineria": 1.32,
+      "Voluminosos i fusta": 2.26,
+      "Tèxtil": 0.11,
+      "Aparells elèctrics": 1.1
+     }
+    },
+    {
+     "any": 2011,
+     "poblacio": 268,
+     "selectiva": 32.54,
+     "kgHabAny": 457.05,
+     "kgHabDia": 1.25,
+     "total": 122.49,
+     "fraccions": {
+      "Orgànica": 13.59,
+      "Paper i cartró": 9.73,
+      "Vidre": 9.05,
+      "Envasos": 5.93,
+      "Poda i jardineria": 0.19,
+      "Voluminosos i fusta": 0.31,
+      "Runes": 0.58,
+      "Tèxtil": 0.02,
+      "Aparells elèctrics": 0.1
+     }
+    },
+    {
+     "any": 2012,
+     "poblacio": 287,
+     "selectiva": 38.33,
+     "kgHabAny": 482.59,
+     "kgHabDia": 1.32,
+     "total": 138.5,
+     "fraccions": {
+      "Orgànica": 26.66,
+      "Paper i cartró": 8.14,
+      "Vidre": 8.02,
+      "Envasos": 5.68,
+      "Poda i jardineria": 0.33,
+      "Voluminosos i fusta": 0.4,
+      "Runes": 0.67,
+      "Tèxtil": 0.02,
+      "Aparells elèctrics": 0.52
+     }
+    },
+    {
+     "any": 2013,
+     "poblacio": 287,
+     "selectiva": 33.17,
+     "kgHabAny": 585.99,
+     "kgHabDia": 1.61,
+     "total": 168.18,
+     "fraccions": {
+      "Orgànica": 26.33,
+      "Paper i cartró": 8.05,
+      "Vidre": 12,
+      "Envasos": 5.45,
+      "Poda i jardineria": 0.26,
+      "Voluminosos i fusta": 0.33,
+      "Runes": 0.52,
+      "Tèxtil": 0.01,
+      "Aparells elèctrics": 0.23
+     }
+    },
+    {
+     "any": 2014,
+     "poblacio": 289,
+     "selectiva": 31.08,
+     "kgHabAny": 599.43,
+     "kgHabDia": 1.64,
+     "total": 173.23,
+     "fraccions": {
+      "Orgànica": 23.77,
+      "Paper i cartró": 8.2,
+      "Vidre": 10.01,
+      "Envasos": 6.83,
+      "Poda i jardineria": 0.42,
+      "Voluminosos i fusta": 0.53,
+      "Runes": 0.82,
+      "Tèxtil": 0.02,
+      "Aparells elèctrics": 0.55
+     }
+    },
+    {
+     "any": 2015,
+     "poblacio": 295,
+     "selectiva": 34.79,
+     "kgHabAny": 587.29,
+     "kgHabDia": 1.61,
+     "total": 173.25,
+     "fraccions": {
+      "Orgànica": 27.47,
+      "Paper i cartró": 7.46,
+      "Vidre": 14.18,
+      "Envasos": 6.11,
+      "Poda i jardineria": 0.32,
+      "Voluminosos i fusta": 0.45,
+      "Runes": 0.71,
+      "Tèxtil": 0.02,
+      "Aparells elèctrics": 0.82
+     }
+    },
+    {
+     "any": 2016,
+     "poblacio": 288,
+     "selectiva": 35.66,
+     "kgHabAny": 585.58,
+     "kgHabDia": 1.6,
+     "total": 168.65,
+     "fraccions": {
+      "Orgànica": 27.44,
+      "Paper i cartró": 7.83,
+      "Vidre": 13.37,
+      "Envasos": 7.11,
+      "Poda i jardineria": 0.35,
+      "Voluminosos i fusta": 0.59,
+      "Runes": 0.82,
+      "Tèxtil": 0.01,
+      "Aparells elèctrics": 0.55
+     }
+    },
+    {
+     "any": 2017,
+     "poblacio": 295,
+     "selectiva": 36.24,
+     "kgHabAny": 569.12,
+     "kgHabDia": 1.56,
+     "total": 167.89,
+     "fraccions": {
+      "Orgànica": 27.25,
+      "Paper i cartró": 8.68,
+      "Vidre": 13.18,
+      "Envasos": 6.26,
+      "Poda i jardineria": 0.51,
+      "Voluminosos i fusta": 0.7,
+      "Runes": 0.87,
+      "Tèxtil": 0.02,
+      "Aparells elèctrics": 0.85
+     }
+    },
+    {
+     "any": 2018,
+     "poblacio": 286,
+     "selectiva": 33.36,
+     "kgHabAny": 624.81,
+     "kgHabDia": 1.71,
+     "total": 178.7,
+     "fraccions": {
+      "Orgànica": 23.86,
+      "Paper i cartró": 9.43,
+      "Vidre": 11.67,
+      "Envasos": 4.74,
+      "Poda i jardineria": 1.11,
+      "Voluminosos i fusta": 1.69,
+      "Runes": 2.27,
+      "Tèxtil": 0.04,
+      "Aparells elèctrics": 0.98
+     }
+    },
+    {
+     "any": 2019,
+     "poblacio": 290,
+     "selectiva": 35.31,
+     "kgHabAny": 644.42,
+     "kgHabDia": 1.77,
+     "total": 186.88,
+     "fraccions": {
+      "Orgànica": 21.08,
+      "Paper i cartró": 9.15,
+      "Vidre": 14.78,
+      "Envasos": 7.06,
+      "Poda i jardineria": 1.26,
+      "Voluminosos i fusta": 2.61,
+      "Runes": 3.52,
+      "Tèxtil": 0.07,
+      "Aparells elèctrics": 1.74
+     }
+    },
+    {
+     "any": 2020,
+     "poblacio": 274,
+     "selectiva": 40.8,
+     "kgHabAny": 706.47,
+     "kgHabDia": 1.94,
+     "total": 193.57,
+     "fraccions": {
+      "Orgànica": 25.44,
+      "Paper i cartró": 11.66,
+      "Vidre": 18.09,
+      "Envasos": 9.77,
+      "Poda i jardineria": 1.34,
+      "Voluminosos i fusta": 4.55,
+      "Runes": 3.25,
+      "Tèxtil": 0.07,
+      "Aparells elèctrics": 1.68
+     }
+    },
+    {
+     "any": 2021,
+     "poblacio": 258,
+     "selectiva": 39.29,
+     "kgHabAny": 795.43,
+     "kgHabDia": 2.18,
+     "total": 205.22,
+     "fraccions": {
+      "Orgànica": 25.75,
+      "Paper i cartró": 11.56,
+      "Vidre": 19.36,
+      "Envasos": 8.85,
+      "Poda i jardineria": 1.39,
+      "Voluminosos i fusta": 4.99,
+      "Runes": 4.07,
+      "Tèxtil": 0.08,
+      "Aparells elèctrics": 1.6
+     }
+    },
+    {
+     "any": 2022,
+     "poblacio": 250,
+     "selectiva": 55.35,
+     "kgHabAny": 616.31,
+     "kgHabDia": 1.69,
+     "total": 154.08,
+     "fraccions": {
+      "Orgànica": 12.09,
+      "Paper i cartró": 12.35,
+      "Vidre": 18.59,
+      "Envasos": 10.71,
+      "Poda i jardineria": 10.72,
+      "Voluminosos i fusta": 8.19,
+      "Runes": 7.72,
+      "Tèxtil": 0.16,
+      "Aparells elèctrics": 1.52
+     }
+    },
+    {
+     "any": 2023,
+     "poblacio": 265,
+     "selectiva": 55.41,
+     "kgHabAny": 821.08,
+     "kgHabDia": 2.25,
+     "total": 217.59,
+     "fraccions": {
+      "Orgànica": 17.93,
+      "Paper i cartró": 14.12,
+      "Vidre": 16.9,
+      "Envasos": 10.98,
+      "Poda i jardineria": 36.85,
+      "Voluminosos i fusta": 9.7,
+      "Runes": 8.91,
+      "Aparells elèctrics": 1.71
+     }
+    },
+    {
+     "any": 2024,
+     "poblacio": 266,
+     "selectiva": 53.61,
+     "kgHabAny": 855.04,
+     "kgHabDia": 2.34,
+     "total": 227.44,
+     "fraccions": {
+      "Orgànica": 24.6,
+      "Paper i cartró": 17.35,
+      "Vidre": 17.92,
+      "Envasos": 11.11,
+      "Poda i jardineria": 27.87,
+      "Voluminosos i fusta": 9.96,
+      "Runes": 7.66,
+      "Tèxtil": 0.19,
+      "Aparells elèctrics": 1.69
+     }
+    }
    ]
   },
   "catalunya": {
@@ -3778,6 +4434,29 @@
     "unitats": 3,
     "lat": 41.989,
     "lon": 3.014
+   },
+   {
+    "codi": "17003941",
+    "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "titularitat": "Departament d'Educació i Formació Professional",
+    "alumnes": 36,
+    "nenes": 26,
+    "nens": 10,
+    "estudis": [
+     [
+      "EDUCACIÓ PRIMÀRIA",
+      28
+     ],
+     [
+      "EDUCACIÓ INFANTIL",
+      8
+     ]
+    ],
+    "unitats": 3,
+    "lat": 42.004,
+    "lon": 3.068
    },
    {
     "codi": "17001024",
@@ -4024,6 +4703,52 @@
     [
      "2025/2026",
      102
+    ]
+   ],
+   "17205": [
+    [
+     "2015/2016",
+     54
+    ],
+    [
+     "2016/2017",
+     57
+    ],
+    [
+     "2017/2018",
+     50
+    ],
+    [
+     "2018/2019",
+     46
+    ],
+    [
+     "2019/2020",
+     43
+    ],
+    [
+     "2020/2021",
+     37
+    ],
+    [
+     "2021/2022",
+     37
+    ],
+    [
+     "2022/2023",
+     35
+    ],
+    [
+     "2023/2024",
+     32
+    ],
+    [
+     "2024/2025",
+     36
+    ],
+    [
+     "2025/2026",
+     36
     ]
    ],
    "17902": [
@@ -4761,6 +5486,132 @@
     "assignacions_altres_peticions": 0
    },
    {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "1",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 6,
+    "places_ofertades_a_la": 6,
+    "assignacions": 4,
+    "assignacions_1a_peticio": 4,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 3,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació infantil: Parvulari",
+    "nivell": "3",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 3,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "1",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 2,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "2",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 4,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "3",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 4,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "4",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 7,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "5",
+    "oferta_inicial_grups": 0,
+    "oferta_inicial_places": 6,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
+    "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+    "codi": "17003941",
+    "mun": "17205",
+    "naturalesa": "Públic",
+    "ensenyament": "Educació primària",
+    "nivell": "6",
+    "oferta_inicial_grups": 1,
+    "oferta_inicial_places": 2,
+    "places_ofertades_a_la": 0,
+    "assignacions": 0,
+    "assignacions_1a_peticio": 0,
+    "assignacions_altres_peticions": 0
+   },
+   {
     "centre": "Escola Mas Clarà",
     "codi": "17005248",
     "mun": "17022",
@@ -5342,6 +6193,36 @@
      ]
     },
     {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 47,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       28
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       19
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants d'Ullastret",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 7,
+     "unitats": 1,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       7
+      ]
+     ]
+    },
+    {
      "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
      "mun": "17901",
      "naturalesa": "Públic",
@@ -5557,6 +6438,36 @@
       [
        "EDUCACIÓ INFANTIL",
        33
+      ]
+     ]
+    },
+    {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 50,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       31
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       19
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants d'Ullastret",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 7,
+     "unitats": 1,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       7
       ]
      ]
     },
@@ -5780,6 +6691,36 @@
      ]
     },
     {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 46,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       31
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       15
+      ]
+     ]
+    },
+    {
+     "nom": "Llar d'infants d'Ullastret",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 4,
+     "unitats": 1,
+     "estudis": [
+      [
+       "EDUCACIÓ INFANTIL",
+       4
+      ]
+     ]
+    },
+    {
      "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
      "mun": "17901",
      "naturalesa": "Públic",
@@ -5995,6 +6936,23 @@
       [
        "EDUCACIÓ INFANTIL",
        33
+      ]
+     ]
+    },
+    {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 46,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       26
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       20
       ]
      ]
     },
@@ -6218,6 +7176,23 @@
      ]
     },
     {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 43,
+     "unitats": 4,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       28
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       15
+      ]
+     ]
+    },
+    {
      "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
      "mun": "17901",
      "naturalesa": "Públic",
@@ -6433,6 +7408,23 @@
       [
        "EDUCACIÓ INFANTIL",
        30
+      ]
+     ]
+    },
+    {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 37,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       24
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       13
       ]
      ]
     },
@@ -6656,6 +7648,23 @@
      ]
     },
     {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 37,
+     "unitats": 2,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       20
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       17
+      ]
+     ]
+    },
+    {
      "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
      "mun": "17901",
      "naturalesa": "Públic",
@@ -6875,6 +7884,23 @@
      ]
     },
     {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 35,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       20
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       15
+      ]
+     ]
+    },
+    {
      "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
      "mun": "17901",
      "naturalesa": "Públic",
@@ -7090,6 +8116,23 @@
       [
        "EDUCACIÓ INFANTIL",
        23
+      ]
+     ]
+    },
+    {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 32,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       20
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       12
       ]
      ]
     },
@@ -7326,6 +8369,23 @@
      ]
     },
     {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 36,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       27
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       9
+      ]
+     ]
+    },
+    {
      "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
      "mun": "17901",
      "naturalesa": "Públic",
@@ -7554,6 +8614,23 @@
      ]
     },
     {
+     "nom": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "naturalesa": "Públic",
+     "alumnes": 36,
+     "unitats": 3,
+     "estudis": [
+      [
+       "EDUCACIÓ PRIMÀRIA",
+       28
+      ],
+      [
+       "EDUCACIÓ INFANTIL",
+       8
+      ]
+     ]
+    },
+    {
      "nom": "Escola Les Gavarres - ZER Empordanet-Gavarres",
      "mun": "17901",
      "naturalesa": "Públic",
@@ -7734,6 +8811,24 @@
      "assignacions_1a_peticio": 0
     },
     {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 8,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 6
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 9,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
      "centre": "Escola Mas Clarà",
      "mun": "17022",
      "ensenyament": "Educació infantil: Parvulari",
@@ -7894,6 +8989,24 @@
      "ensenyament": "Educació primària",
      "nivell": "1",
      "oferta_inicial_places": 6,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 8,
+     "assignacions": 3,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
      "assignacions": 0,
      "assignacions_1a_peticio": 0
     },
@@ -8062,6 +9175,24 @@
      "assignacions_1a_peticio": 0
     },
     {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 3,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 4,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
      "centre": "Escola Mas Clarà",
      "mun": "17022",
      "ensenyament": "Educació infantil: Parvulari",
@@ -8222,6 +9353,24 @@
      "ensenyament": "Educació primària",
      "nivell": "1",
      "oferta_inicial_places": 4,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 8,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 8,
      "assignacions": 0,
      "assignacions_1a_peticio": 0
     },
@@ -8390,6 +9539,24 @@
      "assignacions_1a_peticio": 0
     },
     {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 7,
+     "assignacions": 6,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 2,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
      "centre": "Escola Mas Clarà",
      "mun": "17022",
      "ensenyament": "Educació infantil: Parvulari",
@@ -8550,6 +9717,24 @@
      "ensenyament": "Educació primària",
      "nivell": "1",
      "oferta_inicial_places": 8,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 4,
+     "assignacions": 4,
+     "assignacions_1a_peticio": 4
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 5,
      "assignacions": 0,
      "assignacions_1a_peticio": 0
     },
@@ -8718,6 +9903,24 @@
      "assignacions_1a_peticio": 0
     },
     {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 7,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
      "centre": "Escola Mas Clarà",
      "mun": "17022",
      "ensenyament": "Educació infantil: Parvulari",
@@ -8878,6 +10081,24 @@
      "ensenyament": "Educació primària",
      "nivell": "1",
      "oferta_inicial_places": 3,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 3,
+     "assignacions": 3,
+     "assignacions_1a_peticio": 3
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
      "assignacions": 0,
      "assignacions_1a_peticio": 0
     },
@@ -9046,6 +10267,24 @@
      "assignacions_1a_peticio": 0
     },
     {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 2,
+     "assignacions": 2,
+     "assignacions_1a_peticio": 2
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 4,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
      "centre": "Escola Mas Clarà",
      "mun": "17022",
      "ensenyament": "Educació infantil: Parvulari",
@@ -9206,6 +10445,24 @@
      "ensenyament": "Educació primària",
      "nivell": "1",
      "oferta_inicial_places": 9,
+     "assignacions": 0,
+     "assignacions_1a_peticio": 0
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació infantil: Parvulari",
+     "nivell": "1",
+     "oferta_inicial_places": 6,
+     "assignacions": 4,
+     "assignacions_1a_peticio": 4
+    },
+    {
+     "centre": "Escola L'Estany - ZER Empordanet-Gavarres",
+     "mun": "17205",
+     "ensenyament": "Educació primària",
+     "nivell": "1",
+     "oferta_inicial_places": 2,
      "assignacions": 0,
      "assignacions_1a_peticio": 0
     },

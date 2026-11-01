@@ -1,0 +1,45 @@
+# Panell -> hemeroteca — La TdG · 01.11.2026
+# Cada nit envia al Cercador Hemeroteca La TdG un .txt amb el que va sortir per
+# primer cop al panell aquell dia (vegeu eines/hemeroteca.mjs), perquè el bot
+# d'hemeroteca ho trobi. També es pot llançar a mà.
+# Secrets (els mateixos que al repo latdg/plens): CERCA_URL i CERCA_CLAU.
+name: Panell a l'hemeroteca
+
+on:
+  schedule:
+    - cron: "47 22 * * *"   # 23.47 a l'hivern (00.47 a l'estiu), després de l'última actualització
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hemeroteca
+  cancel-in-progress: false
+
+jobs:
+  envia:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Envia els dies nous
+        env:
+          CERCA_URL: ${{ secrets.CERCA_URL }}
+          CERCA_CLAU: ${{ secrets.CERCA_CLAU }}
+        run: node eines/hemeroteca.mjs
+      - name: Desa els dies enviats
+        run: |
+          git config user.name "La TdG (hemeroteca)"
+          git config user.email "latdg@laguait.cat"
+          git add dades/hemeroteca-enviats.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Res de nou."; exit 0; fi
+          git commit -q -m "Panell a l'hemeroteca ($(TZ=Europe/Madrid date '+%d.%m.%Y'))"
+          for i in 1 2 3 4 5; do
+            git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0
+            sleep $((i * 5))
+          done
+          echo "::error::No s'ha pogut desar la llista de dies enviats."; exit 1

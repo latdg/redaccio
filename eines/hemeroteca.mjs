@@ -6,7 +6,10 @@
 // elements que aquell dia van sortir PER PRIMER COP (els que es repeteixen dies
 // seguits només hi van una vegada). L'envia al Cercador Hemeroteca La TdG (la
 // mateixa porta que fa servir el bot de plens: secrets CERCA_URL i CERCA_CLAU),
-// perquè el bot d'hemeroteca ho trobi tot en un sol lloc.
+// perquè el bot d'hemeroteca ho trobi tot en un sol lloc. El Cercador (Apps Script
+// «Cercador Hemeroteca La TdG») el desa a hemeroteca\plens, com els Word dels plens,
+// i el troba igual que la resta: busca a totes les subcarpetes i llegeix la data
+// del nom del fitxer (panell_01.11.2026.txt).
 // Els dies ja enviats es guarden a dades/hemeroteca-enviats.json.
 // Ús (des de l'arrel del repo): node eines/hemeroteca.mjs [--prova]
 //   --prova: escriu els .txt a /tmp/hemeroteca-prova i no envia res.

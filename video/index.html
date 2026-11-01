@@ -11,12 +11,11 @@
   Pàgina amb clau (la mateixa que l'estudi d'àudio). Tot es fa en aquest navegador amb
   ffmpeg (ffmpeg.wasm, copiat a ffmpeg/): els vídeos no es pugen enlloc.
    1. EDITOR DE VÍDEO (01.11.2026): FreeCut (walterlow/freecut, MIT), copiat a editor/ i
-      adaptat amb eines/freecut/ (botó 🪰 Mosca, castellà, subcarpeta). Necessita Chrome o
+      adaptat amb eines/freecut/ (botó 🪰 Mosca, català, subcarpeta). Necessita Chrome o
       Edge d'ordinador, o el Brave amb «File System Access API» activat.
-   1b. RETALLADOR RÀPID (només si l'editor no es pot obrir, és a dir, al mòbil): retalla (inici i final), comprimeix per a les xarxes, canvia el format
-      (vertical 9:16 o quadrat, retallant o amb fons difuminat), posa el logotip de
-      La TdG i incrusta subtítols a partir d'un .srt (el del bot de transcripcions).
-      Si només cal retallar, ho pot fer sense recomprimir (al moment).
+   1b. EDITOR MÍNIM (01.11.2026; només si l'editor no es pot obrir, és a dir, al mòbil):
+      diversos clips (vídeos o fotos) retallats i en ordre, una pista d'àudio, la mosca
+      i subtítols .srt; format vertical, quadrat o horitzontal. Substitueix el retallador.
    2. VÍDEO D'UN ÀUDIO: àudio + fons amb la capçalera de La TdG, un títol i l'ona
       movent-se, per a les xarxes que no reprodueixen àudio sol. També admet .srt.
   Els fitxers molt grans (un ple sencer) van lents al navegador: per a aquests, el
@@ -62,6 +61,15 @@ audio{background:none}
 .barra span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 .resultat{border-top:1px solid var(--linia);margin-top:14px;padding-top:12px}
 canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-radius:8px;margin-top:10px}
+h3{margin:16px 0 8px;font-size:1rem}
+label.boto{display:inline-block;background:var(--accent);color:#fff;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer}
+.clips{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.clip{border:1px solid var(--linia);border-radius:10px;padding:10px;display:grid;gap:8px}
+.clip .cap{display:flex;gap:8px;align-items:center}
+.clip .cap b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.95rem}
+.clip .cap button{padding:4px 9px;font-size:.9rem}
+.clip video,.clip img{width:100%;max-height:34vh;margin:0;border-radius:6px;object-fit:contain;background:#000}
+.clip .params{margin:0}
 </style>
 </head>
 <body>
@@ -118,47 +126,61 @@ canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-ra
         </ol>
       </div>
       <div id="eNo" hidden>
-        <p style="margin:0">Aquest navegador no pot obrir l'editor (necessita Chrome o Edge d'ordinador, o el Brave amb una opció activada). Al mòbil, fes servir el <b>retallador ràpid</b> d'aquí sota.</p>
+        <p style="margin:0">Aquest navegador no pot obrir l'editor (necessita Chrome o Edge d'ordinador, o el Brave amb una opció activada). Al mòbil, fes servir l'<b>editor mínim</b> d'aquí sota.</p>
       </div>
     </section>
 
-    <!-- 1b. RETALLADOR RÀPID (només quan no es pot obrir l'editor: mòbil) -->
+    <!-- 1b. EDITOR MÍNIM (quan no es pot obrir FreeCut: mòbil) -->
     <section id="p-video" hidden>
-      <h2>📱 Retallador ràpid: retalla, comprimeix, format, logotip i subtítols</h2>
-      <input type="file" id="vFitxer" accept="video/*,.mkv,.mov">
-      <video id="vMostra" controls playsinline hidden></video>
-      <div class="params" id="vParams" hidden>
-        <label>Inici
-          <span class="temps"><input id="vInici" value="0:00" inputmode="decimal"><button type="button" class="suau" data-marca="vInici" data-de="vMostra" title="Agafa el moment on és el vídeo">⏱️ Ara</button></span>
-        </label>
-        <label>Final
-          <span class="temps"><input id="vFinal" value="" inputmode="decimal"><button type="button" class="suau" data-marca="vFinal" data-de="vMostra" title="Agafa el moment on és el vídeo">⏱️ Ara</button></span>
-        </label>
-        <label>Format
-          <select id="vFormat">
-            <option value="original">Com l'original</option>
-            <option value="vertical-difuminat">Vertical 9:16 · amb fons difuminat</option>
-            <option value="vertical-retall">Vertical 9:16 · retallat al centre</option>
-            <option value="quadrat-difuminat">Quadrat · amb fons difuminat</option>
-            <option value="quadrat-retall">Quadrat · retallat al centre</option>
-          </select>
-        </label>
-        <label>Mida
-          <select id="vMida">
-            <option value="720" selected>Xarxes (720p)</option>
-            <option value="1080">Alta (1080p, més lent)</option>
-            <option value="480">Lleuger (480p, per a WhatsApp)</option>
-          </select>
-        </label>
-        <label>Subtítols (.srt, opcional)
-          <input type="file" id="vSrt" accept=".srt,.vtt,text/plain">
-        </label>
-        <label class="check"><input type="checkbox" id="vLogo"> Logotip de La TdG a la cantonada</label>
-        <label class="check"><input type="checkbox" id="vCopia"> Només retalla, sense recomprimir (al moment)</label>
+      <h2>📱 Editor mínim: clips, retalls, àudio i mosca</h2>
+      <p class="font" style="margin:0 0 10px">Afegeix els clips (vídeos o fotos), retalla'ls i posa'ls en ordre. Si vols, hi afegeixes una pista d'àudio (veu o música). Al final s'ajunta tot en un sol vídeo.</p>
+      <div class="fila">
+        <label class="boto"><input type="file" id="vFitxer" accept="video/*,image/*,.mkv,.mov" multiple hidden>➕ Afegeix clips</label>
+        <span class="font" id="vRecompte" style="margin:0"></span>
       </div>
-      <div class="fila" id="vBotons" hidden>
-        <button type="button" id="vFes">🎬 Fes el vídeo</button>
-        <button type="button" class="suau" id="vAtura" hidden>✋ Atura</button>
+      <ol id="vClips" class="clips"></ol>
+      <div id="vMes" hidden>
+        <h3>🎵 Pista d'àudio (opcional)</h3>
+        <input type="file" id="vPista" accept="audio/*,.mp3,.wav,.m4a,.ogg,.opus,.aac">
+        <audio id="vPistaMostra" controls hidden></audio>
+        <div class="params" id="vPistaParams" hidden>
+          <label>Comença al vídeo a
+            <input id="vPistaA" value="0:00" inputmode="decimal">
+          </label>
+          <label>Agafa l'àudio des de
+            <span class="temps"><input id="vPistaDes" value="0:00" inputmode="decimal"><button type="button" class="suau" data-marca="vPistaDes" data-de="vPistaMostra">⏱️ Ara</button></span>
+          </label>
+          <label>Volum de la pista <input type="range" id="vPistaVol" min="0" max="150" value="100"></label>
+          <label>Volum del so dels clips <input type="range" id="vClipsVol" min="0" max="150" value="100"></label>
+        </div>
+        <h3>🎬 Sortida</h3>
+        <div class="params">
+          <label>Format
+            <select id="vFormat">
+              <option value="original">Com el primer clip</option>
+              <option value="vertical-difuminat">Vertical 9:16 · amb fons difuminat</option>
+              <option value="vertical-retall">Vertical 9:16 · retallat al centre</option>
+              <option value="quadrat-difuminat">Quadrat · amb fons difuminat</option>
+              <option value="quadrat-retall">Quadrat · retallat al centre</option>
+              <option value="horitzontal-difuminat">Horitzontal 16:9 · amb fons difuminat</option>
+            </select>
+          </label>
+          <label>Mida
+            <select id="vMida">
+              <option value="720" selected>Xarxes (720p)</option>
+              <option value="1080">Alta (1080p, més lent)</option>
+              <option value="480">Lleuger (480p, per a WhatsApp)</option>
+            </select>
+          </label>
+          <label>Subtítols (.srt, opcional)
+            <input type="file" id="vSrt" accept=".srt,.vtt,text/plain">
+          </label>
+          <label class="check"><input type="checkbox" id="vLogo" checked> 🪰 Mosca de La TdG</label>
+        </div>
+        <div class="fila">
+          <button type="button" id="vFes">🎬 Fes el vídeo</button>
+          <button type="button" class="suau" id="vAtura" hidden>✋ Atura</button>
+        </div>
       </div>
       <div class="barra" id="vBarra" hidden><span></span></div>
       <p class="font" id="vEstat"></p>
@@ -166,7 +188,7 @@ canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-ra
         <video id="vSortida" controls playsinline></video>
         <div class="fila" style="margin-top:10px"><button type="button" id="vBaixa">⬇️ Descarrega</button><span class="font" id="vInfo" style="margin:0"></span></div>
       </div>
-      <p class="font">«Només retalla» talla pel fotograma clau més proper, i per això l'inici pot moure's un segon o dos. Si cal precisió, deixa-ho desmarcat. Els subtítols han de començar a comptar des del principi del vídeo original: si en retalles un tros, ja es desplacen sols.</p>
+      <p class="font">Els subtítols compten des del principi del vídeo final. Al mòbil, millor clips curts: tot es fa dins del telèfon.</p>
     </section>
 
     <!-- 2. VÍDEO D'UN ÀUDIO -->
@@ -211,7 +233,7 @@ canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-ra
       </div>
     </section>
 
-    <p class="font">Editor: <a href="https://github.com/walterlow/freecut" target="_blank" rel="noopener">FreeCut</a> (llicència MIT; la primera vegada baixa uns 100 MB i després queda al navegador). Retallador ràpid i vídeo d'un àudio: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
+    <p class="font">Editor: <a href="https://github.com/walterlow/freecut" target="_blank" rel="noopener">FreeCut</a> (llicència MIT; la primera vegada baixa uns 100 MB i després queda al navegador). Editor mínim i vídeo d'un àudio: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
   </div>
 </main>
 
@@ -380,104 +402,191 @@ function seguiment(ff, barra, estat, durada, etiqueta) {
 const mb = n => (n / 1048576).toLocaleString("ca", { maximumFractionDigits: 1 }) + " MB";
 const parell = n => Math.round(n / 2) * 2;
 
-// ================= 1. VÍDEO =================
-let V_URL = null, V_RES = null, V_NOM = "";
+// ================= 1b. EDITOR MÍNIM =================
+// Cada clip: vídeo (amb inici i final) o foto (amb durada). S'ajunten en ordre amb el filtre
+// concat de FFmpeg; després, la pista d'àudio, la mosca i els subtítols sobre el resultat.
+let V_RES = null, V_NOM = "", N_CLIP = 0;
+const CLIPS = [];
 const vEstat = t => { $("vEstat").textContent = t; };
 
-$("vFitxer").onchange = () => {
-  const f = $("vFitxer").files[0];
+function pintaClips() {
+  const ol = $("vClips");
+  [...ol.children].forEach(li => { if (!CLIPS.some(c => c.li === li)) li.remove(); });
+  CLIPS.forEach((c, n) => {
+    ol.appendChild(c.li);
+    c.li.querySelector(".num").textContent = (n + 1) + ".";
+    c.li.querySelector("[data-a=amunt]").disabled = n === 0;
+    c.li.querySelector("[data-a=avall]").disabled = n === CLIPS.length - 1;
+  });
+  $("vMes").hidden = !CLIPS.length;
+  $("vRecompte").textContent = CLIPS.length ? `${CLIPS.length} clip${CLIPS.length > 1 ? "s" : ""}` : "";
   $("vResultat").hidden = true;
-  if (!f) return;
-  if (V_URL) URL.revokeObjectURL(V_URL);
-  V_URL = URL.createObjectURL(f);
-  const v = $("vMostra"); v.src = V_URL; v.hidden = false;
-  $("vParams").hidden = false; $("vBotons").hidden = false;
-  $("vInici").value = "0:00"; $("vFinal").value = "";
-  v.onloadedmetadata = () => { $("vFinal").value = escriuTemps(v.duration); };
-  vEstat(f.size > 700 * 1048576 ? `⚠️ Fa ${mb(f.size)}: al navegador anirà lent. Si és un ple sencer, millor el convertidor.` : `${f.name} · ${mb(f.size)}`);
+}
+function afegeixClip(f) {
+  const id = ++N_CLIP, foto = f.type.startsWith("image/");
+  const url = URL.createObjectURL(f);
+  const li = document.createElement("li"); li.className = "clip";
+  li.innerHTML = `<div class="cap"><span class="num"></span><b></b>
+      <button type="button" class="suau" data-a="amunt" title="Puja'l">↑</button>
+      <button type="button" class="suau" data-a="avall" title="Baixa'l">↓</button>
+      <button type="button" class="suau" data-a="treu" title="Treu-lo">✕</button></div>` +
+    (foto ? `<img alt="">
+      <div class="params"><label>Durada (segons)<input data-c="durada" value="3" inputmode="decimal"></label></div>`
+          : `<video controls playsinline preload="metadata"></video>
+      <div class="params">
+        <label>Inici<span class="temps"><input id="ci${id}" value="0:00" inputmode="decimal"><button type="button" class="suau" data-marca="ci${id}" data-de="cv${id}">⏱️ Ara</button></span></label>
+        <label>Final<span class="temps"><input id="cf${id}" value="" inputmode="decimal"><button type="button" class="suau" data-marca="cf${id}" data-de="cv${id}">⏱️ Ara</button></span></label>
+        <label class="check"><input type="checkbox" data-c="so" checked> So del clip</label>
+      </div>`);
+  li.querySelector("b").textContent = f.name;
+  const c = { id, f, foto, li, url };
+  if (foto) li.querySelector("img").src = url;
+  else {
+    const v = li.querySelector("video"); v.id = "cv" + id; v.src = url;
+    v.onloadedmetadata = () => { if (!$("cf" + id).value) $("cf" + id).value = escriuTemps(v.duration); };
+  }
+  li.addEventListener("click", e => {
+    const b = e.target.closest("button[data-a]"); if (!b) return;
+    const n = CLIPS.indexOf(c);
+    if (b.dataset.a === "treu") { CLIPS.splice(n, 1); URL.revokeObjectURL(url); }
+    else if (b.dataset.a === "amunt" && n > 0) CLIPS.splice(n - 1, 0, CLIPS.splice(n, 1)[0]);
+    else if (b.dataset.a === "avall" && n < CLIPS.length - 1) CLIPS.splice(n + 1, 0, CLIPS.splice(n, 1)[0]);
+    pintaClips();
+  });
+  CLIPS.push(c);
+}
+$("vFitxer").onchange = () => {
+  [...$("vFitxer").files].forEach(afegeixClip);
+  $("vFitxer").value = "";
+  pintaClips();
+  const gran = CLIPS.find(c => c.f.size > 700 * 1048576);
+  vEstat(gran ? `⚠️ ${gran.f.name} fa ${mb(gran.f.size)}: al mòbil anirà molt lent.` : "");
 };
-const actualitzaCopia = () => {
-  const potCopiar = $("vFormat").value === "original" && !$("vLogo").checked && !$("vSrt").files.length;
-  $("vCopia").disabled = !potCopiar;
-  if (!potCopiar) $("vCopia").checked = false;
-  $("vMida").disabled = $("vCopia").checked;
+let P_URL = null;
+$("vPista").onchange = () => {
+  const f = $("vPista").files[0];
+  if (P_URL) URL.revokeObjectURL(P_URL);
+  $("vPistaParams").hidden = !f; $("vPistaMostra").hidden = !f;
+  if (f) { P_URL = URL.createObjectURL(f); $("vPistaMostra").src = P_URL; }
 };
-["vFormat", "vLogo", "vSrt", "vCopia"].forEach(id => $(id).addEventListener("change", actualitzaCopia));
+
+// Talls de cada clip (en segons), comprovats abans de començar
+function talls() {
+  return CLIPS.map((c, n) => {
+    if (c.foto) {
+      const d = llegeixTemps(c.li.querySelector("[data-c=durada]").value);
+      if (!(d >= 0.5)) throw new Error(`Clip ${n + 1}: la durada de la foto ha de ser d'almenys mig segon.`);
+      return { ...c, ini: 0, dur: d, so: false };
+    }
+    const v = c.li.querySelector("video");
+    const a = llegeixTemps($("ci" + c.id).value) ?? 0;
+    let b = llegeixTemps($("cf" + c.id).value); if (b == null) b = v.duration;
+    if (isNaN(a) || isNaN(b)) throw new Error(`Clip ${n + 1}: no entenc l'inici o el final. Escriu-ho com 1:15 o 75.`);
+    if (v.duration) b = Math.min(b, v.duration);
+    if (b - a < 0.3) throw new Error(`Clip ${n + 1}: el final ha de ser després de l'inici.`);
+    return { ...c, ini: a, dur: b - a, so: c.li.querySelector("[data-c=so]").checked, ample: v.videoWidth, alt: v.videoHeight };
+  });
+}
+// Mira si un fitxer té so (FFmpeg ho diu al registre en llegir-lo)
+async function teSo(ff, cami) {
+  let so = false;
+  const escolta = ({ message }) => { if (/Stream #.*Audio:/.test(message)) so = true; };
+  ff.on("log", escolta);
+  try { await ff.exec(["-hide_banner", "-i", cami]); } catch (e) {} finally { ff.off("log", escolta); }
+  return so;
+}
 
 async function fesVideo() {
-  const f = $("vFitxer").files[0];
-  if (!f) return;
-  const v = $("vMostra");
-  let ini, fi;
-  try { [ini, fi] = tram("vInici", "vFinal", v.duration); } catch (e) { vEstat("❌ " + e.message); return; }
-  const durada = fi - ini;
+  if (!CLIPS.length) return;
+  let llista;
+  try { llista = talls(); } catch (e) { vEstat("❌ " + e.message); return; }
+  const durada = llista.reduce((s, c) => s + c.dur, 0);
   $("vFes").disabled = true; $("vAtura").hidden = false; $("vResultat").hidden = true;
   const feina = EN_MARXA = { aturat: false };
   let ff, dir = null, acaba = () => 0;
   try {
     ff = await motor(vEstat);
-    dir = await munta(ff, f);
-    const entrada = dir + "/" + f.name;
-    const copia = $("vCopia").checked;
-    const ext = copia ? ((f.name.match(/\.(mp4|mov|mkv|webm|m4v)$/i) || [, "mp4"])[1].toLowerCase()) : "mp4";
-    const sortida = "/sortida." + ext;
-    let args;
-    if (copia) {
-      args = ["-ss", String(ini), "-i", entrada, "-t", String(durada), "-map", "0:v?", "-map", "0:a?", "-c", "copy", "-avoid_negative_ts", "make_zero", "-y", sortida];
-    } else {
-      const L = Number($("vMida").value);
-      const format = $("vFormat").value;
-      const [tipus, mode] = format.split("-");
-      let W, H, cadena;
-      if (tipus === "original") {
-        const vertical = v.videoHeight > v.videoWidth;
-        W = vertical ? Math.min(L, v.videoWidth) : parell(v.videoWidth * Math.min(L, v.videoHeight) / v.videoHeight);
-        H = vertical ? parell(v.videoHeight * W / v.videoWidth) : Math.min(L, v.videoHeight);
-        W = parell(W); H = parell(H);
-        cadena = `[0:v]scale=${W}:${H},setsar=1[base]`;
-      } else {
-        W = L; H = tipus === "vertical" ? parell(L * 16 / 9) : L;
-        if (mode === "retall") {
-          cadena = `[0:v]scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},setsar=1[base]`;
-        } else {
-          const w4 = parell(W / 4), h4 = parell(H / 4);
-          cadena = `[0:v]split[a][b];[a]scale=${w4}:${h4}:force_original_aspect_ratio=increase,crop=${w4}:${h4},boxblur=8:2,scale=${W}:${H}[fons];` +
-                   `[b]scale=${W}:${H}:force_original_aspect_ratio=decrease[pp];[fons][pp]overlay=(W-w)/2:(H-h)/2,setsar=1[base]`;
-        }
-      }
-      let ultim = "base";
-      const entrades = ["-ss", String(ini), "-i", entrada];
-      if ($("vLogo").checked) {
-        const ample = parell(Math.max(90, W * (tipus === "original" ? 0.15 : 0.24)));
-        await ff.writeFile("/logo.png", await logoPng(ample));
-        entrades.push("-i", "/logo.png");
-        const m = Math.round(W * 0.03);
-        cadena += `;[${ultim}][1:v]overlay=W-w-${m}:${m}[amblogo]`; ultim = "amblogo";
-      }
-      if (await preparaSubtitols(ff, "vSrt", ini)) {
-        const [mida, marge] = tipus === "vertical" ? [11, 70] : tipus === "quadrat" ? [13, 28] : [16, 18];
-        cadena += `;[${ultim}]${filtreSubtitols(mida, marge)}[ambsub]`; ultim = "ambsub";
-      }
-      cadena += `;[${ultim}]format=yuv420p[sort]`;
-      args = [...entrades, "-t", String(durada), "-filter_complex", cadena, "-map", "[sort]", "-map", "0:a?",
-              "-c:v", "libx264", "-preset", "veryfast", "-crf", L >= 1080 ? "23" : "26", "-c:a", "aac", "-b:a", "128k", "-ac", "2",
-              "-movflags", "+faststart", "-y", sortida];
+    // Tots els fitxers en una sola carpeta (amb noms únics)
+    const fitxers = llista.map(c => new File([c.f], `c${c.id}_${c.f.name.replace(/[^\w.-]+/g, "_")}`, { type: c.f.type }));
+    const pista = $("vPista").files[0];
+    if (pista) fitxers.push(new File([pista], "pista_" + pista.name.replace(/[^\w.-]+/g, "_"), { type: pista.type }));
+    dir = "/in" + (++N_DIR);
+    await ff.createDir(dir);
+    await ff.mount("WORKERFS", { files: fitxers }, dir);
+    vEstat("Llegint els clips…");
+    for (let n = 0; n < llista.length; n++) llista[n].ambSo = llista[n].so && await teSo(ff, `${dir}/${fitxers[n].name}`);
+    if (feina.aturat) return;
+
+    // Mida de sortida
+    const L = Number($("vMida").value);
+    const [tipus, mode] = $("vFormat").value.split("-");
+    let W, H;
+    if (tipus === "original") {
+      const p = llista.find(c => !c.foto && c.ample) || { ample: 1280, alt: 720 };
+      if (p.alt > p.ample) { W = Math.min(L, p.ample); H = p.alt * W / p.ample; } else { H = Math.min(L, p.alt); W = p.ample * H / p.alt; }
+      W = parell(W); H = parell(H);
+    } else if (tipus === "horitzontal") { H = L; W = parell(L * 16 / 9); }
+    else { W = L; H = tipus === "vertical" ? parell(L * 16 / 9) : L; }
+    const retall = mode === "retall";
+    const w4 = parell(W / 4), h4 = parell(H / 4);
+
+    const entrades = [], filtres = [];
+    let k = 0;
+    const volClips = Number($("vClipsVol").value) / 100;
+    llista.forEach((c, n) => {
+      const cami = `${dir}/${fitxers[n].name}`;
+      if (c.foto) entrades.push("-loop", "1", "-framerate", "30", "-t", String(c.dur), "-i", cami);
+      else entrades.push("-ss", String(c.ini), "-t", String(c.dur), "-i", cami);
+      const iv = k++;
+      const esc = retall
+        ? `scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H}`
+        : null;
+      if (esc) filtres.push(`[${iv}:v]${esc},setsar=1,fps=30,format=yuv420p[v${n}]`);
+      else filtres.push(`[${iv}:v]split[a${n}][b${n}];[a${n}]scale=${w4}:${h4}:force_original_aspect_ratio=increase,crop=${w4}:${h4},boxblur=8:2,scale=${W}:${H}[f${n}];` +
+                        `[b${n}]scale=${W}:${H}:force_original_aspect_ratio=decrease[p${n}];[f${n}][p${n}]overlay=(W-w)/2:(H-h)/2,setsar=1,fps=30,format=yuv420p[v${n}]`);
+      if (c.ambSo) filtres.push(`[${iv}:a]aresample=48000,aformat=channel_layouts=stereo,volume=${volClips},apad,atrim=0:${c.dur.toFixed(3)},asetpts=PTS-STARTPTS[s${n}]`);
+      else { entrades.push("-f", "lavfi", "-t", String(c.dur), "-i", "anullsrc=r=48000:cl=stereo"); filtres.push(`[${k++}:a]asetpts=PTS-STARTPTS[s${n}]`); }
+    });
+    filtres.push(llista.map((c, n) => `[v${n}][s${n}]`).join("") + `concat=n=${llista.length}:v=1:a=1[cv][ca]`);
+    let ultimV = "cv", ultimA = "ca";
+
+    if (pista) {
+      const a = llegeixTemps($("vPistaA").value) ?? 0, des = llegeixTemps($("vPistaDes").value) ?? 0;
+      if (isNaN(a) || isNaN(des)) throw new Error("No entenc els temps de la pista d'àudio.");
+      entrades.push("-ss", String(des), "-i", `${dir}/${fitxers[fitxers.length - 1].name}`);
+      const ms = Math.round(a * 1000);
+      filtres.push(`[${k++}:a]aresample=48000,aformat=channel_layouts=stereo,volume=${Number($("vPistaVol").value) / 100},adelay=${ms}|${ms}[pista]`);
+      filtres.push(`[ca][pista]amix=inputs=2:duration=first:normalize=0[mix]`); ultimA = "mix";
     }
-    acaba = seguiment(ff, "vBarra", vEstat, durada, copia ? "Retallant…" : "Fent el vídeo…");
-    vEstat(copia ? "Retallant…" : "Fent el vídeo… (el primer percentatge pot trigar)");
+    if ($("vLogo").checked) {
+      const ample = parell(Math.max(90, W * (tipus === "original" ? 0.15 : 0.24)));
+      await ff.writeFile("/logo.png", await logoPng(ample));
+      entrades.push("-i", "/logo.png");
+      const m = Math.round(W * 0.03);
+      filtres.push(`[${ultimV}][${k++}:v]overlay=W-w-${m}:${m}[amblogo]`); ultimV = "amblogo";
+    }
+    if (await preparaSubtitols(ff, "vSrt", 0)) {
+      const [mida, marge] = tipus === "vertical" ? [11, 70] : tipus === "quadrat" ? [13, 28] : [16, 18];
+      filtres.push(`[${ultimV}]${filtreSubtitols(mida, marge)}[ambsub]`); ultimV = "ambsub";
+    }
+    const args = [...entrades, "-filter_complex", filtres.join(";"), "-map", `[${ultimV}]`, "-map", `[${ultimA}]`,
+      "-t", durada.toFixed(3), "-c:v", "libx264", "-preset", "veryfast", "-crf", L >= 1080 ? "23" : "26",
+      "-c:a", "aac", "-b:a", "128k", "-movflags", "+faststart", "-y", "/sortida.mp4"];
+    acaba = seguiment(ff, "vBarra", vEstat, durada, "Fent el vídeo…");
+    vEstat("Fent el vídeo… (el primer percentatge pot trigar)");
     const codi = await ff.exec(args);
     const segons = acaba();
     if (feina.aturat) return;
-    if (codi !== 0) throw new Error("FFmpeg no ha pogut fer el vídeo (codi " + codi + "). Prova-ho sense subtítols o amb un altre format.");
-    const dades = await ff.readFile(sortida);
-    await ff.deleteFile(sortida).catch(() => {});
-    V_RES = new Blob([dades.buffer], { type: ext === "mp4" || ext === "m4v" ? "video/mp4" : ext === "webm" ? "video/webm" : "video/" + ext });
-    V_NOM = `video_${avui()}_${f.name.replace(/\.[^.]+$/, "").replace(/[^A-Za-z0-9]+/g, "_").slice(0, 30)}.${ext}`;
+    if (codi !== 0) throw new Error("FFmpeg no ha pogut fer el vídeo (codi " + codi + "). Prova-ho sense subtítols o amb menys clips.");
+    const dades = await ff.readFile("/sortida.mp4");
+    await ff.deleteFile("/sortida.mp4").catch(() => {});
+    V_RES = new Blob([dades.buffer], { type: "video/mp4" });
+    V_NOM = `video_${avui()}_${llista[0].f.name.replace(/\.[^.]+$/, "").replace(/[^A-Za-z0-9]+/g, "_").slice(0, 30)}.mp4`;
     const out = $("vSortida");
     if (out.src) URL.revokeObjectURL(out.src);
     out.src = URL.createObjectURL(V_RES);
     $("vResultat").hidden = false;
-    $("vInfo").textContent = `${mb(V_RES.size)} · ${escriuTemps(durada)}`;
+    $("vInfo").textContent = `${mb(V_RES.size)} · ${escriuTemps(durada)} · ${llista.length} clip${llista.length > 1 ? "s" : ""}`;
     vEstat(`✅ Fet en ${segons} s.`);
   } catch (e) {
     acaba();
@@ -638,7 +747,7 @@ function baixa(blob, nom) {
 
 // --- Pestanyes ---
 // Editor de vídeo (FreeCut): necessita triar una carpeta de l'ordinador (Chrome i Edge d'ordinador;
-// al Brave, amb una opció activada). Si no es pot, es mostra el retallador ràpid (mòbil).
+// al Brave, amb una opció activada). Si no es pot, es mostra l'editor mínim (mòbil).
 const editorPossible = typeof window.showDirectoryPicker === "function";
 $("eSi").hidden = !editorPossible;
 $("eBrave").hidden = editorPossible || !navigator.brave;
@@ -659,7 +768,6 @@ $("pin").onkeydown = e => { if (e.key === "Enter") entra(); };
 const desada = llegeix(CLAU_DESADA);
 $("recorda").checked = !!desada;
 if (desada) { $("pin").value = desada; entra(); }
-actualitzaCopia();
 </script>
 </body>
 </html>

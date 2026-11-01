@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>Cerca a La TdG redacció</title>
+<!--
+  CERCA A L'ARXIU DEL PANELL — La TdG · 01.11.2026
+  Busca a tots els resums diaris (dades/<dia>/resum.html) amb Pagefind.
+  L'índex (cerca/pagefind/) el refà sol el workflow «Índex de la cerca»
+  cada vegada que es desa un resum. No cal servidor.
+-->
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px}
+h1{margin:0;font-size:1.6rem}
+.sub{color:var(--suau);margin:4px 0 12px}
+a{color:var(--accent)}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto}
+form{display:flex;gap:8px;flex-wrap:wrap}
+input[type=search]{flex:1;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--linia);border-radius:10px;background:var(--targeta);color:var(--text)}
+input[type=search]:focus{outline:2px solid var(--accent);outline-offset:-1px}
+select,button{font:inherit;padding:8px 12px;border:1px solid var(--linia);border-radius:10px;background:var(--targeta);color:var(--text)}
+button{background:var(--accent);border-color:var(--accent);color:#fff;cursor:pointer}
+main{padding-top:16px;padding-bottom:32px;display:grid;gap:12px}
+.estat{color:var(--suau)}
+.resultat{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:14px 16px;overflow-wrap:anywhere}
+.resultat h2{margin:0 0 4px;font-size:1.05rem}
+.resultat p{margin:0}
+.resultat mark{background:#f6dcd3;color:inherit;padding:0 1px;border-radius:2px}
+.mes{justify-self:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <h1>🔎 Cerca a La TdG redacció</h1>
+    <div class="dreta"><a href="../">← Torna al panell</a></div>
+  </div>
+  <p class="sub">Busca a tots els resums desats al panell, dia a dia.</p>
+  <form id="f">
+    <input type="search" id="q" placeholder="Un nom, una empresa, un carrer…" autocomplete="off" autofocus>
+    <select id="ordre" aria-label="Ordre">
+      <option value="data">Més recents primer</option>
+      <option value="rell">Més rellevants primer</option>
+    </select>
+    <button type="submit">Cerca</button>
+  </form>
+</header>
+<main id="res"><p class="estat">Escriu què vols buscar.</p></main>
+
+<script type="module">
+const res = document.getElementById("res");
+const q = document.getElementById("q");
+const ordre = document.getElementById("ordre");
+const PER_PAGINA = 20;
+let pf = null, dades = [], mostrats = 0;
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+// "dades/2026-11-01/resum.html" -> "2026-11-01"
+const diaDe = url => (String(url).match(/(\d{4}-\d{2}-\d{2})/) || [])[1] || "";
+// "2026-11-01" -> "01.11.2026"
+const dataCa = d => d ? d.split("-").reverse().join(".") : "";
+// «L'01.11.2026» i «l'11.11.2026», com a la resta del panell.
+const ambArticle = d => /^(01|11)\./.test(d) ? "L'" + d : "El " + d;
+
+async function carregaPagefind() {
+  if (pf) return pf;
+  try {
+    pf = await import("./pagefind/pagefind.js");
+    await pf.options({ excerptLength: 40 });
+    return pf;
+  } catch (e) {
+    res.innerHTML = '<p class="estat">L\'índex de la cerca encara no s\'ha creat. Es farà sol la propera vegada que es desi un resum.</p>';
+    throw e;
+  }
+}
+
+function pinta() {
+  const tros = dades.slice(mostrats, mostrats + PER_PAGINA);
+  const html = tros.map(r => {
+    const dia = diaDe(r.url);
+    return `<article class="resultat"><h2><a href="../?dia=${esc(dia)}">${esc(ambArticle(dataCa(dia)))}</a></h2><p>${r.excerpt}</p></article>`;
+  }).join("");
+  const boto = document.getElementById("mes");
+  if (boto) boto.remove();
+  res.insertAdjacentHTML("beforeend", html);
+  mostrats += tros.length;
+  if (mostrats < dades.length) {
+    res.insertAdjacentHTML("beforeend", '<button class="mes" id="mes" type="button">Mostra\'n més</button>');
+    document.getElementById("mes").onclick = pinta;
+  }
+}
+
+async function cerca() {
+  const text = q.value.trim();
+  const p = new URLSearchParams(location.search);
+  if (text) p.set("q", text); else p.delete("q");
+  history.replaceState(null, "", "?" + p.toString());
+  if (!text) { res.innerHTML = '<p class="estat">Escriu què vols buscar.</p>'; return; }
+  res.innerHTML = '<p class="estat">Buscant…</p>';
+  const motor = await carregaPagefind();
+  const r = await motor.search(text);
+  dades = await Promise.all(r.results.map(x => x.data()));
+  if (ordre.value === "data") dades.sort((a, b) => diaDe(b.url).localeCompare(diaDe(a.url)));
+  mostrats = 0;
+  const n = dades.length;
+  res.innerHTML = `<p class="estat">${n ? (n === 1 ? "1 dia" : n + " dies") + " amb resultats." : "No s'ha trobat res."}</p>`;
+  if (n) pinta();
+}
+
+document.getElementById("f").onsubmit = e => { e.preventDefault(); cerca(); };
+ordre.onchange = () => { if (q.value.trim()) cerca(); };
+const inicial = new URLSearchParams(location.search).get("q");
+if (inicial) { q.value = inicial; cerca(); }
+</script>
+</body>
+</html>

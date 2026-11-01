@@ -67,6 +67,28 @@ canvia('src/features/media-library/components/media-library.tsx',
 
             <HeaderActionTooltip label={t('media.library.importMediaFromUrl')}>`)
 
+// 4b. Proxies automàtics (01.11.2026): l'ordinador de la redacció (MSI GS60) va just amb
+// vídeo gran. En importar un vídeo de més de 720p o en HEVC/H.265, se'n fa una còpia lleugera
+// per editar; l'exportació continua fent servir l'original.
+canvia('src/features/media-library/stores/media-import-actions.ts',
+  "  proxyService.setProxyKey(metadata.id, getSharedProxyKey(metadata))\n}",
+  `  proxyService.setProxyKey(metadata.id, getSharedProxyKey(metadata))
+  const gran = Math.min(metadata.width || 0, metadata.height || 0) > 720
+  const hevc = /hev|hvc|h\\.?265/i.test(metadata.codec || '')
+  if (gran || hevc) {
+    proxyService.generateProxy(
+      metadata.id,
+      metadata.storageType === 'opfs' && metadata.opfsPath
+        ? { kind: 'opfs', path: metadata.opfsPath, mimeType: metadata.mimeType }
+        : async () => (await loadMediaLibraryService()).mediaLibraryService.getMediaFile(metadata.id),
+      metadata.width,
+      metadata.height,
+      getSharedProxyKey(metadata),
+      { priority: 'background' },
+    )
+  }
+}`)
+
 // 5. Sense service worker
 canvia('src/main.tsx', "if (import.meta.env.PROD && 'serviceWorker' in navigator) {",
   "if (false && import.meta.env.PROD && 'serviceWorker' in navigator) {")

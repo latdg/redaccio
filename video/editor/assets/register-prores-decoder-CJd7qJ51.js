@@ -1,0 +1,2 @@
+let e=null;function t(){return e||=import(`./mediabunny-prores-BD4CDm08.js`).then(({registerProresDecoder:e})=>{e()}).catch(t=>{throw e=null,t}),e}export{t};
+//# sourceMappingURL=register-prores-decoder-CJd7qJ51.js.map

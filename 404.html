@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>No trobat · La TdG redacció</title>
+<script>
+// Si es recarrega una pàgina interna de l'editor de vídeo (FreeCut), GitHub Pages no la troba:
+// es torna a l'editor i aquest recupera la ruta.
+(function () {
+  var base = "/redaccio/video/editor/", p = location.pathname;
+  if (p.indexOf(base) === 0) {
+    var q = location.search ? location.search.slice(1) + "&" : "";
+    location.replace(base + "?" + q + "ruta=" + encodeURIComponent(p.slice(base.length)) + location.hash);
+  }
+})();
+</script>
+<style>body{margin:0;background:#f6f5f2;color:#1d1d1b;font:16px/1.5 system-ui,sans-serif}main{max-width:600px;margin:0 auto;padding:48px 16px}a{color:#b4462c}</style>
+</head>
+<body><main><h1>No trobat</h1><p>Aquesta pàgina no existeix. <a href="/redaccio/">← La TdG redacció</a></p></main></body>
+</html>

@@ -10,7 +10,10 @@
   ESTUDI DE VÍDEO — La TdG · 31.10.2026
   Pàgina amb clau (la mateixa que l'estudi d'àudio). Tot es fa en aquest navegador amb
   ffmpeg (ffmpeg.wasm, copiat a ffmpeg/): els vídeos no es pugen enlloc.
-   1. VÍDEO: retalla (inici i final), comprimeix per a les xarxes, canvia el format
+   1. EDITOR DE VÍDEO (01.11.2026): FreeCut (walterlow/freecut, MIT), copiat a editor/ i
+      adaptat amb eines/freecut/ (botó 🪰 Mosca, castellà, subcarpeta). Necessita Chrome o
+      Edge d'ordinador, o el Brave amb «File System Access API» activat.
+   1b. RETALLADOR RÀPID (només si l'editor no es pot obrir, és a dir, al mòbil): retalla (inici i final), comprimeix per a les xarxes, canvia el format
       (vertical 9:16 o quadrat, retallant o amb fons difuminat), posa el logotip de
       La TdG i incrusta subtítols a partir d'un .srt (el del bot de transcripcions).
       Si només cal retallar, ho pot fer sense recomprimir (al moment).
@@ -74,7 +77,7 @@ canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-ra
     <h1>🎬 Estudi de vídeo</h1>
     <a class="dreta" href="../">← La TdG redacció</a>
   </div>
-  <p class="sub">Retalls, formats per a les xarxes, subtítols i vídeos a partir d'un àudio, tot al navegador.</p>
+  <p class="sub">Editor de vídeo amb la mosca de La TdG i vídeos a partir d'un àudio, tot al navegador.</p>
 </header>
 
 <main>
@@ -90,13 +93,38 @@ canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-ra
 
   <div id="panell" hidden style="display:grid;gap:16px">
     <div class="pestanyes" id="pestanyes">
-      <button type="button" data-p="video" class="actiu">✂️ Vídeo</button>
+      <button type="button" data-p="editor" class="actiu">✂️ Editor de vídeo</button>
       <button type="button" data-p="audio">🎙️ Vídeo d'un àudio</button>
     </div>
 
-    <!-- 1. VÍDEO -->
-    <section id="p-video">
-      <h2>✂️ Vídeo: retalla, comprimeix, format, logotip i subtítols</h2>
+    <!-- 1. EDITOR DE VÍDEO (FreeCut) -->
+    <section id="p-editor">
+      <h2>✂️ Editor de vídeo</h2>
+      <p style="margin:0 0 12px">Editor multipista (FreeCut): retalls, diverses pistes de vídeo i àudio, textos, transicions, subtítols automàtics i exportació en MP4. Tot es fa en aquest ordinador: els vídeos no es pugen enlloc.</p>
+      <div id="eSi" hidden>
+        <div class="fila"><a id="eObre" href="editor/" target="_blank" rel="noopener"><button type="button">🎬 Obre l'editor</button></a><a href="mosca.png" download="mosca-latdg.png"><button type="button" class="suau">🪰 Descarrega la mosca</button></a></div>
+        <ul class="font" style="padding-left:18px;margin:12px 0 0">
+          <li>La primera vegada demana una carpeta de treball: tria'n una de buida (per exemple, «La TdG vídeos»). Hi desa els projectes i els mitjans; a cada ordinador se n'ha de triar una.</li>
+          <li><b>Mosca:</b> dins d'un projecte, al tauler de mitjans, el botó 🪰 <b>Mosca</b> hi afegeix el logotip de La TdG. Arrossega'l a una pista per sobre del vídeo, estira'l tota la durada i col·loca'l a la cantonada.</li>
+          <li>La interfície surt en castellà (FreeCut no té català). Es pot canviar a la configuració.</li>
+        </ul>
+      </div>
+      <div id="eBrave" hidden>
+        <p style="margin:0">Al Brave cal activar una opció una sola vegada:</p>
+        <ol class="font" style="padding-left:18px;margin:8px 0 0">
+          <li>Copia aquesta adreça a la barra del navegador: <code>brave://flags/#file-system-access-api</code></li>
+          <li>Posa «File System Access API» a <b>Enabled</b> i prem <b>Relaunch</b>.</li>
+          <li>Torna aquí i recarrega la pàgina.</li>
+        </ol>
+      </div>
+      <div id="eNo" hidden>
+        <p style="margin:0">Aquest navegador no pot obrir l'editor (necessita Chrome o Edge d'ordinador, o el Brave amb una opció activada). Al mòbil, fes servir el <b>retallador ràpid</b> d'aquí sota.</p>
+      </div>
+    </section>
+
+    <!-- 1b. RETALLADOR RÀPID (només quan no es pot obrir l'editor: mòbil) -->
+    <section id="p-video" hidden>
+      <h2>📱 Retallador ràpid: retalla, comprimeix, format, logotip i subtítols</h2>
       <input type="file" id="vFitxer" accept="video/*,.mkv,.mov">
       <video id="vMostra" controls playsinline hidden></video>
       <div class="params" id="vParams" hidden>
@@ -183,7 +211,7 @@ canvas.mostra{max-width:260px;width:100%;border:1px solid var(--linia);border-ra
       </div>
     </section>
 
-    <p class="font">Motor: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
+    <p class="font">Editor: <a href="https://github.com/walterlow/freecut" target="_blank" rel="noopener">FreeCut</a> (llicència MIT; la primera vegada baixa uns 100 MB i després queda al navegador). Retallador ràpid i vídeo d'un àudio: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
   </div>
 </main>
 
@@ -609,11 +637,20 @@ function baixa(blob, nom) {
 }
 
 // --- Pestanyes ---
+// Editor de vídeo (FreeCut): necessita triar una carpeta de l'ordinador (Chrome i Edge d'ordinador;
+// al Brave, amb una opció activada). Si no es pot, es mostra el retallador ràpid (mòbil).
+const editorPossible = typeof window.showDirectoryPicker === "function";
+$("eSi").hidden = !editorPossible;
+$("eBrave").hidden = editorPossible || !navigator.brave;
+$("eNo").hidden = editorPossible || !!navigator.brave;
+$("p-video").hidden = editorPossible;
+
 $("pestanyes").onclick = e => {
   const b = e.target.closest("button[data-p]");
   if (!b) return;
   document.querySelectorAll("#pestanyes button").forEach(x => x.classList.toggle("actiu", x === b));
-  $("p-video").hidden = b.dataset.p !== "video";
+  $("p-editor").hidden = b.dataset.p !== "editor";
+  $("p-video").hidden = b.dataset.p !== "editor" || editorPossible;
   $("p-audio").hidden = b.dataset.p !== "audio";
 };
 

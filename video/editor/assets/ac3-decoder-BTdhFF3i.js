@@ -1,0 +1,2 @@
+const e=/(^|[^a-z0-9])(ac-?3|ec-?3|e-?ac-?3|eac3)([^a-z0-9]|$)/i;let t=null;function n(t){if(!t)return!1;let n=t.toLowerCase().trim();return e.test(n)?!0:n.replace(/[_-]+/g,` `).includes(`dolby digital`)}async function r(){return t||=(async()=>{let{registerAc3Decoder:e}=await import(`./mediabunny-ac3-CmDCyfPo.js`);try{e()}catch(e){let t=e instanceof Error?e.message:String(e);if(!/already registered/i.test(t))throw e}})(),t}export{n,r as t};
+//# sourceMappingURL=ac3-decoder-BTdhFF3i.js.map

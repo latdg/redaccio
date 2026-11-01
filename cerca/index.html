@@ -47,7 +47,7 @@ main{padding-top:16px;padding-bottom:32px;display:grid;gap:12px}
   </div>
   <p class="sub">Busca a totes les notícies, anuncis, contractes i subvencions que han sortit al panell.</p>
   <form id="f">
-    <input type="search" id="q" placeholder="Un nom, una empresa, un carrer…" autocomplete="off" autofocus>
+    <input type="search" id="q" placeholder="Un nom, una empresa, un carrer… (subvenci* per començaments)" autocomplete="off" autofocus>
     <select id="ordre" aria-label="Ordre">
       <option value="data">Més recents primer</option>
       <option value="rell">Més rellevants primer</option>
@@ -76,7 +76,7 @@ const ambArticle = d => /^(01|11)\./.test(d) ? "L'" + d : "El " + d;
 async function carregaPagefind() {
   if (pf) return pf;
   try {
-    pf = await import("./pagefind/pagefind.js");
+    pf = await import("./pagefind/pagefind.js?v=" + Date.now());
     await pf.options({ excerptLength: 40 });
     return pf;
   } catch (e) {
@@ -120,14 +120,17 @@ async function cerca() {
   const r = await motor.search(text);
   dades = await Promise.all(r.results.map(x => x.data()));
   // Pagefind, si no troba una paraula, prova amb un tros més curt («Peratallada» -> «per»).
-  // Només es queden els resultats que contenen de debò totes les paraules buscades
-  // (sense tenir en compte accents ni majúscules; l'última pot ser un començament: «subvenci»).
+  // Només es queden els resultats que contenen de debò totes les paraules buscades,
+  // SENCERES (sense tenir en compte accents ni majúscules): «cor» no troba «Corçà».
+  // Per buscar començaments de paraula, acaba-la amb asterisc: «subvenci*».
   const norm = t => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[’'`´]/g, " ");
-  const paraules = norm(text).split(/[^a-z0-9ç·]+/).filter(Boolean);
+  const paraules = norm(text).split(/\s+/)
+    .map(w => ({ w: w.replace(/[^a-z0-9]+/g, ""), comenca: /\*$/.test(w) }))
+    .filter(x => x.w);
   dades = dades.filter(d => {
     const m = d.meta || {};
-    const t = " " + norm([m.title, m.font, m.seccio].join(" ")).replace(/[^a-z0-9ç·]+/g, " ") + " ";
-    return paraules.every((w, i) => t.includes(" " + w + (i === paraules.length - 1 ? "" : " ")));
+    const t = " " + norm([m.title, m.font, m.seccio].join(" ")).replace(/[^a-z0-9]+/g, " ") + " ";
+    return paraules.every(x => t.includes(" " + x.w + (x.comenca ? "" : " ")));
   });
   if (ordre.value === "data") dades.sort((a, b) => String((b.meta || {}).primer || "").localeCompare(String((a.meta || {}).primer || "")));
   mostrats = 0;

@@ -10,12 +10,11 @@
   ESTUDI DE VÍDEO — La TdG · 31.10.2026
   Pàgina amb clau (la mateixa que l'estudi d'àudio). Tot es fa en aquest navegador amb
   ffmpeg (ffmpeg.wasm, copiat a ffmpeg/): els vídeos no es pugen enlloc.
-   1. EDITOR DE VÍDEO (01.11.2026): FreeCut (walterlow/freecut, MIT), copiat a editor/ i
+   1. EDITOR RÀPID (01.11.2026): diversos clips (vídeos o fotos) retallats i en ordre, una
+      pista d'àudio, la mosca i subtítols .srt, amb ffmpeg.wasm. A l'ordinador i al mòbil.
+   1b. EDITOR AVANÇAT (01.11.2026): FreeCut (walterlow/freecut, MIT), copiat a editor/ i
       adaptat amb eines/freecut/ (botó 🪰 Mosca, català, subcarpeta). Necessita Chrome o
       Edge d'ordinador, o el Brave amb «File System Access API» activat.
-   1b. EDITOR MÍNIM (01.11.2026; només si l'editor no es pot obrir, és a dir, al mòbil):
-      diversos clips (vídeos o fotos) retallats i en ordre, una pista d'àudio, la mosca
-      i subtítols .srt; format vertical, quadrat o horitzontal. Substitueix el retallador.
    2. VÍDEO D'UN ÀUDIO: àudio + fons amb la capçalera de La TdG, un títol i l'ona
       movent-se, per a les xarxes que no reprodueixen àudio sol. També admet .srt.
   Els fitxers molt grans (un ple sencer) van lents al navegador: per a aquests, el
@@ -85,7 +84,7 @@ label.boto{display:inline-block;background:var(--accent);color:#fff;font-weight:
     <h1>🎬 Estudi de vídeo</h1>
     <a class="dreta" href="../">← La TdG redacció</a>
   </div>
-  <p class="sub">Editor de vídeo amb la mosca de La TdG i vídeos a partir d'un àudio, tot al navegador.</p>
+  <p class="sub">Editor ràpid i avançat amb la mosca de La TdG, i vídeos a partir d'un àudio, tot al navegador.</p>
 </header>
 
 <main>
@@ -105,34 +104,9 @@ label.boto{display:inline-block;background:var(--accent);color:#fff;font-weight:
       <button type="button" data-p="audio">🎙️ Vídeo d'un àudio</button>
     </div>
 
-    <!-- 1. EDITOR DE VÍDEO (FreeCut) -->
-    <section id="p-editor">
-      <h2>✂️ Editor de vídeo</h2>
-      <p style="margin:0 0 12px">Editor multipista (FreeCut): retalls, diverses pistes de vídeo i àudio, textos, transicions, subtítols automàtics i exportació en MP4. Tot es fa en aquest ordinador: els vídeos no es pugen enlloc.</p>
-      <div id="eSi" hidden>
-        <div class="fila"><a id="eObre" href="editor/" target="_blank" rel="noopener"><button type="button">🎬 Obre l'editor</button></a><a href="mosca.png" download="mosca-latdg.png"><button type="button" class="suau">🪰 Descarrega la mosca</button></a></div>
-        <ul class="font" style="padding-left:18px;margin:12px 0 0">
-          <li>La primera vegada demana una carpeta de treball: tria'n una de buida (per exemple, «La TdG vídeos»). Hi desa els projectes i els mitjans; a cada ordinador se n'ha de triar una.</li>
-          <li><b>Mosca:</b> dins d'un projecte, al tauler de mitjans, el botó 🪰 <b>Mosca</b> hi afegeix el logotip de La TdG. Arrossega'l a una pista per sobre del vídeo, estira'l tota la durada i col·loca'l a la cantonada.</li>
-          <li>La interfície surt en castellà (FreeCut no té català). Es pot canviar a la configuració.</li>
-        </ul>
-      </div>
-      <div id="eBrave" hidden>
-        <p style="margin:0">Al Brave cal activar una opció una sola vegada:</p>
-        <ol class="font" style="padding-left:18px;margin:8px 0 0">
-          <li>Copia aquesta adreça a la barra del navegador: <code>brave://flags/#file-system-access-api</code></li>
-          <li>Posa «File System Access API» a <b>Enabled</b> i prem <b>Relaunch</b>.</li>
-          <li>Torna aquí i recarrega la pàgina.</li>
-        </ol>
-      </div>
-      <div id="eNo" hidden>
-        <p style="margin:0">Aquest navegador no pot obrir l'editor (necessita Chrome o Edge d'ordinador, o el Brave amb una opció activada). Al mòbil, fes servir l'<b>editor mínim</b> d'aquí sota.</p>
-      </div>
-    </section>
-
-    <!-- 1b. EDITOR MÍNIM (quan no es pot obrir FreeCut: mòbil) -->
-    <section id="p-video" hidden>
-      <h2>📱 Editor mínim: clips, retalls, àudio i mosca</h2>
+    <!-- 1. EDITOR RÀPID (ordinador i mòbil) -->
+    <section id="p-video">
+      <h2>✂️ Editor ràpid: clips, retalls, àudio i mosca</h2>
       <p class="font" style="margin:0 0 10px">Afegeix els clips (vídeos o fotos), retalla'ls i posa'ls en ordre. Si vols, hi afegeixes una pista d'àudio (veu o música). Al final s'ajunta tot en un sol vídeo.</p>
       <div class="fila">
         <label class="boto"><input type="file" id="vFitxer" accept="video/*,image/*,.mkv,.mov" multiple hidden>➕ Afegeix clips</label>
@@ -191,6 +165,31 @@ label.boto{display:inline-block;background:var(--accent);color:#fff;font-weight:
       <p class="font">Els subtítols compten des del principi del vídeo final. Al mòbil, millor clips curts: tot es fa dins del telèfon.</p>
     </section>
 
+    <!-- 1b. EDITOR AVANÇAT (FreeCut) -->
+    <section id="p-editor">
+      <h2>🧩 Editor avançat (FreeCut)</h2>
+      <p style="margin:0 0 12px">Per a peces més elaborades: línia de temps amb diverses pistes, retalls, diverses pistes de vídeo i àudio, textos, transicions, subtítols automàtics i exportació en MP4. Tot es fa en aquest ordinador: els vídeos no es pugen enlloc.</p>
+      <div id="eSi" hidden>
+        <div class="fila"><a id="eObre" href="editor/" target="_blank" rel="noopener"><button type="button">🎬 Obre l'editor</button></a><a href="mosca.png" download="mosca-latdg.png"><button type="button" class="suau">🪰 Descarrega la mosca</button></a></div>
+        <ul class="font" style="padding-left:18px;margin:12px 0 0">
+          <li>La primera vegada demana una carpeta de treball: tria'n una de buida (per exemple, «La TdG vídeos»). Hi desa els projectes i els mitjans; a cada ordinador se n'ha de triar una.</li>
+          <li><b>Mosca:</b> dins d'un projecte, al tauler de mitjans, el botó 🪰 <b>Mosca</b> hi afegeix el logotip de La TdG. Arrossega'l a una pista per sobre del vídeo, estira'l tota la durada i col·loca'l a la cantonada.</li>
+          <li>La interfície surt en castellà (FreeCut no té català). Es pot canviar a la configuració.</li>
+        </ul>
+      </div>
+      <div id="eBrave" hidden>
+        <p style="margin:0">Al Brave cal activar una opció una sola vegada:</p>
+        <ol class="font" style="padding-left:18px;margin:8px 0 0">
+          <li>Copia aquesta adreça a la barra del navegador: <code>brave://flags/#file-system-access-api</code></li>
+          <li>Posa «File System Access API» a <b>Enabled</b> i prem <b>Relaunch</b>.</li>
+          <li>Torna aquí i recarrega la pàgina.</li>
+        </ol>
+      </div>
+      <div id="eNo" hidden>
+        <p style="margin:0">Aquest navegador no pot obrir l'editor (necessita Chrome o Edge d'ordinador, o el Brave amb una opció activada). Fes servir l'<b>editor ràpid</b> d'aquí dalt.</p>
+      </div>
+    </section>
+
     <!-- 2. VÍDEO D'UN ÀUDIO -->
     <section id="p-audio" hidden>
       <h2>🎙️ Vídeo d'un àudio</h2>
@@ -233,7 +232,7 @@ label.boto{display:inline-block;background:var(--accent);color:#fff;font-weight:
       </div>
     </section>
 
-    <p class="font">Editor: <a href="https://github.com/walterlow/freecut" target="_blank" rel="noopener">FreeCut</a> (llicència MIT; la primera vegada baixa uns 100 MB i després queda al navegador). Editor mínim i vídeo d'un àudio: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
+    <p class="font">Editor: <a href="https://github.com/walterlow/freecut" target="_blank" rel="noopener">FreeCut</a> (llicència MIT; la primera vegada baixa uns 100 MB i després queda al navegador). Editor ràpid i vídeo d'un àudio: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
   </div>
 </main>
 
@@ -402,7 +401,7 @@ function seguiment(ff, barra, estat, durada, etiqueta) {
 const mb = n => (n / 1048576).toLocaleString("ca", { maximumFractionDigits: 1 }) + " MB";
 const parell = n => Math.round(n / 2) * 2;
 
-// ================= 1b. EDITOR MÍNIM =================
+// ================= 1. EDITOR RÀPID =================
 // Cada clip: vídeo (amb inici i final) o foto (amb durada). S'ajunten en ordre amb el filtre
 // concat de FFmpeg; després, la pista d'àudio, la mosca i els subtítols sobre el resultat.
 let V_RES = null, V_NOM = "", N_CLIP = 0;
@@ -747,19 +746,18 @@ function baixa(blob, nom) {
 
 // --- Pestanyes ---
 // Editor de vídeo (FreeCut): necessita triar una carpeta de l'ordinador (Chrome i Edge d'ordinador;
-// al Brave, amb una opció activada). Si no es pot, es mostra l'editor mínim (mòbil).
+// al Brave, amb una opció activada). Si no es pot, només queda l'editor ràpid (mòbil).
 const editorPossible = typeof window.showDirectoryPicker === "function";
 $("eSi").hidden = !editorPossible;
 $("eBrave").hidden = editorPossible || !navigator.brave;
 $("eNo").hidden = editorPossible || !!navigator.brave;
-$("p-video").hidden = editorPossible;
 
 $("pestanyes").onclick = e => {
   const b = e.target.closest("button[data-p]");
   if (!b) return;
   document.querySelectorAll("#pestanyes button").forEach(x => x.classList.toggle("actiu", x === b));
   $("p-editor").hidden = b.dataset.p !== "editor";
-  $("p-video").hidden = b.dataset.p !== "editor" || editorPossible;
+  $("p-video").hidden = b.dataset.p !== "editor";
   $("p-audio").hidden = b.dataset.p !== "audio";
 };
 

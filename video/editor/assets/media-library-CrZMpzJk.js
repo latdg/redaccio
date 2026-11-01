@@ -1,2 +1,0 @@
-import{Bu as e,Xp as t,nm as n}from"./feature-editing-core-Dk3eSxIt.js";function r(e){if(e)return n.getState().mediaById[e]}function i(e){return n(t=>e?t.mediaById[e]:void 0)}async function a(t){let{mediaLibraryService:n}=await e();return n.getMediaFile(t)}function o(){return n(e=>e.brokenMediaIds)}export{a as getMediaFileById,r as getMediaMetadataById,t as resolveMediaUrls,o as useBrokenMediaIds,i as useMediaMetadataById};
-//# sourceMappingURL=media-library-CrZMpzJk.js.map

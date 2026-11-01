@@ -1,2 +1,0 @@
-import{_n as e}from"./app-shell-SDjtQ9qY.js";import{Qm as t,Xm as n,zu as r}from"./feature-editing-core-Dk3eSxIt.js";var i=e(`TrashAutoPurge`);async function a(e=n){try{let{permanentlyDeleteProject:n}=r.getState(),a=await t(e,async e=>{await n(e)});a.length>0&&(i.info(`Auto-purge removed ${a.length} trashed project(s) past TTL`),await r.getState().loadProjects())}catch(e){i.warn(`autoPurgeExpiredTrash failed`,e)}}export{a as autoPurgeExpiredTrash};
-//# sourceMappingURL=trash-auto-purge-CsgGwuqx.js.map

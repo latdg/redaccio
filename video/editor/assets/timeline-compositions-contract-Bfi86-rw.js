@@ -1,2 +1,0 @@
-import{nm as e}from"./feature-editing-core-Dk3eSxIt.js";function t(t){if(!t)return;let n=e.getState().mediaById[t];if(n){if(n.mimeType.startsWith(`video/`))return n.audioCodec;if(n.mimeType.startsWith(`audio/`))return n.codec}}export{t};
-//# sourceMappingURL=timeline-compositions-contract-Bfi86-rw.js.map

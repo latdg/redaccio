@@ -45,7 +45,7 @@ canvia('src/i18n/languages.ts', "  { code: 'en', nativeName: 'English', englishN
 canvia('src/i18n/languages.ts', "if (!code) return DEFAULT_LANGUAGE", "if (!code) return 'ca'")
 canvia('src/i18n/languages.ts', "return match ?? DEFAULT_LANGUAGE", "return match ?? 'ca'")
 // Sempre en català, tret que es triï un altre idioma a la configuració
-canvia('src/i18n/index.ts', "void i18n\n", "try {\n  if (!localStorage.getItem(I18N_STORAGE_KEY)) localStorage.setItem(I18N_STORAGE_KEY, 'ca')\n} catch {\n  // Sense emmagatzematge: es decideix per l'idioma del navegador\n}\n\nvoid i18n\n")
+canvia('src/i18n/index.ts', "void i18n\n", "try {\n  // Un sol cop per navegador: passa al català encara que abans hi hagués desat un altre idioma\n  if (!localStorage.getItem('latdg-idioma-ca')) {\n    localStorage.setItem(I18N_STORAGE_KEY, 'ca')\n    localStorage.setItem('latdg-idioma-ca', '1')\n  }\n} catch {\n  // Sense emmagatzematge: es decideix per l'idioma del navegador\n}\n\nvoid i18n\n")
 
 // 4. Botó «Mosca»
 canvia('src/features/media-library/components/media-library.tsx',

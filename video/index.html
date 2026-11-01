@@ -469,6 +469,9 @@ let A_URL = null, A_RES = null, A_NOM = "";
 const aEstat = t => { $("aEstat").textContent = t; };
 const MIDES = { quadrat: [720, 720], vertical: [720, 1280], horitzontal: [1280, 720] };
 
+const LOGO_CLAR = new Image();
+LOGO_CLAR.onload = () => { if ($("aFitxer").files[0]) dibuixaFons(); };
+LOGO_CLAR.src = "logo-clar.png";
 function partLinies(ctx, text, ample) {
   const paraules = text.split(/\s+/).filter(Boolean), linies = [];
   let l = "";
@@ -488,16 +491,14 @@ function dibuixaFons() {
   ctx.fillStyle = FONS; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = ACCENT; ctx.fillRect(0, 0, W, Math.round(10 * u));
   const marge = Math.round(56 * u);
-  dibuixaMicro(ctx, marge, marge, 72 * u, TEXT);
-  ctx.fillStyle = TEXT; ctx.textBaseline = "middle";
-  ctx.font = `800 ${Math.round(44 * u)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
-  ctx.fillText("La TdG", marge + 88 * u, marge + 38 * u);
-  ctx.fillStyle = "#6b6b66"; ctx.font = `500 ${Math.round(22 * u)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
-  ctx.fillText("La Torre de Guaita", marge + 90 * u, marge + 74 * u);
+  // Logotip de La torre de guaita (versió per a fons clar, sobre transparent)
+  const altLogo = 130 * u;
+  if (LOGO_CLAR.complete && LOGO_CLAR.naturalWidth)
+    ctx.drawImage(LOGO_CLAR, marge, marge, altLogo * LOGO_CLAR.naturalWidth / LOGO_CLAR.naturalHeight, altLogo);
   // Títol
   const titol = $("aTitol").value.trim();
   const zonaOna = waveZona(W, H);
-  const dalt = marge + 130 * u, baix = zonaOna.y - 30 * u;
+  const dalt = marge + altLogo + 24 * u, baix = zonaOna.y - 30 * u;
   let mida = 58 * u, linies = [];
   ctx.textBaseline = "alphabetic";
   do {
@@ -548,6 +549,7 @@ async function fesAudio() {
   const feina = EN_MARXA = { aturat: false };
   let ff, dir = null, acaba = () => 0;
   try {
+    await LOGO_CLAR.decode().catch(() => {});
     const [W, H] = dibuixaFons();
     const zona = waveZona(W, H);
     const fons = new Uint8Array(await (await new Promise(r => $("aFons").toBlob(r, "image/png"))).arrayBuffer());

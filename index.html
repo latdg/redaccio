@@ -233,6 +233,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="dades-municipals"><h2>🏦 Dades municipals</h2><p class="buit">Carregant…</p></section>
   <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
   <section id="turisme"><h2>🧳 Turistes que hi arriben</h2><p class="buit">Carregant…</p></section>
+  <section id="vehicles"><h2>🚗 Vehicles nous matriculats</h2><p class="buit">Carregant…</p></section>
   <section id="seguretat"><h2>🚨 Seguretat i emergències</h2><p class="buit">Carregant…</p></section>
   <section id="entitats"><h2>🤝 Entitats i associacions</h2><p class="buit">Carregant…</p></section>
   <section id="renda"><h2>🤲 Renda garantida de ciutadania</h2><p class="buit">Carregant…</p></section>
@@ -803,7 +804,7 @@ const MODE_SLOW = PARAMS.has("slow");
 const INCRUSTAT = PARAMS.has("incrustat");
 const RX_INICI_SLOW = /^CONTRACTACI/i;
 // Si el resum no porta l'apartat de la contractació, aquests blocs propis són slow.
-const PROPIS_SLOW = ["dades-municipals", "renda", "hut", "turisme", "habitatge", "aigua", "ramaderia",
+const PROPIS_SLOW = ["dades-municipals", "renda", "hut", "turisme", "vehicles", "habitatge", "aigua", "ramaderia",
   "residus", "seguretat", "entitats", "escoles", "eleccions"];
 if (INCRUSTAT) document.documentElement.classList.add("incrustat");
 
@@ -823,6 +824,8 @@ const BLOCS_PROPIS = [
   { id: "hut", nom: "Habitatges turístics", titol: "HABITATGES D'ÚS TURÍSTIC I ALTRES ALLOTJAMENTS", enLlocDe: /^ATUR/i },
   // 27.10.2026: turistes que hi arriben (torna de La TdG ampliada), després dels habitatges turístics.
   { id: "turisme", nom: "Turistes", titol: "TURISTES QUE PERNOCTEN (TELEFONIA MÒBIL)", enLlocDe: /^ATUR/i },
+  // 01.11.2026: vehicles matriculats (DGT), després dels turistes.
+  { id: "vehicles", nom: "Vehicles", titol: "VEHICLES NOUS MATRICULATS", enLlocDe: /^ATUR/i },
   // 27.10.2026: lloguer i habitatges buits, al costat dels habitatges turístics.
   { id: "habitatge", nom: "Lloguer i pisos buits", titol: "LLOGUER I HABITATGES BUITS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
@@ -2235,6 +2238,93 @@ async function carregaTurisme() {
 }
 
 // -----------------------------------------------------------------------------
+// VEHICLES NOUS MATRICULATS (01.11.2026). Les dades les desa el workflow
+// «Vehicles nous matriculats» del repo latdg/tauler (dades/vehicles.json, a partir
+// de les microdades mensuals de la DGT): per mes i municipi, el tipus de vehicle,
+// l'energia, nous o de segona mà importats i de particulars o d'empreses.
+// -----------------------------------------------------------------------------
+const TITOL_VEH = "VEHICLES NOUS MATRICULATS";
+const FONT_VEH = "https://raw.githubusercontent.com/latdg/tauler/main/dades/vehicles.json";
+let VEH = null;
+const ENERGIES_VEH = [["elèctric", "Elèctrics"], ["endollable", "Híbrids endollables"], ["híbrid", "Híbrids"],
+  ["benzina", "Benzina"], ["dièsel", "Dièsel"], ["altres", "Altres"]];
+const TIPUS_VEH = [["turismes", "Turismes"], ["motos", "Motos"], ["ciclomotors", "Ciclomotors"], ["furgonetes", "Furgonetes"], ["altres", "Altres"]];
+// Suma els mesos [ym, dades] d'un municipi en un sol objecte.
+function sumaVeh(mesos, codi) {
+  const t = { total: 0, nous: 0, usats: 0, empreses: 0, tipus: {}, energia: {}, energiaTurismes: {}, marques: {} };
+  mesos.forEach(([, m]) => {
+    const d = (m.municipis || {})[codi];
+    if (!d) return;
+    ["total", "nous", "usats", "empreses"].forEach(k => t[k] += d[k] || 0);
+    ["tipus", "energia", "energiaTurismes", "marques"].forEach(k => Object.entries(d[k] || {}).forEach(([n, v]) => t[k][n] = (t[k][n] || 0) + v));
+  });
+  return t;
+}
+const pctVeh = (n, de) => de ? (n / de * 100).toLocaleString("ca-ES", { maximumFractionDigits: 1 }) + " %" : "—";
+const ambLaPct = t => /^(1|11)[,\s]/.test(t) ? "l'" + t : "el " + t;
+function barresVeh(llista, total) {
+  const vis = llista.filter(x => x[2] > 0), max = Math.max(1, ...vis.map(x => x[2]));
+  return vis.length ? `<div class="barres" style="grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto">` +
+    vis.map(([, nom, v]) => `<span>${esc(nom)}</span><span class="barra" style="width:${(v / max * 100).toFixed(0)}%"></span><span class="num">${nCa(v)} · ${pctVeh(v, total)}</span>`).join("") + `</div>` : '<p class="buit">Cap.</p>';
+}
+function cosVehicles(codi) {
+  const mesos = Object.entries(VEH.mesos || {}).sort((a, b) => a[0].localeCompare(b[0]));
+  if (!mesos.length) return '<p class="buit">Encara no hi ha dades.</p>';
+  const darrer = mesos[mesos.length - 1][0], [aU, mU] = darrer.split("-").map(Number);
+  const u12 = mesos.slice(-12), a12 = mesos.slice(-24, -12);
+  const t = sumaVeh(u12, codi), ant = a12.length === 12 ? sumaVeh(a12, codi) : null;
+  if (!t.total && !(ant && ant.total)) return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])}</h3><p class="buit">No s'hi ha matriculat cap vehicle aquests mesos.</p></article>`;
+  const tur = t.tipus.turismes || 0, elec = (t.energiaTurismes["elèctric"] || 0) + (t.energiaTurismes["endollable"] || 0);
+  const gir = u12.reduce((s, [, m]) => ({ t: s.t + ((m.girona || {}).turismes || 0), e: s.e + ((m.girona || {}).electrics || 0) }), { t: 0, e: 0 });
+  // Comparació per anys: els mateixos mesos (gener fins al darrer mes amb dades).
+  const anys = [...new Set(mesos.map(x => Number(x[0].slice(0, 4))))].sort();
+  const files = anys.map(a => {
+    const ms = mesos.filter(x => x[0].startsWith(a + "-") && Number(x[0].slice(5)) <= mU);
+    if (ms.length !== mU) return { a, total: null };
+    const s = sumaVeh(ms, codi);
+    return { a, total: s.total, tur: s.tipus.turismes || 0, elec: (s.energiaTurismes["elèctric"] || 0) + (s.energiaTurismes["endollable"] || 0) };
+  });
+  const tram = mU === 1 ? "gener" : "gener–" + MESOS_CA[mU - 1];
+  const taula = `<div class="taula"><table><thead><tr><th>Any</th><th class="n">Vehicles (${esc(tram)})</th><th class="n">Variació</th><th class="n">Turismes</th><th class="n">Elèctrics i endollables</th></tr></thead><tbody>` +
+    files.map((f, i) => { const p = files[i - 1];
+      return `<tr${f.a === aU ? ' class="destacat"' : ""}><td>${f.a}</td><td class="n">${f.total == null ? "—" : nCa(f.total)}</td>` +
+        `<td class="n">${f.total != null && p && p.total != null ? pctTur(f.total, p.total) : ""}</td>` +
+        `<td class="n">${f.total == null ? "—" : nCa(f.tur)}</td><td class="n">${f.total == null ? "—" : nCa(f.elec) + (f.tur ? ` <span class="var">(${pctVeh(f.elec, f.tur)})</span>` : "")}</td></tr>`; }).join("") + `</tbody></table></div>`;
+  const serie = mesos.map(([ym, m]) => [ym, ((m.municipis || {})[codi] || {}).total || 0]);
+  const marques = Object.entries(t.marques).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  return `<article class="fitxa"><h3>${esc(NOMS_MUN[codi])}</h3><div class="xifres">` +
+    `<div class="xifra"><div class="etq">Últims 12 mesos</div><div class="val">${nCa(t.total)}</div><div class="det">vehicles matriculats` +
+      (ant ? ` · ${pctTur(t.total, ant.total)} respecte als 12 anteriors` : "") + `</div></div>` +
+    `<div class="xifra"><div class="etq">Turismes elèctrics i endollables</div><div class="val">${pctVeh(elec, tur)}</div><div class="det">${nCa(elec)} de ${nCa(tur)} turismes · a la província, ${esc(ambLaPct(pctVeh(gir.e, gir.t)))}</div></div>` +
+    `<div class="xifra"><div class="etq">${esc(nomMes(darrer).replace(/^./, c => c.toUpperCase()))}</div><div class="val">${nCa(serie[serie.length - 1][1])}</div><div class="det">vehicles</div></div></div>` +
+    `<h4>Comparació per anys</h4>${taula}` +
+    `<h4>Cada mes</h4>${serieBarres(serie, 36)}` +
+    `<h4>Turismes per energia (últims 12 mesos)</h4>${barresVeh(ENERGIES_VEH.map(([k, n]) => [k, n, t.energiaTurismes[k] || 0]), tur)}` +
+    `<h4>Per tipus de vehicle</h4>${barresVeh(TIPUS_VEH.map(([k, n]) => [k, n, t.tipus[k] || 0]), t.total)}` +
+    `<p class="det" style="font-size:.85rem">${nCa(t.nous)} nous i ${nCa(t.usats)} de segona mà importats · ${nCa(t.empreses)} a nom d'empreses (${pctVeh(t.empreses, t.total)}).` +
+      (marques.length ? ` Marques de turismes més matriculades: ${marques.map(([m, v]) => esc(m) + " (" + nCa(v) + ")").join(", ")}.` : "") + `</p>` +
+    `</article>` +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Vehicles matriculats per primer cop a Espanya i domiciliats al municipi, segons les microdades de la DGT (inclou els de segona mà importats de l'estranger, no els canvis de titular). «Elèctrics» són els 100 % elèctrics; «híbrids endollables» inclou els d'autonomia estesa; els híbrids no endollables van a part. La DGT publica cada mes sencer a principis del següent.</p>`;
+}
+async function carregaVehicles() {
+  const el = document.getElementById("vehicles");
+  if (!el) return;
+  const titol = () => (el.dataset.numero ? el.dataset.numero + " " : "🚗 ") + TITOL_VEH;
+  try { VEH = await obtenir(FONT_VEH); }
+  catch (e) { el.innerHTML = `<h2>${titol()}</h2><p class="buit">Encara no s'han baixat les dades de la DGT.</p>`; return; }
+  try {
+    const mesos = Object.entries(VEH.mesos || {}).sort((a, b) => a[0].localeCompare(b[0]));
+    const darrer = mesos.length ? mesos[mesos.length - 1][0] : null;
+    const u12 = mesos.slice(-12);
+    el.innerHTML = `<h2>${titol()}</h2><p class="font">Dades fins a ${esc(nomMes(darrer))} · revisat el ${dataIso(VEH.generat)} · Font: ` +
+      `<a href="${esc(VEH.url || "https://www.dgt.es")}" target="_blank" rel="noopener">DGT, microdades de matriculacions</a></p>` +
+      plegaMun(MUNS4, c => `${nCa(sumaVeh(u12, c).total)} vehicles en 12 mesos`) + separaNota(cosVehicles("17022"))[1];
+    activaPlega(el, (codi, caixa) => { caixa.innerHTML = separaNota(cosVehicles(codi))[0]; });
+    if (typeof normalitzaDates === "function") normalitzaDates(el);
+  } catch (err) { console.error(err); el.innerHTML = `<h2>${titol()}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }
+}
+
+// -----------------------------------------------------------------------------
 // AIGUA POTABLE: un sol bloc amb una fitxa per municipi. Analítiques del SINAC
 // (el darrer butlletí amb tot el detall i els anteriors, que s'obren clicant-hi)
 // i, a Corçà i a Cruïlles, Monells i Sant Sadurní, les de la Mancomunitat.
@@ -2404,6 +2494,7 @@ async function inicia() {
   carregaEntitats();
   carregaObertes();
   carregaTurisme();
+  carregaVehicles();
 }
 inicia();
 </script>

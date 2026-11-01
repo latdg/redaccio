@@ -55,6 +55,11 @@ textarea{width:100%;min-height:180px;resize:vertical;line-height:1.55}
 .barra span{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 audio{width:100%;margin-top:10px}
 .editor{width:100%;height:78vh;min-height:520px;border:1px solid var(--linia);border-radius:10px;background:#222}
+.tancaPle{display:none}
+.editorCaixa.ple{position:fixed;inset:0;z-index:1000;background:#07080a}
+.editorCaixa.ple .editor{height:100vh;height:100dvh;min-height:0;border:0;border-radius:0}
+.editorCaixa.ple .tancaPle{display:block;position:absolute;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));padding:6px 12px;font-size:.85rem;opacity:.85;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+body.ambPle{overflow:hidden}
 .compta{font-size:.8rem;color:var(--suau)}
 </style>
 </head>
@@ -89,10 +94,13 @@ audio{width:100%;margin-top:10px}
     <section>
       <div class="fila" style="justify-content:space-between">
         <h2 style="margin:0">✂️ Editor</h2>
-        <a href="editor/" target="_blank" rel="noopener">Obre'l a pantalla completa ↗</a>
+        <button type="button" class="suau" id="pleBtn">⛶ Pantalla completa</button>
       </div>
       <p class="font" style="margin:4px 0 10px">Arrossega-hi un fitxer d'àudio o fes servir «Fitxer» per obrir-ne un. Selecciona un tros amb el ratolí per retallar-lo, copiar-lo o aplicar-hi efectes; «Fitxer › Exporta / Descarrega» per desar-lo en MP3 o WAV.</p>
-      <iframe class="editor" id="editor" title="Editor d'àudio" src="about:blank" allow="microphone"></iframe>
+      <div class="editorCaixa" id="editorCaixa">
+        <iframe class="editor" id="editor" title="Editor d'àudio" src="about:blank" allow="microphone; fullscreen"></iframe>
+        <button type="button" class="tancaPle" id="tancaPle" aria-label="Surt de la pantalla completa">✕ Surt</button>
+      </div>
       <p class="font">Editor: <a href="https://github.com/pkalogiros/AudioMass" target="_blank" rel="noopener">AudioMass</a> (codi obert, llicència MIT).</p>
     </section>
 
@@ -274,13 +282,31 @@ $("descarrega").onclick = () => {
   a.href = URL.createObjectURL(DARRER); a.download = nomFitxer(); a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 5000);
 };
+// Editor a pantalla completa dins la mateixa pàgina (així la locució hi continua arribant)
+function posaPle(si) {
+  const c = $("editorCaixa");
+  c.classList.toggle("ple", si);
+  document.body.classList.toggle("ambPle", si);
+  try {
+    if (si && c.requestFullscreen && !document.fullscreenElement) c.requestFullscreen().catch(() => {});
+    if (!si && document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  } catch (e) {}
+  setTimeout(() => { try { $("editor").contentWindow.dispatchEvent(new Event("resize")); } catch (e) {} }, 250);
+}
+$("pleBtn").onclick = () => posaPle(true);
+$("tancaPle").onclick = () => posaPle(false);
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement && $("editorCaixa").classList.contains("ple")) posaPle(false);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("editorCaixa").classList.contains("ple")) posaPle(false); });
 $("aEditor").onclick = () => {
   if (!DARRER) return;
   try {
     const w = $("editor").contentWindow;
     const fitxer = new File([DARRER], nomFitxer(), { type: DARRER.type && /audio/.test(DARRER.type) ? DARRER.type : "audio/wav" });
     w.PKAudioEditor.engine.LoadFile({ files: [fitxer] });
-    $("editor").scrollIntoView({ behavior: "smooth" });
+    if (window.matchMedia("(max-width: 800px)").matches) posaPle(true);
+    else $("editor").scrollIntoView({ behavior: "smooth" });
   } catch (e) {
     $("estat").textContent = "No s'ha pogut obrir a l'editor: descarrega-la i arrossega-la a l'editor.";
   }

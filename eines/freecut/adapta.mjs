@@ -3,7 +3,7 @@
 // Ús: node adapta.mjs /camí/a/freecut
 //  1. Serveix l'editor des de /redaccio/video/editor/ (GitHub Pages).
 //  2. Entra directament als projectes (sense la portada de FreeCut).
-//  3. Navegador en català → interfície en castellà (FreeCut no té català).
+//  3. Interfície en català (traducció feta amb tradueix.py) i per defecte en català.
 //  4. Botó «Mosca» a la biblioteca de mitjans: importa la mosca de La TdG.
 //  5. Sense service worker propi (evita memòries cau velles a GitHub Pages).
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -39,8 +39,13 @@ canvia('src/routes/index.tsx', "import { createFileRoute, Link } from '@tanstack
 canvia('src/routes/index.tsx', "export const Route = createFileRoute('/')({",
   "export const Route = createFileRoute('/')({\n  beforeLoad: () => {\n    throw redirect({ to: '/projects' })\n  },")
 
-// 3. Català → castellà
-canvia('src/i18n/languages.ts', "if (base === 'pt') return 'pt-BR'", "if (base === 'pt') return 'pt-BR'\n  if (base === 'ca') return 'es'")
+// 3. Català
+canvia('src/i18n/languages.ts', "  { code: 'en', nativeName: 'English', englishName: 'English', dir: 'ltr' },",
+  "  { code: 'ca', nativeName: 'Català', englishName: 'Catalan', dir: 'ltr' },\n  { code: 'en', nativeName: 'English', englishName: 'English', dir: 'ltr' },")
+canvia('src/i18n/languages.ts', "if (!code) return DEFAULT_LANGUAGE", "if (!code) return 'ca'")
+canvia('src/i18n/languages.ts', "return match ?? DEFAULT_LANGUAGE", "return match ?? 'ca'")
+// Sempre en català, tret que es triï un altre idioma a la configuració
+canvia('src/i18n/index.ts', "void i18n\n", "try {\n  if (!localStorage.getItem(I18N_STORAGE_KEY)) localStorage.setItem(I18N_STORAGE_KEY, 'ca')\n} catch {\n  // Sense emmagatzematge: es decideix per l'idioma del navegador\n}\n\nvoid i18n\n")
 
 // 4. Botó «Mosca»
 canvia('src/features/media-library/components/media-library.tsx',

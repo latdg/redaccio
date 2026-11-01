@@ -1,0 +1,437 @@
+[
+ {
+  "de": "\\b([Ll])'arxiu\\b",
+  "a": "\\1'arxiu_",
+  "regex": true
+ },
+ {
+  "de": "\\bGuardant\\b",
+  "a": "Desant",
+  "regex": true
+ },
+ {
+  "de": "\\bguardant\\b",
+  "a": "desant",
+  "regex": true
+ },
+ {
+  "de": "\\bGuardar\\b",
+  "a": "Desar",
+  "regex": true
+ },
+ {
+  "de": "\\bguardar\\b",
+  "a": "desar",
+  "regex": true
+ },
+ {
+  "de": "\\bGuarda\\b",
+  "a": "Desa",
+  "regex": true
+ },
+ {
+  "de": "\\bguarda\\b",
+  "a": "desa",
+  "regex": true
+ },
+ {
+  "de": "\\bGuardat\\b",
+  "a": "Desat",
+  "regex": true
+ },
+ {
+  "de": "\\bguardat\\b",
+  "a": "desat",
+  "regex": true
+ },
+ {
+  "de": "\\bguardats\\b",
+  "a": "desats",
+  "regex": true
+ },
+ {
+  "de": "\\bguardada\\b",
+  "a": "desada",
+  "regex": true
+ },
+ {
+  "de": "\\bguardades\\b",
+  "a": "desades",
+  "regex": true
+ },
+ {
+  "de": "\\bGuardi\\b",
+  "a": "Desi",
+  "regex": true
+ },
+ {
+  "de": "\\bguardi\\b",
+  "a": "desi",
+  "regex": true
+ },
+ {
+  "de": "\\bguardi'l\\b",
+  "a": "desi'l",
+  "regex": true
+ },
+ {
+  "de": "\\bguarda'l\\b",
+  "a": "desa'l",
+  "regex": true
+ },
+ {
+  "de": "\\b[Ll]a caixet\\b",
+  "a": "la memòria cau",
+  "regex": true
+ },
+ {
+  "de": "\\b[Ee]n caixet\\b",
+  "a": "a la memòria cau",
+  "regex": true
+ },
+ {
+  "de": "\\bde caixet\\b",
+  "a": "de memòria cau",
+  "regex": true
+ },
+ {
+  "de": "\\bCaixet\\b",
+  "a": "Memòria cau",
+  "regex": true
+ },
+ {
+  "de": "\\bcaixet\\b",
+  "a": "memòria cau",
+  "regex": true
+ },
+ {
+  "de": "\\bcaixets\\b",
+  "a": "memòries cau",
+  "regex": true
+ },
+ {
+  "de": "decodificado",
+  "a": "descodificat"
+ },
+ {
+  "de": "decodificar",
+  "a": "descodificar"
+ },
+ {
+  "de": "decodificació",
+  "a": "descodificació"
+ },
+ {
+  "de": "códec",
+  "a": "còdec"
+ },
+ {
+  "de": "Códec",
+  "a": "Còdec"
+ },
+ {
+  "de": "\\busarà\\b",
+  "a": "farà servir",
+  "regex": true
+ },
+ {
+  "de": "\\busaran\\b",
+  "a": "faran servir",
+  "regex": true
+ },
+ {
+  "de": "Descàrrega els",
+  "a": "Baixa els"
+ },
+ {
+  "de": "\\bDescarregar\\b",
+  "a": "Baixar",
+  "regex": true
+ },
+ {
+  "de": "\\bdescarregar\\b",
+  "a": "baixar",
+  "regex": true
+ },
+ {
+  "de": "\\bDescarregant\\b",
+  "a": "Baixant",
+  "regex": true
+ },
+ {
+  "de": "^Llest$",
+  "a": "Fet",
+  "regex": true
+ },
+ {
+  "de": "Encolant",
+  "a": "Posant a la cua"
+ },
+ {
+  "de": "Veure en GitHub",
+  "a": "Mostra-ho a GitHub"
+ },
+ {
+  "de": "Unir-se a Discord",
+  "a": "Uneix-te a Discord"
+ },
+ {
+  "de": "\\{\\{missing\\}\\} que manca",
+  "a": "{{missing}} absents",
+  "regex": true
+ },
+ {
+  "de": "proxies que manca",
+  "a": "els proxies que falten"
+ },
+ {
+  "de": "\\ben GitHub\\b",
+  "a": "a GitHub",
+  "regex": true
+ },
+ {
+  "de": "\\ben la línia de temps\\b",
+  "a": "a la línia de temps",
+  "regex": true
+ },
+ {
+  "de": "\\ben la biblioteca\\b",
+  "a": "a la biblioteca",
+  "regex": true
+ },
+ {
+  "de": "\\ben la carpeta\\b",
+  "a": "a la carpeta",
+  "regex": true
+ },
+ {
+  "de": "\\ben el navegador\\b",
+  "a": "al navegador",
+  "regex": true
+ },
+ {
+  "de": "\\ben aquest navegador\\b",
+  "a": "en aquest navegador",
+  "regex": true
+ },
+ {
+  "de": "\\barxiu\\b",
+  "a": "fitxer",
+  "regex": true
+ },
+ {
+  "de": "\\barxius\\b",
+  "a": "fitxers",
+  "regex": true
+ },
+ {
+  "de": "\\bArxiu\\b",
+  "a": "Fitxer",
+  "regex": true
+ },
+ {
+  "de": "\\bArxius\\b",
+  "a": "Fitxers",
+  "regex": true
+ },
+ {
+  "de": "\\bVeure\\b",
+  "a": "Mostrar",
+  "regex": true
+ },
+ {
+  "de": "Carregant\\.\\.\\.",
+  "a": "S'està carregant…",
+  "regex": true
+ },
+ {
+  "de": "Desant\\.\\.\\.",
+  "a": "S'està desant…",
+  "regex": true
+ },
+ {
+  "de": "Eliminant\\.\\.\\.",
+  "a": "S'està eliminant…",
+  "regex": true
+ },
+ {
+  "de": "Netejant\\.\\.\\.",
+  "a": "S'està netejant…",
+  "regex": true
+ },
+ {
+  "de": "\\bl'arxiu_",
+  "a": "el fitxer",
+  "regex": true
+ },
+ {
+  "de": "\\bL'arxiu_",
+  "a": "El fitxer",
+  "regex": true
+ },
+ {
+  "de": "\\bd'arxius\\b",
+  "a": "de fitxers",
+  "regex": true
+ },
+ {
+  "de": "\\bd'arxiu\\b",
+  "a": "de fitxer",
+  "regex": true
+ },
+ {
+  "de": "\\ben el fitxer\\b",
+  "a": "al fitxer",
+  "regex": true
+ },
+ {
+  "de": "\\ben l'fitxer\\b",
+  "a": "al fitxer",
+  "regex": true
+ },
+ {
+  "de": "\\bAudio\\b",
+  "a": "Àudio",
+  "regex": true
+ },
+ {
+  "de": "\\baudio\\b",
+  "a": "àudio",
+  "regex": true
+ },
+ {
+  "de": "no oposats",
+  "a": "no aparellats"
+ },
+ {
+  "de": "no oposat",
+  "a": "no aparellat"
+ },
+ {
+  "de": "no oposada",
+  "a": "no aparellada"
+ },
+ {
+  "de": "mitjans que manca",
+  "a": "mitjans que falten"
+ },
+ {
+  "de": "\\bque manca\\b",
+  "a": "que falten",
+  "regex": true
+ },
+ {
+  "de": "Subtitulos",
+  "a": "subtítols"
+ },
+ {
+  "de": "previsualizar",
+  "a": "previsualitzar"
+ },
+ {
+  "de": "\\bAgregar\\b",
+  "a": "Afegir",
+  "regex": true
+ },
+ {
+  "de": "\\bagregar\\b",
+  "a": "afegir",
+  "regex": true
+ },
+ {
+  "de": "\\bGrandària\\b",
+  "a": "Mida",
+  "regex": true
+ },
+ {
+  "de": "\\bgrandària\\b",
+  "a": "mida",
+  "regex": true
+ },
+ {
+  "de": "^Manera\\b",
+  "a": "Mode",
+  "regex": true
+ },
+ {
+  "de": "la manera alternativa",
+  "a": "el mode alternatiu"
+ },
+ {
+  "de": "crossa paraules",
+  "a": "paraules crossa"
+ },
+ {
+  "de": "Intentar de nou",
+  "a": "Torna-ho a provar"
+ },
+ {
+  "de": "intenta-ho de nou",
+  "a": "torna-ho a provar"
+ },
+ {
+  "de": "Reintentando",
+  "a": "Tornant a provar"
+ },
+ {
+  "de": "Reanalizando",
+  "a": "Tornant a analitzar"
+ },
+ {
+  "de": "Cuantización",
+  "a": "Quantització"
+ },
+ {
+  "de": "Rapido",
+  "a": "Ràpid"
+ },
+ {
+  "de": "Llevar atallo",
+  "a": "Treure la drecera"
+ },
+ {
+  "de": "\\bcomando\\b",
+  "a": "ordre",
+  "regex": true
+ },
+ {
+  "de": "\\bComando\\b",
+  "a": "Ordre",
+  "regex": true
+ },
+ {
+  "de": "\\ben YouTube\\b",
+  "a": "a YouTube",
+  "regex": true
+ },
+ {
+  "de": "\\ben el selector\\b",
+  "a": "al selector",
+  "regex": true
+ },
+ {
+  "de": "\\bUsa\\b",
+  "a": "Fes servir",
+  "regex": true
+ },
+ {
+  "de": "\\bOcultar\\b",
+  "a": "Amagar",
+  "regex": true
+ },
+ {
+  "de": "\\bocultar\\b",
+  "a": "amagar",
+  "regex": true
+ },
+ {
+  "de": "\\bBuscar\\b",
+  "a": "Cercar",
+  "regex": true
+ },
+ {
+  "de": "\\bbuscar\\b",
+  "a": "cercar",
+  "regex": true
+ }
+]

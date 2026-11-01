@@ -1,2 +1,0 @@
-import{o as e}from"./rolldown-runtime-C0FnF6B9.js";import{un as t}from"./app-shell-CEN9YNCf.js";var n=e(t(),1);function r(e,t,r){return{togglePlay:(0,n.useCallback)(()=>{let t=e.current;t&&(t.paused?t.play():t.pause())},[e]),seekToPercent:(0,n.useCallback)(n=>{let i=e.current;if(!i||!t)return;let a=(n[0]??0)/100*t;i.currentTime=a,r(a)},[t,e,r])}}export{r as t};
-//# sourceMappingURL=use-media-playback-controls-DAPLpFgT.js.map

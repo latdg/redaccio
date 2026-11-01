@@ -3,6 +3,7 @@
 # Baixa FreeCut (walterlow/freecut, llicència MIT), l'adapta (adapta.mjs), el construeix
 # i el deixa a video/editor/. Per actualitzar-lo a una versió nova de FreeCut, s'executa
 # de nou des de l'arrel del repo:  bash eines/freecut/construeix.sh
+# Cal Apertium per a la traducció: apt-get install apertium-spa-cat cg3 apertium-lex-tools
 set -euo pipefail
 REPO="$(cd "$(dirname "$0")/../.." && pwd)"
 TMP="$(mktemp -d)"
@@ -10,6 +11,7 @@ git clone --depth 1 https://github.com/walterlow/freecut.git "$TMP/freecut"
 cd "$TMP/freecut"
 VERSIO="$(git log -1 --format='%h %cd' --date=format:'%d.%m.%Y')"
 node "$REPO/eines/freecut/adapta.mjs" .
+python3 "$REPO/eines/freecut/tradueix.py" .
 ONNXRUNTIME_NODE_INSTALL_CUDA=skip npm ci --no-audit --no-fund
 npm run build
 cd dist

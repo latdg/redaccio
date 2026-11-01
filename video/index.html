@@ -324,16 +324,13 @@ function dibuixaMicro(ctx, x, y, mida, tinta) {
   ctx.restore();
 }
 async function logoPng(ample) {
+  // Mosca: logotip de La torre de guaita (traç blanc i «g» vermella) sobre transparent
+  const img = new Image(); img.src = "mosca.png"; await img.decode();
   const c = document.createElement("canvas");
-  const h = Math.round(ample * 0.42);
-  c.width = ample; c.height = h;
+  c.width = ample; c.height = parell(ample * img.naturalHeight / img.naturalWidth);
   const ctx = c.getContext("2d");
-  ctx.fillStyle = "rgba(255,255,255,0.88)";
-  ctx.beginPath(); ctx.roundRect(0, 0, ample, h, h * 0.22); ctx.fill();
-  dibuixaMicro(ctx, h * 0.14, h * 0.12, h * 0.76, TEXT);
-  ctx.fillStyle = TEXT; ctx.textBaseline = "middle";
-  ctx.font = `800 ${Math.round(h * 0.46)}px system-ui,-apple-system,"Segoe UI",sans-serif`;
-  ctx.fillText("La TdG", h * 1.0, h * 0.53, ample - h * 1.1);
+  ctx.globalAlpha = 0.85;
+  ctx.drawImage(img, 0, 0, c.width, c.height);
   return new Uint8Array(await (await new Promise(r => c.toBlob(r, "image/png"))).arrayBuffer());
 }
 
@@ -423,7 +420,7 @@ async function fesVideo() {
       let ultim = "base";
       const entrades = ["-ss", String(ini), "-i", entrada];
       if ($("vLogo").checked) {
-        const ample = parell(Math.max(110, W * (tipus === "original" ? 0.16 : 0.26)));
+        const ample = parell(Math.max(90, W * (tipus === "original" ? 0.11 : 0.18)));
         await ff.writeFile("/logo.png", await logoPng(ample));
         entrades.push("-i", "/logo.png");
         const m = Math.round(W * 0.03);

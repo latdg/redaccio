@@ -8,9 +8,9 @@
 <title>Cerca a La TdG redacció</title>
 <!--
   CERCA A L'ARXIU DEL PANELL — La TdG · 01.11.2026
-  Busca a tots els resums diaris (dades/<dia>/resum.html) amb Pagefind.
-  L'índex (cerca/pagefind/) el refà sol el workflow «Índex de la cerca»
-  cada vegada que es desa un resum. No cal servidor.
+  Busca a tots els resums diaris (dades/<dia>/resum.html) amb Pagefind, element
+  per element (eines/cerca-index.mjs). L'índex (cerca/pagefind/) el refà sol el
+  workflow «Índex de la cerca» cada vegada que es desa un resum. No cal servidor.
 -->
 <style>
 :root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
@@ -35,6 +35,8 @@ main{padding-top:16px;padding-bottom:32px;display:grid;gap:12px}
 .resultat p{margin:0}
 .resultat mark{background:#f6dcd3;color:inherit;padding:0 1px;border-radius:2px}
 .mes{justify-self:center}
+.resultat .on{color:var(--suau);font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;margin-bottom:2px}
+.resultat .peu{color:var(--suau);font-size:.85rem;margin-top:6px}
 </style>
 </head>
 <body>
@@ -43,7 +45,7 @@ main{padding-top:16px;padding-bottom:32px;display:grid;gap:12px}
     <h1>🔎 Cerca a La TdG redacció</h1>
     <div class="dreta"><a href="../">← Torna al panell</a></div>
   </div>
-  <p class="sub">Busca a tots els resums desats al panell, dia a dia.</p>
+  <p class="sub">Busca a totes les notícies, anuncis, contractes i subvencions que han sortit al panell.</p>
   <form id="f">
     <input type="search" id="q" placeholder="Un nom, una empresa, un carrer…" autocomplete="off" autofocus>
     <select id="ordre" aria-label="Ordre">
@@ -83,11 +85,19 @@ async function carregaPagefind() {
   }
 }
 
+// Cada resultat és UNA notícia, anunci, contracte o subvenció (2a versió, 01.11.2026),
+// amb el dia que va sortir per primer cop al panell.
 function pinta() {
   const tros = dades.slice(mostrats, mostrats + PER_PAGINA);
   const html = tros.map(r => {
-    const dia = diaDe(r.url);
-    return `<article class="resultat"><h2><a href="../?dia=${esc(dia)}">${esc(ambArticle(dataCa(dia)))}</a></h2><p>${r.excerpt}</p></article>`;
+    const m = r.meta || {}, primer = m.primer || diaDe(r.url), darrer = m.darrer || primer;
+    const quan = darrer && darrer !== primer
+      ? `Del ${esc(dataCa(primer))} al ${esc(dataCa(darrer))}`.replace(/^Del (01|11)\./, "De l'$1.").replace(/ al (01|11)\./, " a l'$1.")
+      : esc(ambArticle(dataCa(primer)));
+    const on = [m.seccio, m.font].filter(Boolean).map(esc).join(" · ");
+    return `<article class="resultat"><p class="on">${on}</p><h2>${esc(m.title || "")}</h2>` +
+      `<p class="peu">${quan} · <a href="../?dia=${esc(primer)}">obre el panell d'aquell dia</a>` +
+      (m.enllac ? ` · <a href="${esc(m.enllac)}" target="_blank" rel="noopener">font original ↗</a>` : "") + `</p></article>`;
   }).join("");
   const boto = document.getElementById("mes");
   if (boto) boto.remove();
@@ -109,10 +119,20 @@ async function cerca() {
   const motor = await carregaPagefind();
   const r = await motor.search(text);
   dades = await Promise.all(r.results.map(x => x.data()));
-  if (ordre.value === "data") dades.sort((a, b) => diaDe(b.url).localeCompare(diaDe(a.url)));
+  // Pagefind, si no troba una paraula, prova amb un tros més curt («Peratallada» -> «per»).
+  // Només es queden els resultats que contenen de debò totes les paraules buscades
+  // (sense tenir en compte accents ni majúscules; l'última pot ser un començament: «subvenci»).
+  const norm = t => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[’'`´]/g, " ");
+  const paraules = norm(text).split(/[^a-z0-9ç·]+/).filter(Boolean);
+  dades = dades.filter(d => {
+    const m = d.meta || {};
+    const t = " " + norm([m.title, m.font, m.seccio].join(" ")).replace(/[^a-z0-9ç·]+/g, " ") + " ";
+    return paraules.every((w, i) => t.includes(" " + w + (i === paraules.length - 1 ? "" : " ")));
+  });
+  if (ordre.value === "data") dades.sort((a, b) => String((b.meta || {}).primer || "").localeCompare(String((a.meta || {}).primer || "")));
   mostrats = 0;
   const n = dades.length;
-  res.innerHTML = `<p class="estat">${n ? (n === 1 ? "1 dia" : n + " dies") + " amb resultats." : "No s'ha trobat res."}</p>`;
+  res.innerHTML = `<p class="estat">${n ? (n === 1 ? "1 resultat." : n + " resultats.") : "No s'ha trobat res."}</p>`;
   if (n) pinta();
 }
 

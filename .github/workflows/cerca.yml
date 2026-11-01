@@ -1,6 +1,7 @@
 # Índex de la cerca — La TdG · 01.11.2026
 # Refà l'índex de Pagefind (cerca/pagefind/) amb tots els resums diaris del
-# panell (dades/<dia>/resum.html), perquè la pàgina cerca/ hi pugui buscar.
+# panell (dades/<dia>/resum.html), element per element (eines/cerca-index.mjs),
+# perquè la pàgina cerca/ hi pugui buscar.
 # S'engega sol cada vegada que es desa un resum, o a mà.
 name: Índex de la cerca
 
@@ -28,8 +29,8 @@ jobs:
           node-version: "20"
       - name: Fa l'índex
         run: |
-          rm -rf cerca/pagefind
-          npx -y pagefind@1 --site . --glob "dades/*/resum.html" --output-subdir cerca/pagefind --force-language ca
+          npm install --no-save --silent pagefind@1
+          node eines/cerca-index.mjs
       - name: Desa l'índex
         run: |
           git config user.name "La TdG (cerca)"

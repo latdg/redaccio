@@ -15,8 +15,6 @@
    1b. EDITOR AVANÇAT (01.11.2026): FreeCut (walterlow/freecut, MIT), copiat a editor/ i
       adaptat amb eines/freecut/ (botó 🪰 Mosca, català, subcarpeta). Necessita Chrome o
       Edge d'ordinador, o el Brave amb «File System Access API» activat.
-   1c. OPENREEL (01.11.2026, en prova): Augani/openreel-video (MIT), copiat a openreel/, encara
-      en anglès i sense mosca. Es manté al costat de FreeCut fins que se'n triï un.
    2. VÍDEO D'UN ÀUDIO: àudio + fons amb la capçalera de La TdG, un títol i l'ona
       movent-se, per a les xarxes que no reprodueixen àudio sol. També admet .srt.
   Els fitxers molt grans (un ple sencer) van lents al navegador: per a aquests, el
@@ -192,13 +190,6 @@ label.boto{display:inline-block;background:var(--accent);color:#fff;font-weight:
       </div>
     </section>
 
-    <!-- 1c. OPENREEL (prova, 01.11.2026) -->
-    <section id="p-openreel">
-      <h2>🧪 OpenReel (en prova)</h2>
-      <p style="margin:0 0 12px">Un altre editor amb línia de temps, a l'estil de CapCut, per comparar-lo amb FreeCut. No demana cap carpeta i funciona també al Brave sense activar res. De moment està en anglès i sense el botó de la mosca: si s'hi queda, es traduirà i s'hi afegirà.</p>
-      <div class="fila"><a href="openreel/" target="_blank" rel="noopener"><button type="button">🎬 Obre OpenReel</button></a><a href="mosca.png" download="mosca-latdg.png"><button type="button" class="suau">🪰 Descarrega la mosca</button></a></div>
-    </section>
-
     <!-- 2. VÍDEO D'UN ÀUDIO -->
     <section id="p-audio" hidden>
       <h2>🎙️ Vídeo d'un àudio</h2>
@@ -241,7 +232,7 @@ label.boto{display:inline-block;background:var(--accent);color:#fff;font-weight:
       </div>
     </section>
 
-    <p class="font">Editors avançats: <a href="https://github.com/walterlow/freecut" target="_blank" rel="noopener">FreeCut</a> (llicència MIT; la primera vegada baixa uns 100 MB i després queda al navegador) i <a href="https://github.com/Augani/openreel-video" target="_blank" rel="noopener">OpenReel</a> (llicència MIT). Editor ràpid i vídeo d'un àudio: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
+    <p class="font">Editor avançat: <a href="https://github.com/walterlow/freecut" target="_blank" rel="noopener">FreeCut</a> (llicència MIT; la primera vegada baixa uns 100 MB i després queda al navegador). Editor ràpid i vídeo d'un àudio: <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a> (FFmpeg al navegador; nucli GPL-2.0, embolcall MIT). Lletra dels subtítols: DejaVu Sans. La primera vegada baixa el motor (uns 32 MB) i després queda a la memòria del navegador. Al mòbil, millor talls curts.</p>
   </div>
 </main>
 
@@ -766,7 +757,6 @@ $("pestanyes").onclick = e => {
   if (!b) return;
   document.querySelectorAll("#pestanyes button").forEach(x => x.classList.toggle("actiu", x === b));
   $("p-editor").hidden = b.dataset.p !== "editor";
-  $("p-openreel").hidden = b.dataset.p !== "editor";
   $("p-video").hidden = b.dataset.p !== "editor";
   $("p-audio").hidden = b.dataset.p !== "audio";
 };

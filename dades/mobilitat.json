@@ -1,0 +1,1537 @@
+{
+ "generat": "2026-11-02T21:46:46+00:00",
+ "font": "Ministeri de Transports i Mobilitat Sostenible, estudis de mobilitat amb big data (telefonia mòbil)",
+ "url": "https://www.transportes.gob.es/ministerio/proyectos-singulares/estudios-de-movilidad-con-big-data/opendata-movilidad",
+ "nota": "Desplaçaments de persones de més de 500 metres entre municipis, mitjana per dia. Des del juliol de 2025 el Ministeri va canviar la metodologia: compara amb compte els mesos d'abans i de després.",
+ "zones": {
+  "17022": [
+   "la Bisbal d'Empordà"
+  ],
+  "17901_AM": [
+   "Corçà",
+   "Cruïlles, Monells i Sant Sadurní de l'Heura"
+  ],
+  "17902_AM": [
+   "Ullastret",
+   "Forallac"
+  ]
+ },
+ "mesos": {
+  "2024-12": {
+   "17022": {
+    "municipis": [
+     "la Bisbal d'Empordà"
+    ],
+    "dies": 31,
+    "surtenDia": 11050,
+    "arribenDia": 11069,
+    "dinsDia": 7,
+    "surtenFeiner": 11539,
+    "surtenFestiu": 9857,
+    "arribenFeiner": 11498,
+    "arribenFestiu": 10020,
+    "cap": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1720
+     ],
+     [
+      "Quart",
+      1093
+     ],
+     [
+      "Forallac agregacion de municipios",
+      1074
+     ],
+     [
+      "Palafrugell",
+      934
+     ],
+     [
+      "Verges agregacion de municipios",
+      915
+     ],
+     [
+      "Girona",
+      675
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      621
+     ],
+     [
+      "Torroella de Montgrí",
+      550
+     ],
+     [
+      "Palamós",
+      503
+     ],
+     [
+      "Begur",
+      410
+     ],
+     [
+      "Celràagregacion de municipios",
+      254
+     ],
+     [
+      "Castell-Platja d'Aro",
+      244
+     ]
+    ],
+    "de": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1677
+     ],
+     [
+      "Forallac agregacion de municipios",
+      1187
+     ],
+     [
+      "Quart",
+      1098
+     ],
+     [
+      "Palafrugell",
+      948
+     ],
+     [
+      "Verges agregacion de municipios",
+      905
+     ],
+     [
+      "Girona",
+      655
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      598
+     ],
+     [
+      "Torroella de Montgrí",
+      534
+     ],
+     [
+      "Palamós",
+      500
+     ],
+     [
+      "Begur",
+      383
+     ],
+     [
+      "Celràagregacion de municipios",
+      276
+     ],
+     [
+      "Castell-Platja d'Aro",
+      254
+     ]
+    ],
+    "motiuSurten": {
+     "no_frecuente": 3002,
+     "casa": 2398,
+     "frecuente": 4367,
+     "trabajo_estudio": 1282
+    },
+    "motiuArriben": {
+     "frecuente": 1843,
+     "casa": 7125,
+     "no_frecuente": 1407,
+     "trabajo_estudio": 694
+    }
+   },
+   "17901_AM": {
+    "municipis": [
+     "Corçà",
+     "Cruïlles, Monells i Sant Sadurní de l'Heura"
+    ],
+    "dies": 31,
+    "surtenDia": 18008,
+    "arribenDia": 17945,
+    "dinsDia": 1422,
+    "surtenFeiner": 18949,
+    "surtenFestiu": 15709,
+    "arribenFeiner": 18953,
+    "arribenFestiu": 15480,
+    "cap": [
+     [
+      "Girona",
+      2347
+     ],
+     [
+      "Cassà de la Selva",
+      2028
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1677
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1183
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      758
+     ],
+     [
+      "Quart",
+      726
+     ],
+     [
+      "Forallac agregacion de municipios",
+      722
+     ],
+     [
+      "Salt",
+      662
+     ],
+     [
+      "Llagostera",
+      611
+     ],
+     [
+      "Celràagregacion de municipios",
+      607
+     ],
+     [
+      "Caldes de Malavella",
+      602
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      518
+     ]
+    ],
+    "de": [
+     [
+      "Girona",
+      2423
+     ],
+     [
+      "Cassà de la Selva",
+      1754
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1720
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1171
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      789
+     ],
+     [
+      "Forallac agregacion de municipios",
+      723
+     ],
+     [
+      "Quart",
+      722
+     ],
+     [
+      "Salt",
+      672
+     ],
+     [
+      "Celràagregacion de municipios",
+      661
+     ],
+     [
+      "Caldes de Malavella",
+      605
+     ],
+     [
+      "Llagostera",
+      595
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      539
+     ]
+    ],
+    "motiuSurten": {
+     "no_frecuente": 2807,
+     "casa": 7518,
+     "frecuente": 5804,
+     "trabajo_estudio": 1879
+    },
+    "motiuArriben": {
+     "frecuente": 6262,
+     "casa": 5636,
+     "trabajo_estudio": 2814,
+     "no_frecuente": 3233
+    }
+   },
+   "17902_AM": {
+    "municipis": [
+     "Ullastret",
+     "Forallac"
+    ],
+    "dies": 31,
+    "surtenDia": 17527,
+    "arribenDia": 17418,
+    "dinsDia": 1114,
+    "surtenFeiner": 17960,
+    "surtenFestiu": 16470,
+    "arribenFeiner": 17929,
+    "arribenFestiu": 16171,
+    "cap": [
+     [
+      "Palafrugell",
+      5402
+     ],
+     [
+      "Begur",
+      2235
+     ],
+     [
+      "Palamós",
+      1649
+     ],
+     [
+      "Torroella de Montgrí",
+      1341
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1187
+     ],
+     [
+      "Verges agregacion de municipios",
+      962
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      723
+     ],
+     [
+      "Pals agregacion de municipios",
+      650
+     ],
+     [
+      "Calonge i Sant Antoni",
+      388
+     ],
+     [
+      "Castell-Platja d'Aro",
+      382
+     ],
+     [
+      "Girona",
+      352
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      318
+     ]
+    ],
+    "de": [
+     [
+      "Palafrugell",
+      5356
+     ],
+     [
+      "Begur",
+      2265
+     ],
+     [
+      "Palamós",
+      1658
+     ],
+     [
+      "Torroella de Montgrí",
+      1333
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1074
+     ],
+     [
+      "Verges agregacion de municipios",
+      968
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      722
+     ],
+     [
+      "Pals agregacion de municipios",
+      635
+     ],
+     [
+      "Castell-Platja d'Aro",
+      381
+     ],
+     [
+      "Calonge i Sant Antoni",
+      379
+     ],
+     [
+      "Girona",
+      349
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      309
+     ]
+    ],
+    "motiuSurten": {
+     "frecuente": 5832,
+     "trabajo_estudio": 1997,
+     "casa": 7298,
+     "no_frecuente": 2400
+    },
+    "motiuArriben": {
+     "casa": 5575,
+     "frecuente": 6218,
+     "trabajo_estudio": 2383,
+     "no_frecuente": 3243
+    }
+   }
+  },
+  "2025-01": {
+   "17022": {
+    "municipis": [
+     "la Bisbal d'Empordà"
+    ],
+    "dies": 31,
+    "surtenDia": 10650,
+    "arribenDia": 10785,
+    "dinsDia": 7,
+    "surtenFeiner": 11164,
+    "surtenFestiu": 9171,
+    "arribenFeiner": 11306,
+    "arribenFestiu": 9285,
+    "cap": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1748
+     ],
+     [
+      "Quart",
+      1022
+     ],
+     [
+      "Forallac agregacion de municipios",
+      976
+     ],
+     [
+      "Palafrugell",
+      965
+     ],
+     [
+      "Verges agregacion de municipios",
+      866
+     ],
+     [
+      "Girona",
+      661
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      580
+     ],
+     [
+      "Torroella de Montgrí",
+      541
+     ],
+     [
+      "Palamós",
+      529
+     ],
+     [
+      "Begur",
+      402
+     ],
+     [
+      "Celràagregacion de municipios",
+      273
+     ],
+     [
+      "Pals agregacion de municipios",
+      213
+     ]
+    ],
+    "de": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1737
+     ],
+     [
+      "Forallac agregacion de municipios",
+      1084
+     ],
+     [
+      "Quart",
+      1029
+     ],
+     [
+      "Palafrugell",
+      992
+     ],
+     [
+      "Verges agregacion de municipios",
+      847
+     ],
+     [
+      "Girona",
+      643
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      569
+     ],
+     [
+      "Palamós",
+      536
+     ],
+     [
+      "Torroella de Montgrí",
+      528
+     ],
+     [
+      "Begur",
+      388
+     ],
+     [
+      "Celràagregacion de municipios",
+      278
+     ],
+     [
+      "Castell-Platja d'Aro",
+      214
+     ]
+    ],
+    "motiuSurten": {
+     "no_frecuente": 2199,
+     "frecuente": 4519,
+     "trabajo_estudio": 1532,
+     "casa": 2400
+    },
+    "motiuArriben": {
+     "casa": 7049,
+     "trabajo_estudio": 711,
+     "frecuente": 1916,
+     "no_frecuente": 1108
+    }
+   },
+   "17901_AM": {
+    "municipis": [
+     "Corçà",
+     "Cruïlles, Monells i Sant Sadurní de l'Heura"
+    ],
+    "dies": 31,
+    "surtenDia": 18312,
+    "arribenDia": 18166,
+    "dinsDia": 1523,
+    "surtenFeiner": 19418,
+    "surtenFestiu": 15132,
+    "arribenFeiner": 19287,
+    "arribenFestiu": 14944,
+    "cap": [
+     [
+      "Girona",
+      2330
+     ],
+     [
+      "Cassà de la Selva",
+      2073
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1737
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1204
+     ],
+     [
+      "Forallac agregacion de municipios",
+      797
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      763
+     ],
+     [
+      "Salt",
+      683
+     ],
+     [
+      "Quart",
+      639
+     ],
+     [
+      "Llagostera",
+      638
+     ],
+     [
+      "Caldes de Malavella",
+      619
+     ],
+     [
+      "Celràagregacion de municipios",
+      596
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      530
+     ]
+    ],
+    "de": [
+     [
+      "Girona",
+      2401
+     ],
+     [
+      "Cassà de la Selva",
+      1801
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1748
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1192
+     ],
+     [
+      "Forallac agregacion de municipios",
+      807
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      784
+     ],
+     [
+      "Salt",
+      697
+     ],
+     [
+      "Quart",
+      655
+     ],
+     [
+      "Celràagregacion de municipios",
+      639
+     ],
+     [
+      "Llagostera",
+      623
+     ],
+     [
+      "Caldes de Malavella",
+      613
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      533
+     ]
+    ],
+    "motiuSurten": {
+     "casa": 8010,
+     "no_frecuente": 2112,
+     "frecuente": 6124,
+     "trabajo_estudio": 2066
+    },
+    "motiuArriben": {
+     "casa": 5664,
+     "no_frecuente": 2413,
+     "frecuente": 6569,
+     "trabajo_estudio": 3520
+    }
+   },
+   "17902_AM": {
+    "municipis": [
+     "Ullastret",
+     "Forallac"
+    ],
+    "dies": 31,
+    "surtenDia": 17563,
+    "arribenDia": 17439,
+    "dinsDia": 1154,
+    "surtenFeiner": 18176,
+    "surtenFestiu": 15804,
+    "arribenFeiner": 18079,
+    "arribenFestiu": 15598,
+    "cap": [
+     [
+      "Palafrugell",
+      5312
+     ],
+     [
+      "Begur",
+      2312
+     ],
+     [
+      "Palamós",
+      1734
+     ],
+     [
+      "Torroella de Montgrí",
+      1329
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1084
+     ],
+     [
+      "Verges agregacion de municipios",
+      954
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      807
+     ],
+     [
+      "Pals agregacion de municipios",
+      673
+     ],
+     [
+      "Calonge i Sant Antoni",
+      358
+     ],
+     [
+      "Girona",
+      348
+     ],
+     [
+      "Castell-Platja d'Aro",
+      345
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      345
+     ]
+    ],
+    "de": [
+     [
+      "Palafrugell",
+      5251
+     ],
+     [
+      "Begur",
+      2292
+     ],
+     [
+      "Palamós",
+      1793
+     ],
+     [
+      "Torroella de Montgrí",
+      1336
+     ],
+     [
+      "Verges agregacion de municipios",
+      982
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      976
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      797
+     ],
+     [
+      "Pals agregacion de municipios",
+      666
+     ],
+     [
+      "Calonge i Sant Antoni",
+      365
+     ],
+     [
+      "Girona",
+      342
+     ],
+     [
+      "Castell-Platja d'Aro",
+      337
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      329
+     ]
+    ],
+    "motiuSurten": {
+     "casa": 7580,
+     "frecuente": 6277,
+     "trabajo_estudio": 1882,
+     "no_frecuente": 1825
+    },
+    "motiuArriben": {
+     "frecuente": 6315,
+     "casa": 5854,
+     "no_frecuente": 2411,
+     "trabajo_estudio": 2858
+    }
+   }
+  },
+  "2025-02": {
+   "17022": {
+    "municipis": [
+     "la Bisbal d'Empordà"
+    ],
+    "dies": 28,
+    "surtenDia": 11303,
+    "arribenDia": 11393,
+    "dinsDia": 7,
+    "surtenFeiner": 11956,
+    "surtenFestiu": 9670,
+    "arribenFeiner": 12021,
+    "arribenFestiu": 9822,
+    "cap": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1903
+     ],
+     [
+      "Forallac agregacion de municipios",
+      1055
+     ],
+     [
+      "Palafrugell",
+      1030
+     ],
+     [
+      "Quart",
+      998
+     ],
+     [
+      "Verges agregacion de municipios",
+      871
+     ],
+     [
+      "Girona",
+      708
+     ],
+     [
+      "Torroella de Montgrí",
+      604
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      577
+     ],
+     [
+      "Palamós",
+      573
+     ],
+     [
+      "Begur",
+      460
+     ],
+     [
+      "Celràagregacion de municipios",
+      282
+     ],
+     [
+      "Pals agregacion de municipios",
+      241
+     ]
+    ],
+    "de": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1885
+     ],
+     [
+      "Forallac agregacion de municipios",
+      1168
+     ],
+     [
+      "Palafrugell",
+      1055
+     ],
+     [
+      "Quart",
+      1001
+     ],
+     [
+      "Verges agregacion de municipios",
+      866
+     ],
+     [
+      "Girona",
+      681
+     ],
+     [
+      "Torroella de Montgrí",
+      597
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      576
+     ],
+     [
+      "Palamós",
+      569
+     ],
+     [
+      "Begur",
+      441
+     ],
+     [
+      "Celràagregacion de municipios",
+      286
+     ],
+     [
+      "Pals agregacion de municipios",
+      241
+     ]
+    ],
+    "motiuSurten": {
+     "frecuente": 4750,
+     "casa": 2516,
+     "no_frecuente": 2420,
+     "trabajo_estudio": 1617
+    },
+    "motiuArriben": {
+     "casa": 7402,
+     "frecuente": 1977,
+     "no_frecuente": 1251,
+     "trabajo_estudio": 763
+    }
+   },
+   "17901_AM": {
+    "municipis": [
+     "Corçà",
+     "Cruïlles, Monells i Sant Sadurní de l'Heura"
+    ],
+    "dies": 28,
+    "surtenDia": 19202,
+    "arribenDia": 19131,
+    "dinsDia": 1561,
+    "surtenFeiner": 20459,
+    "surtenFestiu": 16062,
+    "arribenFeiner": 20429,
+    "arribenFestiu": 15886,
+    "cap": [
+     [
+      "Girona",
+      2484
+     ],
+     [
+      "Cassà de la Selva",
+      2120
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1885
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1247
+     ],
+     [
+      "Forallac agregacion de municipios",
+      820
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      751
+     ],
+     [
+      "Salt",
+      740
+     ],
+     [
+      "Quart",
+      665
+     ],
+     [
+      "Llagostera",
+      656
+     ],
+     [
+      "Celràagregacion de municipios",
+      614
+     ],
+     [
+      "Caldes de Malavella",
+      612
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      541
+     ]
+    ],
+    "de": [
+     [
+      "Girona",
+      2546
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1903
+     ],
+     [
+      "Cassà de la Selva",
+      1859
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1236
+     ],
+     [
+      "Forallac agregacion de municipios",
+      848
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      779
+     ],
+     [
+      "Salt",
+      763
+     ],
+     [
+      "Quart",
+      683
+     ],
+     [
+      "Celràagregacion de municipios",
+      671
+     ],
+     [
+      "Llagostera",
+      636
+     ],
+     [
+      "Caldes de Malavella",
+      628
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      557
+     ]
+    ],
+    "motiuSurten": {
+     "frecuente": 6231,
+     "casa": 8492,
+     "no_frecuente": 2285,
+     "trabajo_estudio": 2194
+    },
+    "motiuArriben": {
+     "casa": 5747,
+     "no_frecuente": 2864,
+     "trabajo_estudio": 3623,
+     "frecuente": 6898
+    }
+   },
+   "17902_AM": {
+    "municipis": [
+     "Ullastret",
+     "Forallac"
+    ],
+    "dies": 28,
+    "surtenDia": 18483,
+    "arribenDia": 18367,
+    "dinsDia": 1208,
+    "surtenFeiner": 19194,
+    "surtenFestiu": 16706,
+    "arribenFeiner": 19131,
+    "arribenFestiu": 16456,
+    "cap": [
+     [
+      "Palafrugell",
+      5582
+     ],
+     [
+      "Begur",
+      2418
+     ],
+     [
+      "Palamós",
+      1844
+     ],
+     [
+      "Torroella de Montgrí",
+      1410
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1168
+     ],
+     [
+      "Verges agregacion de municipios",
+      989
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      848
+     ],
+     [
+      "Pals agregacion de municipios",
+      710
+     ],
+     [
+      "Calonge i Sant Antoni",
+      377
+     ],
+     [
+      "Girona",
+      377
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      335
+     ],
+     [
+      "Castell-Platja d'Aro",
+      321
+     ]
+    ],
+    "de": [
+     [
+      "Palafrugell",
+      5491
+     ],
+     [
+      "Begur",
+      2428
+     ],
+     [
+      "Palamós",
+      1886
+     ],
+     [
+      "Torroella de Montgrí",
+      1430
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1055
+     ],
+     [
+      "Verges agregacion de municipios",
+      1009
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      820
+     ],
+     [
+      "Pals agregacion de municipios",
+      673
+     ],
+     [
+      "Calonge i Sant Antoni",
+      390
+     ],
+     [
+      "Girona",
+      379
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      333
+     ],
+     [
+      "Castell-Platja d'Aro",
+      324
+     ]
+    ],
+    "motiuSurten": {
+     "frecuente": 6526,
+     "casa": 7962,
+     "no_frecuente": 2007,
+     "trabajo_estudio": 1988
+    },
+    "motiuArriben": {
+     "casa": 6042,
+     "frecuente": 6553,
+     "trabajo_estudio": 3005,
+     "no_frecuente": 2767
+    }
+   }
+  },
+  "2025-03": {
+   "17022": {
+    "municipis": [
+     "la Bisbal d'Empordà"
+    ],
+    "dies": 31,
+    "surtenDia": 11253,
+    "arribenDia": 11354,
+    "dinsDia": 9,
+    "surtenFeiner": 11916,
+    "surtenFestiu": 9859,
+    "arribenFeiner": 11980,
+    "arribenFestiu": 10039,
+    "cap": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1980
+     ],
+     [
+      "Forallac agregacion de municipios",
+      1030
+     ],
+     [
+      "Quart",
+      1005
+     ],
+     [
+      "Palafrugell",
+      995
+     ],
+     [
+      "Verges agregacion de municipios",
+      875
+     ],
+     [
+      "Girona",
+      677
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      577
+     ],
+     [
+      "Torroella de Montgrí",
+      569
+     ],
+     [
+      "Palamós",
+      552
+     ],
+     [
+      "Begur",
+      439
+     ],
+     [
+      "Celràagregacion de municipios",
+      295
+     ],
+     [
+      "Pals agregacion de municipios",
+      254
+     ]
+    ],
+    "de": [
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      1956
+     ],
+     [
+      "Forallac agregacion de municipios",
+      1157
+     ],
+     [
+      "Palafrugell",
+      1026
+     ],
+     [
+      "Quart",
+      1005
+     ],
+     [
+      "Verges agregacion de municipios",
+      869
+     ],
+     [
+      "Girona",
+      664
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      580
+     ],
+     [
+      "Torroella de Montgrí",
+      558
+     ],
+     [
+      "Palamós",
+      553
+     ],
+     [
+      "Begur",
+      416
+     ],
+     [
+      "Celràagregacion de municipios",
+      293
+     ],
+     [
+      "Pals agregacion de municipios",
+      239
+     ]
+    ],
+    "motiuSurten": {
+     "casa": 2478,
+     "frecuente": 4636,
+     "no_frecuente": 2582,
+     "trabajo_estudio": 1557
+    },
+    "motiuArriben": {
+     "casa": 7394,
+     "no_frecuente": 1291,
+     "frecuente": 1946,
+     "trabajo_estudio": 724
+    }
+   },
+   "17901_AM": {
+    "municipis": [
+     "Corçà",
+     "Cruïlles, Monells i Sant Sadurní de l'Heura"
+    ],
+    "dies": 31,
+    "surtenDia": 19030,
+    "arribenDia": 18930,
+    "dinsDia": 1514,
+    "surtenFeiner": 20599,
+    "surtenFestiu": 15735,
+    "arribenFeiner": 20559,
+    "arribenFestiu": 15507,
+    "cap": [
+     [
+      "Girona",
+      2451
+     ],
+     [
+      "Cassà de la Selva",
+      2100
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1956
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1200
+     ],
+     [
+      "Forallac agregacion de municipios",
+      834
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      742
+     ],
+     [
+      "Salt",
+      701
+     ],
+     [
+      "Quart",
+      672
+     ],
+     [
+      "Llagostera",
+      647
+     ],
+     [
+      "Caldes de Malavella",
+      605
+     ],
+     [
+      "Celràagregacion de municipios",
+      603
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      568
+     ]
+    ],
+    "de": [
+     [
+      "Girona",
+      2526
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1980
+     ],
+     [
+      "Cassà de la Selva",
+      1821
+     ],
+     [
+      "Vilobí d'Onyar agregacion de municipios",
+      1175
+     ],
+     [
+      "Forallac agregacion de municipios",
+      841
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      773
+     ],
+     [
+      "Salt",
+      714
+     ],
+     [
+      "Quart",
+      686
+     ],
+     [
+      "Celràagregacion de municipios",
+      665
+     ],
+     [
+      "Llagostera",
+      640
+     ],
+     [
+      "Caldes de Malavella",
+      613
+     ],
+     [
+      "Vilablareix agregacion de municipios",
+      577
+     ]
+    ],
+    "motiuSurten": {
+     "casa": 8435,
+     "frecuente": 6065,
+     "no_frecuente": 2400,
+     "trabajo_estudio": 2130
+    },
+    "motiuArriben": {
+     "casa": 5695,
+     "no_frecuente": 3064,
+     "trabajo_estudio": 3472,
+     "frecuente": 6699
+    }
+   },
+   "17902_AM": {
+    "municipis": [
+     "Ullastret",
+     "Forallac"
+    ],
+    "dies": 31,
+    "surtenDia": 18669,
+    "arribenDia": 18551,
+    "dinsDia": 1220,
+    "surtenFeiner": 19322,
+    "surtenFestiu": 17299,
+    "arribenFeiner": 19271,
+    "arribenFestiu": 17039,
+    "cap": [
+     [
+      "Palafrugell",
+      5735
+     ],
+     [
+      "Begur",
+      2420
+     ],
+     [
+      "Palamós",
+      1796
+     ],
+     [
+      "Torroella de Montgrí",
+      1389
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1157
+     ],
+     [
+      "Verges agregacion de municipios",
+      992
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      841
+     ],
+     [
+      "Pals agregacion de municipios",
+      722
+     ],
+     [
+      "Girona",
+      381
+     ],
+     [
+      "Calonge i Sant Antoni",
+      368
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      345
+     ],
+     [
+      "Castell-Platja d'Aro",
+      335
+     ]
+    ],
+    "de": [
+     [
+      "Palafrugell",
+      5658
+     ],
+     [
+      "Begur",
+      2440
+     ],
+     [
+      "Palamós",
+      1841
+     ],
+     [
+      "Torroella de Montgrí",
+      1411
+     ],
+     [
+      "Bisbal d'Empordà, La",
+      1030
+     ],
+     [
+      "Verges agregacion de municipios",
+      1006
+     ],
+     [
+      "Cruïlles, Monells i Sant Sadurní de l'Heura agregacion de municipios",
+      834
+     ],
+     [
+      "Pals agregacion de municipios",
+      706
+     ],
+     [
+      "Calonge i Sant Antoni",
+      396
+     ],
+     [
+      "Girona",
+      385
+     ],
+     [
+      "Flaçàagregacion de municipios",
+      332
+     ],
+     [
+      "Castell-Platja d'Aro",
+      326
+     ]
+    ],
+    "motiuSurten": {
+     "casa": 8138,
+     "frecuente": 6444,
+     "no_frecuente": 2145,
+     "trabajo_estudio": 1942
+    },
+    "motiuArriben": {
+     "casa": 5955,
+     "no_frecuente": 3188,
+     "frecuente": 6504,
+     "trabajo_estudio": 2905
+    }
+   }
+  }
+ }
+}

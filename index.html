@@ -234,6 +234,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
   <section id="turisme"><h2>🧳 Turistes que hi arriben</h2><p class="buit">Carregant…</p></section>
   <section id="vehicles"><h2>🚗 Vehicles nous matriculats</h2><p class="buit">Carregant…</p></section>
+  <section id="mobilitat"><h2>🚶 Mobilitat entre municipis</h2><p class="buit">Carregant…</p></section>
   <section id="seguretat"><h2>🚨 Seguretat i emergències</h2><p class="buit">Carregant…</p></section>
   <section id="entitats"><h2>🤝 Entitats i associacions</h2><p class="buit">Carregant…</p></section>
   <section id="renda"><h2>🤲 Renda garantida de ciutadania</h2><p class="buit">Carregant…</p></section>
@@ -804,7 +805,7 @@ const MODE_SLOW = PARAMS.has("slow");
 const INCRUSTAT = PARAMS.has("incrustat");
 const RX_INICI_SLOW = /^CONTRACTACI/i;
 // Si el resum no porta l'apartat de la contractació, aquests blocs propis són slow.
-const PROPIS_SLOW = ["dades-municipals", "renda", "hut", "turisme", "vehicles", "habitatge", "aigua", "ramaderia",
+const PROPIS_SLOW = ["dades-municipals", "renda", "hut", "turisme", "vehicles", "mobilitat", "habitatge", "aigua", "ramaderia",
   "residus", "seguretat", "entitats", "escoles", "eleccions"];
 if (INCRUSTAT) document.documentElement.classList.add("incrustat");
 
@@ -826,6 +827,8 @@ const BLOCS_PROPIS = [
   { id: "turisme", nom: "Turistes", titol: "TURISTES QUE PERNOCTEN (TELEFONIA MÒBIL)", enLlocDe: /^ATUR/i },
   // 01.11.2026: vehicles matriculats (DGT), després dels turistes.
   { id: "vehicles", nom: "Vehicles", titol: "VEHICLES NOUS MATRICULATS", enLlocDe: /^ATUR/i },
+  // 02.11.2026: mobilitat per telefonia mòbil (Ministeri de Transports), després dels vehicles.
+  { id: "mobilitat", nom: "Mobilitat", titol: "MOBILITAT ENTRE MUNICIPIS (TELEFONIA MÒBIL)", enLlocDe: /^ATUR/i },
   // 27.10.2026: lloguer i habitatges buits, al costat dels habitatges turístics.
   { id: "habitatge", nom: "Lloguer i pisos buits", titol: "LLOGUER I HABITATGES BUITS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
@@ -2238,6 +2241,71 @@ async function carregaTurisme() {
 }
 
 // -----------------------------------------------------------------------------
+// MOBILITAT ENTRE MUNICIPIS (02.11.2026). Les dades les desa el workflow «Mobilitat
+// diària» del repo latdg/vigilant-plens (runner de casa) a dades/mobilitat.json:
+// estudi de mobilitat del Ministeri de Transports a partir de la telefonia mòbil.
+// El Ministeri agrupa alguns municipis petits en una sola zona, i va uns mesos
+// endarrerit. Va a La TdG slow: són dades per analitzar, no de servei.
+// -----------------------------------------------------------------------------
+const TITOL_MOB = "MOBILITAT ENTRE MUNICIPIS (TELEFONIA MÒBIL)";
+let MOB = null;
+const MOTIUS_MOB = { casa: "Tornar a casa", trabajo_estudio: "Feina o estudis", frecuente: "Lloc habitual (compres, gestions…)", no_frecuente: "Lloc no habitual (oci, visites…)" };
+const nomZonaMob = z => (MOB.zones[z] || [z]).join(" i ");
+const codiZonaMob = z => z.slice(0, 5);
+function barresMob(llista, n = 8) {
+  const vis = (llista || []).filter(x => x[1] > 0).slice(0, n), max = Math.max(1, ...vis.map(x => x[1]));
+  return vis.length ? `<div class="barres" style="grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) auto">` +
+    vis.map(([nom, v]) => `<span>${esc(String(nom))}</span><span class="barra" style="width:${(v / max * 100).toFixed(0)}%"></span><span class="num">${nCa(v)}</span>`).join("") + `</div>`
+    : '<p class="buit">No hi ha dades.</p>';
+}
+function cosMobilitat(z) {
+  const mesos = Object.keys(MOB.mesos).filter(m => MOB.mesos[m][z]).sort();
+  if (!mesos.length) return '<p class="buit">El Ministeri no dona dades d\'aquesta zona.</p>';
+  const ult = mesos[mesos.length - 1], d = MOB.mesos[ult][z];
+  const [a, m] = ult.split("-").map(Number), fa = `${a - 1}-${String(m).padStart(2, "0")}`;
+  const dAbans = (MOB.mesos[fa] || {})[z];
+  const grup = (MOB.zones[z] || []).length > 1;
+  const taula = `<div class="taula"><table><thead><tr><th>Mes</th><th class="n">Surten</th><th class="n">Arriben</th>${grup ? '<th class="n">Dins la zona</th>' : ""}<th class="n">Surten (feiner)</th><th class="n">Surten (cap de setmana)</th></tr></thead><tbody>` +
+    mesos.slice().reverse().map(k => { const x = MOB.mesos[k][z];
+      return `<tr${k === ult ? ' class="destacat"' : ""}><td>${esc(nomMes(k))}</td><td class="n">${nCa(x.surtenDia)}</td><td class="n">${nCa(x.arribenDia)}</td>` +
+        (grup ? `<td class="n">${nCa(x.dinsDia)}</td>` : "") +
+        `<td class="n">${x.surtenFeiner == null ? "—" : nCa(x.surtenFeiner)}</td><td class="n">${x.surtenFestiu == null ? "—" : nCa(x.surtenFestiu)}</td></tr>`; }).join("") +
+    `</tbody></table></div>`;
+  const motius = obj => barresMob(Object.entries(obj || {}).map(([k, v]) => [MOTIUS_MOB[k] || k, v]).sort((x, y) => y[1] - x[1]));
+  return `<article class="fitxa"><h3>${esc(nomZonaMob(z))}</h3><div class="xifres">` +
+    `<div class="xifra"><div class="etq">Surten cada dia</div><div class="val">${nCa(d.surtenDia)}</div><div class="det">${esc(nomMes(ult))}` +
+      (dAbans ? ` · ${pctTur(d.surtenDia, dAbans.surtenDia)} respecte a ${esc(nomMes(fa))}` : "") + `</div></div>` +
+    `<div class="xifra"><div class="etq">Arriben cada dia</div><div class="val">${nCa(d.arribenDia)}</div><div class="det">${esc(nomMes(ult))}` +
+      (dAbans ? ` · ${pctTur(d.arribenDia, dAbans.arribenDia)} respecte a ${esc(nomMes(fa))}` : "") + `</div></div></div>` +
+    `<h4>Cada mes (mitjana de desplaçaments per dia)</h4>${taula}` +
+    `<h4>Sortides per dia, mes a mes</h4>${serieBarres(mesos.map(k => [k, MOB.mesos[k][z].surtenDia]), 24)}` +
+    `<h4>Cap a on van (${esc(nomMes(ult))})</h4>${barresMob(d.cap)}` +
+    `<h4>D'on vénen (${esc(nomMes(ult))})</h4>${barresMob(d.de)}` +
+    `<h4>Per què hi vénen (${esc(nomMes(ult))})</h4>${motius(d.motiuArriben)}` +
+    `</article>` +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Desplaçaments de persones de més de 500 metres entre municipis (a peu, en cotxe, en bus…), mitjana per dia, a partir de les dades anònimes de les companyies de telefonia mòbil. No es compten els desplaçaments dins d'un mateix municipi. El Ministeri ajunta alguns municipis petits en una sola zona, i publica les dades amb uns mesos de retard. «Cap de setmana» inclou dissabtes i diumenges, però no els festius. Des del juliol de 2025 el Ministeri va canviar la metodologia: cal comparar amb compte els mesos d'abans i de després.</p>`;
+}
+async function carregaMobilitat() {
+  const el = document.getElementById("mobilitat");
+  if (!el) return;
+  const titolMob = () => (el.dataset.numero ? el.dataset.numero + " " : "🚶 ") + TITOL_MOB;
+  try { MOB = await obtenir("dades/mobilitat.json"); }
+  catch (e) { el.innerHTML = `<h2>${titolMob()}</h2><p class="buit">Encara no s'han baixat les dades del Ministeri. Arribaran amb la primera baixada completa del vigilant de casa.</p>`; return; }
+  try {
+    const zones = Object.keys(MOB.zones).sort((a, b) => MUNS4.indexOf(codiZonaMob(a)) - MUNS4.indexOf(codiZonaMob(b)));
+    const mesos = Object.keys(MOB.mesos).sort(), ult = mesos[mesos.length - 1];
+    const resumZona = z => { const x = (MOB.mesos[ult] || {})[z]; return x ? `${nCa(x.surtenDia)} surten i ${nCa(x.arribenDia)} arriben cada dia` : ""; };
+    el.innerHTML = `<h2>${titolMob()}</h2><p class="font">Dades fins a ${esc(nomMes(ult))} · revisat el ${dataIso(MOB.generat)} · Font: ` +
+      `<a href="${esc(MOB.url)}" target="_blank" rel="noopener">Ministeri de Transports, estudis de mobilitat amb big data</a></p>` +
+      PISTA_PLEGA + zones.map(z => `<details class="fitxa plegable" data-plega="${esc(z)}" data-grup="mob">` +
+        capPlegable(nomZonaMob(z), codiZonaMob(z), resumZona(z)) + `<div class="cos-plega"></div></details>`).join("") +
+      separaNota(cosMobilitat(zones[0]))[1];
+    activaPlega(el, (z, caixa) => { caixa.innerHTML = separaNota(cosMobilitat(z))[0]; }, "mob");
+    if (typeof normalitzaDates === "function") normalitzaDates(el);
+  } catch (err) { console.error(err); el.innerHTML = `<h2>${titolMob()}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }
+}
+
+// -----------------------------------------------------------------------------
 // VEHICLES NOUS MATRICULATS (01.11.2026). Les dades les desa el workflow
 // «Vehicles nous matriculats» del repo latdg/tauler (dades/vehicles.json, a partir
 // de les microdades mensuals de la DGT): per mes i municipi, el tipus de vehicle,
@@ -2495,6 +2563,7 @@ async function inicia() {
   carregaObertes();
   carregaTurisme();
   carregaVehicles();
+  carregaMobilitat();
 }
 inicia();
 </script>

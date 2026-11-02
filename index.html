@@ -2283,7 +2283,7 @@ function cosMobilitat(z) {
     `<h4>D'on vénen (${esc(nomMes(ult))})</h4>${barresMob(d.de)}` +
     `<h4>Per què hi vénen (${esc(nomMes(ult))})</h4>${motius(d.motiuArriben)}` +
     `</article>` +
-    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Desplaçaments de persones de més de 500 metres entre municipis (a peu, en cotxe, en bus…), mitjana per dia, a partir de les dades anònimes de les companyies de telefonia mòbil. No es compten els desplaçaments dins d'un mateix municipi. El Ministeri ajunta alguns municipis petits en una sola zona, i publica les dades amb uns mesos de retard. «Cap de setmana» inclou dissabtes i diumenges, però no els festius. Des del juliol de 2025 el Ministeri va canviar la metodologia: cal comparar amb compte els mesos d'abans i de després.</p>`;
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">Desplaçaments de persones de més de 500 metres entre municipis (a peu, en cotxe, en bus…), mitjana per dia, a partir de les dades anònimes de les companyies de telefonia mòbil. No es compten els desplaçaments dins d'un mateix municipi. Només hi surt la Bisbal: la resta de municipis el Ministeri els dona sumats amb un municipi veí, i no es poden separar. Les dades es publiquen amb uns mesos de retard. «Cap de setmana» inclou dissabtes i diumenges, però no els festius. Des del juliol de 2025 el Ministeri va canviar la metodologia: cal comparar amb compte els mesos d'abans i de després.</p>`;
 }
 async function carregaMobilitat() {
   const el = document.getElementById("mobilitat");
@@ -2292,7 +2292,9 @@ async function carregaMobilitat() {
   try { MOB = await obtenir("dades/mobilitat.json"); }
   catch (e) { el.innerHTML = `<h2>${titolMob()}</h2><p class="buit">Encara no s'han baixat les dades del Ministeri. Arribaran amb la primera baixada completa del vigilant de casa.</p>`; return; }
   try {
-    const zones = Object.keys(MOB.zones).sort((a, b) => MUNS4.indexOf(codiZonaMob(a)) - MUNS4.indexOf(codiZonaMob(b)));
+    // 03.11.2026: només les zones d'un sol municipi (ara, la Bisbal). Les agrupades del
+    // Ministeri (Forallac amb Ullastret, Corçà amb Cruïlles...) no serveixen.
+    const zones = Object.keys(MOB.zones).filter(z => (MOB.zones[z] || []).length === 1).sort((a, b) => MUNS4.indexOf(codiZonaMob(a)) - MUNS4.indexOf(codiZonaMob(b)));
     const mesos = Object.keys(MOB.mesos).sort(), ult = mesos[mesos.length - 1];
     const resumZona = z => { const x = (MOB.mesos[ult] || {})[z]; return x ? `${nCa(x.surtenDia)} surten i ${nCa(x.arribenDia)} arriben cada dia` : ""; };
     el.innerHTML = `<h2>${titolMob()}</h2><p class="font">Dades fins a ${esc(nomMes(ult))} · revisat el ${dataIso(MOB.generat)} · Font: ` +

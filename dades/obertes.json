@@ -1,5 +1,5 @@
 {
- "generat": "2026-10-31T05:32:28+00:00",
+ "generat": "2026-11-02T15:41:53+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -8,7 +8,7 @@
   "17205": "Ullastret"
  },
  "renda": {
-  "actualitzat": "2026-10-19T08:09:48+00:00",
+  "actualitzat": "2026-11-02T13:00:09+00:00",
   "municipis": {
    "17022": [
     {
@@ -208,6 +208,12 @@
      "titulars": 58,
      "beneficiaris": 44,
      "prestacio": 771
+    },
+    {
+     "mes": "2026-10",
+     "titulars": 57,
+     "beneficiaris": 42,
+     "prestacio": 767
     }
    ],
    "17057": [
@@ -405,6 +411,12 @@
     },
     {
      "mes": "2026-09",
+     "titulars": null,
+     "beneficiaris": null,
+     "prestacio": 131
+    },
+    {
+     "mes": "2026-10",
      "titulars": null,
      "beneficiaris": null,
      "prestacio": 131
@@ -608,6 +620,12 @@
      "titulars": 6,
      "beneficiaris": null,
      "prestacio": 788
+    },
+    {
+     "mes": "2026-10",
+     "titulars": 6,
+     "beneficiaris": null,
+     "prestacio": 788
     }
    ],
    "17901": [
@@ -808,6 +826,12 @@
      "titulars": 4,
      "beneficiaris": null,
      "prestacio": 760
+    },
+    {
+     "mes": "2026-10",
+     "titulars": 4,
+     "beneficiaris": null,
+     "prestacio": 760
     }
    ],
    "17205": []
@@ -815,25 +839,9 @@
  },
  "habitatge": {
   "lloguer": {
-   "actualitzat": "2026-07-30T11:10:17+00:00",
+   "actualitzat": "2026-11-02T09:00:41+00:00",
    "municipis": {
     "17022": [
-     {
-      "any": 2022,
-      "trimestre": 3,
-      "periode": "juliol-setembre",
-      "contractes": 44,
-      "renda": 470.75,
-      "tram": "> 450 i <= 600 euros/mes"
-     },
-     {
-      "any": 2022,
-      "trimestre": 4,
-      "periode": "octubre-desembre",
-      "contractes": 59,
-      "renda": 561.78,
-      "tram": "> 450 i <= 600 euros/mes"
-     },
      {
       "any": 2023,
       "trimestre": null,
@@ -949,17 +957,17 @@
      {
       "any": 2025,
       "trimestre": null,
-      "periode": "gener-setembre",
-      "contractes": 105,
-      "renda": 526.58,
+      "periode": "gener-desembre",
+      "contractes": 137,
+      "renda": 534.25,
       "tram": "> 450 i <= 600 euros/mes"
      },
      {
       "any": 2025,
       "trimestre": null,
-      "periode": "gener-desembre",
-      "contractes": 137,
-      "renda": 534.25,
+      "periode": "gener-setembre",
+      "contractes": 105,
+      "renda": 526.58,
       "tram": "> 450 i <= 600 euros/mes"
      },
      {
@@ -1004,30 +1012,30 @@
      },
      {
       "any": 2026,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 57,
+      "renda": 574.38,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2026,
       "trimestre": 1,
       "periode": "gener-març",
       "contractes": 35,
-      "renda": 575.776,
+      "renda": null,
+      "tram": "> 450 i <= 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 22,
+      "renda": 572.15,
       "tram": "> 450 i <= 600 euros/mes"
      }
     ],
     "17057": [
-     {
-      "any": 2022,
-      "trimestre": 2,
-      "periode": "abril-juny",
-      "contractes": 3,
-      "renda": null,
-      "tram": "> 450 i <= 600 euros/mes"
-     },
-     {
-      "any": 2022,
-      "trimestre": 3,
-      "periode": "juliol-setembre",
-      "contractes": 2,
-      "renda": null,
-      "tram": "> 600 euros/mes"
-     },
      {
       "any": 2022,
       "trimestre": 4,
@@ -1198,30 +1206,30 @@
      },
      {
       "any": 2026,
-      "trimestre": 1,
-      "periode": "gener-març",
-      "contractes": 3,
-      "renda": null,
-      "tram": "> 600 euros/mes"
-     }
-    ],
-    "17902": [
-     {
-      "any": 2022,
-      "trimestre": 3,
-      "periode": "juliol-setembre",
+      "trimestre": null,
+      "periode": "gener-juny",
       "contractes": 4,
       "renda": null,
       "tram": "> 600 euros/mes"
      },
      {
-      "any": 2022,
-      "trimestre": 4,
-      "periode": "octubre-desembre",
-      "contractes": 2,
+      "any": 2026,
+      "trimestre": 1,
+      "periode": "gener-març",
+      "contractes": 3,
       "renda": null,
-      "tram": "> 450 i <= 600 euros/mes"
+      "tram": "> 600 euros/mes"
      },
+     {
+      "any": 2026,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     }
+    ],
+    "17902": [
      {
       "any": 2023,
       "trimestre": null,
@@ -1392,30 +1400,30 @@
      },
      {
       "any": 2026,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 11,
+      "renda": 744.06,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
       "trimestre": 1,
       "periode": "gener-març",
       "contractes": 7,
-      "renda": 740.663,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 4,
+      "renda": null,
       "tram": "> 600 euros/mes"
      }
     ],
     "17901": [
-     {
-      "any": 2022,
-      "trimestre": 2,
-      "periode": "abril-juny",
-      "contractes": 2,
-      "renda": null,
-      "tram": "> 600 euros/mes"
-     },
-     {
-      "any": 2022,
-      "trimestre": 3,
-      "periode": "juliol-setembre",
-      "contractes": 1,
-      "renda": null,
-      "tram": "> 600 euros/mes"
-     },
      {
       "any": 2022,
       "trimestre": 4,
@@ -1586,30 +1594,30 @@
      },
      {
       "any": 2026,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 8,
+      "renda": 1120.75,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
       "trimestre": 1,
       "periode": "gener-març",
       "contractes": 6,
-      "renda": 1152.667,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 2,
+      "renda": null,
       "tram": "> 600 euros/mes"
      }
     ],
     "17205": [
-     {
-      "any": 2020,
-      "trimestre": null,
-      "periode": "gener-setembre",
-      "contractes": 1,
-      "renda": null,
-      "tram": "> 500 i <= 650 euros/mes"
-     },
-     {
-      "any": 2020,
-      "trimestre": null,
-      "periode": "gener-desembre",
-      "contractes": 3,
-      "renda": null,
-      "tram": "> 650 euros/mes"
-     },
      {
       "any": 2020,
       "trimestre": 3,
@@ -1783,6 +1791,22 @@
       "trimestre": 4,
       "periode": "octubre-desembre",
       "contractes": 4,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": null,
+      "periode": "gener-juny",
+      "contractes": 1,
+      "renda": null,
+      "tram": "> 600 euros/mes"
+     },
+     {
+      "any": 2026,
+      "trimestre": 2,
+      "periode": "abril-juny",
+      "contractes": 1,
       "renda": null,
       "tram": "> 600 euros/mes"
      }

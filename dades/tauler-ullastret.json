@@ -1,10 +1,16 @@
 {
- "generat": "2026-11-02T01:28:45+00:00",
+ "generat": "2026-11-02T13:25:08+00:00",
  "font": "https://tauler.seu-e.cat/inici?idEns=1720570005",
- "items": [],
+ "items": [
+  {
+   "titol": "Convocatoria Ple extraordinari",
+   "link": "https://tauler.seu-e.cat/detall?idEns=1720570005&idEdicte=1720570005_743969",
+   "data": "2026-11-02"
+  }
+ ],
  "darrer": {
-  "titol": "EXPOSICIÓ PÚBLICA NOMBRE ELECTORS",
-  "link": "https://tauler.seu-e.cat/detall?idEns=1720570005&idEdicte=1720570005_735070",
-  "data": "2026-10-06"
+  "titol": "Convocatoria Ple extraordinari",
+  "link": "https://tauler.seu-e.cat/detall?idEns=1720570005&idEdicte=1720570005_743969",
+  "data": "2026-11-02"
  }
 }

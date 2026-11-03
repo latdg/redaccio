@@ -121,11 +121,15 @@ button:disabled{opacity:.45;cursor:default}
   <div class="dins">
     <span id="estat"></span>
     <button type="button" id="desa">💾 Desa</button>
+    <button type="button" id="genera" title="Executa ara l'Apps Script del guió d'avui">📜 Genera el guió</button>
   </div>
 </div>
 
 <script>
 const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
+// 03.11.2026: Web App del projecte d'Apps Script «La TdG» (GuioPanell.gs) que
+// genera el guió d'avui. Cal posar-hi la URL que acaba en /exec.
+const GUIO_WEBAPP = "";
 const CLAU_DESADA = "llampsPin";   // la mateixa clau dels llamps, l'agenda i el publicador
 const DIES = ["diumenge", "dilluns", "dimarts", "dimecres", "dijous", "divendres", "dissabte"];
 
@@ -320,6 +324,44 @@ function recull() {
   })).filter(n => n.text);
 }
 
+// --- Generar el guió (03.11.2026) ---
+async function cridaGuio(cos) {
+  if (!GUIO_WEBAPP) throw new Error("Falta l'adreça de la Web App del guió a la pàgina.");
+  const r = await fetch(GUIO_WEBAPP, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ pin: PIN, ...cos }) });
+  const d = await r.json();
+  if (!d.ok) throw new Error(d.error || "Error");
+  return d;
+}
+let GUIO_ESPERA = null;
+async function genera() {
+  if (BRUT) { alert("Desa primer els canvis d'aquest dia."); return; }
+  const avui = iso(new Date());
+  if (!confirm("Es generarà el guió d'avui (" + dataCa(avui) + ") i arribarà per correu com cada matí. Endavant?")) return;
+  $("genera").disabled = true;
+  estat("📜 Demanant el guió…");
+  try {
+    await cridaGuio({ accio: "genera" });
+    estat("📜 Guió en marxa. Pot trigar uns minuts…");
+    seguimentGuio(Date.now());
+  } catch (e) {
+    $("genera").disabled = false;
+    estat("❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb l'Apps Script del guió." : e.message));
+  }
+}
+function seguimentGuio(inici) {
+  clearTimeout(GUIO_ESPERA);
+  GUIO_ESPERA = setTimeout(async () => {
+    try {
+      const e = (await cridaGuio({ accio: "estat" })).estat || {};
+      if (e.estat === "fet") { $("genera").disabled = false; estat("✅ Guió generat i enviat (" + quan(new Date(e.fi).toISOString()) + ")."); return; }
+      if (e.estat === "error") { $("genera").disabled = false; estat("❌ El guió ha fallat: " + (e.error || "error desconegut")); return; }
+      estat(e.estat === "generant" ? "📜 Generant el guió…" : "📜 Guió en cua…");
+    } catch (err) {}
+    if (Date.now() - inici < 9 * 60 * 1000) seguimentGuio(inici);
+    else { $("genera").disabled = false; estat("⌛ No hi ha resposta del guió. Mira el correu o l'Apps Script."); }
+  }, 10000);
+}
+
 async function desa() {
   $("desa").disabled = true;
   estat("Desant…");
@@ -329,7 +371,7 @@ async function desa() {
     DIES_AMB = DIES_AMB.filter(x => x !== DIA).concat(d.noticies.length ? [DIA] : []);
     pintaDies();
     marcaBrut(false);
-    estat("✅ Desat (" + d.noticies.length + " notícia" + (d.noticies.length === 1 ? "" : "es") + " per al " + dataCa(DIA) + ").");
+    estat("✅ Desat (" + d.noticies.length + " " + (d.noticies.length === 1 ? "notícia" : "notícies") + " per a" + (/^(01|11)\./.test(dataCa(DIA)) ? " l'" : "l ") + dataCa(DIA) + ").");
   } catch (e) {
     $("desa").disabled = false;
     estat("❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message));
@@ -413,6 +455,7 @@ $("dies").onclick = e => { const b = e.target.closest("button[data-dia]"); if (b
 $("dia").onchange = () => { if ($("dia").value) carregaDia($("dia").value); };
 $("afegeix").onclick = () => afegeix();
 $("desa").onclick = desa;
+$("genera").onclick = genera;
 $("entra").onclick = entra;
 $("pin").onkeydown = e => { if (e.key === "Enter") entra(); };
 document.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s" && PIN) { e.preventDefault(); if (BRUT) desa(); } });

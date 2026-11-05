@@ -126,6 +126,8 @@ section.resum .cos .grup-nov img.escut-mun{height:32px;width:auto;max-width:72px
 .fitxa td.n,.fitxa th.n{text-align:right}
 .fitxa tr.total td{font-weight:700}
 .fitxa .var{color:var(--suau);font-size:.8rem}
+.fitxa td.var .ant{display:block;color:var(--text,inherit);font-size:.88rem}
+.fitxa tr.total td.var .ant{font-weight:700}
 .amunt{color:#1e7b34}
 /* Resultats electorals (26.10.2026): al mòbil, sense la barra */
 @media (max-width:600px){.elec-barra{display:none}}
@@ -1477,8 +1479,10 @@ function taulaCapitols(titol, pres, liq, camp, campTotal) {
   codis.sort();
 
   const busca = (d, codi) => (d && d[camp] || []).find(c => c.codi === codi) || null;
+  // 05.11.2026: a la columna «vs» hi ha l'import de l'any anterior i, a sota, la variació.
+  const ant = (c) => c.ant === null || c.ant === undefined ? "" : `<span class="ant">${euros(c.ant)}</span>`;
   const cel = (c) => c
-    ? `<td class="n">${euros(c.imp)}</td><td class="n var">${varPct(c.imp, c.ant)}</td>`
+    ? `<td class="n">${euros(c.imp)}</td><td class="n var">${ant(c)}${varPct(c.imp, c.ant)}</td>`
     : '<td class="n">—</td><td></td>';
 
   let h = `<h4>${titol}</h4><div class="taula"><table><thead><tr><th>Capítol</th>` +

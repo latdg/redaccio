@@ -133,7 +133,7 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
           <label id="horaBox" hidden>Dia i hora d'inici <input type="datetime-local" id="hora"></label>
           <label>Durada en minuts <input type="number" id="durada" min="0" step="1" placeholder="0 = fins que l'aturis"></label>
           <label id="qualitatGravBox" hidden>Qualitat de la gravació
-            <select id="qualitatGrav"><option value="alta">La millor disponible</option></select>
+            <select id="qualitatGrav"><option value="auto">Automàtica (la que permet la connexió)</option><option value="alta">La millor disponible</option></select>
           </label>
           <label class="check" id="discBox" hidden><input type="checkbox" id="disc"> Tria on es desa</label>
         </div>
@@ -332,7 +332,7 @@ function aturaReproduccio() {
   $("yt").src = "about:blank"; $("yt").hidden = true;
   $("qualitatBox").hidden = true;
   $("audio").removeAttribute("crossorigin"); $("audio").onerror = null;
-  $("qualitatGrav").innerHTML = '<option value="alta">La millor disponible</option>'; $("qualitatGravBox").hidden = true;
+  $("qualitatGrav").innerHTML = '<option value="auto">Automàtica (la que permet la connexió)</option><option value="alta">La millor disponible</option>'; $("qualitatGravBox").hidden = true;
 }
 
 function embedYouTube(u) {
@@ -391,7 +391,7 @@ function omplQualitat(levels) {
   levels.forEach((l, i) => { if (!l.height && !l.bitrate) return; const o = document.createElement("option"); o.value = i; o.textContent = l.height ? `${l.height}p` : `${Math.round(l.bitrate / 1000)} kbps`; s.append(o); });
   $("qualitatBox").hidden = s.options.length < 3;
   // Les mateixes qualitats, per triar amb quina es grava (de més a menys).
-  const g = $("qualitatGrav"); g.innerHTML = '<option value="alta">La millor disponible</option>';
+  const g = $("qualitatGrav"); g.innerHTML = '<option value="auto">Automàtica (la que permet la connexió)</option><option value="alta">La millor disponible</option>';
   [...levels].filter(l => l.bitrate).sort((a, b) => b.bitrate - a.bitrate).forEach(l => {
     const o = document.createElement("option"); o.value = "bw:" + l.bitrate;
     o.textContent = `${l.height ? l.height + "p · " : ""}${(l.bitrate / 1e6).toFixed(1).replace(".", ",")} Mbps · uns ${mida(l.bitrate / 8 * 3600)}/hora`;
@@ -536,6 +536,8 @@ async function gravaPista(job, urlLlista, pista) {
       if (s.sn <= ultim) continue;
       if (job.estat !== "grava") return;
       if (s.rang) throw new Error("aquest senyal no es pot gravar des del navegador (trossos parcials)");
+      job.pendents[pista] = ll.segs.filter(x => x.sn > s.sn).length;
+      if (pista === "main" && job.pendents.main > 2) job.lent = true;
       try {
         if (s.mapa && s.mapa !== mapaFet) {
           const rm = await job.get(s.mapa); if (!rm.ok) throw new Error("HTTP " + rm.status);
@@ -544,7 +546,7 @@ async function gravaPista(job, urlLlista, pista) {
         const r = await job.get(s.url); if (!r.ok) throw new Error("HTTP " + r.status);
         job.escriu(pista, new Uint8Array(await desxifra(job, await r.arrayBuffer(), s)));
       } catch (e) {
-        if (job.estat !== "grava") return;
+        if (job.estat !== "grava" && e.name === "AbortError") return;
         if (/protegit/.test(e.message)) throw e;
         job.perduts++;                         // es perd aquest tros, però es continua
       }
@@ -554,6 +556,19 @@ async function gravaPista(job, urlLlista, pista) {
     await espera(Math.max(1000, ll.target * 500));
   }
 }
+// Velocitat real de baixada (bits/s): es baixa un tros de la qualitat més baixa i es mesura.
+async function provaVelocitat(job, urlLlista) {
+  try {
+    const r = await job.get(urlLlista); if (!r.ok) return 0;
+    const ll = llegeixLlista(await r.text(), r.url || urlLlista);
+    const s = ll.segs[Math.max(0, ll.segs.length - 3)]; if (!s) return 0;
+    const t0 = performance.now();
+    const rs = await job.get(s.url); if (!rs.ok) return 0;
+    const n = (await rs.arrayBuffer()).byteLength;
+    const seg = (performance.now() - t0) / 1000;
+    return n > 20000 && seg > 0 ? (n * 8) / seg : 0;
+  } catch (e) { return 0; }
+}
 async function gravaHLS(job) {
   const r = await job.get(job.u); if (!r.ok) throw new Error("HTTP " + r.status);
   const ll = llegeixLlista(await r.text(), r.url || job.u);
@@ -561,7 +576,15 @@ async function gravaHLS(job) {
   if (ll.variants.length) {
     const v = [...ll.variants].sort((a, b) => b.bw - a.bw);
     const bw = /^bw:/.test(job.qualitat || "") ? +job.qualitat.slice(3) : 0;
-    const tria = bw ? v.reduce((m, x) => (Math.abs(x.bw - bw) < Math.abs(m.bw - bw) ? x : m), v[0]) : v[0];
+    let tria = v[0];
+    if (bw) tria = v.reduce((m, x) => (Math.abs(x.bw - bw) < Math.abs(m.bw - bw) ? x : m), v[0]);
+    else if ((job.qualitat || "auto") === "auto") {
+      // La millor que dona l'abast la connexió (amb marge), o la més baixa si no en dona cap.
+      const cap = await provaVelocitat(job, v[v.length - 1].url);
+      job.velocitat = cap;
+      tria = cap ? (v.find(x => x.bw <= cap * 0.7) || v[v.length - 1]) : v[Math.floor((v.length - 1) / 2)];
+    }
+    job.triada = tria.bw;
     principal = tria.url;
     if (tria.audio) { const a = ll.audios.filter(x => x.grup === tria.audio); const t = a.find(x => x.def) || a[0]; if (t && t.url !== principal) audio = t.url; }
   }
@@ -596,7 +619,7 @@ function novaFeina({ canal, tipus, op, quan, minuts, handle, qualitat }) {
   return job;
 }
 function engega(job) {
-  Object.assign(job, { estat: "grava", inici: Date.now(), bruts: {}, formats: {}, claus: {}, ctrl: new AbortController(), passarella: !!job.ref });
+  Object.assign(job, { estat: "grava", inici: Date.now(), bruts: {}, formats: {}, claus: {}, pendents: {}, lent: false, ctrl: new AbortController(), passarella: !!job.ref });
   job.base = nomGravacio(job.canal, new Date());
   job.escriu = (pista, u8) => {
     if (!u8 || !u8.byteLength) return;
@@ -616,6 +639,8 @@ function engega(job) {
   };
   try { const m = JSON.parse(llegeix("tdtEnCurs") || "{}"); m[job.id] = { canal: job.canal, tipus: job.tipus, inici: job.inici }; escriu("tdtEnCurs", JSON.stringify(m)); } catch (e) {}
   desaProgramades(); pintaFeines();
+  // El convertidor (32 MB) es comença a carregar ara, perquè en acabar ja hi sigui.
+  if (!(job.tipus === "radio" && job.f === "mp3")) motor(() => {}).catch(() => {});
   (job.f === "m3u8" ? gravaHLS(job) : gravaDirecte(job))
     .catch(e => { if (e.name !== "AbortError") job.error = e.message; })
     .then(() => finalitza(job));
@@ -623,7 +648,11 @@ function engega(job) {
 function aturaFeina(job) {
   if (job.estat === "programada") { FEINES.splice(FEINES.indexOf(job), 1); desaProgramades(); pintaFeines(); allibera(); return; }
   if (job.estat !== "grava") return;
-  job.estat = "atura"; job.ctrl.abort();
+  job.estat = "atura";
+  // 05.11.2026: amb la tele, s'acaben de baixar els trossos que ja havien començat (amb una
+  // connexió lenta, un tros de 6 s pot trigar més de 6 s) i no se'n demanen de nous. Màxim 45 s.
+  if (job.f === "m3u8") job.tallFinal = setTimeout(() => job.ctrl.abort(), 45000);
+  else job.ctrl.abort();
   pintaFeines();
 }
 setInterval(() => {
@@ -690,6 +719,7 @@ async function lliura(blob, nom, handle) {
 
 async function finalitza(job) {
   if (job.estat === "converteix" || job.estat === "feta") return;
+  clearTimeout(job.tallFinal);
   job.estat = "converteix"; job.fi = Date.now(); job.text = "acabant…"; pintaFeines();
   const estat = t => { job.text = t; actualitzaFeines(); };
   const segons = Math.round((job.fi - job.inici) / 1000);
@@ -700,6 +730,11 @@ async function finalitza(job) {
     if (!pistes.length) throw new Error(job.error || "no ha arribat cap dada");
     const fitxers = {};
     for (const [p, b] of pistes) fitxers[p] = await b.fitxer();
+    if (job.tipus === "tv" && !fitxers.main && fitxers.audio) {
+      // No ha arribat cap tros d'imatge: es desa el so en MP3 i es diu per què.
+      fitxers.main = fitxers.audio; delete fitxers.audio; job.formats.main = job.formats.audio; job.tipus = "radio";
+      notes.push("❌ no ha arribat la imatge (la connexió no donava l'abast per a la qualitat triada): només s'ha desat el so");
+    }
     const total = Object.values(fitxers).reduce((a, f) => a + f.size, 0);
     const ext = job.tipus === "tv" ? "mp4" : "mp3";
     const fmt = job.formats.main;
@@ -787,8 +822,8 @@ async function recupera(g, nomes_esborra) {
 // --- Llista de gravacions en curs i programades ---
 function textFeina(j) {
   if (j.estat === "programada") return `⏰ ${elDia(data(new Date(j.quan)))} a les ${hora(new Date(j.quan))} h${j.minuts ? ` · ${fmtMin(j.minuts)} min` : " · fins que l'aturis"}`;
-  if (j.estat === "grava") return `<span class="rec"><span class="punt"></span>${temps((Date.now() - j.inici) / 1000)}</span> · ${mida(j.bytes)}${j.minuts ? ` · s'atura als ${fmtMin(j.minuts)} min` : ""}${j.passarella ? " · per la passarel·la" : ""}`;
-  if (j.estat === "atura") return "aturant…";
+  if (j.estat === "grava") return `<span class="rec"><span class="punt"></span>${temps((Date.now() - j.inici) / 1000)}</span> · ${mida(j.bytes)}${j.minuts ? ` · s'atura als ${fmtMin(j.minuts)} min` : ""}${j.passarella ? " · per la passarel·la" : ""}${j.tipus === "tv" && j.bruts && !(j.bruts.main && j.bruts.main.bytes) && Date.now() - j.inici > 15000 ? " · ⚠️ encara no ha arribat la imatge" : ""}${j.lent ? " · ⚠️ la connexió no dona l'abast per a aquesta qualitat: tria'n una de més baixa" : ""}`;
+  if (j.estat === "atura") return "acabant de baixar l'últim tros…";
   return esc(j.text || "acabant…");
 }
 function pintaFeines() {
@@ -826,7 +861,7 @@ function controlsGravacio() {
   const pot = !!o && ["m3u8", "mp3", "aac", "stream"].includes(o.f);
   $("gravacio").hidden = !pot;
   $("discBox").hidden = !("showSaveFilePicker" in window);
-  $("qualitatGravBox").hidden = !o || o.f !== "m3u8" || actual.tipus !== "tv" || $("qualitatGrav").options.length < 2;
+  $("qualitatGravBox").hidden = !o || o.f !== "m3u8" || actual.tipus !== "tv" || $("qualitatGrav").options.length < 3;
   if (!pot) return;
   $("notaGravacio").textContent = `Es desa en ${actual.tipus === "tv" ? "MP4" : "MP3"} en aquest aparell. Pots programar-ne tantes com vulguis, de qualsevol ${actual.tipus === "tv" ? "cadena" : "emissora"}, encara que en miris una altra; la pàgina ha de quedar oberta.`;
 }

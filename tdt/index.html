@@ -8,7 +8,7 @@
 <title>La TdG control room</title>
 <!--
   LA TdG CONTROL ROOM (TDT i ràdio) — La TdG · 05.11.2026
-  Pàgina amb clau (la mateixa que els estudis d'àudio i de vídeo).
+  Pàgina sense clau (05.11.2026).
   - Llistes: tdt/tv.json i tdt/radio.json, que el workflow «TDT i ràdio» (tdt.yml) baixa
     cada dia de TDTChannels (https://www.tdtchannels.com/listas/) amb tdt/actualitza.py.
   - Reproducció: hls.js per als senyals .m3u8; <audio> per a les ràdios mp3/aac/icecast;
@@ -100,17 +100,8 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
 </header>
 
 <main>
-  <section id="clauBox">
-    <h2>🔒 Clau</h2>
-    <div class="fila" style="margin-top:10px">
-      <input type="password" id="pin" placeholder="Clau" autocomplete="current-password" size="10">
-      <button type="button" id="entra">Entra</button>
-      <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="recorda"> Recorda-la en aquest navegador</label>
-    </div>
-    <p class="font" id="clauEstat"></p>
-  </section>
 
-  <div id="panell" hidden style="display:grid;gap:16px">
+  <div id="panell" style="display:grid;gap:16px">
     <!-- REPRODUCTOR -->
     <section id="reproductor" hidden>
       <div class="fila" style="justify-content:space-between">
@@ -182,8 +173,6 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
 <script>
-const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
-const CLAU_DESADA = "llampsPin";
 const $ = id => document.getElementById(id);
 const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
 const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
@@ -196,26 +185,6 @@ const mida = b => b < 1048576 ? (b / 1024).toFixed(0) + " kB" : b < 1073741824 ?
 const temps = s => { s = Math.floor(s); return `${Math.floor(s / 3600)}:${z(Math.floor(s / 60) % 60)}:${z(s % 60)}`; };
 const netNom = s => s.replace(/[\\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim();
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-
-// ---------- Clau ----------
-async function entra() {
-  const pin = $("pin").value.trim();
-  if (!pin) { $("clauEstat").textContent = "Escriu la clau."; return; }
-  $("clauEstat").textContent = "Comprovant…";
-  try {
-    const r = await fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin, accio: "noticies-dies" }) });
-    const d = await r.json().catch(() => ({}));
-    if (!r.ok || !d.ok) throw new Error(d.error || "Clau incorrecta.");
-    escriu(CLAU_DESADA, $("recorda").checked ? pin : "");
-    $("clauBox").hidden = true; $("panell").hidden = false;
-    carregaLlistes();
-  } catch (e) {
-    $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message);
-  }
-}
-$("entra").onclick = entra;
-$("pin").addEventListener("keydown", e => { if (e.key === "Enter") entra(); });
-if (llegeix(CLAU_DESADA)) { $("pin").value = llegeix(CLAU_DESADA); $("recorda").checked = true; entra(); }
 
 // ---------- Llistes ----------
 const LLISTES = { tv: null, radio: null };
@@ -643,6 +612,7 @@ function pintaHistorial() {
     ul.append(li);
   }
 }
+carregaLlistes();
 $("buidaHistorial").onclick = () => { if (confirm("Vols esborrar l'historial de gravacions? (Els fitxers no s'esborren.)")) { escriu("tdtHistorial", ""); pintaHistorial(); } };
 pintaHistorial();
 

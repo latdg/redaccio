@@ -6,17 +6,20 @@
 // passin per aquí. Si la cadena demana «Referer», l'hi posa.
 // Només atén la pàgina de La TdG i només deixa passar àudio, vídeo i llistes de
 // reproducció (no és un servidor intermediari obert).
+// 05.11.2026: POST /casa encarrega una gravació a l'ordinador de casa: llança el workflow
+// «Gravació a casa» (gravacio.yml) de latdg/vigilant-plens. Necessita el secret
+// GITHUB_TOKEN (testimoni de GitHub amb permís «Actions: read and write» en aquest repo).
 
 const ORIGENS = ["https://latdg.github.io"];
 const TIPUS_PERMESOS = /^(audio\/|video\/|application\/(vnd\.apple\.mpegurl|x-mpegurl|octet-stream|mp4|dash\+xml)|binary\/octet-stream)/i;
 
 export default {
-  async fetch(req) {
+  async fetch(req, env) {
     const origen = req.headers.get("Origin") || "";
     const cors = {
       "Access-Control-Allow-Origin": ORIGENS.includes(origen) ? origen : ORIGENS[0],
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Range",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Range, Content-Type",
       "Access-Control-Expose-Headers": "Content-Type, Content-Length, Content-Range",
       "Vary": "Origin",
     };
@@ -24,6 +27,7 @@ export default {
     if (!ORIGENS.includes(origen)) return new Response("Només per a La TdG.", { status: 403, headers: cors });
 
     const aqui = new URL(req.url);
+    if (aqui.pathname === "/casa") return encarregaACasa(req, env, cors);
     const u = aqui.searchParams.get("u");
     const ref = aqui.searchParams.get("ref");
     if (!u || !/^https?:\/\//i.test(u)) return new Response("Falta l'adreça.", { status: 400, headers: cors });
@@ -68,3 +72,31 @@ export default {
     return new Response(r.body, { status: r.status, headers: fora });
   },
 };
+
+async function encarregaACasa(req, env, cors) {
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { ...cors, "Content-Type": "application/json" } });
+  if (req.method !== "POST") return json({ ok: false, error: "Cal un POST." }, 405);
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Falta el secret GITHUB_TOKEN al Worker." }, 500);
+  let d;
+  try { d = await req.json(); } catch (e) { return json({ ok: false, error: "Dades incorrectes." }, 400); }
+  const text = (x, max) => String(x ?? "").slice(0, max);
+  const inputs = {
+    id: text(d.id, 40).replace(/[^\w-]/g, ""),
+    canal: text(d.canal, 80),
+    url: text(d.url, 1500),
+    format: text(d.format, 10),
+    tipus: d.tipus === "radio" ? "radio" : "tv",
+    ref: text(d.ref, 300),
+    inici: String(Math.max(0, Math.floor(+d.inici || 0))),
+    minuts: String(Math.max(1, Math.min(360, Math.round(+d.minuts || 0)))),
+    qualitat: text(d.qualitat || "auto", 20),
+  };
+  if (!inputs.id || !/^https?:\/\//.test(inputs.url) || !+d.minuts) return json({ ok: false, error: "Falten dades (adreça o durada)." }, 400);
+  const r = await fetch("https://api.github.com/repos/latdg/vigilant-plens/actions/workflows/gravacio.yml/dispatches", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: "application/vnd.github+json", "User-Agent": "latdg-senyal", "Content-Type": "application/json" },
+    body: JSON.stringify({ ref: "main", inputs }),
+  });
+  if (r.status === 204) return json({ ok: true });
+  return json({ ok: false, error: `GitHub ha dit ${r.status}: ${(await r.text()).slice(0, 200)}` }, 502);
+}

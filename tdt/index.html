@@ -127,6 +127,9 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
       <div class="gravacio" id="gravacio">
         <h3 style="margin:0">⏺ Grava aquest canal</h3>
         <div class="params">
+          <label>On es grava
+            <select id="on"><option value="aqui">En aquest aparell</option><option value="casa">A l'ordinador de casa</option></select>
+          </label>
           <label>Comença
             <select id="inici"><option value="ara">Ara mateix</option><option value="hora">Programada (dia i hora)</option></select>
           </label>
@@ -352,7 +355,7 @@ function reprodueix(i, perPassarella) {
   if (o.f === "youtube") {
     const e = embedYouTube(o.u);
     if (e) { $("yt").src = e; $("yt").hidden = false; }
-    avis("Senyal de YouTube: es mira aquí, però el navegador no el pot gravar. Per gravar-lo, fes servir l'ordre de streamlink o yt-dlp de més avall.");
+    avis("Senyal de YouTube: es mira aquí, però el navegador no el pot gravar. Es pot gravar a l'ordinador de casa.");
     controlsGravacio(); return;
   }
   const m = media(); m.hidden = false;
@@ -630,12 +633,16 @@ function engega(job) {
   job.get = async url => {
     const opts = { cache: "no-store", signal: job.ctrl.signal };
     const ja = url.startsWith(PASSARELLA);
-    try { return await fetch(job.passarella && !ja ? via(url, job.ref) : url, opts); }
+    if (job.passarella || ja) return fetch(ja ? url : via(url, job.ref), opts);
+    // Directe; si no deixa (CORS) o no respon en 10 s, per la passarel·la.
+    const ctrl = new AbortController(), limit = setTimeout(() => ctrl.abort(), 10000);
+    const atura = () => ctrl.abort(); job.ctrl.signal.addEventListener("abort", atura);
+    try { return await fetch(url, { cache: "no-store", signal: ctrl.signal }); }
     catch (e) {
-      if (e.name === "AbortError" || job.passarella || ja || !(e instanceof TypeError)) throw e;
-      job.passarella = true;                   // no deixa gravar des d'una altra web: per la passarel·la
+      if (job.ctrl.signal.aborted) throw e;
+      job.passarella = true;
       return fetch(via(url, job.ref), opts);
-    }
+    } finally { clearTimeout(limit); job.ctrl.signal.removeEventListener("abort", atura); }
   };
   try { const m = JSON.parse(llegeix("tdtEnCurs") || "{}"); m[job.id] = { canal: job.canal, tipus: job.tipus, inici: job.inici }; escriu("tdtEnCurs", JSON.stringify(m)); } catch (e) {}
   desaProgramades(); pintaFeines();
@@ -858,12 +865,31 @@ function actualitzaFeines() {
 // --- Botó de gravar del reproductor ---
 function controlsGravacio() {
   const o = actual && actual.op;
-  const pot = !!o && ["m3u8", "mp3", "aac", "stream"].includes(o.f);
-  $("gravacio").hidden = !pot;
-  $("discBox").hidden = !("showSaveFilePicker" in window);
-  $("qualitatGravBox").hidden = !o || o.f !== "m3u8" || actual.tipus !== "tv" || $("qualitatGrav").options.length < 3;
-  if (!pot) return;
-  $("notaGravacio").textContent = `Es desa en ${actual.tipus === "tv" ? "MP4" : "MP3"} en aquest aparell. Pots programar-ne tantes com vulguis, de qualsevol ${actual.tipus === "tv" ? "cadena" : "emissora"}, encara que en miris una altra; la pàgina ha de quedar oberta.`;
+  const aqui = !!o && ["m3u8", "mp3", "aac", "stream"].includes(o.f);
+  const casa = aqui || (!!o && o.f === "youtube");
+  $("gravacio").hidden = !casa;
+  if (!casa) return;
+  // YouTube només es pot gravar a l'ordinador de casa (amb yt-dlp).
+  $("on").options[0].disabled = !aqui;
+  if (!aqui) $("on").value = "casa";
+  const aCasa = $("on").value === "casa";
+  $("discBox").hidden = aCasa || !("showSaveFilePicker" in window);
+  $("qualitatGravBox").hidden = actual.tipus !== "tv" || (!aCasa && (o.f !== "m3u8" || $("qualitatGrav").options.length < 3));
+  $("durada").placeholder = aCasa ? "obligatòria (fins a 360)" : "0 = fins que l'aturis";
+  $("notaGravacio").textContent = aCasa
+    ? `Es grava al portàtil de casa, en ${actual.tipus === "tv" ? "MP4" : "MP3"}, a D:\\LaTdG\\gravacionstv. No cal tenir aquesta pàgina oberta, però el portàtil ha d'estar encès (i el runner en marxa per rebre l'encàrrec).`
+    : `Es desa en ${actual.tipus === "tv" ? "MP4" : "MP3"} en aquest aparell. Pots programar-ne tantes com vulguis, de qualsevol ${actual.tipus === "tv" ? "cadena" : "emissora"}, encara que en miris una altra; la pàgina ha de quedar oberta.`;
+}
+$("on").onchange = controlsGravacio;
+
+async function encarregaACasa({ quan, minuts, qualitat }) {
+  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const r = await fetch(`${PASSARELLA}/casa`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, canal: actual.c.n, url: actual.op.u, format: actual.op.f, tipus: actual.tipus, ref: actual.c.ref || "", inici: quan || 0, minuts, qualitat }),
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok || !d.ok) throw new Error(d.error || `error ${r.status}`);
 }
 $("inici").onchange = () => {
   $("horaBox").hidden = $("inici").value !== "hora";
@@ -884,6 +910,20 @@ $("grava").onclick = async () => {
     quan = new Date($("hora").value).getTime();
     if (isNaN(quan)) { $("estatGravacio").textContent = "Tria el dia i l'hora d'inici."; return; }
     if (quan <= Date.now()) { $("estatGravacio").textContent = "Aquesta hora ja ha passat."; return; }
+  }
+  if ($("on").value === "casa") {
+    if (!minuts) { $("estatGravacio").textContent = "Per gravar a l'ordinador de casa cal dir la durada."; return; }
+    $("grava").disabled = true; $("estatGravacio").textContent = "Enviant l'encàrrec…";
+    try {
+      await encarregaACasa({ quan, minuts: Math.min(360, minuts), qualitat: $("qualitatGrav").value });
+      const quanText = quan ? `${perAl(data(new Date(quan)))} a les ${hora(new Date(quan))} h` : "ara";
+      $("estatGravacio").textContent = `🏠 Encarregada a l'ordinador de casa (${quan ? "per " + quanText : "comença d'aquí a un minut"}). Es desarà a D:\\LaTdG\\gravacionstv.`;
+      const ara = new Date(), h = historial();
+      h.unshift({ quan: `${data(ara)} ${hora(ara)}`, canal: actual.c.n, nom: "", segons: 0, bytes: 0, nota: `🏠 encarregada a l'ordinador de casa · ${quan ? quanText : "ara"} · ${fmtMin(minuts)} min` });
+      escriu("tdtHistorial", JSON.stringify(h.slice(0, 60))); pintaHistorial();
+    } catch (e) { $("estatGravacio").textContent = "❌ No s'ha pogut encarregar: " + e.message; }
+    finally { $("grava").disabled = false; }
+    return;
   }
   let handle = null;
   if ($("disc").checked && "showSaveFilePicker" in window) {

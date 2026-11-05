@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>TDT i ràdio</title>
+<!--
+  TDT I RÀDIO — La TdG · 05.11.2026
+  Pàgina amb clau (la mateixa que els estudis d'àudio i de vídeo).
+  - Llistes: tdt/tv.json i tdt/radio.json, que el workflow «TDT i ràdio» (tdt.yml) baixa
+    cada dia de TDTChannels (https://www.tdtchannels.com/listas/) amb tdt/actualitza.py.
+  - Reproducció: hls.js per als senyals .m3u8; <audio> per a les ràdios mp3/aac/icecast;
+    YouTube incrustat (aquest no es pot gravar des del navegador).
+  - Gravació: es fa en l'aparell on es mira. Es desen tal com arriben els trossos del
+    senyal (sense tornar a codificar): .ts / .mp4 per a la tele, .aac / .mp3 per a la ràdio.
+    Al mòbil es baixa en aturar; a l'ordinador (Chrome, Edge, Brave) es pot escriure
+    directament al disc mentre grava. Inici programat i durada, però la pàgina ha de
+    quedar oberta.
+  - Ordres ffmpeg / streamlink per gravar fora del navegador (ordinador de casa, runner).
+  Hi ha emissores que no deixen gravar des d'una altra web (CORS): la pàgina ho diu.
+-->
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c;--vermell:#e30613}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px}
+main{display:grid;gap:16px;padding-top:16px;padding-bottom:32px}
+h1{margin:0;font-size:1.6rem}
+h2{margin:0 0 8px;font-size:1.1rem}
+.sub{color:var(--suau);margin:4px 0 12px}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto}
+.podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
+.podcast svg{display:block;width:50px;height:50px}
+a{color:var(--accent)}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;min-width:0}
+[hidden]{display:none!important}
+input,select,textarea,button{font:inherit;padding:6px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text);max-width:100%}
+button{background:var(--accent);border-color:var(--accent);color:#fff;cursor:pointer;font-weight:600}
+button.suau{background:var(--targeta);color:var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+.fila{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.font{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+#clauBox{border-color:var(--accent)}
+.pestanyes{display:flex;gap:6px;flex-wrap:wrap}
+.pestanyes button{background:var(--targeta);color:var(--text);border-color:var(--linia);border-radius:999px;font-weight:500}
+.pestanyes button.actiu{background:var(--accent);border-color:var(--accent);color:#fff}
+/* Reproductor */
+.titol-canal{display:flex;align-items:center;gap:12px;min-width:0}
+.titol-canal img,.titol-canal .inicials{width:44px;height:44px;border-radius:8px;object-fit:contain;background:var(--fons);flex-shrink:0}
+.titol-canal b{font-size:1.15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pantalla{margin-top:12px}
+video{width:100%;max-height:62vh;background:#000;border-radius:8px;display:block}
+audio{width:100%;display:block}
+iframe.yt{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;background:#000;display:block}
+.avis{background:#fdf1ee;border:1px solid #f1c9bf;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:.92rem}
+.gravacio{border-top:1px solid var(--linia);margin-top:14px;padding-top:12px;display:grid;gap:10px}
+.params{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.params label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--suau)}
+label.check{flex-direction:row!important;align-items:center;gap:8px;color:var(--text)!important;font-size:.95rem!important}
+.rec{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.rec .punt{width:12px;height:12px;border-radius:50%;background:var(--vermell);animation:batec 1s infinite}
+@keyframes batec{50%{opacity:.25}}
+button.grava{background:var(--vermell);border-color:var(--vermell)}
+pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;padding:10px;white-space:pre-wrap;word-break:break-all;font-size:.85rem;margin:6px 0}
+/* Llista de canals */
+.filtres{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.filtres input[type=search]{flex:1;min-width:160px}
+.graella{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+.canal{display:flex;align-items:center;gap:8px;border:1px solid var(--linia);border-radius:10px;padding:8px;background:var(--targeta);color:var(--text);font-weight:500;text-align:left;cursor:pointer;min-width:0}
+.canal:hover{border-color:var(--accent)}
+.canal.actiu{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.canal img,.canal .inicials{width:36px;height:36px;border-radius:6px;object-fit:contain;background:var(--fons);flex-shrink:0}
+.canal span.nom{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem}
+.canal small{display:block;color:var(--suau);font-size:.72rem;font-weight:400}
+.canal.web{opacity:.6}
+.inicials{display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:.85rem}
+.historial{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.historial li{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--linia);padding:6px 0;font-size:.92rem}
+.historial li .data{color:var(--suau);font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <a class="podcast" href="https://laguait.cat/latdg" target="_blank" rel="noopener" title="Visita el pòdcast">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Visita el pòdcast">
+        <path d="M2 11a10 10 0 015-8.662" stroke="#e30613"/><path d="M22 11a10 10 0 00-5-8.662" stroke="#e30613"/>
+        <path d="M6 11a6 6 0 013-5.197" stroke="currentColor"/><path d="M18 11a6 6 0 00-3-5.197" stroke="currentColor"/>
+        <rect x="10" y="9" width="4" height="8" rx="2" stroke="currentColor"/><path d="M12 17v4" stroke="currentColor"/><path d="M9 21h6" stroke="currentColor"/>
+      </svg>
+    </a>
+    <h1>📺 TDT i ràdio</h1>
+    <a class="dreta" href="../">← La TdG redacció</a>
+  </div>
+  <p class="sub">Cadenes de televisió i emissores de ràdio en directe, amb gravació en l'aparell des d'on es mira.</p>
+</header>
+
+<main>
+  <section id="clauBox">
+    <h2>🔒 Clau</h2>
+    <div class="fila" style="margin-top:10px">
+      <input type="password" id="pin" placeholder="Clau" autocomplete="current-password" size="10">
+      <button type="button" id="entra">Entra</button>
+      <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="recorda"> Recorda-la en aquest navegador</label>
+    </div>
+    <p class="font" id="clauEstat"></p>
+  </section>
+
+  <div id="panell" hidden style="display:grid;gap:16px">
+    <!-- REPRODUCTOR -->
+    <section id="reproductor" hidden>
+      <div class="fila" style="justify-content:space-between">
+        <div class="titol-canal" id="titolCanal"></div>
+        <div class="fila">
+          <button type="button" class="suau" id="preferit" title="Afegeix o treu dels preferits">☆ Preferit</button>
+          <a id="webCanal" target="_blank" rel="noopener">Web de la cadena ↗</a>
+        </div>
+      </div>
+      <div class="fila" style="margin-top:10px">
+        <label class="fila" style="gap:6px;font-size:.9rem;color:var(--suau)">Senyal <select id="senyal"></select></label>
+        <label class="fila" style="gap:6px;font-size:.9rem;color:var(--suau)" id="qualitatBox" hidden>Qualitat <select id="qualitat"></select></label>
+      </div>
+      <div class="pantalla" id="pantalla">
+        <video id="video" controls playsinline hidden></video>
+        <audio id="audio" controls hidden></audio>
+        <iframe class="yt" id="yt" hidden allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <div class="avis" id="avis" hidden></div>
+
+      <div class="gravacio" id="gravacio">
+        <div class="params">
+          <label>Comença
+            <select id="inici"><option value="ara">Ara mateix</option><option value="hora">Programada (dia i hora)</option></select>
+          </label>
+          <label id="horaBox" hidden>Dia i hora d'inici <input type="datetime-local" id="hora"></label>
+          <label>Durada en minuts <input type="number" id="durada" min="0" step="1" placeholder="0 = fins que l'aturis"></label>
+          <label class="check" id="discBox" hidden><input type="checkbox" id="disc"> Desa-ho al disc mentre grava</label>
+        </div>
+        <div class="fila">
+          <button type="button" class="grava" id="grava">⏺ Grava</button>
+          <button type="button" class="suau" id="atura" hidden>⏹ Atura i desa</button>
+          <button type="button" class="suau" id="cancela" hidden>✖ Anul·la la programació</button>
+          <span id="estatGravacio" class="font" style="margin:0"></span>
+        </div>
+        <p class="font" id="notaGravacio" style="margin:0"></p>
+      </div>
+
+      <details style="margin-top:12px">
+        <summary>💻 Ordres per gravar fora del navegador (ffmpeg, streamlink)</summary>
+        <p class="font">Per a gravacions llargues o sense la pàgina oberta: a l'ordinador de casa, al runner o en qualsevol terminal amb ffmpeg o streamlink.</p>
+        <div id="ordres"></div>
+      </details>
+    </section>
+
+    <!-- LLISTA -->
+    <section>
+      <div class="pestanyes" id="pestanyes">
+        <button type="button" data-t="tv" class="actiu">📺 Televisió</button>
+        <button type="button" data-t="radio">📻 Ràdio</button>
+      </div>
+      <div class="filtres">
+        <select id="ambit"></select>
+        <input type="search" id="cerca" placeholder="Cerca una cadena o emissora">
+      </div>
+      <div class="graella" id="graella"></div>
+      <p class="font" id="peuLlista"></p>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section>
+      <h2>🗂️ Historial de gravacions</h2>
+      <p class="font" style="margin:0 0 8px">Les d'aquesta sessió es poden tornar a baixar; la resta queden anotades (els fitxers són a l'aparell on es van gravar).</p>
+      <ul class="historial" id="historial"></ul>
+      <button type="button" class="suau" id="buidaHistorial" style="margin-top:8px">Esborra l'historial</button>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
+<script>
+const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
+const CLAU_DESADA = "llampsPin";
+const $ = id => document.getElementById(id);
+const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+const z = n => String(n).padStart(2, "0");
+const data = d => `${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}`;
+const hora = d => `${z(d.getHours())}.${z(d.getMinutes())}`;
+// Davant de l'1 i de l'11 l'article s'apostrofa: «l'01.11.2026», «de l'11.11.2026».
+const elDia = s => (/^(01|11)\./.test(s) ? "l'" : "el ") + s;
+const mida = b => b < 1048576 ? (b / 1024).toFixed(0) + " kB" : b < 1073741824 ? (b / 1048576).toFixed(1).replace(".", ",") + " MB" : (b / 1073741824).toFixed(2).replace(".", ",") + " GB";
+const temps = s => { s = Math.floor(s); return `${Math.floor(s / 3600)}:${z(Math.floor(s / 60) % 60)}:${z(s % 60)}`; };
+const netNom = s => s.replace(/[\\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim();
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// ---------- Clau ----------
+async function entra() {
+  const pin = $("pin").value.trim();
+  if (!pin) { $("clauEstat").textContent = "Escriu la clau."; return; }
+  $("clauEstat").textContent = "Comprovant…";
+  try {
+    const r = await fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin, accio: "noticies-dies" }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.ok) throw new Error(d.error || "Clau incorrecta.");
+    escriu(CLAU_DESADA, $("recorda").checked ? pin : "");
+    $("clauBox").hidden = true; $("panell").hidden = false;
+    carregaLlistes();
+  } catch (e) {
+    $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message);
+  }
+}
+$("entra").onclick = entra;
+$("pin").addEventListener("keydown", e => { if (e.key === "Enter") entra(); });
+if (llegeix(CLAU_DESADA)) { $("pin").value = llegeix(CLAU_DESADA); $("recorda").checked = true; entra(); }
+
+// ---------- Llistes ----------
+const LLISTES = { tv: null, radio: null };
+let TIPUS = "tv";
+const AMBIT_PER_DEFECTE = "Catalunya";
+const PREF = "tdtPreferits";
+const preferits = () => { try { return new Set(JSON.parse(llegeix(PREF) || "[]")); } catch (e) { return new Set(); } };
+const clauCanal = (t, c) => `${t}|${c.p}|${c.n}`;
+
+async function carregaLlistes() {
+  for (const t of ["tv", "radio"]) {
+    try {
+      const r = await fetch(`${t}.json?v=${Date.now()}`, { cache: "no-store" });
+      if (!r.ok) throw new Error(r.status);
+      LLISTES[t] = await r.json();
+    } catch (e) { LLISTES[t] = { canals: [], error: true }; }
+  }
+  omplAmbits(); pinta();
+}
+
+function omplAmbits() {
+  const ll = LLISTES[TIPUS]; if (!ll) return;
+  const vist = new Set(), sel = $("ambit"), abans = sel.value;
+  sel.innerHTML = "";
+  const opcio = (v, t) => { const o = document.createElement("option"); o.value = v; o.textContent = t; sel.append(o); };
+  if (preferits().size && [...preferits()].some(k => k.startsWith(TIPUS + "|"))) opcio("*pref", "⭐ Preferits");
+  opcio("*tots", "Totes");
+  for (const c of ll.canals) {
+    const k = c.p === "Spain" ? c.a : `${c.p} · ${c.a}`;
+    if (!vist.has(k)) { vist.add(k); opcio(k, c.p === "Spain" ? c.a : `🌍 ${c.p} · ${c.a}`); }
+  }
+  const valors = [...sel.options].map(o => o.value);
+  sel.value = valors.includes(abans) ? abans : valors.includes("*pref") ? "*pref" : valors.includes(AMBIT_PER_DEFECTE) ? AMBIT_PER_DEFECTE : "*tots";
+}
+
+function inicials(nom) {
+  const s = document.createElement("span"); s.className = "inicials";
+  s.textContent = nom.replace(/[^\p{L}\p{N} ]/gu, "").split(" ").filter(Boolean).slice(0, 2).map(p => p[0]).join("").toUpperCase() || "·";
+  return s;
+}
+function logo(c) {
+  if (!c.l) return inicials(c.n);
+  const i = document.createElement("img"); i.loading = "lazy"; i.alt = ""; i.referrerPolicy = "no-referrer"; i.src = c.l;
+  i.onerror = () => i.replaceWith(inicials(c.n));
+  return i;
+}
+const reproduible = o => ["m3u8", "mp3", "aac", "youtube"].includes(o.f) || (o.f === "stream" && TIPUS === "radio");
+
+function pinta() {
+  const ll = LLISTES[TIPUS], g = $("graella"); g.innerHTML = "";
+  if (!ll) return;
+  if (ll.error) { $("peuLlista").textContent = "❌ No s'ha pogut llegir la llista. Encara no s'ha baixat? Llança el workflow «TDT i ràdio»."; return; }
+  const amb = $("ambit").value, q = $("cerca").value.trim().toLowerCase(), pref = preferits();
+  const llista = ll.canals.filter(c => {
+    if (q) return c.n.toLowerCase().includes(q);
+    if (amb === "*pref") return pref.has(clauCanal(TIPUS, c));
+    if (amb === "*tots") return true;
+    return (c.p === "Spain" ? c.a : `${c.p} · ${c.a}`) === amb;
+  });
+  for (const c of llista) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "canal";
+    const ops = c.o.filter(reproduible);
+    let etiqueta = "";
+    if (!ops.length) { b.classList.add("web"); etiqueta = "Només a la seva web"; }
+    else if (ops.every(o => o.f === "youtube")) etiqueta = "YouTube · no es grava";
+    if (actual && actual.c === c) b.classList.add("actiu");
+    const nom = document.createElement("span"); nom.className = "nom"; nom.textContent = (pref.has(clauCanal(TIPUS, c)) ? "⭐ " : "") + c.n;
+    if (etiqueta) { const sm = document.createElement("small"); sm.textContent = etiqueta; nom.append(sm); }
+    b.append(logo(c), nom);
+    b.onclick = () => obre(c);
+    g.append(b);
+  }
+  const quan = ll.actualitzat ? ll.actualitzat.split(" ") : null;
+  $("peuLlista").textContent = `${llista.length} ${TIPUS === "tv" ? "cadenes" : "emissores"}` + (quan ? ` · Llista de TDTChannels actualitzada ${elDia(quan[0])} a les ${quan[1] || ""} h` : "");
+}
+
+$("pestanyes").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  TIPUS = b.dataset.t;
+  [...$("pestanyes").children].forEach(x => x.classList.toggle("actiu", x === b));
+  $("cerca").value = ""; omplAmbits(); pinta();
+};
+$("ambit").onchange = pinta;
+$("cerca").oninput = pinta;
+
+// ---------- Reproductor ----------
+let actual = null;   // { c, tipus, ops, op }
+let HLS = null;
+const ORDRE_GEO = { CAT: 0, SP: 1 };
+
+function obre(c) {
+  if (REC) { if (!confirm("S'està gravant. Vols aturar i desar la gravació per canviar de canal?")) return; atura(); }
+  if (PROG) { if (!confirm("Hi ha una gravació programada d'aquest canal. Vols anul·lar-la per canviar de canal?")) return; cancelaProgramacio(); }
+  const ops = c.o.filter(reproduible).map((o, i) => ({ ...o, i }))
+    .sort((a, b) => (a.f === "youtube") - (b.f === "youtube") || (ORDRE_GEO[a.g] ?? 2) - (ORDRE_GEO[b.g] ?? 2) || a.i - b.i);
+  actual = { c, tipus: TIPUS, ops, op: null };
+  $("reproductor").hidden = false;
+  const t = $("titolCanal"); t.innerHTML = ""; const b = document.createElement("b"); b.textContent = c.n; t.append(logo(c), b);
+  $("webCanal").href = c.w || "#"; $("webCanal").hidden = !c.w;
+  marcaPreferit();
+  const s = $("senyal"); s.innerHTML = "";
+  ops.forEach((o, i) => {
+    const op = document.createElement("option"); op.value = i;
+    op.textContent = `${i + 1}. ${o.f === "youtube" ? "YouTube" : o.f === "stream" ? "directe" : o.f.toUpperCase()}${o.g ? " · " + (o.g === "CAT" ? "Catalunya" : o.g === "SP" ? "Espanya" : o.g) : ""}${o.r ? " · " + o.r : ""}${o.ll ? " · " + o.ll : ""}`;
+    s.append(op);
+  });
+  s.parentElement.hidden = ops.length < 2;
+  pinta();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (!ops.length) { aturaReproduccio(); avis(`Aquesta ${TIPUS === "tv" ? "cadena" : "emissora"} no té cap senyal obert a la llista: només es pot veure a la seva web.`); pintaOrdres(); controlsGravacio(); return; }
+  reprodueix(0);
+}
+$("senyal").onchange = () => {
+  if (REC) { if (!confirm("S'està gravant. Vols aturar i desar la gravació per canviar de senyal?")) { $("senyal").value = actual.ops.indexOf(actual.op); return; } atura(); }
+  reprodueix(+$("senyal").value);
+};
+
+function avis(t) { $("avis").textContent = t || ""; $("avis").hidden = !t; }
+
+function aturaReproduccio() {
+  if (HLS) { HLS.destroy(); HLS = null; }
+  for (const id of ["video", "audio"]) { const m = $(id); m.pause(); m.removeAttribute("src"); m.load(); m.hidden = true; }
+  $("yt").src = "about:blank"; $("yt").hidden = true;
+  $("qualitatBox").hidden = true;
+  INIT = {}; FORMAT = {};
+}
+
+function embedYouTube(u) {
+  let m = u.match(/youtube\.com\/channel\/([^/?#]+)/);
+  if (m) return `https://www.youtube.com/embed/live_stream?channel=${m[1]}&autoplay=1`;
+  m = u.match(/youtube\.com\/(?:live\/|watch\?v=)([\w-]{6,})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}?autoplay=1`;
+  return null;
+}
+
+function media() { return actual && actual.tipus === "tv" ? $("video") : $("audio"); }
+
+function reprodueix(i) {
+  aturaReproduccio(); avis("");
+  const o = actual.ops[i]; actual.op = o; $("senyal").value = i;
+  pintaOrdres();
+  if (o.f === "youtube") {
+    const e = embedYouTube(o.u);
+    if (e) { $("yt").src = e; $("yt").hidden = false; }
+    avis("Senyal de YouTube: es mira aquí, però el navegador no el pot gravar. Per gravar-lo, fes servir l'ordre de streamlink o yt-dlp de més avall.");
+    controlsGravacio(); return;
+  }
+  const m = media(); m.hidden = false;
+  if (o.f === "m3u8") {
+    if (window.Hls && Hls.isSupported()) {
+      HLS = new Hls({ maxBufferLength: 30, backBufferLength: 30 });
+      HLS.on(Hls.Events.FRAG_LOADED, (ev, d) => { if (!d.frag.encrypted) tros(d.frag, d.payload); });
+      HLS.on(Hls.Events.FRAG_DECRYPTED, (ev, d) => tros(d.frag, d.payload));
+      HLS.on(Hls.Events.MANIFEST_PARSED, (ev, d) => omplQualitat(d.levels));
+      HLS.on(Hls.Events.ERROR, (ev, d) => {
+        if (!d.fatal) return;
+        if (d.type === Hls.ErrorTypes.MEDIA_ERROR) { HLS.recoverMediaError(); return; }
+        avis("❌ No es pot reproduir aquest senyal des d'aquí (pot estar geobloquejat, caigut o no deixar-se veure en altres webs)." + (actual.ops.length > 1 ? " Prova un altre senyal." : ""));
+        if (REC) atura();
+      });
+      HLS.loadSource(o.u); HLS.attachMedia(m);
+    } else if (m.canPlayType("application/vnd.apple.mpegurl")) {
+      m.src = o.u;
+      avis("Aquest navegador reprodueix el senyal pel seu compte i no deixa gravar-lo. Per gravar, fes servir un altre navegador o l'ordre de ffmpeg.");
+    } else { avis("❌ Aquest navegador no pot reproduir senyals HLS."); }
+  } else {
+    m.src = o.u;
+    m.onerror = () => avis("❌ No es pot reproduir aquest senyal ara mateix." + (actual.ops.length > 1 ? " Prova un altre senyal." : ""));
+  }
+  m.play().catch(() => {});
+  if ("mediaSession" in navigator) {
+    try { navigator.mediaSession.metadata = new MediaMetadata({ title: actual.c.n, artist: "La TdG", artwork: actual.c.l ? [{ src: actual.c.l, sizes: "200x200" }] : [] }); } catch (e) {}
+  }
+  controlsGravacio();
+}
+
+function omplQualitat(levels) {
+  const s = $("qualitat"); s.innerHTML = '<option value="-1">Automàtica</option>';
+  levels.forEach((l, i) => { if (!l.height && !l.bitrate) return; const o = document.createElement("option"); o.value = i; o.textContent = l.height ? `${l.height}p` : `${Math.round(l.bitrate / 1000)} kbps`; s.append(o); });
+  $("qualitatBox").hidden = s.options.length < 3;
+}
+$("qualitat").onchange = () => { if (HLS) HLS.currentLevel = +$("qualitat").value; };
+
+// ---------- Preferits ----------
+function marcaPreferit() {
+  const on = actual && preferits().has(clauCanal(actual.tipus, actual.c));
+  $("preferit").textContent = on ? "★ Preferit" : "☆ Preferit";
+}
+$("preferit").onclick = () => {
+  const p = preferits(), k = clauCanal(actual.tipus, actual.c);
+  p.has(k) ? p.delete(k) : p.add(k);
+  escriu(PREF, JSON.stringify([...p]));
+  marcaPreferit();
+  if (actual.tipus === TIPUS) { omplAmbits(); pinta(); }
+};
+
+// ---------- Gravació ----------
+// Per als senyals HLS es desen els trossos (segments) que el reproductor ja baixa, sense
+// tornar-los a codificar. Per a les ràdios mp3/aac es llegeix el mateix flux amb fetch().
+let REC = null, PROG = null, INIT = {}, FORMAT = {}, BLOQUEIG = null;
+
+function formatDe(u8) {
+  if (u8[0] === 0x47) return "ts";
+  if (u8[0] === 0x49 && u8[1] === 0x44 && u8[2] === 0x33) return "aac";            // ID3 + àudio empaquetat
+  if (u8[0] === 0xff && (u8[1] & 0xf6) === 0xf0) return "aac";                     // ADTS
+  if (u8[0] === 0xff && (u8[1] & 0xe0) === 0xe0) return "mp3";
+  return "mp4";                                                                     // fMP4 (ftyp/styp/moof)
+}
+function extensio(tipusPista) {
+  const f = FORMAT[tipusPista] || "ts";
+  if (f === "mp4") return actual.tipus === "radio" || tipusPista === "audio" ? "m4a" : "mp4";
+  return f;
+}
+
+class Sortida {
+  constructor(nom, handle) { this.nom = nom; this.trossos = []; this.bytes = 0; this.cua = Promise.resolve(); this.err = null; this.handle = handle; this.w = null; }
+  async obre() { if (this.handle) this.w = await this.handle.createWritable(); }
+  afegeix(u8) {
+    this.bytes += u8.byteLength;
+    if (this.w) this.cua = this.cua.then(() => this.w.write(u8)).catch(e => { this.err = e; });
+    else this.trossos.push(u8);
+  }
+  async tanca() {
+    if (this.w) { await this.cua; await this.w.close(); return null; }
+    return new Blob(this.trossos);
+  }
+}
+
+function tros(frag, payload) {
+  if (!payload || frag.type === "subtitle") return;
+  const u8 = new Uint8Array(payload.slice(0));          // còpia: hls.js passa el buffer al seu worker
+  const tp = frag.type || "main";
+  if (frag.sn === "initSegment") { INIT[tp] = u8; FORMAT[tp] = "mp4"; return; }
+  if (!FORMAT[tp]) FORMAT[tp] = formatDe(u8);
+  if (!REC || REC.mode !== "hls") return;
+  const clau = tp + "|" + frag.url + "|" + (frag.byteRangeStartOffset ?? "");
+  if (REC.vistos.has(clau)) return;
+  REC.vistos.add(clau);
+  let s = REC.sortides[tp];
+  if (!s) {
+    s = REC.sortides[tp] = new Sortida(`${REC.base}${tp === "audio" ? " (àudio)" : ""}.${extensio(tp)}`);
+    if (INIT[tp]) s.afegeix(INIT[tp]);
+  }
+  if (FORMAT[tp] === "mp4" && INIT[tp] && s.ultimInit !== INIT[tp]) { if (s.ultimInit) s.afegeix(INIT[tp]); s.ultimInit = INIT[tp]; }
+  s.afegeix(u8);
+}
+
+function controlsGravacio() {
+  const o = actual && actual.op;
+  const pot = !!o && ((o.f === "m3u8" && !!HLS) || ["mp3", "aac", "stream"].includes(o.f));
+  $("gravacio").hidden = !pot;
+  $("discBox").hidden = !("showSaveFilePicker" in window);
+  if (!pot) return;
+  $("notaGravacio").textContent = o.f === "m3u8"
+    ? "Es grava a partir del moment en què prems el botó, a la qualitat que s'està veient (queda fixada mentre grava)."
+    : "Es grava el flux de l'emissora tal com arriba. Si l'emissora no ho permet des d'una altra web, la pàgina t'ho dirà.";
+  if ("showSaveFilePicker" in window && actual.tipus === "tv") $("notaGravacio").textContent += " A l'ordinador, per a gravacions llargues, marca «Desa-ho al disc mentre grava» perquè no s'ompli la memòria.";
+}
+
+$("inici").onchange = () => {
+  $("horaBox").hidden = $("inici").value !== "hora";
+  if (!$("hora").value) { const d = new Date(Date.now() + 3600e3); d.setMinutes(0, 0, 0); $("hora").value = `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}T${z(d.getHours())}:00`; }
+};
+
+async function preparaDisc(nom) {
+  if (!$("disc").checked || !("showSaveFilePicker" in window)) return null;
+  const ext = nom.split(".").pop();
+  return window.showSaveFilePicker({ suggestedName: nom, types: [{ description: "Gravació", accept: { "application/octet-stream": ["." + ext] } }] });
+}
+
+function nomBase() {
+  const d = new Date();
+  return netNom(`La TdG - ${actual.c.n} - ${data(d)} ${hora(d)}`);
+}
+function extensioDirecta() {
+  const o = actual.op;
+  if (o.f === "aac") return "aac";
+  if (o.f === "mp3") return "mp3";
+  return /aac/i.test(o.u) ? "aac" : "mp3";
+}
+
+$("grava").onclick = async () => {
+  if (!actual || !actual.op) return;
+  const minuts = Math.max(0, +$("durada").value || 0);
+  let handle = null;
+  try {
+    // El selector de fitxer s'ha d'obrir ara (en prémer), també si la gravació és programada.
+    const ext = actual.op.f === "m3u8" ? extensio("main") : extensioDirecta();
+    handle = await preparaDisc(`${nomBase()}.${ext}`);
+  } catch (e) { if (e.name === "AbortError") return; }
+  if ($("inici").value === "hora") {
+    const quan = new Date($("hora").value);
+    if (isNaN(quan)) { $("estatGravacio").textContent = "Tria el dia i l'hora d'inici."; return; }
+    if (quan <= new Date()) { $("estatGravacio").textContent = "Aquesta hora ja ha passat."; return; }
+    // Es revisa cada 5 s (els temporitzadors llargs s'endarrereixen si el navegador adorm la pestanya).
+    PROG = { quan, minuts, handle, t: setInterval(() => { if (Date.now() >= quan) { clearInterval(PROG.t); PROG = null; comenca(minuts, handle); } }, 5000) };
+    $("grava").hidden = true; $("cancela").hidden = false;
+    $("estatGravacio").textContent = `⏰ Programada per ${elDia(data(quan))} a les ${hora(quan)} h${minuts ? `, ${minuts} min` : ""}. Deixa aquesta pàgina oberta.`;
+    bloqueja();
+    return;
+  }
+  comenca(minuts, handle);
+};
+
+function cancelaProgramacio() {
+  if (!PROG) return;
+  clearInterval(PROG.t); PROG = null;
+  $("grava").hidden = false; $("cancela").hidden = true; $("estatGravacio").textContent = "";
+  allibera();
+}
+$("cancela").onclick = cancelaProgramacio;
+
+async function comenca(minuts, handle) {
+  const o = actual.op, base = nomBase();
+  REC = { base, inici: Date.now(), minuts, sortides: {}, vistos: new Set(), canal: actual.c.n, mode: o.f === "m3u8" ? "hls" : "directe" };
+  $("grava").hidden = true; $("atura").hidden = false; $("cancela").hidden = true;
+  bloqueja();
+  const m = media(); if (m.paused) m.play().catch(() => {});
+  if (REC.mode === "hls") {
+    if (HLS && HLS.currentLevel >= 0) HLS.loadLevel = HLS.currentLevel;   // fixa la qualitat
+    if (handle) {
+      const s = new Sortida(handle.name, handle);
+      try { await s.obre(); } catch (e) { s.handle = null; }
+      if (INIT.main) s.afegeix(INIT.main);
+      REC.sortides.main = s;
+    }
+  } else {
+    const s = new Sortida(`${base}.${extensioDirecta()}`, handle);
+    try { await s.obre(); } catch (e) { s.handle = null; }
+    REC.sortides.main = s;
+    REC.ctrl = new AbortController();
+    llegeixFlux(o.u, s, REC);
+  }
+  REC.rellotge = setInterval(actualitzaEstat, 1000);
+  actualitzaEstat();
+}
+
+async function llegeixFlux(url, s, rec) {
+  try {
+    const r = await fetch(url, { signal: rec.ctrl.signal, cache: "no-store" });
+    if (!r.ok || !r.body) throw new Error("HTTP " + r.status);
+    const lector = r.body.getReader();
+    for (;;) { const { done, value } = await lector.read(); if (done) break; s.afegeix(value); }
+    if (REC === rec) { avis("El flux de l'emissora s'ha tallat; s'ha desat el que s'havia gravat."); atura(); }
+  } catch (e) {
+    if (e.name === "AbortError") return;
+    if (REC !== rec) return;
+    const cors = e instanceof TypeError;
+    avis(cors ? "❌ Aquesta emissora no deixa gravar el seu flux des d'una altra web. Fes servir l'ordre de ffmpeg de més avall." : "❌ S'ha tallat la gravació (" + e.message + ").");
+    atura();
+  }
+}
+
+function actualitzaEstat() {
+  if (!REC) return;
+  const seg = (Date.now() - REC.inici) / 1000;
+  const bytes = Object.values(REC.sortides).reduce((a, s) => a + s.bytes, 0);
+  const disc = Object.values(REC.sortides).some(s => s.w);
+  $("estatGravacio").innerHTML = `<span class="rec"><span class="punt"></span>${temps(seg)}</span> · ${mida(bytes)}${disc ? " · al disc" : ""}${REC.minuts ? ` · s'atura als ${REC.minuts} min` : ""}`;
+  if (!disc && bytes > 1.5 * 1073741824) $("estatGravacio").innerHTML += " · ⚠️ molta memòria ocupada: atura-la aviat";
+  if (REC.minuts && seg >= REC.minuts * 60) atura();
+}
+
+const SESSIO = [];   // { nom, url } per tornar a baixar
+async function atura() {
+  const rec = REC; if (!rec) return;
+  REC = null;
+  clearInterval(rec.rellotge);
+  if (rec.ctrl) rec.ctrl.abort();
+  if (HLS) HLS.loadLevel = -1;
+  $("grava").hidden = false; $("atura").hidden = true;
+  allibera();
+  const segons = Math.round((Date.now() - rec.inici) / 1000);
+  const desats = [];
+  for (const s of Object.values(rec.sortides)) {
+    if (!s.bytes) continue;
+    let blob = null;
+    try { blob = await s.tanca(); } catch (e) { avis("❌ No s'ha pogut tancar el fitxer: " + e.message); continue; }
+    if (s.err) avis("⚠️ Hi ha hagut un error escrivint al disc: " + s.err.message);
+    if (blob) {
+      const url = URL.createObjectURL(blob), a = document.createElement("a");
+      a.href = url; a.download = s.nom; document.body.append(a); a.click(); a.remove();
+      SESSIO.push({ nom: s.nom, url });
+    }
+    desats.push({ nom: s.nom, bytes: s.bytes, disc: !blob });
+  }
+  if (!desats.length) { $("estatGravacio").textContent = "No s'ha gravat res (no ha arribat cap dada)."; return; }
+  $("estatGravacio").textContent = `✅ Desat: ${desats.map(d => d.nom).join(" i ")} (${temps(segons)}, ${mida(desats.reduce((a, d) => a + d.bytes, 0))})`;
+  const h = historial();
+  for (const d of desats) h.unshift({ quan: `${data(new Date())} ${hora(new Date())}`, canal: rec.canal, nom: d.nom, segons, bytes: d.bytes, disc: d.disc });
+  escriu("tdtHistorial", JSON.stringify(h.slice(0, 60)));
+  pintaHistorial();
+}
+$("atura").onclick = atura;
+
+window.addEventListener("beforeunload", e => { if (REC || PROG) { e.preventDefault(); e.returnValue = ""; } });
+
+// La pantalla no s'apaga mentre grava o espera una gravació programada.
+async function bloqueja() { try { if (!BLOQUEIG && navigator.wakeLock) BLOQUEIG = await navigator.wakeLock.request("screen"); } catch (e) {} }
+function allibera() { if (REC || PROG) return; try { BLOQUEIG && BLOQUEIG.release(); } catch (e) {} BLOQUEIG = null; }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && (REC || PROG)) { BLOQUEIG = null; bloqueja(); } });
+
+// ---------- Historial ----------
+function historial() { try { return JSON.parse(llegeix("tdtHistorial") || "[]"); } catch (e) { return []; } }
+function pintaHistorial() {
+  const ul = $("historial"), h = historial(); ul.innerHTML = "";
+  if (!h.length) { ul.innerHTML = '<li class="font">Encara no hi ha cap gravació.</li>'; return; }
+  for (const g of h) {
+    const li = document.createElement("li");
+    const ses = SESSIO.find(s => s.nom === g.nom);
+    li.innerHTML = `<span class="data">${esc(g.quan)}</span><b>${esc(g.canal)}</b><span>${temps(g.segons)} · ${mida(g.bytes)}${g.disc ? " · al disc" : ""}</span>`;
+    if (ses) { const a = document.createElement("a"); a.href = ses.url; a.download = ses.nom; a.textContent = "Torna a baixar"; li.append(a); }
+    ul.append(li);
+  }
+}
+$("buidaHistorial").onclick = () => { if (confirm("Vols esborrar l'historial de gravacions? (Els fitxers no s'esborren.)")) { escriu("tdtHistorial", ""); pintaHistorial(); } };
+pintaHistorial();
+
+// ---------- Ordres per a la terminal ----------
+function pintaOrdres() {
+  const box = $("ordres"); box.innerHTML = "";
+  const o = actual && actual.op;
+  if (!o) { box.innerHTML = '<p class="font">Aquesta cadena no té cap senyal obert.</p>'; return; }
+  const min = Math.max(0, +$("durada").value || 0), dur = min ? ` -t ${temps(min * 60)}` : "";
+  const nom = `${nomBase()}`;
+  const ref = actual.c.ref ? ` -headers "Referer: ${actual.c.ref}"` : "";
+  const ordres = [];
+  if (o.f === "youtube") {
+    ordres.push(["streamlink", `streamlink "${o.u}" best -o "${nom}.ts"${min ? ` --hls-duration ${temps(min * 60)}` : ""}`]);
+    ordres.push(["yt-dlp", `yt-dlp --live-from-start -o "${nom}.%(ext)s" "${o.u}"`]);
+  } else if (o.f === "m3u8") {
+    ordres.push(["ffmpeg", `ffmpeg${ref} -i "${o.u}"${dur} -c copy "${nom}.${actual.tipus === "radio" ? "aac" : "ts"}"`]);
+    ordres.push(["streamlink", `streamlink "hls://${o.u}" best -o "${nom}.ts"${min ? ` --hls-duration ${temps(min * 60)}` : ""}`]);
+  } else {
+    ordres.push(["ffmpeg", `ffmpeg -i "${o.u}"${dur} -c copy "${nom}.${extensioDirecta()}"`]);
+  }
+  ordres.push(["Adreça del senyal (VLC, Kodi…)", o.u]);
+  for (const [t, cmd] of ordres) {
+    const d = document.createElement("div");
+    d.innerHTML = `<div class="fila" style="justify-content:space-between;margin-top:8px"><b>${esc(t)}</b><button type="button" class="suau">Copia</button></div><pre></pre>`;
+    d.querySelector("pre").textContent = cmd;
+    d.querySelector("button").onclick = ev => navigator.clipboard.writeText(cmd).then(() => { ev.target.textContent = "Copiat ✓"; setTimeout(() => ev.target.textContent = "Copia", 1500); });
+    box.append(d);
+  }
+}
+$("durada").oninput = () => { if (actual) pintaOrdres(); };
+</script>
+</body>
+</html>

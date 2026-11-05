@@ -13,11 +13,9 @@
     cada dia de TDTChannels (https://www.tdtchannels.com/listas/) amb tdt/actualitza.py.
   - Reproducció: hls.js per als senyals .m3u8; <audio> per a les ràdios mp3/aac/icecast;
     YouTube incrustat (aquest no es pot gravar des del navegador).
-  - Gravació: es fa en l'aparell on es mira. Es desen tal com arriben els trossos del
-    senyal (sense tornar a codificar): .ts / .mp4 per a la tele, .aac / .mp3 per a la ràdio.
-    Al mòbil es baixa en aturar; a l'ordinador (Chrome, Edge, Brave) es pot escriure
-    directament al disc mentre grava. Inici programat i durada, però la pàgina ha de
-    quedar oberta.
+  - Gravació (2a versió, 05.11.2026): en l'aparell on es mira, en .mp4 (tele) i .mp3
+    (ràdio). Tantes com calgui, de qualsevol canal, ara o programades a qualsevol dia i
+    hora, amb durada; la pàgina ha de quedar oberta. Vegeu «Gravació» al codi.
   - Ordres ffmpeg / streamlink per gravar fora del navegador (ordinador de casa, runner).
   Hi ha emissores que no deixen gravar des d'una altra web (CORS): la pàgina ho diu.
 -->
@@ -80,6 +78,9 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
 .inicials{display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:.85rem}
 .historial{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .historial li{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--linia);padding:6px 0;font-size:.92rem}
+.feines li{flex-wrap:wrap}
+.feines .mini{width:32px;height:32px;border-radius:6px;object-fit:contain;background:var(--fons);flex-shrink:0}
+.feines .estat{color:var(--suau);flex:1;min-width:160px}
 .historial li .data{color:var(--suau);font-variant-numeric:tabular-nums}
 </style>
 </head>
@@ -123,18 +124,20 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
       <div class="avis" id="avis" hidden></div>
 
       <div class="gravacio" id="gravacio">
+        <h3 style="margin:0">⏺ Grava aquest canal</h3>
         <div class="params">
           <label>Comença
             <select id="inici"><option value="ara">Ara mateix</option><option value="hora">Programada (dia i hora)</option></select>
           </label>
           <label id="horaBox" hidden>Dia i hora d'inici <input type="datetime-local" id="hora"></label>
           <label>Durada en minuts <input type="number" id="durada" min="0" step="1" placeholder="0 = fins que l'aturis"></label>
-          <label class="check" id="discBox" hidden><input type="checkbox" id="disc"> Desa-ho al disc mentre grava</label>
+          <label id="qualitatGravBox" hidden>Qualitat de la gravació
+            <select id="qualitatGrav"><option value="alta">La millor disponible</option></select>
+          </label>
+          <label class="check" id="discBox" hidden><input type="checkbox" id="disc"> Tria on es desa</label>
         </div>
         <div class="fila">
           <button type="button" class="grava" id="grava">⏺ Grava</button>
-          <button type="button" class="suau" id="atura" hidden>⏹ Atura i desa</button>
-          <button type="button" class="suau" id="cancela" hidden>✖ Anul·la la programació</button>
           <span id="estatGravacio" class="font" style="margin:0"></span>
         </div>
         <p class="font" id="notaGravacio" style="margin:0"></p>
@@ -145,6 +148,13 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
         <p class="font">Per a gravacions llargues o sense la pàgina oberta: a l'ordinador de casa, al runner o en qualsevol terminal amb ffmpeg o streamlink.</p>
         <div id="ordres"></div>
       </details>
+    </section>
+
+    <!-- GRAVACIONS -->
+    <section id="gravacions" hidden>
+      <h2>⏺ Gravacions en curs i programades</h2>
+      <ul class="historial feines" id="feines"></ul>
+      <p class="font">Es graven en aquest aparell: la pàgina ha de quedar oberta (la pantalla no s'apaga sola mentre n'hi ha).</p>
     </section>
 
     <!-- LLISTA -->
@@ -181,6 +191,8 @@ const data = d => `${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}`;
 const hora = d => `${z(d.getHours())}.${z(d.getMinutes())}`;
 // Davant de l'1 i de l'11 l'article s'apostrofa: «l'01.11.2026», «de l'11.11.2026».
 const elDia = s => (/^(01|11)\./.test(s) ? "l'" : "el ") + s;
+const perAl = s => (/^(01|11)\./.test(s) ? "a l'" : "al ") + s;
+const fmtMin = m => String(m).replace(".", ",");
 const mida = b => b < 1048576 ? (b / 1024).toFixed(0) + " kB" : b < 1073741824 ? (b / 1048576).toFixed(1).replace(".", ",") + " MB" : (b / 1073741824).toFixed(2).replace(".", ",") + " GB";
 const temps = s => { s = Math.floor(s); return `${Math.floor(s / 3600)}:${z(Math.floor(s / 60) % 60)}:${z(s % 60)}`; };
 const netNom = s => s.replace(/[\\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim();
@@ -288,8 +300,6 @@ let HLS = null;
 const ORDRE_GEO = { CAT: 0, SP: 1 };
 
 function obre(c) {
-  if (REC) { if (!confirm("S'està gravant. Vols aturar i desar la gravació per canviar de canal?")) return; atura(); }
-  if (PROG) { if (!confirm("Hi ha una gravació programada d'aquest canal. Vols anul·lar-la per canviar de canal?")) return; cancelaProgramacio(); }
   const ops = c.o.filter(reproduible).map((o, i) => ({ ...o, i }))
     .sort((a, b) => (a.f === "youtube") - (b.f === "youtube") || (ORDRE_GEO[a.g] ?? 2) - (ORDRE_GEO[b.g] ?? 2) || a.i - b.i);
   actual = { c, tipus: TIPUS, ops, op: null };
@@ -310,7 +320,6 @@ function obre(c) {
   reprodueix(0);
 }
 $("senyal").onchange = () => {
-  if (REC) { if (!confirm("S'està gravant. Vols aturar i desar la gravació per canviar de senyal?")) { $("senyal").value = actual.ops.indexOf(actual.op); return; } atura(); }
   reprodueix(+$("senyal").value);
 };
 
@@ -321,7 +330,8 @@ function aturaReproduccio() {
   for (const id of ["video", "audio"]) { const m = $(id); m.pause(); m.removeAttribute("src"); m.load(); m.hidden = true; }
   $("yt").src = "about:blank"; $("yt").hidden = true;
   $("qualitatBox").hidden = true;
-  INIT = {}; FORMAT = {};
+  $("audio").removeAttribute("crossorigin"); $("audio").onerror = null;
+  $("qualitatGrav").innerHTML = '<option value="alta">La millor disponible</option>'; $("qualitatGravBox").hidden = true;
 }
 
 function embedYouTube(u) {
@@ -334,7 +344,7 @@ function embedYouTube(u) {
 
 function media() { return actual && actual.tipus === "tv" ? $("video") : $("audio"); }
 
-function reprodueix(i) {
+function reprodueix(i, perPassarella) {
   aturaReproduccio(); avis("");
   const o = actual.ops[i]; actual.op = o; $("senyal").value = i;
   pintaOrdres();
@@ -347,23 +357,26 @@ function reprodueix(i) {
   const m = media(); m.hidden = false;
   if (o.f === "m3u8") {
     if (window.Hls && Hls.isSupported()) {
-      HLS = new Hls({ maxBufferLength: 30, backBufferLength: 30, fLoader: carregadorGravador() });
-      HLS.on(Hls.Events.FRAG_DECRYPTED, (ev, d) => tros(d.frag, d.payload));
+      HLS = new Hls({ maxBufferLength: 30, backBufferLength: 30 });
       HLS.on(Hls.Events.MANIFEST_PARSED, (ev, d) => omplQualitat(d.levels));
       HLS.on(Hls.Events.ERROR, (ev, d) => {
         if (!d.fatal) return;
         if (d.type === Hls.ErrorTypes.MEDIA_ERROR) { HLS.recoverMediaError(); return; }
+        if (!perPassarella && !actual.c.ref) { reprodueix(i, true); avis("Aquesta cadena no es deixa veure directament des d'aquí: es prova per la passarel·la de La TdG."); return; }
         avis("❌ No es pot reproduir aquest senyal des d'aquí (pot estar geobloquejat, caigut o no deixar-se veure en altres webs)." + (actual.ops.length > 1 ? " Prova un altre senyal." : ""));
-        if (REC) atura();
       });
-      HLS.loadSource(o.u); HLS.attachMedia(m);
+      HLS.loadSource(perPassarella || actual.c.ref ? via(o.u, actual.c.ref) : o.u); HLS.attachMedia(m);
     } else if (m.canPlayType("application/vnd.apple.mpegurl")) {
       m.src = o.u;
       avis("Aquest navegador reprodueix el senyal pel seu compte i no deixa gravar-lo. Per gravar, fes servir un altre navegador o l'ordre de ffmpeg.");
     } else { avis("❌ Aquest navegador no pot reproduir senyals HLS."); }
   } else {
-    m.src = o.u;
-    m.onerror = () => avis("❌ No es pot reproduir aquest senyal ara mateix." + (actual.ops.length > 1 ? " Prova un altre senyal." : ""));
+    if (perPassarella) m.crossOrigin = "anonymous";
+    m.src = perPassarella ? via(o.u, actual.c.ref) : o.u;
+    m.onerror = () => {
+      if (!perPassarella) { reprodueix(i, true); return; }
+      avis("❌ No es pot reproduir aquest senyal ara mateix." + (actual.ops.length > 1 ? " Prova un altre senyal." : ""));
+    };
   }
   m.play().catch(() => {});
   if ("mediaSession" in navigator) {
@@ -372,32 +385,18 @@ function reprodueix(i) {
   controlsGravacio();
 }
 
-// 05.11.2026: els trossos es copien en arribar, dins del carregador de hls.js. Abans
-// s'agafaven de l'avís FRAG_LOADED, però en aquell moment hls.js ja els havia passat al
-// seu procés intern i arribaven buits («No s'ha gravat res»).
-function carregadorGravador() {
-  const Base = Hls.DefaultConfig.loader;
-  return class extends Base {
-    load(context, config, callbacks) {
-      const ok = callbacks.onSuccess;
-      const cb = Object.assign({}, callbacks, {
-        onSuccess: (response, stats, ctx, nd) => {
-          try {
-            const f = ctx && ctx.frag;
-            if (f && response && response.data instanceof ArrayBuffer && !f.encrypted) tros(f, response.data, ctx.part);
-          } catch (e) { console.warn("Gravació:", e); }
-          ok(response, stats, ctx, nd);
-        },
-      });
-      super.load(context, config, cb);
-    }
-  };
-}
-
 function omplQualitat(levels) {
   const s = $("qualitat"); s.innerHTML = '<option value="-1">Automàtica</option>';
   levels.forEach((l, i) => { if (!l.height && !l.bitrate) return; const o = document.createElement("option"); o.value = i; o.textContent = l.height ? `${l.height}p` : `${Math.round(l.bitrate / 1000)} kbps`; s.append(o); });
   $("qualitatBox").hidden = s.options.length < 3;
+  // Les mateixes qualitats, per triar amb quina es grava (de més a menys).
+  const g = $("qualitatGrav"); g.innerHTML = '<option value="alta">La millor disponible</option>';
+  [...levels].filter(l => l.bitrate).sort((a, b) => b.bitrate - a.bitrate).forEach(l => {
+    const o = document.createElement("option"); o.value = "bw:" + l.bitrate;
+    o.textContent = `${l.height ? l.height + "p · " : ""}${(l.bitrate / 1e6).toFixed(1).replace(".", ",")} Mbps · uns ${mida(l.bitrate / 8 * 3600)}/hora`;
+    g.append(o);
+  });
+  $("qualitatGravBox").hidden = actual.tipus !== "tv";
 }
 $("qualitat").onchange = () => { if (HLS) HLS.currentLevel = +$("qualitat").value; };
 
@@ -415,210 +414,462 @@ $("preferit").onclick = () => {
 };
 
 // ---------- Gravació ----------
-// Per als senyals HLS es desen els trossos (segments) que el reproductor ja baixa, sense
-// tornar-los a codificar. Per a les ràdios mp3/aac es llegeix el mateix flux amb fetch().
-let REC = null, PROG = null, INIT = {}, FORMAT = {}, BLOQUEIG = null;
+// 05.11.2026 (2a versió): cada gravació és una feina independent, de qualsevol cadena o
+// emissora, ara o programada a qualsevol dia i hora, i n'hi pot haver diverses alhora (també
+// mentre se'n mira una altra). La pàgina baixa el senyal pel seu compte (llista .m3u8 i trossos,
+// o el flux de la ràdio), el desa en brut a l'emmagatzematge privat del navegador (o a la
+// memòria, si no n'hi ha) i, en acabar, el passa a .mp4 (vídeo) o a .mp3 (àudio) amb el motor
+// ffmpeg de l'estudi de vídeo. Si una emissora no deixa gravar des d'una altra web, es prova per
+// la passarel·la de La TdG (Worker latdg-senyal, codi a tdt/passarella-worker.js).
+const PASSARELLA = "https://latdg-senyal.ignasicorney.workers.dev";
+const via = (u, ref) => `${PASSARELLA}/?u=${encodeURIComponent(u)}${ref ? `&ref=${encodeURIComponent(ref)}` : ""}`;
+const MAX_CONVERSIO = 1.6 * 1073741824;      // més gran que això, es desa tal com ha arribat
+const FEINES = [];                            // gravacions en curs, programades o convertint-se
+const SESSIO = [];                            // { nom, url } per tornar a baixar
+let BLOQUEIG = null, SEQ = 0;
+const espera = ms => new Promise(r => setTimeout(r, ms));
+const nomGravacio = (canal, d) => netNom(`La TdG - ${canal} - ${data(d)} ${hora(d)}`);
 
 function formatDe(u8) {
   if (u8[0] === 0x47) return "ts";
   if (u8[0] === 0x49 && u8[1] === 0x44 && u8[2] === 0x33) return "aac";            // ID3 + àudio empaquetat
   if (u8[0] === 0xff && (u8[1] & 0xf6) === 0xf0) return "aac";                     // ADTS
   if (u8[0] === 0xff && (u8[1] & 0xe0) === 0xe0) return "mp3";
+  if (u8[0] === 0x4f && u8[1] === 0x67 && u8[2] === 0x67) return "ogg";
   return "mp4";                                                                     // fMP4 (ftyp/styp/moof)
 }
-function extensio(tipusPista) {
-  const f = FORMAT[tipusPista] || "ts";
-  if (f === "mp4") return actual.tipus === "radio" || tipusPista === "audio" ? "m4a" : "mp4";
-  return f;
-}
 
-class Sortida {
-  constructor(nom, handle) { this.nom = nom; this.trossos = []; this.bytes = 0; this.cua = Promise.resolve(); this.err = null; this.handle = handle; this.w = null; }
-  async obre() { if (this.handle) this.w = await this.handle.createWritable(); }
+// Fitxer en brut mentre grava: a l'emmagatzematge privat del navegador si es pot (no omple la memòria).
+class Brut {
+  constructor(nom) {
+    this.nom = nom; this.trossos = []; this.bytes = 0; this.err = null; this.w = null; this.fh = null;
+    this.cua = (async () => {
+      try {
+        const dir = await navigator.storage.getDirectory();
+        this.fh = await dir.getFileHandle(nom, { create: true });
+        this.w = await this.fh.createWritable();
+      } catch (e) { this.w = null; this.fh = null; }
+    })();
+  }
   afegeix(u8) {
     this.bytes += u8.byteLength;
-    if (this.w) this.cua = this.cua.then(() => this.w.write(u8)).catch(e => { this.err = e; });
-    else this.trossos.push(u8);
+    this.cua = this.cua.then(() => (this.w ? this.w.write(u8) : this.trossos.push(u8))).catch(e => { this.err = e; });
   }
-  async tanca() {
-    if (this.w) { await this.cua; await this.w.close(); return null; }
-    return new Blob(this.trossos);
+  async fitxer() {
+    await this.cua;
+    if (this.w) { await this.w.close(); return await this.fh.getFile(); }
+    return new File(this.trossos, this.nom);
+  }
+  async esborra() {
+    this.trossos = [];
+    try { if (this.fh) await (await navigator.storage.getDirectory()).removeEntry(this.fh.name); } catch (e) {}
   }
 }
 
-function tros(frag, payload, part) {
-  if (!payload || !payload.byteLength || frag.type === "subtitle") return;
-  const u8 = new Uint8Array(payload.slice(0));          // còpia: hls.js passa el buffer al seu worker
-  const tp = frag.type || "main";
-  if (frag.sn === "initSegment") { INIT[tp] = u8; FORMAT[tp] = "mp4"; return; }
-  if (!FORMAT[tp]) FORMAT[tp] = formatDe(u8);
-  if (!REC || REC.mode !== "hls") return;
-  const clau = tp + "|" + frag.url + "|" + (frag.byteRangeStartOffset ?? "") + "|" + (part ? part.index : "");
-  if (REC.vistos.has(clau)) return;
-  REC.vistos.add(clau);
-  let s = REC.sortides[tp];
-  if (!s) {
-    s = REC.sortides[tp] = new Sortida(`${REC.base}${tp === "audio" ? " (àudio)" : ""}.${extensio(tp)}`);
-    if (INIT[tp]) s.afegeix(INIT[tp]);
+// --- Llistes HLS ---
+function atributs(s) {
+  const o = {};
+  for (const m of s.matchAll(/([A-Z0-9-]+)=("[^"]*"|[^,]*)/g)) o[m[1]] = m[2].replace(/^"|"$/g, "");
+  return o;
+}
+function llegeixLlista(text, base) {
+  const ll = { variants: [], audios: [], segs: [], seq: 0, target: 6, fi: false };
+  const linies = text.split(/\r?\n/);
+  let clau = null, mapa = null, rang = null, n = 0;
+  for (let i = 0; i < linies.length; i++) {
+    const l = linies[i].trim(); if (!l) continue;
+    if (l.startsWith("#EXT-X-STREAM-INF:")) {
+      const a = atributs(l.slice(18)); let j = i + 1;
+      while (j < linies.length && (!linies[j].trim() || linies[j].trim().startsWith("#"))) j++;
+      if (j < linies.length) ll.variants.push({ bw: +a.BANDWIDTH || 0, audio: a.AUDIO, url: new URL(linies[j].trim(), base).href });
+      i = j; continue;
+    }
+    if (l.startsWith("#EXT-X-MEDIA:")) {
+      const a = atributs(l.slice(13));
+      if (a.TYPE === "AUDIO" && a.URI) ll.audios.push({ grup: a["GROUP-ID"], def: a.DEFAULT === "YES", url: new URL(a.URI, base).href });
+      continue;
+    }
+    if (l.startsWith("#EXT-X-MEDIA-SEQUENCE:")) { ll.seq = +l.split(":")[1] || 0; continue; }
+    if (l.startsWith("#EXT-X-TARGETDURATION:")) { ll.target = +l.split(":")[1] || 6; continue; }
+    if (l.startsWith("#EXT-X-ENDLIST")) { ll.fi = true; continue; }
+    if (l.startsWith("#EXT-X-KEY:")) {
+      const a = atributs(l.slice(11));
+      clau = a.METHOD === "NONE" ? null : { metode: a.METHOD, url: a.URI ? new URL(a.URI, base).href : null, iv: a.IV };
+      continue;
+    }
+    if (l.startsWith("#EXT-X-MAP:")) { mapa = new URL(atributs(l.slice(11)).URI, base).href; continue; }
+    if (l.startsWith("#EXT-X-BYTERANGE")) { rang = l; continue; }
+    if (l.startsWith("#")) continue;
+    ll.segs.push({ sn: ll.seq + n, url: new URL(l, base).href, clau, mapa, rang }); n++; rang = null;
   }
-  if (FORMAT[tp] === "mp4" && INIT[tp] && s.ultimInit !== INIT[tp]) { if (s.ultimInit) s.afegeix(INIT[tp]); s.ultimInit = INIT[tp]; }
-  s.afegeix(u8);
+  return ll;
+}
+async function desxifra(job, dades, seg) {
+  const k = seg.clau;
+  if (!k) return dades;
+  if (k.metode !== "AES-128" || !k.url) throw new Error("el senyal està protegit i no es pot gravar");
+  if (!job.claus[k.url]) job.claus[k.url] = (async () => {
+    const r = await job.get(k.url); if (!r.ok) throw new Error("no s'ha pogut obtenir la clau del senyal");
+    return crypto.subtle.importKey("raw", await r.arrayBuffer(), "AES-CBC", false, ["decrypt"]);
+  })();
+  const clau = await job.claus[k.url];
+  const iv = new Uint8Array(16);
+  if (k.iv) { const h = k.iv.replace(/^0x/i, "").padStart(32, "0"); h.match(/../g).forEach((x, i) => { iv[i] = parseInt(x, 16); }); }
+  else new DataView(iv.buffer).setUint32(12, seg.sn);
+  return crypto.subtle.decrypt({ name: "AES-CBC", iv }, clau, dades);
+}
+async function gravaPista(job, urlLlista, pista) {
+  let ultim = null, mapaFet = null, errors = 0;
+  while (job.estat === "grava") {
+    let ll;
+    try {
+      const r = await job.get(urlLlista); if (!r.ok) throw new Error("HTTP " + r.status);
+      ll = llegeixLlista(await r.text(), r.url || urlLlista); errors = 0;
+    } catch (e) {
+      if (job.estat !== "grava") return;
+      if (++errors > 10) throw new Error("el senyal ha deixat de respondre");
+      await espera(3000); continue;
+    }
+    if (ultim === null) ultim = ll.segs.length ? ll.segs[Math.max(0, ll.segs.length - 2)].sn - 1 : -1;   // a prop del directe
+    for (const s of ll.segs) {
+      if (s.sn <= ultim) continue;
+      if (job.estat !== "grava") return;
+      if (s.rang) throw new Error("aquest senyal no es pot gravar des del navegador (trossos parcials)");
+      try {
+        if (s.mapa && s.mapa !== mapaFet) {
+          const rm = await job.get(s.mapa); if (!rm.ok) throw new Error("HTTP " + rm.status);
+          job.escriu(pista, new Uint8Array(await rm.arrayBuffer())); mapaFet = s.mapa;
+        }
+        const r = await job.get(s.url); if (!r.ok) throw new Error("HTTP " + r.status);
+        job.escriu(pista, new Uint8Array(await desxifra(job, await r.arrayBuffer(), s)));
+      } catch (e) {
+        if (job.estat !== "grava") return;
+        if (/protegit/.test(e.message)) throw e;
+        job.perduts++;                         // es perd aquest tros, però es continua
+      }
+      ultim = s.sn;
+    }
+    if (ll.fi) return;
+    await espera(Math.max(1000, ll.target * 500));
+  }
+}
+async function gravaHLS(job) {
+  const r = await job.get(job.u); if (!r.ok) throw new Error("HTTP " + r.status);
+  const ll = llegeixLlista(await r.text(), r.url || job.u);
+  let principal = r.url || job.u, audio = null;
+  if (ll.variants.length) {
+    const v = [...ll.variants].sort((a, b) => b.bw - a.bw);
+    const bw = /^bw:/.test(job.qualitat || "") ? +job.qualitat.slice(3) : 0;
+    const tria = bw ? v.reduce((m, x) => (Math.abs(x.bw - bw) < Math.abs(m.bw - bw) ? x : m), v[0]) : v[0];
+    principal = tria.url;
+    if (tria.audio) { const a = ll.audios.filter(x => x.grup === tria.audio); const t = a.find(x => x.def) || a[0]; if (t && t.url !== principal) audio = t.url; }
+  }
+  await Promise.all([gravaPista(job, principal, "main"), audio ? gravaPista(job, audio, "audio") : null]);
+}
+async function gravaDirecte(job) {
+  let errors = 0;
+  while (job.estat === "grava") {
+    try {
+      const r = await job.get(job.u); if (!r.ok || !r.body) throw new Error("HTTP " + r.status);
+      const lector = r.body.getReader();
+      for (;;) { const { done, value } = await lector.read(); if (done) break; job.escriu("main", value); errors = 0; }
+    } catch (e) {
+      if (job.estat !== "grava" || e.name === "AbortError") return;
+      if (++errors > 6) throw (e instanceof TypeError ? new Error("l'emissora no deixa gravar ni directament ni per la passarel·la") : e);
+    }
+    if (job.estat !== "grava") return;
+    job.talls++;
+    await espera(2000);                        // s'ha tallat: es torna a connectar i es continua al mateix fitxer
+  }
 }
 
+// --- Feines ---
+function novaFeina({ canal, tipus, op, quan, minuts, handle, qualitat }) {
+  const job = {
+    id: `${Date.now().toString(36)}${++SEQ}`, canal: canal.n, logo: canal.l || "", tipus, u: op.u, f: op.f, ref: canal.ref || "",
+    quan: quan || 0, minuts, handle: handle || null, qualitat, estat: "programada", bytes: 0, perduts: 0, talls: 0,
+  };
+  FEINES.push(job);
+  if (!job.quan || job.quan <= Date.now()) engega(job);
+  desaProgramades(); pintaFeines(); bloqueja();
+  return job;
+}
+function engega(job) {
+  Object.assign(job, { estat: "grava", inici: Date.now(), bruts: {}, formats: {}, claus: {}, ctrl: new AbortController(), passarella: !!job.ref });
+  job.base = nomGravacio(job.canal, new Date());
+  job.escriu = (pista, u8) => {
+    if (!u8 || !u8.byteLength) return;
+    if (!job.bruts[pista]) job.bruts[pista] = new Brut(`tdt-${job.id}-${pista}`);
+    if (!job.formats[pista]) job.formats[pista] = formatDe(u8);
+    job.bruts[pista].afegeix(u8); job.bytes += u8.byteLength;
+  };
+  job.get = async url => {
+    const opts = { cache: "no-store", signal: job.ctrl.signal };
+    const ja = url.startsWith(PASSARELLA);
+    try { return await fetch(job.passarella && !ja ? via(url, job.ref) : url, opts); }
+    catch (e) {
+      if (e.name === "AbortError" || job.passarella || ja || !(e instanceof TypeError)) throw e;
+      job.passarella = true;                   // no deixa gravar des d'una altra web: per la passarel·la
+      return fetch(via(url, job.ref), opts);
+    }
+  };
+  try { const m = JSON.parse(llegeix("tdtEnCurs") || "{}"); m[job.id] = { canal: job.canal, tipus: job.tipus, inici: job.inici }; escriu("tdtEnCurs", JSON.stringify(m)); } catch (e) {}
+  desaProgramades(); pintaFeines();
+  (job.f === "m3u8" ? gravaHLS(job) : gravaDirecte(job))
+    .catch(e => { if (e.name !== "AbortError") job.error = e.message; })
+    .then(() => finalitza(job));
+}
+function aturaFeina(job) {
+  if (job.estat === "programada") { FEINES.splice(FEINES.indexOf(job), 1); desaProgramades(); pintaFeines(); allibera(); return; }
+  if (job.estat !== "grava") return;
+  job.estat = "atura"; job.ctrl.abort();
+  pintaFeines();
+}
+setInterval(() => {
+  for (const j of [...FEINES]) {
+    if (j.estat === "programada" && Date.now() >= j.quan) engega(j);
+    if (j.estat === "grava" && j.minuts && Date.now() - j.inici >= j.minuts * 60000) aturaFeina(j);
+  }
+  actualitzaFeines();
+}, 1000);
+
+// --- Conversió a .mp4 / .mp3 (ffmpeg.wasm de l'estudi de vídeo; una conversió alhora) ---
+let FF = null, FF_CARREGANT = null, CUA_FF = Promise.resolve();
+function carregaScript(src) {
+  return new Promise((ok, ko) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = () => ko(new Error("no s'ha pogut carregar el convertidor")); document.head.append(s); });
+}
+async function motor(estat) {
+  if (FF) return FF;
+  if (!FF_CARREGANT) FF_CARREGANT = (async () => {
+    estat("carregant el convertidor (la primera vegada, uns 32 MB)…");
+    if (!window.FFmpegWASM) await carregaScript("../video/ffmpeg/ffmpeg.js");
+    const ff = new FFmpegWASM.FFmpeg();
+    await ff.load({ coreURL: new URL("../video/ffmpeg/ffmpeg-core.js", location.href).href, wasmURL: new URL("../video/ffmpeg/ffmpeg-core.wasm", location.href).href });
+    FF = ff; return ff;
+  })();
+  try { return await FF_CARREGANT; } catch (e) { FF_CARREGANT = null; throw e; }
+}
+function converteix(fitxers, tipus, estat) {
+  const feina = CUA_FF.then(async () => {
+    const ff = await motor(estat);
+    const dir = "/g" + Date.now().toString(36), surt = tipus === "tv" ? "sortida.mp4" : "sortida.mp3";
+    const llista = [fitxers.main, fitxers.audio].filter(Boolean);
+    await ff.createDir(dir);
+    await ff.mount("WORKERFS", { files: llista }, dir);
+    const args = ["-fflags", "+genpts", "-i", `${dir}/${fitxers.main.name}`];
+    if (tipus === "tv") {
+      if (fitxers.audio) args.push("-i", `${dir}/${fitxers.audio.name}`, "-map", "0:v:0?", "-map", "1:a:0?");
+      else args.push("-map", "0:v:0?", "-map", "0:a?");
+      args.push("-c", "copy", "-movflags", "+faststart", surt);
+    } else args.push("-vn", "-c:a", "libmp3lame", "-b:a", "192k", surt);
+    const prog = ({ progress }) => { if (progress > 0 && progress <= 1) estat(`convertint a ${tipus === "tv" ? "MP4" : "MP3"}… ${Math.round(progress * 100)} %`); };
+    ff.on("progress", prog);
+    estat(`convertint a ${tipus === "tv" ? "MP4" : "MP3"}…`);
+    let codi;
+    try { codi = await ff.exec(args); }
+    finally { ff.off("progress", prog); try { await ff.unmount(dir); await ff.deleteDir(dir); } catch (e) {} }
+    if (codi !== 0) { try { await ff.deleteFile(surt); } catch (e) {} throw new Error("ffmpeg ha fallat"); }
+    const dades = await ff.readFile(surt); await ff.deleteFile(surt);
+    return new Blob([dades], { type: tipus === "tv" ? "video/mp4" : "audio/mpeg" });
+  });
+  CUA_FF = feina.catch(() => {});
+  return feina;
+}
+
+async function lliura(blob, nom, handle) {
+  if (handle) {
+    try { const w = await handle.createWritable(); await w.write(blob); await w.close(); return { nom: handle.name, disc: true }; }
+    catch (e) { /* si no es pot escriure on es va triar, es baixa */ }
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = nom; document.body.append(a); a.click(); a.remove();
+  SESSIO.push({ nom, url });
+  return { nom, disc: false };
+}
+
+async function finalitza(job) {
+  if (job.estat === "converteix" || job.estat === "feta") return;
+  job.estat = "converteix"; job.fi = Date.now(); job.text = "acabant…"; pintaFeines();
+  const estat = t => { job.text = t; actualitzaFeines(); };
+  const segons = Math.round((job.fi - job.inici) / 1000);
+  const notes = [];
+  let resultat = null, bytes = 0;
+  try {
+    const pistes = Object.entries(job.bruts).filter(([, b]) => b.bytes);
+    if (!pistes.length) throw new Error(job.error || "no ha arribat cap dada");
+    const fitxers = {};
+    for (const [p, b] of pistes) fitxers[p] = await b.fitxer();
+    const total = Object.values(fitxers).reduce((a, f) => a + f.size, 0);
+    const ext = job.tipus === "tv" ? "mp4" : "mp3";
+    const fmt = job.formats.main;
+    let blob = null, nom = `${job.base}.${ext}`;
+    if (job.tipus === "radio" && fmt === "mp3" && !fitxers.audio) blob = fitxers.main;
+    else if (total <= MAX_CONVERSIO) {
+      try { blob = await converteix(fitxers, job.tipus, estat); }
+      catch (e) { notes.push("no s'ha pogut convertir: es desa tal com ha arribat"); }
+    } else notes.push("massa gran per convertir-la al navegador: es desa tal com ha arribat");
+    if (!blob) {                                // tal com ha arribat (.ts, .aac…), i l'àudio a part si n'hi ha
+      blob = fitxers.main; nom = `${job.base}.${fmt === "mp4" && job.tipus === "radio" ? "m4a" : fmt}`;
+      if (fitxers.audio) { const fa = job.formats.audio; await lliura(fitxers.audio, `${job.base} (àudio).${fa === "mp4" ? "m4a" : fa}`, null); }
+    }
+    estat("desant…");
+    resultat = await lliura(blob, nom, nom.endsWith("." + ext) ? job.handle : null);
+    bytes = blob.size;
+    for (const b of Object.values(job.bruts)) await b.esborra();
+    if (job.error) notes.push("s'ha aturat sola: " + job.error);
+    if (job.passarella) notes.push("per la passarel·la");
+    if (job.perduts) notes.push(`${job.perduts} trossos perduts`);
+    if (job.talls) notes.push(`${job.talls} reconnexions`);
+  } catch (e) {
+    notes.push("❌ " + e.message);
+    for (const b of Object.values(job.bruts || {})) await b.esborra();
+  }
+  try { const m = JSON.parse(llegeix("tdtEnCurs") || "{}"); delete m[job.id]; escriu("tdtEnCurs", JSON.stringify(m)); } catch (e) {}
+  const ara = new Date();
+  const h = historial();
+  h.unshift({ quan: `${data(ara)} ${hora(ara)}`, canal: job.canal, nom: resultat ? resultat.nom : "", segons, bytes, disc: resultat ? resultat.disc : false, nota: notes.join(" · ") });
+  escriu("tdtHistorial", JSON.stringify(h.slice(0, 60)));
+  job.estat = "feta";
+  FEINES.splice(FEINES.indexOf(job), 1);
+  pintaFeines(); pintaHistorial(); allibera();
+}
+
+// --- Programades: es guarden per si es recarrega la pàgina ---
+function desaProgramades() {
+  escriu("tdtProgramades", JSON.stringify(FEINES.filter(j => j.estat === "programada").map(j =>
+    ({ canal: j.canal, logo: j.logo, tipus: j.tipus, u: j.u, f: j.f, ref: j.ref, quan: j.quan, minuts: j.minuts, qualitat: j.qualitat }))));
+}
+async function recuperaProgramades() {
+  let llista = [];
+  try { llista = JSON.parse(llegeix("tdtProgramades") || "[]"); } catch (e) {}
+  const h = historial();
+  for (const p of llista) {
+    const fiPrevist = p.quan + (p.minuts || 0) * 60000;
+    if (p.quan > Date.now() - 120000 || (p.minuts && fiPrevist > Date.now()))
+      novaFeina({ canal: { n: p.canal, l: p.logo, ref: p.ref }, tipus: p.tipus, op: { u: p.u, f: p.f }, quan: p.quan, minuts: p.minuts, qualitat: p.qualitat });
+    else { const d = new Date(p.quan); h.unshift({ quan: `${data(d)} ${hora(d)}`, canal: p.canal, nom: "", segons: 0, bytes: 0, nota: "❌ no s'ha fet: la pàgina estava tancada" }); }
+  }
+  escriu("tdtHistorial", JSON.stringify(h.slice(0, 60)));
+  desaProgramades();
+  // Gravacions que es van quedar a mitges (pàgina tancada o mòbil sense memòria): es poden recuperar.
+  try {
+    const dir = await navigator.storage.getDirectory(), info = JSON.parse(llegeix("tdtEnCurs") || "{}");
+    const actius = new Set(FEINES.map(j => j.id));
+    const grups = {};
+    for await (const [nom, fh] of dir.entries()) {
+      const m = nom.match(/^tdt-(.+)-(main|audio)$/); if (!m || actius.has(m[1])) continue;
+      (grups[m[1]] = grups[m[1]] || {})[m[2]] = fh;
+    }
+    INTERROMPUDES = Object.entries(grups).map(([id, fh]) => ({ id, fh, ...(info[id] || {}) }));
+  } catch (e) { INTERROMPUDES = []; }
+  pintaFeines(); pintaHistorial();
+}
+let INTERROMPUDES = [];
+async function recupera(g, nomes_esborra) {
+  const dir = await navigator.storage.getDirectory();
+  if (!nomes_esborra) {
+    const fitxers = {}, formats = {};
+    for (const [p, fh] of Object.entries(g.fh)) { fitxers[p] = await fh.getFile(); formats[p] = formatDe(new Uint8Array(await fitxers[p].slice(0, 4).arrayBuffer())); }
+    const tipus = g.tipus || (["aac", "mp3", "ogg"].includes(formats.main) ? "radio" : "tv");
+    const job = { id: g.id, canal: g.canal || "Gravació recuperada", tipus, estat: "feta", bruts: {}, formats, inici: g.inici || Date.now(), base: nomGravacio((g.canal || "Gravació recuperada") + " (recuperada)", new Date(g.inici || Date.now())) };
+    // Es fa servir el mateix camí que en acabar una gravació.
+    job.bruts = Object.fromEntries(Object.entries(fitxers).map(([p, f]) => [p, { bytes: f.size, fitxer: async () => f, esborra: async () => {} }]));
+    job.estat = "grava"; FEINES.push(job); job.fi = Date.now();
+    await finalitza(job);
+  }
+  for (const fh of Object.values(g.fh)) { try { await dir.removeEntry(fh.name); } catch (e) {} }
+  try { const m = JSON.parse(llegeix("tdtEnCurs") || "{}"); delete m[g.id]; escriu("tdtEnCurs", JSON.stringify(m)); } catch (e) {}
+  INTERROMPUDES = INTERROMPUDES.filter(x => x !== g);
+  pintaFeines();
+}
+
+// --- Llista de gravacions en curs i programades ---
+function textFeina(j) {
+  if (j.estat === "programada") return `⏰ ${elDia(data(new Date(j.quan)))} a les ${hora(new Date(j.quan))} h${j.minuts ? ` · ${fmtMin(j.minuts)} min` : " · fins que l'aturis"}`;
+  if (j.estat === "grava") return `<span class="rec"><span class="punt"></span>${temps((Date.now() - j.inici) / 1000)}</span> · ${mida(j.bytes)}${j.minuts ? ` · s'atura als ${fmtMin(j.minuts)} min` : ""}${j.passarella ? " · per la passarel·la" : ""}`;
+  if (j.estat === "atura") return "aturant…";
+  return esc(j.text || "acabant…");
+}
+function pintaFeines() {
+  const ul = $("feines"); ul.innerHTML = "";
+  $("gravacions").hidden = !FEINES.length && !INTERROMPUDES.length;
+  for (const j of [...FEINES].sort((a, b) => (a.quan || a.inici) - (b.quan || b.inici))) {
+    const li = document.createElement("li"); li.dataset.id = j.id;
+    const ic = j.logo ? Object.assign(document.createElement("img"), { src: j.logo, alt: "", className: "mini", referrerPolicy: "no-referrer" }) : inicials(j.canal);
+    if (!j.logo) ic.classList.add("mini");
+    li.append(ic);
+    const b = document.createElement("b"); b.textContent = (j.tipus === "tv" ? "📺 " : "📻 ") + j.canal; li.append(b);
+    const t = document.createElement("span"); t.className = "estat"; t.innerHTML = textFeina(j); li.append(t);
+    if (j.estat === "programada" || j.estat === "grava") {
+      const bt = document.createElement("button"); bt.type = "button"; bt.className = "suau";
+      bt.textContent = j.estat === "programada" ? "✖ Anul·la" : "⏹ Atura i desa";
+      bt.onclick = () => aturaFeina(j); li.append(bt);
+    }
+    ul.append(li);
+  }
+  for (const g of INTERROMPUDES) {
+    const li = document.createElement("li");
+    li.innerHTML = `<b>⚠️ ${esc(g.canal || "Gravació")} interrompuda</b><span class="estat">${g.inici ? `${elDia(data(new Date(g.inici)))} a les ${hora(new Date(g.inici))} h` : ""}</span>`;
+    const r = document.createElement("button"); r.type = "button"; r.className = "suau"; r.textContent = "Recupera-la"; r.onclick = () => recupera(g, false);
+    const e = document.createElement("button"); e.type = "button"; e.className = "suau"; e.textContent = "Esborra-la"; e.onclick = () => { if (confirm("Vols esborrar aquesta gravació interrompuda?")) recupera(g, true); };
+    li.append(r, e); ul.append(li);
+  }
+}
+function actualitzaFeines() {
+  for (const j of FEINES) { const li = document.querySelector(`#feines li[data-id="${j.id}"] .estat`); if (li) li.innerHTML = textFeina(j); }
+}
+
+// --- Botó de gravar del reproductor ---
 function controlsGravacio() {
   const o = actual && actual.op;
-  const pot = !!o && ((o.f === "m3u8" && !!HLS) || ["mp3", "aac", "stream"].includes(o.f));
+  const pot = !!o && ["m3u8", "mp3", "aac", "stream"].includes(o.f);
   $("gravacio").hidden = !pot;
   $("discBox").hidden = !("showSaveFilePicker" in window);
+  $("qualitatGravBox").hidden = !o || o.f !== "m3u8" || actual.tipus !== "tv" || $("qualitatGrav").options.length < 2;
   if (!pot) return;
-  $("notaGravacio").textContent = o.f === "m3u8"
-    ? "Es grava a partir del moment en què prems el botó, a la qualitat que s'està veient (queda fixada mentre grava)."
-    : "Es grava el flux de l'emissora tal com arriba. Si l'emissora no ho permet des d'una altra web, la pàgina t'ho dirà.";
-  if ("showSaveFilePicker" in window && actual.tipus === "tv") $("notaGravacio").textContent += " A l'ordinador, per a gravacions llargues, marca «Desa-ho al disc mentre grava» perquè no s'ompli la memòria.";
+  $("notaGravacio").textContent = `Es desa en ${actual.tipus === "tv" ? "MP4" : "MP3"} en aquest aparell. Pots programar-ne tantes com vulguis, de qualsevol ${actual.tipus === "tv" ? "cadena" : "emissora"}, encara que en miris una altra; la pàgina ha de quedar oberta.`;
 }
-
 $("inici").onchange = () => {
   $("horaBox").hidden = $("inici").value !== "hora";
   if (!$("hora").value) { const d = new Date(Date.now() + 3600e3); d.setMinutes(0, 0, 0); $("hora").value = `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}T${z(d.getHours())}:00`; }
 };
-
-async function preparaDisc(nom) {
-  if (!$("disc").checked || !("showSaveFilePicker" in window)) return null;
-  const ext = nom.split(".").pop();
-  return window.showSaveFilePicker({ suggestedName: nom, types: [{ description: "Gravació", accept: { "application/octet-stream": ["." + ext] } }] });
-}
-
-function nomBase() {
-  const d = new Date();
-  return netNom(`La TdG - ${actual.c.n} - ${data(d)} ${hora(d)}`);
-}
+function nomBase() { return nomGravacio(actual.c.n, new Date()); }
 function extensioDirecta() {
   const o = actual.op;
   if (o.f === "aac") return "aac";
   if (o.f === "mp3") return "mp3";
   return /aac/i.test(o.u) ? "aac" : "mp3";
 }
-
 $("grava").onclick = async () => {
   if (!actual || !actual.op) return;
   const minuts = Math.max(0, +$("durada").value || 0);
-  let handle = null;
-  try {
-    // El selector de fitxer s'ha d'obrir ara (en prémer), també si la gravació és programada.
-    const ext = actual.op.f === "m3u8" ? extensio("main") : extensioDirecta();
-    handle = await preparaDisc(`${nomBase()}.${ext}`);
-  } catch (e) { if (e.name === "AbortError") return; }
+  let quan = 0;
   if ($("inici").value === "hora") {
-    const quan = new Date($("hora").value);
+    quan = new Date($("hora").value).getTime();
     if (isNaN(quan)) { $("estatGravacio").textContent = "Tria el dia i l'hora d'inici."; return; }
-    if (quan <= new Date()) { $("estatGravacio").textContent = "Aquesta hora ja ha passat."; return; }
-    // Es revisa cada 5 s (els temporitzadors llargs s'endarrereixen si el navegador adorm la pestanya).
-    PROG = { quan, minuts, handle, t: setInterval(() => { if (Date.now() >= quan) { clearInterval(PROG.t); PROG = null; comenca(minuts, handle); } }, 5000) };
-    $("grava").hidden = true; $("cancela").hidden = false;
-    $("estatGravacio").textContent = `⏰ Programada per ${elDia(data(quan))} a les ${hora(quan)} h${minuts ? `, ${minuts} min` : ""}. Deixa aquesta pàgina oberta.`;
-    bloqueja();
-    return;
+    if (quan <= Date.now()) { $("estatGravacio").textContent = "Aquesta hora ja ha passat."; return; }
   }
-  comenca(minuts, handle);
+  let handle = null;
+  if ($("disc").checked && "showSaveFilePicker" in window) {
+    // El lloc on es desa s'ha de triar ara (en prémer), també si la gravació és programada.
+    const ext = actual.tipus === "tv" ? "mp4" : "mp3";
+    try {
+      handle = await window.showSaveFilePicker({ suggestedName: `${nomGravacio(actual.c.n, new Date(quan || Date.now()))}.${ext}`, types: [{ description: ext.toUpperCase(), accept: { [ext === "mp4" ? "video/mp4" : "audio/mpeg"]: ["." + ext] } }] });
+    } catch (e) { if (e.name === "AbortError") return; }
+  }
+  novaFeina({ canal: actual.c, tipus: actual.tipus, op: actual.op, quan, minuts, handle, qualitat: $("qualitatGrav").value });
+  $("estatGravacio").textContent = quan
+    ? `⏰ Programada per ${perAl(data(new Date(quan)))} a les ${hora(new Date(quan))} h. La tens a la llista de gravacions.`
+    : "⏺ Gravant. La tens a la llista de gravacions.";
+  $("gravacions").scrollIntoView({ behavior: "smooth", block: "nearest" });
 };
 
-function cancelaProgramacio() {
-  if (!PROG) return;
-  clearInterval(PROG.t); PROG = null;
-  $("grava").hidden = false; $("cancela").hidden = true; $("estatGravacio").textContent = "";
-  allibera();
-}
-$("cancela").onclick = cancelaProgramacio;
+window.addEventListener("beforeunload", e => { if (FEINES.some(j => j.estat !== "feta")) { e.preventDefault(); e.returnValue = ""; } });
 
-async function comenca(minuts, handle) {
-  const o = actual.op, base = nomBase();
-  REC = { base, inici: Date.now(), minuts, sortides: {}, vistos: new Set(), canal: actual.c.n, mode: o.f === "m3u8" ? "hls" : "directe" };
-  $("grava").hidden = true; $("atura").hidden = false; $("cancela").hidden = true;
-  bloqueja();
-  const m = media(); if (m.paused) m.play().catch(() => {});
-  if (REC.mode === "hls") {
-    if (HLS && HLS.currentLevel >= 0) HLS.loadLevel = HLS.currentLevel;   // fixa la qualitat
-    if (handle) {
-      const s = new Sortida(handle.name, handle);
-      try { await s.obre(); } catch (e) { s.handle = null; }
-      if (INIT.main) s.afegeix(INIT.main);
-      REC.sortides.main = s;
-    }
-  } else {
-    const s = new Sortida(`${base}.${extensioDirecta()}`, handle);
-    try { await s.obre(); } catch (e) { s.handle = null; }
-    REC.sortides.main = s;
-    REC.ctrl = new AbortController();
-    llegeixFlux(o.u, s, REC);
-  }
-  REC.rellotge = setInterval(actualitzaEstat, 1000);
-  actualitzaEstat();
-}
-
-async function llegeixFlux(url, s, rec) {
-  try {
-    const r = await fetch(url, { signal: rec.ctrl.signal, cache: "no-store" });
-    if (!r.ok || !r.body) throw new Error("HTTP " + r.status);
-    const lector = r.body.getReader();
-    for (;;) { const { done, value } = await lector.read(); if (done) break; s.afegeix(value); }
-    if (REC === rec) { avis("El flux de l'emissora s'ha tallat; s'ha desat el que s'havia gravat."); atura(); }
-  } catch (e) {
-    if (e.name === "AbortError") return;
-    if (REC !== rec) return;
-    const cors = e instanceof TypeError;
-    avis(cors ? "❌ Aquesta emissora no deixa gravar el seu flux des d'una altra web. Fes servir l'ordre de ffmpeg de més avall." : "❌ S'ha tallat la gravació (" + e.message + ").");
-    atura();
-  }
-}
-
-function actualitzaEstat() {
-  if (!REC) return;
-  const seg = (Date.now() - REC.inici) / 1000;
-  const bytes = Object.values(REC.sortides).reduce((a, s) => a + s.bytes, 0);
-  const disc = Object.values(REC.sortides).some(s => s.w);
-  $("estatGravacio").innerHTML = `<span class="rec"><span class="punt"></span>${temps(seg)}</span> · ${mida(bytes)}${disc ? " · al disc" : ""}${REC.minuts ? ` · s'atura als ${REC.minuts} min` : ""}`;
-  if (!disc && bytes > 1.5 * 1073741824) $("estatGravacio").innerHTML += " · ⚠️ molta memòria ocupada: atura-la aviat";
-  if (REC.minuts && seg >= REC.minuts * 60) atura();
-}
-
-const SESSIO = [];   // { nom, url } per tornar a baixar
-async function atura() {
-  const rec = REC; if (!rec) return;
-  REC = null;
-  clearInterval(rec.rellotge);
-  if (rec.ctrl) rec.ctrl.abort();
-  if (HLS) HLS.loadLevel = -1;
-  $("grava").hidden = false; $("atura").hidden = true;
-  allibera();
-  const segons = Math.round((Date.now() - rec.inici) / 1000);
-  const desats = [];
-  for (const s of Object.values(rec.sortides)) {
-    if (!s.bytes) continue;
-    let blob = null;
-    try { blob = await s.tanca(); } catch (e) { avis("❌ No s'ha pogut tancar el fitxer: " + e.message); continue; }
-    if (s.err) avis("⚠️ Hi ha hagut un error escrivint al disc: " + s.err.message);
-    if (blob) {
-      const url = URL.createObjectURL(blob), a = document.createElement("a");
-      a.href = url; a.download = s.nom; document.body.append(a); a.click(); a.remove();
-      SESSIO.push({ nom: s.nom, url });
-    }
-    desats.push({ nom: s.nom, bytes: s.bytes, disc: !blob });
-  }
-  if (!desats.length) { $("estatGravacio").textContent = "No s'ha gravat res (no ha arribat cap dada)."; return; }
-  $("estatGravacio").textContent = `✅ Desat: ${desats.map(d => d.nom).join(" i ")} (${temps(segons)}, ${mida(desats.reduce((a, d) => a + d.bytes, 0))})`;
-  const h = historial();
-  for (const d of desats) h.unshift({ quan: `${data(new Date())} ${hora(new Date())}`, canal: rec.canal, nom: d.nom, segons, bytes: d.bytes, disc: d.disc });
-  escriu("tdtHistorial", JSON.stringify(h.slice(0, 60)));
-  pintaHistorial();
-}
-$("atura").onclick = atura;
-
-window.addEventListener("beforeunload", e => { if (REC || PROG) { e.preventDefault(); e.returnValue = ""; } });
-
-// La pantalla no s'apaga mentre grava o espera una gravació programada.
-async function bloqueja() { try { if (!BLOQUEIG && navigator.wakeLock) BLOQUEIG = await navigator.wakeLock.request("screen"); } catch (e) {} }
-function allibera() { if (REC || PROG) return; try { BLOQUEIG && BLOQUEIG.release(); } catch (e) {} BLOQUEIG = null; }
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && (REC || PROG)) { BLOQUEIG = null; bloqueja(); } });
+// La pantalla no s'apaga mentre hi ha gravacions en curs o programades.
+async function bloqueja() { try { if (!BLOQUEIG && navigator.wakeLock && FEINES.length) BLOQUEIG = await navigator.wakeLock.request("screen"); } catch (e) {} }
+function allibera() { if (FEINES.length) return; try { BLOQUEIG && BLOQUEIG.release(); } catch (e) {} BLOQUEIG = null; }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && FEINES.length) { BLOQUEIG = null; bloqueja(); } });
 
 // ---------- Historial ----------
 function historial() { try { return JSON.parse(llegeix("tdtHistorial") || "[]"); } catch (e) { return []; } }
@@ -628,12 +879,13 @@ function pintaHistorial() {
   for (const g of h) {
     const li = document.createElement("li");
     const ses = SESSIO.find(s => s.nom === g.nom);
-    li.innerHTML = `<span class="data">${esc(g.quan)}</span><b>${esc(g.canal)}</b><span>${temps(g.segons)} · ${mida(g.bytes)}${g.disc ? " · al disc" : ""}</span>`;
+    li.innerHTML = `<span class="data">${esc(g.quan)}</span><b>${esc(g.canal)}</b><span>${g.bytes ? `${temps(g.segons)} · ${mida(g.bytes)}` : ""}${g.disc ? " · desada on vas triar" : ""}${g.nota ? ` · ${esc(g.nota)}` : ""}</span>`;
     if (ses) { const a = document.createElement("a"); a.href = ses.url; a.download = ses.nom; a.textContent = "Torna a baixar"; li.append(a); }
     ul.append(li);
   }
 }
 carregaLlistes();
+recuperaProgramades();
 $("buidaHistorial").onclick = () => { if (confirm("Vols esborrar l'historial de gravacions? (Els fitxers no s'esborren.)")) { escriu("tdtHistorial", ""); pintaHistorial(); } };
 pintaHistorial();
 

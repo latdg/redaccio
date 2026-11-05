@@ -347,8 +347,7 @@ function reprodueix(i) {
   const m = media(); m.hidden = false;
   if (o.f === "m3u8") {
     if (window.Hls && Hls.isSupported()) {
-      HLS = new Hls({ maxBufferLength: 30, backBufferLength: 30 });
-      HLS.on(Hls.Events.FRAG_LOADED, (ev, d) => { if (!d.frag.encrypted) tros(d.frag, d.payload); });
+      HLS = new Hls({ maxBufferLength: 30, backBufferLength: 30, fLoader: carregadorGravador() });
       HLS.on(Hls.Events.FRAG_DECRYPTED, (ev, d) => tros(d.frag, d.payload));
       HLS.on(Hls.Events.MANIFEST_PARSED, (ev, d) => omplQualitat(d.levels));
       HLS.on(Hls.Events.ERROR, (ev, d) => {
@@ -371,6 +370,28 @@ function reprodueix(i) {
     try { navigator.mediaSession.metadata = new MediaMetadata({ title: actual.c.n, artist: "La TdG", artwork: actual.c.l ? [{ src: actual.c.l, sizes: "200x200" }] : [] }); } catch (e) {}
   }
   controlsGravacio();
+}
+
+// 05.11.2026: els trossos es copien en arribar, dins del carregador de hls.js. Abans
+// s'agafaven de l'avís FRAG_LOADED, però en aquell moment hls.js ja els havia passat al
+// seu procés intern i arribaven buits («No s'ha gravat res»).
+function carregadorGravador() {
+  const Base = Hls.DefaultConfig.loader;
+  return class extends Base {
+    load(context, config, callbacks) {
+      const ok = callbacks.onSuccess;
+      const cb = Object.assign({}, callbacks, {
+        onSuccess: (response, stats, ctx, nd) => {
+          try {
+            const f = ctx && ctx.frag;
+            if (f && response && response.data instanceof ArrayBuffer && !f.encrypted) tros(f, response.data, ctx.part);
+          } catch (e) { console.warn("Gravació:", e); }
+          ok(response, stats, ctx, nd);
+        },
+      });
+      super.load(context, config, cb);
+    }
+  };
 }
 
 function omplQualitat(levels) {
@@ -425,14 +446,14 @@ class Sortida {
   }
 }
 
-function tros(frag, payload) {
-  if (!payload || frag.type === "subtitle") return;
+function tros(frag, payload, part) {
+  if (!payload || !payload.byteLength || frag.type === "subtitle") return;
   const u8 = new Uint8Array(payload.slice(0));          // còpia: hls.js passa el buffer al seu worker
   const tp = frag.type || "main";
   if (frag.sn === "initSegment") { INIT[tp] = u8; FORMAT[tp] = "mp4"; return; }
   if (!FORMAT[tp]) FORMAT[tp] = formatDe(u8);
   if (!REC || REC.mode !== "hls") return;
-  const clau = tp + "|" + frag.url + "|" + (frag.byteRangeStartOffset ?? "");
+  const clau = tp + "|" + frag.url + "|" + (frag.byteRangeStartOffset ?? "") + "|" + (part ? part.index : "");
   if (REC.vistos.has(clau)) return;
   REC.vistos.add(clau);
   let s = REC.sortides[tp];

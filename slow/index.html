@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
 <meta name="robots" content="noindex, nofollow">
-<title>La TdG slow</title>
+<title>La TdG dades</title>
 <!--
-  LA TdG SLOW — La TdG · 31.10.2026
+  LA TdG DADES (abans «La TdG slow», 05.11.2026) — La TdG · 31.10.2026
   Blocs de menys actualització, per analitzar a la redacció. No té dades pròpies:
   reuneix, amb la mateixa capçalera, els blocs «slow» de La TdG redacció (des de la
   contractació pública, l'11, fins al final) i els de La TdG ampliada (edat dels
@@ -27,7 +27,8 @@ header{padding-top:24px;padding-bottom:16px}
 h1{margin:0;font-size:1.6rem}
 .sub{color:var(--suau);margin:4px 0 12px}
 .capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.capcalera .dreta{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap}
+.capcalera .dreta{margin-left:auto;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.capcalera .acces{font-size:1.6rem;line-height:1;text-decoration:none}
 .podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
 .podcast svg{display:block;width:50px;height:50px}
 a{color:var(--accent)}
@@ -56,10 +57,10 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:32px;padding-top:4px}
         <path d="M9 21h6" stroke="currentColor"/>
       </svg>
     </a>
-    <h1>La TdG slow 🐢</h1>
+    <h1>La TdG dades</h1>
     <div class="dreta">
-      <a target="_blank" rel="noopener" href="../">← La TdG redacció</a>
-      <a href="https://latdg.github.io/tauler/" target="_blank" rel="noopener">La TdG ampliada ↗</a>
+      <a class="acces" target="_blank" rel="noopener" href="../" title="La TdG redacció" aria-label="La TdG redacció">📰</a>
+      <a class="acces" href="https://latdg.github.io/tauler/" target="_blank" rel="noopener" title="La TdG ampliada" aria-label="La TdG ampliada">🌐</a>
     </div>
   </div>
   <p class="sub">Blocs de menys actualització i dades per analitzar a la redacció.</p>
@@ -96,7 +97,7 @@ const PARTS = TROSSOS.map(([pag, blocs], i) => {
   const src = PAGINA[pag] + "?slow&incrustat&blocs=" + blocs.join(",") + (altres.length ? "&altres=" + altres.join(",") : "") + (ultim ? "&resta" : "") + "&v=" + VERSIO;
   const fr = document.createElement("iframe");
   fr.className = "part"; fr.id = "part" + i; fr.scrolling = "no";
-  fr.title = "Blocs slow de " + (pag === "R" ? "La TdG redacció" : "La TdG ampliada");
+  fr.title = "Blocs de La TdG dades de " + (pag === "R" ? "La TdG redacció" : "La TdG ampliada");
   fr.src = src;
   document.getElementById("parts").appendChild(fr);
   return [fr.id];

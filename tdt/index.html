@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
 <meta name="robots" content="noindex, nofollow">
-<title>TDT i ràdio</title>
+<title>La TdG control room</title>
 <!--
-  TDT I RÀDIO — La TdG · 05.11.2026
+  LA TdG CONTROL ROOM (TDT i ràdio) — La TdG · 05.11.2026
   Pàgina amb clau (la mateixa que els estudis d'àudio i de vídeo).
   - Llistes: tdt/tv.json i tdt/radio.json, que el workflow «TDT i ràdio» (tdt.yml) baixa
     cada dia de TDTChannels (https://www.tdtchannels.com/listas/) amb tdt/actualitza.py.
@@ -93,7 +93,7 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
         <rect x="10" y="9" width="4" height="8" rx="2" stroke="currentColor"/><path d="M12 17v4" stroke="currentColor"/><path d="M9 21h6" stroke="currentColor"/>
       </svg>
     </a>
-    <h1>📺 TDT i ràdio</h1>
+    <h1>📺 La TdG control room</h1>
     <a class="dreta" href="../">← La TdG redacció</a>
   </div>
   <p class="sub">Cadenes de televisió i emissores de ràdio en directe, amb gravació en l'aparell des d'on es mira.</p>
@@ -220,7 +220,16 @@ if (llegeix(CLAU_DESADA)) { $("pin").value = llegeix(CLAU_DESADA); $("recorda").
 // ---------- Llistes ----------
 const LLISTES = { tv: null, radio: null };
 let TIPUS = "tv";
-const AMBIT_PER_DEFECTE = "Catalunya";
+const AMBIT_PER_DEFECTE = "Cataluña";
+// Noms dels àmbits de TDTChannels, en català.
+const AMBITS_CA = { "Cataluña": "Catalunya", "Generalistas": "Generalistes", "Populares": "Generalistes", "Informativos": "Informatius",
+  "Deportivos": "Esports", "Deportivas": "Esports", "Infantiles": "Infantils", "Eventuales": "Eventuals", "Musicales": "Musicals",
+  "Streaming": "Streaming", "Andalucía": "Andalusia", "Aragón": "Aragó", "C. Foral de Navarra": "Navarra", "C. Valenciana": "País Valencià",
+  "C. de Madrid": "Madrid", "Canarias": "Canàries", "Cantabria": "Cantàbria", "Castilla y León": "Castella i Lleó",
+  "Castilla-La Mancha": "Castella-la Manxa", "Ceuta": "Ceuta", "Extremadura": "Extremadura", "Galicia": "Galícia",
+  "Illes Balears": "Illes Balears", "La Rioja": "La Rioja", "Melilla": "Melilla", "P. de Asturias": "Astúries",
+  "País Vasco": "País Basc", "R. de Murcia": "Múrcia" };
+const nomAmbit = a => AMBITS_CA[a] || a;
 const PREF = "tdtPreferits";
 const preferits = () => { try { return new Set(JSON.parse(llegeix(PREF) || "[]")); } catch (e) { return new Set(); } };
 const clauCanal = (t, c) => `${t}|${c.p}|${c.n}`;
@@ -243,9 +252,11 @@ function omplAmbits() {
   const opcio = (v, t) => { const o = document.createElement("option"); o.value = v; o.textContent = t; sel.append(o); };
   if (preferits().size && [...preferits()].some(k => k.startsWith(TIPUS + "|"))) opcio("*pref", "⭐ Preferits");
   opcio("*tots", "Totes");
-  for (const c of ll.canals) {
+  // Catalunya primer; la resta, en l'ordre de la llista.
+  const ordenats = [...ll.canals].sort((a, b) => (b.a === AMBIT_PER_DEFECTE && b.p === "Spain") - (a.a === AMBIT_PER_DEFECTE && a.p === "Spain"));
+  for (const c of ordenats) {
     const k = c.p === "Spain" ? c.a : `${c.p} · ${c.a}`;
-    if (!vist.has(k)) { vist.add(k); opcio(k, c.p === "Spain" ? c.a : `🌍 ${c.p} · ${c.a}`); }
+    if (!vist.has(k)) { vist.add(k); opcio(k, c.p === "Spain" ? nomAmbit(c.a) : `🌍 ${c.p} · ${nomAmbit(c.a)}`); }
   }
   const valors = [...sel.options].map(o => o.value);
   sel.value = valors.includes(abans) ? abans : valors.includes("*pref") ? "*pref" : valors.includes(AMBIT_PER_DEFECTE) ? AMBIT_PER_DEFECTE : "*tots";
@@ -259,7 +270,8 @@ function inicials(nom) {
 function logo(c) {
   if (!c.l) return inicials(c.n);
   const i = document.createElement("img"); i.loading = "lazy"; i.alt = ""; i.referrerPolicy = "no-referrer"; i.src = c.l;
-  i.onerror = () => i.replaceWith(inicials(c.n));
+  // Primer la còpia de tdt/logos/; si falla, l'original; si tampoc, les inicials.
+  i.onerror = () => { if (c.lo && i.src !== c.lo) i.src = c.lo; else i.replaceWith(inicials(c.n)); };
   return i;
 }
 const reproduible = o => ["m3u8", "mp3", "aac", "youtube"].includes(o.f) || (o.f === "stream" && TIPUS === "radio");

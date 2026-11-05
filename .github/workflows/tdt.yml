@@ -1,6 +1,7 @@
 # TDT i ràdio — La TdG · 05.11.2026
-# Un cop al dia baixa les llistes de TDTChannels (tv.json i radio.json) a tdt/.
-name: TDT i ràdio
+# Un cop al dia baixa les llistes de TDTChannels (tv.json i radio.json) a tdt/,
+# i còpia dels logotips nous a tdt/logos/ (els que ja hi són no es tornen a baixar).
+name: La TdG control room (llistes de TDT i ràdio)
 
 on:
   schedule:
@@ -25,7 +26,7 @@ jobs:
           python tdt/actualitza.py
           git config user.name "La TdG (TDT)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add tdt/tv.json tdt/radio.json
+          git add tdt/tv.json tdt/radio.json tdt/logos
           if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
           git commit -qm "Llistes de TDT i ràdio"
           for intent in 1 2 3 4 5 6; do

@@ -216,10 +216,10 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
     <a target="_blank" rel="noopener" class="acces" href="audio/" title="Estudi d'àudio: locucions i editor (amb clau)">🎚️</a>
     <a target="_blank" rel="noopener" class="acces" href="video/" title="Estudi de vídeo: retalls, formats, subtítols i vídeos d'un àudio (amb clau)">🎬</a>
     <a target="_blank" rel="noopener" class="acces" href="tdt/" title="La TdG control room: TDT i ràdio en directe, amb gravació">📺</a>
+    <a target="_blank" rel="noopener" class="acces" href="https://latdg.github.io/tauler/" title="La TdG ampliada" aria-label="La TdG ampliada">➕</a>
+    <a target="_blank" rel="noopener" class="acces" href="dades/" title="La TdG dades: blocs de menys actualització, per analitzar" aria-label="La TdG dades">📊</a>
     <div class="eines dreta">
       <label id="selector" hidden>Dia: <select id="dia"></select></label>
-      <a class="acces" href="https://latdg.github.io/tauler/" target="_blank" rel="noopener" title="La TdG ampliada" aria-label="La TdG ampliada">🌐</a>
-      <a class="acces" target="_blank" rel="noopener" href="slow/" title="La TdG dades: blocs de menys actualització, per analitzar" aria-label="La TdG dades">📊</a>
     </div>
   </div>
   <p class="sub" id="sub">Carregant…</p>
@@ -799,7 +799,7 @@ function blocsDelResum(body) {
 const tecla = n => String(n).split("").map(d => d + "\uFE0F\u20E3").join("");
 
 // 31.10.2026: LA TdG SLOW. Des del bloc de la contractació pública (l'11) fins al
-// final, els blocs van al panell «La TdG slow» (slow/), que és aquesta mateixa
+// final, els blocs van al panell «La TdG dades» (dades/, abans slow/), que és aquesta mateixa
 // pàgina amb ?slow. Aquí, sense ?slow, es mostren només els blocs del 0 al 10.
 const PARAMS = new URLSearchParams(location.search);
 const MODE_SLOW = PARAMS.has("slow");

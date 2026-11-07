@@ -60,6 +60,11 @@ footer .credits-escuts{margin:0}
 .capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .capcalera .dreta{margin-left:auto}
 .capcalera .acces{font-size:1.6rem;line-height:1;text-decoration:none}
+/* 07.11.2026: els altres panells (a l'esquerra del títol) separats de les eines de la redacció (a la dreta). */
+.capcalera .panells,.capcalera .eines-redaccio{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.capcalera .panells{padding-right:16px;border-right:1px solid #e3e1db}
+.capcalera .eines-redaccio{padding-left:16px;border-left:1px solid #e3e1db}
+@media (max-width:600px){.capcalera .panells,.capcalera .eines-redaccio{padding:0;border:0}}
 .sub:empty{display:none}
 .podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;color:var(--text);line-height:1.1;flex-shrink:0}
 .podcast svg{display:block;width:50px;height:50px}
@@ -212,15 +217,19 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
         <path d="M9 21h6" stroke="currentColor"/>
       </svg>
     </a>
+    <span class="panells" aria-label="Altres panells de La TdG">
+      <a target="_blank" rel="noopener" class="acces" href="https://latdg.github.io/tauler/" title="La TdG ampliada" aria-label="La TdG ampliada">➕</a>
+      <a target="_blank" rel="noopener" class="acces" href="dades/" title="La TdG dades: blocs de menys actualització, per analitzar" aria-label="La TdG dades">📊</a>
+      <a target="_blank" rel="noopener" class="acces" href="tdt/" title="La TdG sala de control audiovisual: TDT i ràdio en directe, amb gravació" aria-label="La TdG sala de control audiovisual">📺</a>
+      <a target="_blank" rel="noopener" class="acces" href="https://latdg.github.io/tauler/fonoteca/" title="La TdG fonoteca: declaracions, conferències i actes per tornar a escoltar" aria-label="La TdG fonoteca">🎧</a>
+    </span>
     <h1>La TdG redacció</h1>
-    <a target="_blank" rel="noopener" class="acces" href="noticies/" title="Notícies del guió (amb clau)">🔒</a>
-    <a target="_blank" rel="noopener" class="acces" href="publicador/" title="Publicador (amb clau)">📣</a>
-    <a target="_blank" rel="noopener" class="acces" href="audio/" title="Estudi d'àudio: locucions i editor (amb clau)">🎚️</a>
-    <a target="_blank" rel="noopener" class="acces" href="video/" title="Estudi de vídeo: retalls, formats, subtítols i vídeos d'un àudio (amb clau)">🎬</a>
-    <a target="_blank" rel="noopener" class="acces" href="tdt/" title="La TdG sala de control audiovisual: TDT i ràdio en directe, amb gravació">📺</a>
-    <a target="_blank" rel="noopener" class="acces" href="https://latdg.github.io/tauler/" title="La TdG ampliada" aria-label="La TdG ampliada">➕</a>
-    <a target="_blank" rel="noopener" class="acces" href="dades/" title="La TdG dades: blocs de menys actualització, per analitzar" aria-label="La TdG dades">📊</a>
-    <a target="_blank" rel="noopener" class="acces" href="https://latdg.github.io/tauler/fonoteca/" title="La TdG fonoteca: declaracions, conferències i actes per tornar a escoltar" aria-label="La TdG fonoteca">🎧</a>
+    <span class="eines-redaccio" aria-label="Eines de la redacció">
+      <a target="_blank" rel="noopener" class="acces" href="noticies/" title="Notícies del guió (amb clau)">🔒</a>
+      <a target="_blank" rel="noopener" class="acces" href="publicador/" title="Publicador (amb clau)">📣</a>
+      <a target="_blank" rel="noopener" class="acces" href="audio/" title="Estudi d'àudio: locucions i editor (amb clau)">🎚️</a>
+      <a target="_blank" rel="noopener" class="acces" href="video/" title="Estudi de vídeo: retalls, formats, subtítols i vídeos d'un àudio (amb clau)">🎬</a>
+    </span>
     <div class="eines dreta">
       <label id="selector" hidden>Dia: <select id="dia"></select></label>
     </div>

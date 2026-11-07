@@ -1,4 +1,4 @@
-// PASSAREL·LA DE SENYALS — La TdG control room · 05.11.2026
+// PASSAREL·LA DE SENYALS — La TdG sala de control audiovisual · 05.11.2026
 // Worker de Cloudflare «latdg-senyal» (https://latdg-senyal.ignasicorney.workers.dev).
 // Demana el senyal d'una cadena o emissora i el torna a la pàgina tdt/ amb permís
 // (CORS) perquè el navegador el pugui reproduir i gravar. Només l'usa la pàgina quan el

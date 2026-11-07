@@ -1,7 +1,7 @@
 # TDT i ràdio — La TdG · 05.11.2026
 # Un cop al dia baixa les llistes de TDTChannels (tv.json i radio.json) a tdt/,
 # i còpia dels logotips nous a tdt/logos/ (els que ja hi són no es tornen a baixar).
-name: La TdG control room (llistes de TDT i ràdio)
+name: La TdG sala de control audiovisual (llistes de TDT i ràdio)
 
 on:
   schedule:

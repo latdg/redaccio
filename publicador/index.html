@@ -41,10 +41,13 @@ button:disabled{opacity:.5;cursor:default}
 .xarxes label{display:flex;align-items:center;gap:8px;border:1px solid var(--linia);border-radius:10px;padding:8px 10px;cursor:pointer;background:var(--fons)}
 .xarxes label:has(input:checked){border-color:var(--accent);background:#fbf1ee}
 .xarxes input{width:18px;height:18px;accent-color:var(--accent)}
-.arxiu{display:grid;grid-template-columns:34px 1fr 1fr 36px;gap:8px;align-items:center;margin-bottom:8px}
+.arxiu{display:grid;grid-template-columns:34px 1fr 36px;gap:8px;align-items:center;margin-bottom:8px}
+/* 07.11.2026: fitxa de l'àudio (la mateixa de la pàgina de l'àudio i de La TdG fonoteca) */
+.fitxa-arxiu{margin:0 0 14px 42px;padding:10px 14px;border:1px solid var(--linia);border-left:4px solid var(--accent);border-radius:10px;background:var(--fons)}
+.fitxa-arxiu > p{margin:0;font-size:.85rem;color:var(--suau)}
 .arxiu .ico{font-size:1.4rem;text-align:center}
 .arxiu button{padding:6px;background:var(--targeta);color:var(--text);border-color:var(--linia)}
-@media (max-width:600px){.arxiu{grid-template-columns:34px 1fr 36px}.arxiu .titol{grid-column:2 / 3}}
+@media (max-width:600px){.fitxa-arxiu{margin-left:0}}
 .accions{display:flex;gap:10px;flex-wrap:wrap}
 .accions button{flex:1 1 160px;padding:12px;font-size:1rem;font-weight:700}
 pre{white-space:pre-wrap;word-break:break-word;background:var(--fons);border:1px solid var(--linia);border-radius:8px;padding:12px;margin:8px 0 0;font-size:.82rem;max-height:480px;overflow:auto}
@@ -132,7 +135,8 @@ emoji-picker{width:100%;--background:var(--targeta);--border-color:var(--linia);
       <button type="button" class="suau" id="afegeixArxiu">➕ Afegeix un arxiu</button>
       <p class="font">El nom de l'arxiu tal com és al disc, dins de /xarxes/. La carpeta i el tipus es trien sols
         per l'extensió: 🔊 àudio (declaracions), 🎥 vídeo (videos), 📷 foto (fotos). L'àudio i el vídeo es comprimeixen
-        com sempre. A l'àudio hi pots posar el nom de qui parla.</p>
+        com sempre si passen de la mida. Cada àudio porta la seva fitxa (títol de l'acte, qui parla, descripció…):
+        és la que surt a la pàgina de l'àudio i a La TdG fonoteca, i s'hi pot tornar a editar des de totes dues.</p>
     </section>
 
     <section>
@@ -152,6 +156,7 @@ emoji-picker{width:100%;--background:var(--targeta);--border-color:var(--linia);
   </div>
 </main>
 
+<script src="https://latdg.github.io/tauler/fonoteca/fitxa-audio.js?v=1"></script>
 <script>
 // Web App del publicador (la mateixa del proxy d'àudio). Sense la clau no serveix de res.
 const WEBAPP = "https://script.google.com/macros/s/AKfycbzN9tJeFLe2JvP15Lu5USlLWB1FnqFacRU-_TcNbAawneqKdmB4UATWVBouJz9RJt4/exec";
@@ -210,10 +215,19 @@ async function entra() {
     $("clauBox").hidden = true;
     $("panell").hidden = false;
     reprenEstat();
+    carregaFonoteca();
   } catch (e) {
     PIN = "";
     $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el publicador." : e.message);
   }
+}
+
+// 07.11.2026: les fitxes de la fonoteca, per carregar la d'un àudio que ja en tingui.
+async function carregaFonoteca() {
+  if (!window.FitxaAudio) return;
+  try { FONOTECA = (await FitxaAudio.llegeix(PIN)).fonoteca || { audios: [] }; }
+  catch (e) { FONOTECA = null; }
+  document.querySelectorAll("#arxius .nom").forEach(i => i.dispatchEvent(new Event("input")));
 }
 
 // --- Formulari ---
@@ -254,25 +268,72 @@ function tipusArxiu(nom) {
   return nom.trim() ? "❔" : "📄";
 }
 
-function afegeixArxiu(nom = "", titol = "") {
+// 07.11.2026: cada àudio porta la seva FITXA (la de La TdG fonoteca): s'obre
+// sola quan el nom de l'arxiu és d'àudio. Si l'àudio ja en té, es carrega.
+// Es desa en publicar (no en previsualitzar). «Qui parla» és el de la fitxa.
+let FONOTECA = null;   // fitxes de la fonoteca, llegides en entrar amb la clau
+const EDITORS = new WeakMap();
+
+function fitxaExistent(nom) {
+  const clau = window.FitxaAudio ? FitxaAudio.nomComprimit(nom) : "";
+  return ((FONOTECA || {}).audios || []).find(x => x.fitxer === clau && !x.eliminat) || null;
+}
+
+function afegeixArxiu(nom = "") {
   const fila = document.createElement("div");
   fila.className = "arxiu";
   fila.innerHTML = `<span class="ico">📄</span>
     <input type="text" class="nom" placeholder="nom-de-l-arxiu.mp3" value="${esc(nom)}" autocapitalize="off" autocorrect="off" spellcheck="false">
-    <input type="text" class="titol" placeholder="Qui parla (només àudio)" value="${esc(titol)}">
     <button type="button" title="Treu">✕</button>`;
-  const ico = fila.querySelector(".ico"), inp = fila.querySelector(".nom"), tit = fila.querySelector(".titol");
-  const actualitza = () => { ico.textContent = tipusArxiu(inp.value); tit.hidden = ico.textContent !== "🔊"; };
+  const caixa = document.createElement("div");
+  caixa.className = "fitxa-arxiu";
+  caixa.hidden = true;
+  const ico = fila.querySelector(".ico"), inp = fila.querySelector(".nom");
+  let perNom = "";
+  const actualitza = () => {
+    ico.textContent = tipusArxiu(inp.value);
+    const audio = ico.textContent === "🔊";
+    caixa.hidden = !audio;
+    if (!audio || !window.FitxaAudio) return;
+    if (!EDITORS.has(caixa)) {
+      caixa.innerHTML = `<p>🔊 Fitxa de l'àudio</p><div></div>`;
+      EDITORS.set(caixa, FitxaAudio.editor(caixa.lastElementChild, { categoria: "declaracions" }));
+    }
+    // Quan canvia el nom: si l'àudio ja té fitxa, es carrega; si no, la data del nom (o la d'avui).
+    const n = inp.value.trim();
+    if (n === perNom) return;
+    perNom = n;
+    const ed = EDITORS.get(caixa), f = fitxaExistent(n), v = ed.valors();
+    if (f) { ed.omple(f); caixa.firstElementChild.textContent = "🔊 Fitxa de l'àudio (ja en tenia: la pots corregir)"; }
+    else {
+      caixa.firstElementChild.textContent = "🔊 Fitxa de l'àudio";
+      if (!v.data || v.data === ed.dataAuto) { ed.dataAuto = FitxaAudio.dataDelNom(n) || $("dia").value; ed.camp("data").value = ed.dataAuto; }
+    }
+  };
   inp.oninput = actualitza;
-  fila.querySelector("button").onclick = () => fila.remove();
+  fila.querySelector("button").onclick = () => { fila.remove(); caixa.remove(); };
   $("arxius").appendChild(fila);
+  $("arxius").appendChild(caixa);
   actualitza();
   if (!nom) inp.focus();
 }
 
+// Fitxes dels àudios del formulari, per desar-les a la fonoteca.
+function fitxesDelFormulari() {
+  return Array.from(document.querySelectorAll("#arxius .arxiu")).map(f => {
+    const nom = f.querySelector(".nom").value.trim(), caixa = f.nextElementSibling;
+    if (!nom || !window.FitxaAudio || !FitxaAudio.esAudio(nom) || !EDITORS.has(caixa)) return null;
+    return { fitxer: FitxaAudio.nomComprimit(nom), ...EDITORS.get(caixa).valors() };
+  }).filter(Boolean);
+}
+
 function peticio() {
   const files = Array.from(document.querySelectorAll("#arxius .arxiu"))
-    .map(f => ({ nom: f.querySelector(".nom").value.trim(), titol: f.querySelector(".titol").value.trim() }))
+    .map(f => {
+      const caixa = f.nextElementSibling, ed = caixa && EDITORS.get(caixa);
+      const nom = f.querySelector(".nom").value.trim();
+      return { nom, titol: ed && tipusArxiu(nom) === "🔊" ? ed.valors().qui.join(", ") : "" };
+    })
     .filter(f => f.nom);
   const p = {
     tipus: MODE,
@@ -332,6 +393,21 @@ async function publica() {
   const pr = prefs(); pr[MODE] = p.plataformes; escriu(PREFS, JSON.stringify(pr));
   bloqueja(true);
   $("sortida").innerHTML = "";
+  // 07.11.2026: primer es desen les fitxes dels àudios a la fonoteca (la pàgina
+  // de l'àudio les llegeix d'allà). Si falla, es pregunta si es publica igualment.
+  const fitxes = fitxesDelFormulari();
+  if (fitxes.length) {
+    $("estat").textContent = "🗂️ Desant la fitxa" + (fitxes.length > 1 ? " dels àudios" : " de l'àudio") + "…";
+    try {
+      const d = await FitxaAudio.desaFitxes(PIN, fitxes);
+      FONOTECA = d.fonoteca || FONOTECA;
+    } catch (e) {
+      if (!confirm("No s'ha pogut desar la fitxa de l'àudio (" + (e instanceof TypeError ? "sense connexió" : e.message) +
+        ").\n\nVols publicar igualment? La fitxa la podràs omplir després a la pàgina de l'àudio o a la fonoteca.")) {
+        bloqueja(false); $("estat").textContent = "No s'ha publicat res."; return;
+      }
+    }
+  }
   // Canvi 26.10.2026: comptador mentre es publica (sense àudio ni vídeo es fa al moment).
   const t0 = Date.now();
   const rellotge = () => { $("estat").textContent = "📤 Publicant… (" + Math.round((Date.now() - t0) / 1000) + " s)"; };

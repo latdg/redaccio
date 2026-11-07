@@ -1510,7 +1510,7 @@ function taulaCapitols(titol, pres, liq, camp, campTotal) {
 
 // 27.10.2026: capçalera plegable amb l'escut i el nom del municipi.
 // 27.10.2026: tamb\u00e9 l'isotip (el logotip sense text) del Consell Comarcal i del Consorci de les Gavarres.
-const FITXER_ESCUT = { "17022": "17022.svg", "17057": "17057.svg", "17902": "17902.svg", "17901": "17901.png", "17205": "17205.svg", "ccbe": "ccbe.png", "gavarres": "gavarres.png" };
+const FITXER_ESCUT = { "17022": "17022-petit.png", "17057": "17057-petit.png", "17902": "17902-petit.png", "17901": "17901.png", "17205": "17205-petit.png", "ccbe": "ccbe.png", "gavarres": "gavarres.png" };
 const codiPerNom = nom => {
   const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   return t.includes("consell comarcal") ? "ccbe" : t.includes("gavarres") ? "gavarres" :
@@ -1676,7 +1676,7 @@ let ELEC = null, ESCUTS = {};
 
 function escut(codi) {
   return ESCUTS[codi]
-    ? `<img src="escuts/${ESCUTS[codi].local || codi + ".svg"}" alt="" width="34" height="40" style="height:40px;width:auto;flex:none">`
+    ? `<img src="escuts/${ESCUTS[codi].local || codi + "-petit.png"}" alt="" width="34" height="40" style="height:40px;width:auto;flex:none">`
     : `<span style="width:34px;height:40px;flex:none;border:1px dashed var(--linia);border-radius:6px 6px 17px 17px"></span>`;
 }
 
@@ -1785,7 +1785,7 @@ const NOMS_MUN = { "17022": "la Bisbal d'Empordà", "17057": "Corçà", "17902":
 const NOMS_CURTS_MUN = { "17022": "la Bisbal", "17057": "Corçà", "17902": "Forallac", "17901": "Cruïlles, Monells i Sant Sadurní de l'Heura", "17205": "Ullastret" };
 function triadorMun(codis, actiu, escuts) {
   return `<div class="tria-mun">` + codis.map(c => `<button type="button" data-mun="${c}" class="${c === actiu ? "actiu" : ""}">` +
-    (escuts[c] ? `<img src="escuts/${escuts[c].local || c + ".svg"}" alt="">` : `<span class="sense-escut"></span>`) + esc(NOMS_CURTS_MUN[c] || c) + `</button>`).join("") + `</div>`;
+    (escuts[c] ? `<img src="escuts/${escuts[c].local || c + "-petit.png"}" alt="">` : `<span class="sense-escut"></span>`) + esc(NOMS_CURTS_MUN[c] || c) + `</button>`).join("") + `</div>`;
 }
 // 27.10.2026: tots els blocs per municipi, plegats com el bloc 14. A la vista,
 // l'escut, el nom i una xifra; el contingut es pinta quan s'obre la fitxa.

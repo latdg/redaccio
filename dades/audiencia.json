@@ -1,0 +1,22 @@
+{
+ "dies": [
+  {
+   "data": "2026-11-08",
+   "bluesky": {
+    "seguidors": 9,
+    "publicacions7d": 39,
+    "magrades7d": 0,
+    "compartits7d": 0,
+    "respostes7d": 5
+   },
+   "mastodon": {
+    "seguidors": 1,
+    "publicacions7d": 40,
+    "magrades7d": 0,
+    "compartits7d": 0,
+    "respostes7d": 0
+   }
+  }
+ ],
+ "actualitzat": "08.11.2026"
+}

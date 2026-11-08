@@ -1,0 +1,851 @@
+{
+ "actualitzat": "08.11.2026",
+ "convocatories": [
+  {
+   "id": "940408",
+   "titol": "CONCESIÓN DE SUBVECNIÓN DIRECTA NOMINADA EN EL PRESUPUESTO GENERAL MUNICIPAL PARA EL EJERCICIO ECONÓMICO 2026, A FAVOR DE LA ENTIDAD SOCIAL \"RADIO ECCA FUNDACIÓN CANARIA\".",
+   "organ": "SAN BARTOLOMÉ · AYUNTAMIENTO DE SAN BARTOLOMÉ",
+   "ambit": "LOCAL",
+   "data": "06.11.2026",
+   "iso": "2026-11-06",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/940408"
+  },
+  {
+   "id": "940315",
+   "titol": "CONVENI SUBVENCIÓ AMICS DE LA RADIO SELVAMAR 2026-2029",
+   "organ": "MAÇANET DE LA SELVA · AYUNTAMIENTO DE MAÇANET DE LA SELVA",
+   "ambit": "LOCAL",
+   "data": "06.11.2026",
+   "iso": "2026-11-06",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/940315"
+  },
+  {
+   "id": "940549",
+   "titol": "Bizkaiko Foru Aldundiaren 89/2026 FORU DEKRETUA azaroaren 5ekoa, zeinaren bidez onartzen baitira foru dirulaguntzen oinarri arautzaileak eta bigarren deialdia, 2026an, ikus-entzunezko proiektuen preprodukzio, produkzio eta sustapen gastuak finantzatzeko.",
+   "organ": "DIPUTACIÓN FORAL DE BIZKAIA · DIPUTACIÓN FORAL DE BIZKAIA",
+   "ambit": "LOCAL",
+   "data": "06.11.2026",
+   "iso": "2026-11-06",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/940549"
+  },
+  {
+   "id": "940546",
+   "titol": "Bizkaiko Foru Aldundiaren 89/2026 FORU DEKRETUA azaroaren 5ekoa, zeinaren bidez onartzen baitira foru dirulaguntzen oinarri arautzaileak eta bigarren deialdia, 2026an, ikus-entzunezko proiektuen preprodukzio, produkzio eta sustapen gastuak finantzatzeko.",
+   "organ": "DIPUTACIÓN FORAL DE BIZKAIA · DIPUTACIÓN FORAL DE BIZKAIA",
+   "ambit": "LOCAL",
+   "data": "06.11.2026",
+   "iso": "2026-11-06",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/940546"
+  },
+  {
+   "id": "940040",
+   "titol": "Subvención Directa a la Asociación de Mujeres Cineastas y de Medios Audiovisuales (CIMA) para sus actividades",
+   "organ": "MINISTERIO DE CULTURA · INSTITUTO DE LA CINEMATOGRAFÍA Y DE LAS ARTES AUDIOVISUALES",
+   "ambit": "ESTADO",
+   "data": "05.11.2026",
+   "iso": "2026-11-05",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/940040"
+  },
+  {
+   "id": "939768",
+   "titol": "GC Subvención nominada a RADIO ECCA fundación Canaria a fin de financiar el Proyecto “Inversión y equipamiento 2026”",
+   "organ": "CABILDO INSULAR DE GRAN CANARIA · CABILDO INSULAR DE GRAN CANARIA",
+   "ambit": "LOCAL",
+   "data": "04.11.2026",
+   "iso": "2026-11-04",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/939768"
+  },
+  {
+   "id": "939408",
+   "titol": "SUBVENCIÓN NOMINATIVA A LA ASOCIACIÓN DE PRENSA DE ALMERÍA 2026",
+   "organ": "DIPUTACIÓN PROV. DE ALMERÍA · DIPUTACIÓN PROVINCIAL DE ALMERÍA",
+   "ambit": "LOCAL",
+   "data": "03.11.2026",
+   "iso": "2026-11-03",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/939408"
+  },
+  {
+   "id": "939409",
+   "titol": "Acuerdo de 23/10/2026 del C.R. del ILC, por el que se convocan subvenciones para proyectos audiovisuales relacionados con la provincia de León 2026-2027",
+   "organ": "DIPUTACIÓN PROV. DE LEÓN · INSTITUTO LEONES DE CULTURA",
+   "ambit": "LOCAL",
+   "data": "03.11.2026",
+   "iso": "2026-11-03",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/939409"
+  },
+  {
+   "id": "939315",
+   "titol": "RESOLUCIÓN DEL DIRECTOR GENERAL DEL ICA POR LA QUE SE CONVOCA LA CONCESIÓN DE AYUDAS ECONÓMICAS, EN RÉGIMEN DE CONCURRENCIA NO COMPETITIVA, DESTINADAS AL FORTALECIMIENTO DE LA INDUSTRIA AUDIOVISUAL EN LA REGIÓN DE MURCIA.",
+   "organ": "REGIÓN DE MURCIA · INSTITUTO DE INDUSTRIAS CULTURALES Y DE LAS ARTES DE LA REGIÓN DE MURCIA ( ICA )",
+   "ambit": "AUTONOMICA",
+   "data": "02.11.2026",
+   "iso": "2026-11-02",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/939315"
+  },
+  {
+   "id": "938657",
+   "titol": "Concesión subvención Asociación Prensa Deportiva de Segovia con motivo de la Gala del Deporte 2025",
+   "organ": "SEGOVIA · INSTITUTO MUNICIPAL DE DEPORTES DEL AYUNTAMIENTO DE SEGOVIA",
+   "ambit": "LOCAL",
+   "data": "29.10.2026",
+   "iso": "2026-10-29",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/938657"
+  },
+  {
+   "id": "938855",
+   "titol": "CONVENIO DE COLABORACIÓN ENTRE EL GOBIERNO DE ARAGÓN, EL INSTITUTO TECNOLÓGICO DE ARAGÓN Y LA CORPORACIÓN ARAGONESA DE RADIO Y TELEVISIÓN PARA EL DESARROLLO DEL SISTEMA DE PREDICCIÓN METEOROLÓGICA DE ARAGÓN “MeteoAR” Y SU EJECUCIÓN EN EL ÁMBITO EMERGENCIA",
+   "organ": "ARAGÓN · DIRECCIÓN GENERAL DE INTERIOR Y EMERGENCIAS",
+   "ambit": "AUTONOMICA",
+   "data": "29.10.2026",
+   "iso": "2026-10-29",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/938855"
+  },
+  {
+   "id": "938654",
+   "titol": "Activitats de Parc Audiovisual de Catalunya, SL l'any 2026",
+   "organ": "CATALUÑA · INSTITUT CATALÀ DE LES EMPRESES CULTURALS (ICEC)",
+   "ambit": "AUTONOMICA",
+   "data": "29.10.2026",
+   "iso": "2026-10-29",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/938654"
+  },
+  {
+   "id": "938331",
+   "titol": "XVII PREMIOS DE PERIODISMO “CIUDAD DE MÁLAGA”",
+   "organ": "MÁLAGA · AYUNTAMIENTO DE MÁLAGA",
+   "ambit": "LOCAL",
+   "data": "27.10.2026",
+   "iso": "2026-10-27",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/938331"
+  },
+  {
+   "id": "938302",
+   "titol": "Estrategia Sector Audiovisual Canarias 2026",
+   "organ": "CANARIAS · CONSEJERÍA DE UNIVERSIDADES, CIENCIA E INNOVACIÓN Y CULTURA",
+   "ambit": "AUTONOMICA",
+   "data": "27.10.2026",
+   "iso": "2026-10-27",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/938302"
+  },
+  {
+   "id": "938127",
+   "titol": "CONVENIO DE COLABORACIÓN POR EL QUE SE INSTRUMENTA LA CONCESIÓN DE UNA SUBVENCIÓN NOMINATIVA A LA ASOCIACIÓN CULTURA TRAX, TREX, TRIX PARA LA REALIZACIÓN DE LAS “JORNADAS DE INDUSTRIA AUDIOVISUAL”",
+   "organ": "TALAVERA DE LA REINA · AYUNTAMIENTO DE TALAVERA DE LA REINA",
+   "ambit": "LOCAL",
+   "data": "27.10.2026",
+   "iso": "2026-10-27",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/938127"
+  },
+  {
+   "id": "937933",
+   "titol": "Concesión y justificación de aportación específica a la Institución Ferial de Tenerife, S.A. (IFTSA), “Expo-Fórum Audiovisual de Tenerife 2026”, celebrada los días 15 y 16 de mayo de 2026. (Expediente E2026021027  074/2026).",
+   "organ": "CABILDO INSULAR DE TENERIFE · CABILDO INSULAR DE TENERIFE",
+   "ambit": "LOCAL",
+   "data": "26.10.2026",
+   "iso": "2026-10-26",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/937933"
+  },
+  {
+   "id": "937740",
+   "titol": "Convenio entre ASEDUC e o concello da Coruña para o financiamento da realización do proxecto de ensino do mundo audiovisual as persoas maiores denominado \"Mayor Creativ@ Coruña\"",
+   "organ": "CORUÑA, A · AYUNTAMIENTO DE CORUÑA, A",
+   "ambit": "LOCAL",
+   "data": "26.10.2026",
+   "iso": "2026-10-26",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/937740"
+  },
+  {
+   "id": "937200",
+   "titol": "Resolución de la Alcaldía núm. 2240 de 20-10-2026, concesión subvención directa a la Productora ESTRELA AUDIOVISUAL SL, para la promoción de la cultura a través de la participación en el proyecto “MIKE CANON POWER”",
+   "organ": "CANALS · AYUNTAMIENTO DE CANALS",
+   "ambit": "LOCAL",
+   "data": "22.10.2026",
+   "iso": "2026-10-22",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/937200"
+  },
+  {
+   "id": "936904",
+   "titol": "SUBVENCIÓ NOMINATIVA - ASSOCIACIÓ RÀDIO SF 2026",
+   "organ": "SANT FRUITÓS DE BAGES · AYUNTAMIENTO DE SANT FRUITÓS DE BAGES",
+   "ambit": "LOCAL",
+   "data": "21.10.2026",
+   "iso": "2026-10-21",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936904"
+  },
+  {
+   "id": "936487",
+   "titol": "Conveni específic entre el Consell de l’Audiovisual de la Comunitat Valenciana i la Universidad Internacional de Valencia per a la realització d’activitats de la Càtedra  de Cultura Audiovisual durant l’exercici 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "20.10.2026",
+   "iso": "2026-10-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936487"
+  },
+  {
+   "id": "936485",
+   "titol": "Conveni específic entre el Consell de l’Audiovisual de la Comunitat Valenciana i la Universidad CEU-Cardenal Herrera per a la realització d’activitats de la Càtedra  de Cultura Audiovisual durant l’exercici 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "20.10.2026",
+   "iso": "2026-10-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936485"
+  },
+  {
+   "id": "936481",
+   "titol": "Conveni específic entre el Consell de l’Audiovisual de la Comunitat Valenciana i la Universitat de València per a la realització d’activitats de la Càtedra d’Anàlisi i Prospectiva de l’Audiovisual durant l’exercici 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "20.10.2026",
+   "iso": "2026-10-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936481"
+  },
+  {
+   "id": "936477",
+   "titol": "Conveni específic entre el Consell de l’Audiovisual de la Comunitat Valenciana i la Universitat Politècnica de València per a la realització d’activitats de la Càtedra d’Anàlisi i Prospectiva de l’Audiovisual durant l’exercici 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "20.10.2026",
+   "iso": "2026-10-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936477"
+  },
+  {
+   "id": "936474",
+   "titol": "Conveni específic entre el Consell de l’Audiovisual de la Comunitat Valenciana i la Universidad Miguel Hernández d'Elx per a la realització d’activitats de la Càtedra d’Anàlisi i Prospectiva de l’Audiovisual durant l’exercici 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "20.10.2026",
+   "iso": "2026-10-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936474"
+  },
+  {
+   "id": "936466",
+   "titol": "Conveni específic entre el Consell de l’Audiovisual de la Comunitat Valenciana i la Universitat Jaume I per a la realització d’activitats de la Càtedra d’Anàlisi i Prospectiva de l’Audiovisual durant l’exercici 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "20.10.2026",
+   "iso": "2026-10-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936466"
+  },
+  {
+   "id": "936458",
+   "titol": "Conveni específic entre el Consell de l’Audiovisual de la Comunitat Valenciana i la Universitat d’Alacant per a la realització d’activitats de la Càtedra d’Anàlisi i Prospectiva de l’Audiovisual durant l’exercici 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "20.10.2026",
+   "iso": "2026-10-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936458"
+  },
+  {
+   "id": "936269",
+   "titol": "CONVENIO DE COLABORACIÓN CON LA SOCIEDAD ESPAÑOLA DE RADIODIFUSIÓN S.L.U. CADENA SER, Y DE CONCESIÓN DE SUBVENCIÓN PARA EL DESARROLLO DEL PROYECTO “CONGRESO DEL BIENESTAR, SABIDURÍA Y CONOCIMIENTO, 2026”.",
+   "organ": "CÓRDOBA · AYUNTAMIENTO DE CÓRDOBA",
+   "ambit": "LOCAL",
+   "data": "19.10.2026",
+   "iso": "2026-10-19",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936269"
+  },
+  {
+   "id": "936214",
+   "titol": "CONVENIO DE COLABORACIÓN ENTRE EL EXCMO. AYUNTAMIENTO DE GÜÍMAR Y LA ASOCIACIÓN UNION RADIOAFICIONADOS URVAG, PARA LA CONCESIÓN DE SUBVENCIÓN EN QUE SE ACREDITEN RAZONES DE INTERÉS PÚBLICO, SOCIAL, ECONÓMICO O HUMANITARIO.",
+   "organ": "GÜÍMAR · AYUNTAMIENTO DE GÜÍMAR",
+   "ambit": "LOCAL",
+   "data": "19.10.2026",
+   "iso": "2026-10-19",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/936214"
+  },
+  {
+   "id": "935725",
+   "titol": "Resolucion de 15 de Octubre de 2026, XLI edición de los Premios Andalucía de Periodismo correspondientes al año 2026",
+   "organ": "ANDALUCÍA · CONSEJERÍA DE PRESIDENCIA, SANIDAD Y EMERGENCIAS",
+   "ambit": "AUTONOMICA",
+   "data": "16.10.2026",
+   "iso": "2026-10-16",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/935725"
+  },
+  {
+   "id": "935437",
+   "titol": "Convenio coa Asociación Centro de Betanzos en Buenos Aires para financiar a Modernización Tecnolóxica da Radio Enxebre.",
+   "organ": "DIPUTACIÓN PROV. DE A CORUÑA · DIPUTACIÓN PROVINCIAL DE CORUÑA, A",
+   "ambit": "LOCAL",
+   "data": "15.10.2026",
+   "iso": "2026-10-15",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/935437"
+  },
+  {
+   "id": "935225",
+   "titol": "Concesión Directa de Subvenciones Previstas Nominativamente en el Presupuesto Municipal para el ejercicio 2025.UNIÓN DE RADIOAFICIONADOS Y VOLUNTARIOS DE PROTECCIÓN CIVIL DE LA GOMERA (URVPCLG)",
+   "organ": "VALLE GRAN REY · AYUNTAMIENTO DE VALLE GRAN REY",
+   "ambit": "LOCAL",
+   "data": "14.10.2026",
+   "iso": "2026-10-14",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/935225"
+  },
+  {
+   "id": "934335",
+   "titol": "Conveni de col·laboració entre la Generalitat, a través de la Vicepresidència Segona i Conselleria de Presidència, i l'Associació Espai Audiovisual de Proximitat",
+   "organ": "COMUNITAT VALENCIANA · SECRETARÍA AUTONÓMICA DE COMUNICACIÓN",
+   "ambit": "AUTONOMICA",
+   "data": "08.10.2026",
+   "iso": "2026-10-08",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/934335"
+  },
+  {
+   "id": "933987",
+   "titol": "Conveni de col·laboració entre la Generalitat, a través de la Vicepresidència Segona i Conselleria de Presidència, i l'Associació de la Premsa Comarcal Valenciana",
+   "organ": "COMUNITAT VALENCIANA · SECRETARÍA AUTONÓMICA DE COMUNICACIÓN",
+   "ambit": "AUTONOMICA",
+   "data": "07.10.2026",
+   "iso": "2026-10-07",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/933987"
+  },
+  {
+   "id": "933820",
+   "titol": "Subvención nominativa 2026. Fundación Universidad-Sociedad de la UEX. Onda Campus Radio TV. Proyecto Difusión Digital y Agenda. LEY 2/2026, de 3 de agosto, de Presupuestos Generales de la Comunidad",
+   "organ": "EXTREMADURA · SECRETARÍA GENERAL DE CULTURA",
+   "ambit": "AUTONOMICA",
+   "data": "06.10.2026",
+   "iso": "2026-10-06",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/933820"
+  },
+  {
+   "id": "933716",
+   "titol": "Ayudas para la internacionalización del videojuego, el podcast y la cultura digital correspondientes al 2026",
+   "organ": "MINISTERIO DE CULTURA · SUBSECRETARÍA DE CULTURA",
+   "ambit": "ESTADO",
+   "data": "06.10.2026",
+   "iso": "2026-10-06",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/933716"
+  },
+  {
+   "id": "933453",
+   "titol": "SUBVENCIÓN NOMINATIVA A ASOCIACIÓN DE TRABAJADORES AUTÓNOMOS DE TAXIS DE CARTAGENA Y COMARCA 2026 - RADIO TAXI",
+   "organ": "CARTAGENA · AYUNTAMIENTO DE CARTAGENA",
+   "ambit": "LOCAL",
+   "data": "05.10.2026",
+   "iso": "2026-10-05",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/933453"
+  },
+  {
+   "id": "932390",
+   "titol": "Subvención a la Asociación de Periodistas de Aragón para Congreso de Periodismo de Huesca y actividades anexas",
+   "organ": "DIPUTACIÓN PROV. DE HUESCA · DIPUTACIÓN PROVINCIAL DE HUESCA",
+   "ambit": "LOCAL",
+   "data": "29.09.2026",
+   "iso": "2026-09-29",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/932390"
+  },
+  {
+   "id": "932257",
+   "titol": "SUBVENCION NOMINATIVA RADIO ECCA FUNDACION CANARIA  2026",
+   "organ": "VILLA DE MAZO · AYUNTAMIENTO DE VILLA DE MAZO",
+   "ambit": "LOCAL",
+   "data": "29.09.2026",
+   "iso": "2026-09-29",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/932257"
+  },
+  {
+   "id": "932240",
+   "titol": "I EDICIÓN CONCURSO DE PIEZAS AUDIOVISUALES PARA REDES SOCIALES SOBRE VIOLENCIAS MACHISTAS- “20 segundos para cambiar la mirada”, DE LA UNIVERSIDAD DE ALICANTE",
+   "organ": "UNIVERSIDAD DE ALICANTE",
+   "ambit": "OTROS",
+   "data": "29.09.2026",
+   "iso": "2026-09-29",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/932240"
+  },
+  {
+   "id": "932266",
+   "titol": "I Edición do Premio de Pódcast \"Transmitindo na Lingua Galega\" (PREM-TNLG/2026)",
+   "organ": "DIPUTACIÓN PROV. DE A CORUÑA · DIPUTACIÓN PROVINCIAL DE CORUÑA, A",
+   "ambit": "LOCAL",
+   "data": "29.09.2026",
+   "iso": "2026-09-29",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/932266"
+  },
+  {
+   "id": "932046",
+   "titol": "GC Subvención nominativa a RADIO ECCA, FUNDACIÓN CANARIA destinada al Proyecto denominado \"Figuras UNESCO Vol. 2\".",
+   "organ": "CABILDO INSULAR DE GRAN CANARIA · CABILDO INSULAR DE GRAN CANARIA",
+   "ambit": "LOCAL",
+   "data": "28.09.2026",
+   "iso": "2026-09-28",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/932046"
+  },
+  {
+   "id": "931994",
+   "titol": "SUBVENCIÓN NOMINATIVA A FAVOR DE LA ENTIDAD RADIO ECCA, FUNDACIÓN CANARIA DESTINADA A LA FINANCIACIÓN DEL PROYECTO «AMPLIACIÓN DE LA FORMACIÓN A PERSONAS MAYORES (2025)».",
+   "organ": "CABILDO INSULAR DE TENERIFE · CABILDO INSULAR DE TENERIFE",
+   "ambit": "LOCAL",
+   "data": "28.09.2026",
+   "iso": "2026-09-28",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/931994"
+  },
+  {
+   "id": "931686",
+   "titol": "Decreto de la Presidencia nº 4799 de 26 de agosto por el que se aprueba el convenio de colaboración entre la Diputación de Valladolid y la Asociación Prensa deportiva de Valladolid para la realización de su programa de actividades deportivas, año 2026",
+   "organ": "DIPUTACIÓN PROV. DE VALLADOLID · DIPUTACIÓN PROVINCIAL DE VALLADOLID",
+   "ambit": "LOCAL",
+   "data": "25.09.2026",
+   "iso": "2026-09-25",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/931686"
+  },
+  {
+   "id": "931647",
+   "titol": "Finanament de les activitats de l'Observatori de la Producció Audiovisual (OPA), de la Universitat Pompeu Fabra (UPF), durant l'any 2026.",
+   "organ": "CATALUÑA · DEPARTAMENT DE LA PRESIDÈNCIA",
+   "ambit": "AUTONOMICA",
+   "data": "25.09.2026",
+   "iso": "2026-09-25",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/931647"
+  },
+  {
+   "id": "931591",
+   "titol": "Concurso de creación audiovisual «Vega Baja del Segura en 20 segundos». I edición. Anualidad 2026",
+   "organ": "CONSORCIO PARA EL DESARROLLO ECONÓMICO DE LA VEGA BAJA (CONVEGA) · CONSORCIO PARA EL DESARROLLO ECONÓMICO DE LA VEGA BAJA (CONVEGA)",
+   "ambit": "LOCAL",
+   "data": "24.09.2026",
+   "iso": "2026-09-24",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/931591"
+  },
+  {
+   "id": "931017",
+   "titol": "RESOLUCIÓ del director general de Cultura, per la qual es convoquen subvencions per a la producció audiovisual de documentals sobre tradicions vives i sectors artesanals tradicionals de la Comunitat Valenciana, per a les anualitats de 2026, 2027 i 2028",
+   "organ": "COMUNITAT VALENCIANA · INSTITUT VALENCIÀ DE CULTURA (IVC)",
+   "ambit": "AUTONOMICA",
+   "data": "22.09.2026",
+   "iso": "2026-09-22",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/931017"
+  },
+  {
+   "id": "931006",
+   "titol": "Subvencions per donar suport a la\nproducció i coproducció d’obres audiovisuals per a l’any 2026",
+   "organ": "ILLES BALEARS · INSTITUTO DE INDUSTRIAS CULTURALES DE LAS ILLES BALEARS",
+   "ambit": "AUTONOMICA",
+   "data": "22.09.2026",
+   "iso": "2026-09-22",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/931006"
+  },
+  {
+   "id": "930995",
+   "titol": "Subvención directa al TEATRO CERVANTES DE MALAGA E INICIATIVAS AUDIOVISUALES S.A. para la realización del Festivald e Málaga 2026",
+   "organ": "MINISTERIO DE CULTURA · INSTITUTO DE LA CINEMATOGRAFÍA Y DE LAS ARTES AUDIOVISUALES",
+   "ambit": "ESTADO",
+   "data": "22.09.2026",
+   "iso": "2026-09-22",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/930995"
+  },
+  {
+   "id": "930689",
+   "titol": "Conveni de col·laboració entre el Consell de l’Audiovisual de la Comunitat Valenciana i l’Acadèmia Valenciana de l’Audiovisual, per a impulsar el sector audiovisual de la Comunitat Valenciana en 2026",
+   "organ": "COMUNITAT VALENCIANA · CONSELL DEL AUDIOVISUAL DE LA COMUNITAT VALENCIANA (CACV)",
+   "ambit": "AUTONOMICA",
+   "data": "21.09.2026",
+   "iso": "2026-09-21",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/930689"
+  },
+  {
+   "id": "930566",
+   "titol": "Decreto de la Sra. Vpdta 1ª y Diputada de Economía, Comunicación y Ciclo Hídrico nº 2026-4158 de fecha 17 de septiembre de 2026, por el que se aprueba la Convocatoria púbica anticipada de dos Becas de Formación en Comunicación Audiovisual, anualidad 2027.",
+   "organ": "DIPUTACIÓN PROV. DE ALICANTE · DIPUTACIÓN PROVINCIAL DE ALACANT/ALICANTE",
+   "ambit": "LOCAL",
+   "data": "21.09.2026",
+   "iso": "2026-09-21",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/930566"
+  },
+  {
+   "id": "930532",
+   "titol": "CONVOCATORIA DE LOS III PREMIOS AUDIOVISUALES CONTRA LA VIOLENCIA MACHISTA CORRESPONDIENTES AL AÑO 2026.",
+   "organ": "DIPUTACIÓN PROV. DE BADAJOZ · DIPUTACIÓN PROVINCIAL DE BADAJOZ",
+   "ambit": "LOCAL",
+   "data": "20.09.2026",
+   "iso": "2026-09-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/930532"
+  },
+  {
+   "id": "930394",
+   "titol": "Concesión de subv. a la Asociación Española de la Prensa Deportiva por organización Copa San Pedro 2026",
+   "organ": "ALICANTE/ALACANT · AYUNTAMIENTO DE ALICANTE/ALACANT",
+   "ambit": "LOCAL",
+   "data": "18.09.2026",
+   "iso": "2026-09-18",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/930394"
+  },
+  {
+   "id": "930464",
+   "titol": "RESOLUCIÓ del director general Cultura, per la qual es convoquen subvencions per a la realització de festivals, cineclubs, concursos, jornades, esdeveniments i projectes singulars  ajudes a la promoció de produccions audiovisuals valencianes per a competi",
+   "organ": "COMUNITAT VALENCIANA · INSTITUT VALENCIÀ DE CULTURA (IVC)",
+   "ambit": "AUTONOMICA",
+   "data": "18.09.2026",
+   "iso": "2026-09-18",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/930464"
+  },
+  {
+   "id": "930034",
+   "titol": "27a edició del Mercat Audiovisual de Catalunya",
+   "organ": "CATALUÑA · DEPARTAMENT DE LA PRESIDÈNCIA",
+   "ambit": "AUTONOMICA",
+   "data": "17.09.2026",
+   "iso": "2026-09-17",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/930034"
+  },
+  {
+   "id": "929607",
+   "titol": "CONVENIO CON RADIO ECCA FUNDACIÓN CANARIA, PARA LA CONTINUACIÓN DEL PROYECTO DE FORMACIÓN `WE ARE & WIR SIND FUERTEVENTURA`",
+   "organ": "CABILDO INSULAR DE FUERTEVENTURA · CABILDO INSULAR DE FUERTEVENTURA",
+   "ambit": "LOCAL",
+   "data": "15.09.2026",
+   "iso": "2026-09-15",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/929607"
+  },
+  {
+   "id": "929361",
+   "titol": "SUBV. NOM. ASOCIACIÓN ACADEMIA GALEGA DO AUDIOVISUAL PARA PREMIO LUZ MORALES 2026",
+   "organ": "DIPUTACIÓN PROV. DE LUGO · DIPUTACIÓN PROVINCIAL DE LUGO",
+   "ambit": "LOCAL",
+   "data": "14.09.2026",
+   "iso": "2026-09-14",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/929361"
+  },
+  {
+   "id": "929297",
+   "titol": "BECA DE COL·LABORACIÓ PER AL DESENVOLUPAMENT DEL PROJECTE VIDEOPÒDCAST (Codi Subvenció: 61-122-4-2026-0139-S)",
+   "organ": "UNIVERSIDAD MIGUEL HERNÁNDEZ DE ELCHE",
+   "ambit": "OTROS",
+   "data": "14.09.2026",
+   "iso": "2026-09-14",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/929297"
+  },
+  {
+   "id": "929007",
+   "titol": "SUBVENCIÓN NOMINATIVA 2026.ASOCIACIÓN CULTURAL RADIO KOLOR",
+   "organ": "DIPUTACIÓN PROV. DE CUENCA · DIPUTACIÓN PROVINCIAL DE CUENCA",
+   "ambit": "LOCAL",
+   "data": "11.09.2026",
+   "iso": "2026-09-11",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/929007"
+  },
+  {
+   "id": "929060",
+   "titol": "GC Subvención nominada a Global Audiovisual, S.L. para el proyecto Enciclopedia Audiovisual del Folklore de Gran Canaria. CJS.",
+   "organ": "CABILDO INSULAR DE GRAN CANARIA · CABILDO INSULAR DE GRAN CANARIA",
+   "ambit": "LOCAL",
+   "data": "11.09.2026",
+   "iso": "2026-09-11",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/929060"
+  },
+  {
+   "id": "928607",
+   "titol": "Subvenciones 2026 a los ayuntamientos de Tenerife para dotación de fondos bibliográficos y audiovisuales para las bibliotecas públicas municipales centrales",
+   "organ": "CABILDO INSULAR DE TENERIFE · CABILDO INSULAR DE TENERIFE",
+   "ambit": "LOCAL",
+   "data": "10.09.2026",
+   "iso": "2026-09-10",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/928607"
+  },
+  {
+   "id": "928502",
+   "titol": "Resolución de la Dirección General de ENAIRE  se aprueba concesión directa de entrega dineraria sin contraprestación a revista AVIACION DIGITAL,para apoyo organización y celebración de “XVI edición de los premios de periodismo sobre Aviación en Epañol",
+   "organ": "MINISTERIO DE TRANSPORTES Y MOVILIDAD SOSTENIBLE · ENAIRE",
+   "ambit": "ESTADO",
+   "data": "09.09.2026",
+   "iso": "2026-09-09",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/928502"
+  },
+  {
+   "id": "928494",
+   "titol": "CONVENIO ASOCIACIÓN ANDALUZA DE MUJERES DE LOS MEDIOS AUDIOVISUALES (AAMMA) 2026",
+   "organ": "CHICLANA DE LA FRONTERA · AYUNTAMIENTO DE CHICLANA DE LA FRONTERA",
+   "ambit": "LOCAL",
+   "data": "09.09.2026",
+   "iso": "2026-09-09",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/928494"
+  },
+  {
+   "id": "928459",
+   "titol": "CONVENIO ASOCIACIÓN ANDALUZA DE MUJERES DE LOS MEDIOS AUDIOVISUALES (AAMMA) 2026",
+   "organ": "CHICLANA DE LA FRONTERA · AYUNTAMIENTO DE CHICLANA DE LA FRONTERA",
+   "ambit": "LOCAL",
+   "data": "09.09.2026",
+   "iso": "2026-09-09",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/928459"
+  },
+  {
+   "id": "928457",
+   "titol": "CONVENIO ASOCIACIÓN ANDALUZA DE MUJERES DE LOS MEDIOS AUDIOVISUALES (AAMMA) 2026",
+   "organ": "CHICLANA DE LA FRONTERA · AYUNTAMIENTO DE CHICLANA DE LA FRONTERA",
+   "ambit": "LOCAL",
+   "data": "09.09.2026",
+   "iso": "2026-09-09",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/928457"
+  },
+  {
+   "id": "928456",
+   "titol": "CONVENIO ASOCIACIÓN ANDALUZA DE MUJERES DE LOS MEDIOS AUDIOVISUALES (AAMMA) 2026",
+   "organ": "CHICLANA DE LA FRONTERA · AYUNTAMIENTO DE CHICLANA DE LA FRONTERA",
+   "ambit": "LOCAL",
+   "data": "09.09.2026",
+   "iso": "2026-09-09",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/928456"
+  },
+  {
+   "id": "928455",
+   "titol": "CONVENIO ASOCIACIÓN ANDALUZA DE MUJERES DE LOS MEDIOS AUDIOVISUALES (AAMMA) 2026",
+   "organ": "CHICLANA DE LA FRONTERA · AYUNTAMIENTO DE CHICLANA DE LA FRONTERA",
+   "ambit": "LOCAL",
+   "data": "09.09.2026",
+   "iso": "2026-09-09",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/928455"
+  },
+  {
+   "id": "927616",
+   "titol": "Guatemala 2026 Fortalecimiento del periodismo comunitario y cobertura periodística de las elecciones generales 2027 en Guatemala",
+   "organ": "MINISTERIO DE ASUNTOS EXTERIORES, UNIÓN EUROPEA Y COOPERACIÓN · AGENCIA ESTATAL AGENCIA ESPAÑOLA DE COOPERACIÓN INTERNACIONAL PARA EL DESARROLLO",
+   "ambit": "ESTADO",
+   "data": "02.09.2026",
+   "iso": "2026-09-02",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/927616"
+  },
+  {
+   "id": "927612",
+   "titol": "Convocatoria 2026 de subvenciones dirigidas a profesionales y empresas para el apoyo a la industria cinematográfica y audiovisual (FTJ España 2021 - 2027)",
+   "organ": "PRINCIPADO DE ASTURIAS · CONSEJERÍA DE CULTURA, POLÍTICA LINGÜÍSTICA Y TURISMO",
+   "ambit": "AUTONOMICA",
+   "data": "02.09.2026",
+   "iso": "2026-09-02",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/927612"
+  },
+  {
+   "id": "927034",
+   "titol": "VI PREMIO SESÉ MATEO DE PERIODISMO ÉTICO EN EL TRATAMIENTO DE LA VIOLENCIA MACHISTA.",
+   "organ": "REDONDELA · AYUNTAMIENTO DE REDONDELA",
+   "ambit": "LOCAL",
+   "data": "31.08.2026",
+   "iso": "2026-08-31",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/927034"
+  },
+  {
+   "id": "926884",
+   "titol": "CONVENIO ENTRE EL AYUNTAMIENTO DE LA OLIVA Y LA SOCIEDAD COOPERATIVA DE TAXISTAS DE LA OLIVA, PARA LA CONCESIÓN DE LA SUBVENCIÓN NOMINADA DESTINADA AL DESARROLLO DEL PROYECTO \"MANTENIMIENTO DEL SERVICIO RADIOTAXI EN EL MUNICIPIO DE LA OLIVA\"",
+   "organ": "OLIVA, LA · AYUNTAMIENTO DE OLIVA, LA",
+   "ambit": "LOCAL",
+   "data": "28.08.2026",
+   "iso": "2026-08-28",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/926884"
+  },
+  {
+   "id": "926458",
+   "titol": "Productors Audiovisuals de Catalunya (PAC) - Pla d'Acció 2026",
+   "organ": "CATALUÑA · INSTITUT CATALÀ DE LES EMPRESES CULTURALS (ICEC)",
+   "ambit": "AUTONOMICA",
+   "data": "26.08.2026",
+   "iso": "2026-08-26",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/926458"
+  },
+  {
+   "id": "926413",
+   "titol": "Subvenciones  para la producción de proyectos audiovisuales en asturiano y en gallego-asturiano o eonaviego realizados por particulares",
+   "organ": "PRINCIPADO DE ASTURIAS · CONSEJERÍA DE CULTURA, POLÍTICA LINGÜÍSTICA Y TURISMO",
+   "ambit": "AUTONOMICA",
+   "data": "25.08.2026",
+   "iso": "2026-08-25",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/926413"
+  },
+  {
+   "id": "926002",
+   "titol": "Resolución de 21/8/26 del Consejero de Fomento, Vivienda, Ordenación del Territorio y Medio Ambiente por la que se convocan subvenciones destinadas a infraestructuras audiovisuales en los municipios de Cantabria, con criterios de neutralidad tecnologica",
+   "organ": "CANTABRIA · CONSEJERÍA DE FOMENTO, ORDENACIÓN DELTERRITORIO Y MEDIO AMBIENTE",
+   "ambit": "AUTONOMICA",
+   "data": "24.08.2026",
+   "iso": "2026-08-24",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/926002"
+  },
+  {
+   "id": "925337",
+   "titol": "Resolución de Presidencia 2026/6071 de 14 de agosto de Concesión, abono y aprobación de justificantes a Kaiju. S.L. para financiación de la celebración de FreakCon 2026. Alquiler material audiovisual y estructuras.",
+   "organ": "DIPUTACIÓN PROV. DE MÁLAGA · DIPUTACIÓN PROVINCIAL DE MÁLAGA",
+   "ambit": "LOCAL",
+   "data": "18.08.2026",
+   "iso": "2026-08-18",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/925337"
+  },
+  {
+   "id": "925261",
+   "titol": "Convenio de Colaboración del Ayuntamiento de Elche con la Asociación de Informadores de Elche, en la organización del VI Premio Vicente Verdú de Periodismo e Innovación, organizado por la Asociación de Informadores de Elche. 2026",
+   "organ": "ELCHE/ELX · AYUNTAMIENTO DE ELCHE/ELX",
+   "ambit": "LOCAL",
+   "data": "17.08.2026",
+   "iso": "2026-08-17",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/925261"
+  },
+  {
+   "id": "925126",
+   "titol": "SUBVENCIÓN NOMINATIVA ASOCIACIÓN MADRILEÑA AUDIOVISUAL (AMA) 2026",
+   "organ": "COMUNIDAD DE MADRID · CONSEJERÍA DE CULTURA, TURISMO Y DEPORTE",
+   "ambit": "AUTONOMICA",
+   "data": "14.08.2026",
+   "iso": "2026-08-14",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/925126"
+  },
+  {
+   "id": "924968",
+   "titol": "Resolució de convocatòria per a la concessió de subvencions, per a la producció de continguts audiovisuals culturals en versió original catalana o occitana en la seva variant aranesa, destinats a ser emesos per televisió",
+   "organ": "CATALUÑA · INSTITUT CATALÀ DE LES EMPRESES CULTURALS (ICEC)",
+   "ambit": "AUTONOMICA",
+   "data": "13.08.2026",
+   "iso": "2026-08-13",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/924968"
+  },
+  {
+   "id": "924668",
+   "titol": "SUBV. GASTOS CORRIENTES PROYECTO RADIO GENERACION",
+   "organ": "CABILDO INSULAR DE LA PALMA · EXCMO. CABILDO INSULAR DE LA PALMA",
+   "ambit": "LOCAL",
+   "data": "12.08.2026",
+   "iso": "2026-08-12",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/924668"
+  },
+  {
+   "id": "923480",
+   "titol": "CONVENIO DE SUBVENCIÓN NOMINATIVA ENTRE EL AYUNTAMIENTO DE LAS PALMAS DE GRAN CANARIA Y RADIO ECCA FUNDACIÓN CANARIA DESTINADO A SUFRAGAR GASTOS GENERALES DEL PROYECTO CAPITAL CULTURAL LPGC: TRADICIÓN, INNOVACIÓN Y COMUNIDAD 2026.",
+   "organ": "PALMAS DE GRAN CANARIA, LAS · AYUNTAMIENTO DE LAS PALMAS DE GRAN CANARIA",
+   "ambit": "LOCAL",
+   "data": "04.08.2026",
+   "iso": "2026-08-04",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/923480"
+  },
+  {
+   "id": "923318",
+   "titol": "Resolución de Presidencia 2026/5718 de 3 de agosto, referente a Concesión a la Academia Malagueña de Ciencias con destino al proyecto \"Gastos de la Gala Conmemorativa del Centenario de la Radio Málaga\".",
+   "organ": "DIPUTACIÓN PROV. DE MÁLAGA · DIPUTACIÓN PROVINCIAL DE MÁLAGA",
+   "ambit": "LOCAL",
+   "data": "04.08.2026",
+   "iso": "2026-08-04",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/923318"
+  },
+  {
+   "id": "923479",
+   "titol": "Convenio entre Academia Galega do Audiovisual e o concello da Coruña para financiar a VII Edición da Semana do Cine Galego, Xornadas Profesionais: IV Edición do Foro da Industria Galega do Audiovisual e XXV Edición dos Premios Mestre Mateo",
+   "organ": "CORUÑA, A · AYUNTAMIENTO DE CORUÑA, A",
+   "ambit": "LOCAL",
+   "data": "04.08.2026",
+   "iso": "2026-08-04",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/923479"
+  },
+  {
+   "id": "923162",
+   "titol": "Resolución de 8 de Agosto de 2026,de la D.G. de Comunicación Social de la Consej.de Presidencia, Sanidad y Emergencias, por la que se convoca para 2026 la XIII edición de los Premios Andalucía de Comunicación Audiovisual Local",
+   "organ": "ANDALUCÍA · CONSEJERÍA DE PRESIDENCIA, SANIDAD Y EMERGENCIAS",
+   "ambit": "AUTONOMICA",
+   "data": "03.08.2026",
+   "iso": "2026-08-03",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/923162"
+  },
+  {
+   "id": "922734",
+   "titol": "SUBVENCIÓN NOMINATIVA A RADIO ECCA FUNDACIÓN CANARIA, NIF G35103431, PARA EL DESARROLLO DEL PROYECTO ACTUACIÓN EDUCATIVA FÓRMATE 2026",
+   "organ": "CABILDO INSULAR DE LA PALMA · EXCMO. CABILDO INSULAR DE LA PALMA",
+   "ambit": "LOCAL",
+   "data": "30.07.2026",
+   "iso": "2026-07-30",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/922734"
+  },
+  {
+   "id": "921443",
+   "titol": "Bizkaiko Foru Aldundiaren 73/2026 FORU DEKRETUA, uztailaren 23 koa, Datu Kazetaritzako Erronkaren 2026eko Sarien oinarri arautzaileak eta deialdia.",
+   "organ": "DIPUTACIÓN FORAL DE BIZKAIA · DIPUTACIÓN FORAL DE BIZKAIA",
+   "ambit": "LOCAL",
+   "data": "24.07.2026",
+   "iso": "2026-07-24",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/921443"
+  },
+  {
+   "id": "921173",
+   "titol": "SUBVENCIÓN NOMINATIVA A FAVOR DE RADIO ECCA, FUNDACIÓN CANARIA",
+   "organ": "CABILDO INSULAR DE TENERIFE · CABILDO INSULAR DE TENERIFE",
+   "ambit": "LOCAL",
+   "data": "23.07.2026",
+   "iso": "2026-07-23",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/921173"
+  },
+  {
+   "id": "921239",
+   "titol": "CONVOCATÒRIA SUBVENCIONS A ENTITATS DEL MUNICIPI D'ONTINYENT EN L'ÀMBIT  MUSICAL, ARTS ESCÈNIQUES I ARTS AUDIOVISUALS 2026",
+   "organ": "ONTINYENT · AYUNTAMIENTO DE ONTINYENT",
+   "ambit": "LOCAL",
+   "data": "23.07.2026",
+   "iso": "2026-07-23",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/921239"
+  },
+  {
+   "id": "920959",
+   "titol": "Radio Cit Tenerife_ Programa Orígenes en la lejanía",
+   "organ": "CANARIAS · PRESIDENCIA DEL GOBIERNO",
+   "ambit": "AUTONOMICA",
+   "data": "22.07.2026",
+   "iso": "2026-07-22",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/920959"
+  },
+  {
+   "id": "920748",
+   "titol": "Resolución del 8 de julio de 2026 por la que se establecen las bases reguladoras para la concesión, en régimen de concurrencia competitiva, de las ayudas para el desarrollo de proyectos audiovisuales gallegos cofinanciadas por la Unión Europea en el marco",
+   "organ": "GALICIA · AGENCIA GALLEGA DE LAS INDUSTRIAS CULTURALES (AGADIC)",
+   "ambit": "AUTONOMICA",
+   "data": "22.07.2026",
+   "iso": "2026-07-22",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/920748"
+  },
+  {
+   "id": "920238",
+   "titol": "APROBANDO LAS BASES Y LA CONVOCATORIA DEL PREMIO INTERNACIONAL DE PERIODISMO “MANUEL CHAVES NOGALES”, EDICIÓN 2026.",
+   "organ": "DIPUTACIÓN PROV. DE SEVILLA · DIPUTACIÓN PROVINCIAL DE SEVILLA",
+   "ambit": "LOCAL",
+   "data": "20.07.2026",
+   "iso": "2026-07-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/920238"
+  },
+  {
+   "id": "920215",
+   "titol": "Subvención prevista en la aplicación presupuestaria 3260.48918 del presupuesto de gastos del Ayuntamiento de Santa Cruz de La Palma en el ejercicio 2026 a favor de la entidad Radio Ecca",
+   "organ": "SANTA CRUZ DE LA PALMA · AYUNTAMIENTO DE SANTA CRUZ DE LA PALMA",
+   "ambit": "LOCAL",
+   "data": "20.07.2026",
+   "iso": "2026-07-20",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/920215"
+  },
+  {
+   "id": "919897",
+   "titol": "DGEA SUBV NOMINATIVA FUND ESC CINEMATOGRAFIA Y AUDIOVISUAL C. MADRID 2026",
+   "organ": "COMUNIDAD DE MADRID · CONSEJERÍA DE EDUCACIÓN, CIENCIA Y UNIVERSIDADES",
+   "ambit": "AUTONOMICA",
+   "data": "17.07.2026",
+   "iso": "2026-07-17",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/919897"
+  },
+  {
+   "id": "919347",
+   "titol": "GC Subvención nominativa a Radio ECCA Fundación Canaria para la realización del proyecto \"Becas de Estudio\".",
+   "organ": "CABILDO INSULAR DE GRAN CANARIA · CABILDO INSULAR DE GRAN CANARIA",
+   "ambit": "LOCAL",
+   "data": "15.07.2026",
+   "iso": "2026-07-15",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/919347"
+  },
+  {
+   "id": "919057",
+   "titol": "GC Subvención nominativa a RADIO ECCA para el proyecto Alfabetización digital 2026.",
+   "organ": "CABILDO INSULAR DE GRAN CANARIA · CABILDO INSULAR DE GRAN CANARIA",
+   "ambit": "LOCAL",
+   "data": "14.07.2026",
+   "iso": "2026-07-14",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/919057"
+  },
+  {
+   "id": "918815",
+   "titol": "Convocatòria de subvencions destinades a la publicació de premsa escrita en format paper i digital de l'àmbit de la part forana de Mallorca, any 2026",
+   "organ": "CONSEJO INSULAR DE MALLORCA · CONSELL INSULAR DE MALLORCA",
+   "ambit": "LOCAL",
+   "data": "13.07.2026",
+   "iso": "2026-07-13",
+   "enllac": "https://www.infosubvenciones.es/bdnstrans/GE/es/convocatorias/918815"
+  }
+ ]
+}

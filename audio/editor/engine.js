@@ -3547,6 +3547,21 @@
 				}
 				wheel_stamp = now;
 
+				// Rodeta del ratolí (salts discrets): cada osca fa un pas clar de zoom
+				// cap a on apunta el ratolí, com als altres editors. La TdG 08.11.2026
+				var dy = e.deltaY || 0;
+				var notch = !e.shiftKey && !e.deltaX && dy &&
+					(e.deltaMode === 1 || e.deltaMode === 2 ||
+					 (Math.abs (dy) >= 50 && dy === Math.round (dy)));
+				if (notch) {
+					var steps = e.deltaMode === 1 ? Math.abs (dy) / 3 :
+						(e.deltaMode === 2 ? 1 : Math.abs (dy) / 100);
+					steps = Math.max (1, Math.min (4, Math.round (steps)));
+					wheel_axis = -1;
+					zoomAt ( Math.pow (dy < 0 ? 1.5 : 1 / 1.5, steps), waveWhere ( e ) );
+					return ;
+				}
+
 				if (info.pinch) {
 					if (wheel_axis > 0) return ;
 					if (!info.y) return ;

@@ -108,10 +108,68 @@ def telegram():
     return {"seguidors": r["result"]}
 
 
+def _xifra(obj, claus):
+    """Busca, a qualsevol nivell, el primer camp numèric amb algun d'aquests noms."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k.lower() in claus and isinstance(v, (int, float)):
+                return v
+        for v in obj.values():
+            r = _xifra(v, claus)
+            if r is not None:
+                return r
+    elif isinstance(obj, list):
+        for v in obj:
+            r = _xifra(v, claus)
+            if r is not None:
+                return r
+    return None
+
+
+def whatsapp():
+    # 08.11.2026: canal de WhatsApp via Whapi.Cloud (secret WHAPI_TOKEN; opcional
+    # WHAPI_CANAL amb l'id del canal, acabat en @newsletter). Whapi no documenta el
+    # nombre de seguidors; es busca a la resposta i, el primer cop, se'n registren els
+    # camps perquè es pugui afinar.
+    tok = os.environ.get("WHAPI_TOKEN", "").strip()
+    if not tok:
+        return None
+    hw = {"Authorization": f"Bearer {tok}", "Accept": "application/json"}
+    canal = os.environ.get("WHAPI_CANAL", "").strip()
+    if not canal:
+        ll = requests.get("https://gate.whapi.cloud/newsletters", headers=hw, timeout=30).json()
+        ll = ll.get("newsletters", ll) if isinstance(ll, dict) else ll
+        propis = [n for n in ll if str(n.get("role", "")).lower() in ("owner", "admin")] or ll
+        if not propis:
+            raise RuntimeError("no s'ha trobat cap canal")
+        canal = propis[0]["id"]
+    info = requests.get(f"https://gate.whapi.cloud/newsletters/{canal}", headers=hw, timeout=30).json()
+    print("  camps del canal:", sorted(info.keys()) if isinstance(info, dict) else type(info))
+    seg = _xifra(info, {"subscribers", "subscribers_count", "subscriberscount", "followers", "followers_count"})
+    res = {"seguidors": seg}
+    try:
+        msg = requests.get(f"https://gate.whapi.cloud/newsletters/{canal}/messages",
+                           params={"count": 50}, headers=hw, timeout=30).json()
+        msg = msg.get("messages", []) if isinstance(msg, dict) else msg
+        msg = [m for m in msg if (AVUI - dt.date.fromtimestamp(m.get("timestamp", 0))).days < 7]
+        if msg:
+            print("  camps d'un missatge:", sorted(msg[0].keys()))
+        vistes = [_xifra(m, {"views", "view_count", "views_count"}) for m in msg]
+        reacc = [_xifra(m, {"reactions_count", "reaction_count"}) for m in msg]
+        res["publicacions7d"] = len(msg)
+        if any(v is not None for v in vistes):
+            res["vistes7d"] = sum(v or 0 for v in vistes)
+        if any(v is not None for v in reacc):
+            res["magrades7d"] = sum(v or 0 for v in reacc)
+    except Exception as e:
+        print(f"  ⚠️ missatges del canal: {e}")
+    return res
+
+
 def audiencia():
     hist = llegeix(F_AUD, {"dies": []})
     fila = {"data": AVUI.isoformat()}
-    for nom, f in (("bluesky", bluesky), ("mastodon", mastodon), ("telegram", telegram)):
+    for nom, f in (("bluesky", bluesky), ("mastodon", mastodon), ("telegram", telegram), ("whatsapp", whatsapp)):
         try:
             v = f()
             if v is None:

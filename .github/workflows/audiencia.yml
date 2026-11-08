@@ -32,6 +32,8 @@ jobs:
           TELEGRAM_BOT_TOKEN_CANAL: ${{ secrets.TELEGRAM_BOT_TOKEN_CANAL }}
           TELEGRAM_BOT_TOKEN_INFOS: ${{ secrets.TELEGRAM_BOT_TOKEN_INFOS }}
           TELEGRAM_CHAT_ID_INFOS: ${{ secrets.TELEGRAM_CHAT_ID_INFOS }}
+          WHAPI_TOKEN: ${{ secrets.WHAPI_TOKEN }}
+          WHAPI_CANAL: ${{ secrets.WHAPI_CANAL }}
         run: |
           python audiencia/audiencia.py 2>&1 | tee audiencia/registre.txt
           git config user.name "La TdG (audiència)"

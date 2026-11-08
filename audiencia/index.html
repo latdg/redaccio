@@ -91,6 +91,7 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:32px}
 <script>
 const XARXES = [
   ["telegram", "Telegram", "Membres del canal @laTdG_podcast", "Cal afegir al repo el secret TELEGRAM_BOT_TOKEN_CANAL."],
+  ["whatsapp", "WhatsApp", "Canal «La Torre de Guaita»", "Cal afegir al repo el secret WHAPI_TOKEN."],
   ["bluesky", "Bluesky", "latdg-podcast.bsky.social", ""],
   ["mastodon", "Mastodon", "@latdg a mastodon.social", ""],
 ];
@@ -133,8 +134,11 @@ carrega("audiencia.json").then(a => {
     const d = darrer[k];
     if (!d) return `<div class="xarxa"><h3>${nom}</h3><div class="var">${sub}</div><p class="pendent">${falta || "Sense dades avui."}</p></div>`;
     const v7 = variacio(dies, k, 7), v30 = variacio(dies, k, 30);
-    const inter = d.publicacions7d != null
-      ? `<div class="inter">Darrers 7 dies: ${fmt(d.publicacions7d)} publicacions · ${fmt(d.magrades7d)} m'agrades · ${fmt(d.compartits7d)} compartits · ${fmt(d.respostes7d)} respostes</div>` : "";
+    const vis = d.vistes7d != null ? ` · ${fmt(d.vistes7d)} visualitzacions` : "";
+    const inter = d.publicacions7d != null && d.magrades7d == null
+      ? `<div class="inter">Darrers 7 dies: ${fmt(d.publicacions7d)} publicacions${vis}</div>`
+      : d.publicacions7d != null
+      ? `<div class="inter">Darrers 7 dies: ${fmt(d.publicacions7d)} publicacions · ${fmt(d.magrades7d)} m'agrades · ${fmt(d.compartits7d)} compartits · ${fmt(d.respostes7d ?? 0)} respostes${vis}</div>` : "";
     return `<div class="xarxa"><h3>${nom}</h3><div class="var">${sub}</div>
       <div class="xifra">${fmt(d.seguidors)}</div><div class="var">seguidors${v7 ? " · " + v7 : ""}${v30 ? " · " + v30 : ""}</div>
       ${inter}${grafic(dies, k)}</div>`;

@@ -138,6 +138,23 @@ PARAULES = ["medios de comunicación", "mitjans de comunicació", "prensa", "pre
             "espai català de comunicació"]
 # Per filtrar soroll: ha de dir alguna d'aquestes coses al títol.
 CLAU = re.compile(r"mitjans|medios|premsa|prensa|periodis|r[aà]dio|audiovisual|p[oó]dcast|comunicaci[oó]", re.I)
+# Fora les subvencions a dit (directes, nominatives, convenis): no s'hi pot optar.
+A_DIT = re.compile(r"directa|nominativ|nominad|conveni|a favor de|concesi[oó]n directa", re.I)
+# Àmbit: Estat, Generalitat (Catalunya) i administracions locals de Girona i de la comarca.
+LOCALS = re.compile(r"girona|baix empord|bisbal|cor[cç][aà]|forallac|cru[iï]lles|monells|ullastret|gavarres", re.I)
+
+
+def ens_interessa(c):
+    if A_DIT.search(c.get("titol", "")):
+        return False
+    ambit, organ = c.get("ambit", ""), c.get("organ", "")
+    if ambit == "ESTADO":
+        return True
+    if ambit == "AUTONOMICA":
+        return bool(re.search(r"catalu", organ, re.I))
+    if ambit == "LOCAL":
+        return bool(LOCALS.search(organ))
+    return False
 
 
 def bdns(paraula, desde):
@@ -185,9 +202,10 @@ def ajuts():
                 }
         except Exception as e:
             print(f"⚠️ BDNS «{p}»: {e}")
+    trobades = {k: c for k, c in trobades.items() if ens_interessa(c)}
     noves = [c for k, c in trobades.items() if k not in vistes]
     print(f"✓ BDNS: {len(trobades)} convocatòries; {len(noves)} noves")
-    tot = {c["id"]: c for c in estat["convocatories"]}
+    tot = {c["id"]: c for c in estat["convocatories"] if ens_interessa(c)}
     tot.update(trobades)
     llista = sorted(tot.values(), key=lambda c: c.get("iso", ""), reverse=True)[:200]
     estat = {"actualitzat": data_cat(AVUI.isoformat()), "convocatories": llista}

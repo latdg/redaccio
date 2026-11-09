@@ -75,8 +75,14 @@ for a, url in sorted(trobades.items()):
     desti = os.path.join(TEXT, f"{a}.txt")
     if os.path.exists(desti) and estat["edicions"].get(str(a), {}).get("url") == url:
         continue
-    r = requests.get(url, headers=UA, timeout=180)
-    r.raise_for_status()
+    try:
+        r = requests.get(url, headers=UA, timeout=180)
+        r.raise_for_status()
+        if not r.content.startswith(b"%PDF"): raise ValueError("no és un PDF")
+    except Exception as e:
+        # Un enllaç trencat d'una edició antiga no ha d'aturar la resta.
+        print(f"No s'ha pogut baixar l'edició {a} ({url}): {e}")
+        continue
     with tempfile.NamedTemporaryFile(suffix=".pdf") as f:
         f.write(r.content); f.flush()
         subprocess.run(["pdftotext", "-layout", f.name, desti], check=True)

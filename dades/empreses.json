@@ -1,0 +1,1108 @@
+{
+ "generat": "2026-11-09T16:01:19+00:00",
+ "font": "Diputació de Girona, «Estructura empresarial de la demarcació de Girona» (dades del Registre Mercantil)",
+ "edicions": {
+  "2022": {
+   "edicio": 2022,
+   "municipisComarca": 36,
+   "comarca": {
+    "facturacio": 2022.6,
+    "empreses": [
+     2562,
+     2566
+    ],
+    "facturacioAnys": [
+     2441.4,
+     2022.6
+    ],
+    "ocupacio": [
+     18109,
+     16907
+    ],
+    "trams": [
+     [
+      "Més de deu milions d'euros",
+      27,
+      1.1
+     ],
+     [
+      "Entre cinc i deu milions d'euros",
+      41,
+      1.6
+     ],
+     [
+      "Entre un i cinc milions d'euros",
+      263,
+      10.2
+     ],
+     [
+      "Entre 500.000 i 1.000.000 euros",
+      348,
+      13.6
+     ],
+     [
+      "Entre 100.000 i 500.000 euros",
+      1104,
+      43.0
+     ],
+     [
+      "Menys de 100.000 euros",
+      783,
+      30.5
+     ]
+    ],
+    "grans": [
+     [
+      "Primari",
+      79.9,
+      59.4,
+      2.9
+     ],
+     [
+      "Indústria",
+      440.0,
+      421.2,
+      20.8
+     ],
+     [
+      "Construcció",
+      407.6,
+      370.8,
+      18.3
+     ],
+     [
+      "Serveis",
+      1514.0,
+      1171.2,
+      57.9
+     ]
+    ]
+   },
+   "anys": [
+    2019,
+    2020
+   ],
+   "municipis": {
+    "17022": {
+     "nom": "la Bisbal d'Empordà",
+     "facturacio": 70.5,
+     "pes": 3.5,
+     "lloc": 9,
+     "perCapita": 6304,
+     "llocPerCapita": 28
+    },
+    "17902": {
+     "nom": "Forallac",
+     "facturacio": 47.8,
+     "pes": 2.4,
+     "lloc": 13,
+     "perCapita": 27967,
+     "llocPerCapita": 10
+    },
+    "17057": {
+     "nom": "Corçà",
+     "facturacio": 31.9,
+     "pes": 1.6,
+     "lloc": 16,
+     "perCapita": 24990,
+     "llocPerCapita": 11
+    },
+    "17901": {
+     "nom": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+     "facturacio": 26.4,
+     "pes": 1.3,
+     "lloc": 17,
+     "perCapita": 19917,
+     "llocPerCapita": 13
+    },
+    "17205": {
+     "nom": "Ullastret",
+     "facturacio": 0.8,
+     "pes": 0.0,
+     "lloc": 30,
+     "perCapita": 3254,
+     "llocPerCapita": 31
+    }
+   },
+   "empreses": [
+    {
+     "nom": "PORTES BISBAL SL",
+     "municipi": "17901",
+     "facturacio": 18.3,
+     "nif": "B55123806",
+     "llocDemarcacio": 192,
+     "llocComarca": 15,
+     "sectors": [
+      {
+       "sector": "Productes metàl·lics, excepte maquinària (25)",
+       "lloc": 5
+      }
+     ]
+    },
+    {
+     "nom": "CASA WESTFALIA SAU",
+     "municipi": "17902",
+     "facturacio": 17.7,
+     "nif": "A17045923",
+     "llocDemarcacio": 203,
+     "llocComarca": 18,
+     "sectors": [
+      {
+       "sector": "Comerç a l'engròs d'alimentació i begudes (462 i 463)",
+       "lloc": 25
+      }
+     ]
+    },
+    {
+     "nom": "ESTACIO SERVEI CORCA SA",
+     "municipi": "17057",
+     "facturacio": 8.2,
+     "sectors": [
+      {
+       "sector": "Comerç al detall de combustibles per a l'automoció (473)",
+       "lloc": 8
+      }
+     ]
+    },
+    {
+     "nom": "BURGOS GASULL SL",
+     "municipi": "17022",
+     "facturacio": 5.8,
+     "sectors": [
+      {
+       "sector": "Construcció d'immobles i d'obres d'enginyeria civil (41 i 42)",
+       "lloc": 21
+      }
+     ]
+    },
+    {
+     "nom": "BUGADERIA L'EMPORDA, SA",
+     "municipi": "17057",
+     "facturacio": 3.8,
+     "sectors": [
+      {
+       "sector": "Activitats artístiques, recreatives i altres serveis (90 a 99)",
+       "lloc": 6
+      }
+     ]
+    },
+    {
+     "nom": "CERAMICA FERRES SL",
+     "municipi": "17057",
+     "facturacio": 2.5,
+     "sectors": [
+      {
+       "sector": "Productes minerals no metàl·lics (23)",
+       "lloc": 18
+      }
+     ]
+    },
+    {
+     "nom": "SEGURITEC COSTA BRAVA 2004 SA",
+     "municipi": "17902",
+     "facturacio": 1.9,
+     "sectors": [
+      {
+       "sector": "Activitats administratives i serveis auxiliars (77 a 82)",
+       "lloc": 25
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES COLADES SA",
+     "municipi": "17057",
+     "facturacio": 0.9,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 7
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES BISBAL SL",
+     "municipi": "17057",
+     "facturacio": 0.8,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 9
+      }
+     ]
+    },
+    {
+     "nom": "ARIDS PUJOL CUSTEY SL",
+     "municipi": "17902",
+     "facturacio": 0.8,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 10
+      }
+     ]
+    },
+    {
+     "nom": "EXTRACCIONS DE L'EMPORDA SL",
+     "municipi": "17902",
+     "facturacio": 0.2,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 17
+      }
+     ]
+    }
+   ],
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_Empresarial_demarcació_de_Girona 2022_ACCESSIBLE.pdf"
+  },
+  "2023": {
+   "edicio": 2023,
+   "municipisComarca": 36,
+   "comarca": {
+    "facturacio": 2440.2,
+    "empreses": [
+     2566,
+     2439
+    ],
+    "facturacioAnys": [
+     2022.6,
+     2440.2
+    ],
+    "perCapita": [
+     14735,
+     17617
+    ],
+    "pesDemarcacio": [
+     8.2,
+     8.6
+    ],
+    "ocupacio": [
+     16907,
+     17321
+    ],
+    "trams": [
+     [
+      "Més de deu milions d'euros",
+      34,
+      1.4
+     ],
+     [
+      "Entre cinc i deu milions d'euros",
+      51,
+      2.1
+     ],
+     [
+      "Entre un i cinc milions d'euros",
+      320,
+      13.1
+     ],
+     [
+      "Entre 500.000 i 1.000.000 d'euros",
+      416,
+      17.1
+     ],
+     [
+      "Entre 100.000 i 500.000 euros",
+      995,
+      40.8
+     ],
+     [
+      "Menys de 100.000 euros",
+      623,
+      25.5
+     ]
+    ],
+    "grans": [
+     [
+      "Primari",
+      59.4,
+      66.6,
+      2.7
+     ],
+     [
+      "Indústria",
+      421.2,
+      496.4,
+      20.3
+     ],
+     [
+      "Construcció",
+      370.8,
+      421.7,
+      17.3
+     ],
+     [
+      "Serveis",
+      1171.2,
+      1455.5,
+      59.6
+     ]
+    ]
+   },
+   "anys": [
+    2020,
+    2021
+   ],
+   "municipis": {
+    "17022": {
+     "nom": "la Bisbal d'Empordà",
+     "facturacio": 94.3,
+     "pes": 3.9,
+     "lloc": 9,
+     "perCapita": 8448,
+     "llocPerCapita": 25
+    },
+    "17902": {
+     "nom": "Forallac",
+     "facturacio": 67.2,
+     "pes": 2.8,
+     "lloc": 11,
+     "perCapita": 38049,
+     "llocPerCapita": 9
+    },
+    "17057": {
+     "nom": "Corçà",
+     "facturacio": 41.4,
+     "pes": 1.7,
+     "lloc": 16,
+     "perCapita": 32643,
+     "llocPerCapita": 11
+    },
+    "17901": {
+     "nom": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+     "facturacio": 33.1,
+     "pes": 1.4,
+     "lloc": 17,
+     "perCapita": 24708,
+     "llocPerCapita": 15
+    },
+    "17205": {
+     "nom": "Ullastret",
+     "facturacio": 1.1,
+     "pes": 0.05,
+     "lloc": 31,
+     "perCapita": 4461,
+     "llocPerCapita": 29
+    }
+   },
+   "empreses": [
+    {
+     "nom": "PORTES BISBAL SL",
+     "municipi": "17901",
+     "facturacio": 24.7,
+     "nif": "B55123806",
+     "llocDemarcacio": 162,
+     "llocComarca": 13,
+     "sectors": [
+      {
+       "sector": "Productes metàl·lics, excepte maquinària (25)",
+       "lloc": 5
+      }
+     ]
+    },
+    {
+     "nom": "CASA WESTFALIA SAU",
+     "municipi": "17902",
+     "facturacio": 21.7,
+     "nif": "A17045923",
+     "llocDemarcacio": 185,
+     "llocComarca": 18
+    },
+    {
+     "nom": "ESTACIO SERVEI CORCA SA",
+     "municipi": "17057",
+     "facturacio": 10.4,
+     "sectors": [
+      {
+       "sector": "Comerç al detall de combustibles per a l'automoció (473)",
+       "lloc": 8
+      }
+     ]
+    },
+    {
+     "nom": "BUGADERIA L'EMPORDA, SA",
+     "municipi": "17057",
+     "facturacio": 7.3,
+     "sectors": [
+      {
+       "sector": "Activitats artístiques, recreatives i altres serveis (90 a 99)",
+       "lloc": 5
+      }
+     ]
+    },
+    {
+     "nom": "BURGOS GASULL SL",
+     "municipi": "17022",
+     "facturacio": 7.2,
+     "sectors": [
+      {
+       "sector": "Construcció d'immobles i d'obres d'enginyeria civil (41 i 42)",
+       "lloc": 19
+      }
+     ]
+    },
+    {
+     "nom": "PORDAMSA S.L",
+     "municipi": "17902",
+     "facturacio": 4.8,
+     "sectors": [
+      {
+       "sector": "Comerç a l'engròs de productes d'ús domèstic (464)",
+       "lloc": 25
+      }
+     ]
+    },
+    {
+     "nom": "COLIPLEX SL",
+     "municipi": "17902",
+     "facturacio": 3.7,
+     "sectors": [
+      {
+       "sector": "Tèxtil, confecció, cuir i calçat (13 a 15)",
+       "lloc": 21
+      }
+     ]
+    },
+    {
+     "nom": "CERAMICA FERRES SL",
+     "municipi": "17057",
+     "facturacio": 2.5,
+     "sectors": [
+      {
+       "sector": "Productes minerals no metàl·lics (23)",
+       "lloc": 22
+      }
+     ]
+    },
+    {
+     "nom": "CALDERERS 16 SL",
+     "municipi": "17902",
+     "facturacio": 2.0,
+     "sectors": [
+      {
+       "sector": "Químiques i farmacèutiques (19 a 21)",
+       "lloc": 25
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES BISBAL SL",
+     "municipi": "17057",
+     "facturacio": 1.1,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 7
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES COLADES SA",
+     "municipi": "17057",
+     "facturacio": 1.1,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 8
+      }
+     ]
+    },
+    {
+     "nom": "ARIDS PUJOL CUSTEY SL",
+     "municipi": "17902",
+     "facturacio": 0.7,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 12
+      }
+     ]
+    },
+    {
+     "nom": "EXTRACCIONS DE L'EMPORDA SL",
+     "municipi": "17902",
+     "facturacio": 0.2,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 20
+      }
+     ]
+    }
+   ],
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_empresarial_demarcacio_Girona_2023_baixa.pdf"
+  },
+  "2025": {
+   "edicio": 2025,
+   "municipisComarca": 36,
+   "comarca": {
+    "facturacio": 3204.7,
+    "empreses": [
+     2504,
+     2522
+    ],
+    "facturacioAnys": [
+     3009.7,
+     3204.7
+    ],
+    "perCapita": [
+     21728,
+     22645
+    ],
+    "pesDemarcacio": [
+     8.8,
+     8.8
+    ],
+    "ocupacio": [
+     18555,
+     19684
+    ],
+    "trams": [
+     [
+      "Més de deu milions d'euros",
+      45,
+      1.8
+     ],
+     [
+      "Entre cinc i deu milions d'euros",
+      67,
+      2.7
+     ],
+     [
+      "Entre un i cinc milions d'euros",
+      411,
+      16.3
+     ],
+     [
+      "Entre 500.000 i 1.000.000 d'euros",
+      470,
+      18.6
+     ],
+     [
+      "Entre 100.000 i 500.000 euros",
+      997,
+      39.5
+     ],
+     [
+      "Menys de 100.000 euros",
+      532,
+      21.1
+     ]
+    ],
+    "grans": [
+     [
+      "Primari",
+      73.4,
+      93.8,
+      2.9
+     ],
+     [
+      "Indústria",
+      603.7,
+      629.6,
+      19.6
+     ],
+     [
+      "Construcció",
+      479.0,
+      520.7,
+      16.2
+     ],
+     [
+      "Serveis",
+      1853.6,
+      1960.7,
+      61.2
+     ]
+    ]
+   },
+   "anys": [
+    2022,
+    2023
+   ],
+   "municipis": {
+    "17902": {
+     "nom": "Forallac",
+     "facturacio": 94.8,
+     "pes": 3.0,
+     "lloc": 10,
+     "perCapita": 54129,
+     "llocPerCapita": 9
+    },
+    "17022": {
+     "nom": "la Bisbal d'Empordà",
+     "facturacio": 94.7,
+     "pes": 3.0,
+     "lloc": 11,
+     "perCapita": 8322,
+     "llocPerCapita": 29
+    },
+    "17057": {
+     "nom": "Corçà",
+     "facturacio": 71.6,
+     "pes": 2.2,
+     "lloc": 14,
+     "perCapita": 55280,
+     "llocPerCapita": 8
+    },
+    "17901": {
+     "nom": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+     "facturacio": 37.4,
+     "pes": 1.2,
+     "lloc": 18,
+     "perCapita": 28275,
+     "llocPerCapita": 16
+    },
+    "17205": {
+     "nom": "Ullastret",
+     "facturacio": 2.3,
+     "pes": 0.1,
+     "lloc": 29,
+     "perCapita": 8819,
+     "llocPerCapita": 26
+    }
+   },
+   "empreses": [
+    {
+     "nom": "CASA WESTFALIA SAU",
+     "municipi": "17902",
+     "facturacio": 30.1,
+     "nif": "A17045923",
+     "llocDemarcacio": 178,
+     "llocComarca": 15,
+     "sectors": [
+      {
+       "sector": "Comerç a l'engròs d'alimentació i begudes (462 i 463)",
+       "lloc": 24
+      }
+     ]
+    },
+    {
+     "nom": "PORTES BISBAL SL",
+     "municipi": "17901",
+     "facturacio": 26.2,
+     "nif": "B55123806",
+     "llocDemarcacio": 211,
+     "llocComarca": 21,
+     "sectors": [
+      {
+       "sector": "Productes metàl·lics, excepte maquinària (25)",
+       "lloc": 5
+      }
+     ]
+    },
+    {
+     "nom": "BUGADERIA L'EMPORDA, SA",
+     "municipi": "17057",
+     "facturacio": 18.1,
+     "sectors": [
+      {
+       "sector": "Activitats artístiques, recreatives i altres serveis (90 a 99)",
+       "lloc": 4
+      }
+     ]
+    },
+    {
+     "nom": "ESTACIO SERVEI CORCA SA",
+     "municipi": "17057",
+     "facturacio": 12.7,
+     "sectors": [
+      {
+       "sector": "Comerç al detall de combustibles per a l'automoció (473)",
+       "lloc": 9
+      }
+     ]
+    },
+    {
+     "nom": "BURGOS GASULL SL",
+     "municipi": "17022",
+     "facturacio": 8.4,
+     "sectors": [
+      {
+       "sector": "Construcció d'immobles i d'obres d'enginyeria civil (41 i 42)",
+       "lloc": 22
+      }
+     ]
+    },
+    {
+     "nom": "PORDAMSA S.L",
+     "municipi": "17902",
+     "facturacio": 6.1,
+     "sectors": [
+      {
+       "sector": "Comerç a l'engròs de productes d'ús domèstic (464)",
+       "lloc": 21
+      }
+     ]
+    },
+    {
+     "nom": "COLIPLEX SL",
+     "municipi": "17902",
+     "facturacio": 5.4,
+     "sectors": [
+      {
+       "sector": "Tèxtil, confecció, cuir i calçat (13 a 15)",
+       "lloc": 16
+      }
+     ]
+    },
+    {
+     "nom": "CONVENIENCE FOOD SL",
+     "municipi": "17902",
+     "facturacio": 4.9,
+     "sectors": [
+      {
+       "sector": "Intermediaris del comerç (461)",
+       "lloc": 14
+      }
+     ]
+    },
+    {
+     "nom": "CERAMICA FERRES SL",
+     "municipi": "17057",
+     "facturacio": 4.1,
+     "sectors": [
+      {
+       "sector": "Productes minerals no metàl·lics (23)",
+       "lloc": 14
+      }
+     ]
+    },
+    {
+     "nom": "HOUSTON PARTY SL",
+     "municipi": "17057",
+     "facturacio": 2.9,
+     "sectors": [
+      {
+       "sector": "Informació i comunicacions (58 a 63)",
+       "lloc": 22
+      }
+     ]
+    },
+    {
+     "nom": "CALDERERS 16 SL",
+     "municipi": "17902",
+     "facturacio": 1.9,
+     "sectors": [
+      {
+       "sector": "Activitats immobiliàries (68)",
+       "lloc": 19
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES BISBAL SL",
+     "municipi": "17057",
+     "facturacio": 1.5,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 8
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES COLADES SA",
+     "municipi": "17057",
+     "facturacio": 1.2,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 9
+      }
+     ]
+    },
+    {
+     "nom": "ALLIANCE PACK SL",
+     "municipi": "17902",
+     "facturacio": 0.1,
+     "sectors": [
+      {
+       "sector": "Metal·lúrgia (24)",
+       "lloc": 18
+      }
+     ]
+    }
+   ],
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_Empresarial_2025_baixa.pdf"
+  },
+  "2026": {
+   "edicio": 2026,
+   "municipisComarca": 36,
+   "comarca": {
+    "facturacio": 3357.5,
+    "empreses": [
+     2522,
+     2590
+    ],
+    "facturacioAnys": [
+     3204.7,
+     3357.5
+    ],
+    "perCapita": [
+     22645,
+     23184
+    ],
+    "pesDemarcacio": [
+     8.8,
+     9.1
+    ],
+    "ocupacio": [
+     19684,
+     20641
+    ],
+    "trams": [
+     [
+      "Més de deu milions d'euros",
+      45,
+      1.7
+     ],
+     [
+      "Entre cinc i deu milions d'euros",
+      68,
+      2.6
+     ],
+     [
+      "Entre un i cinc milions d'euros",
+      449,
+      17.3
+     ],
+     [
+      "Entre 500.000 i 1.000.000 d'euros",
+      488,
+      18.8
+     ],
+     [
+      "Entre 100.000 i 500.000 euros",
+      1019,
+      39.3
+     ],
+     [
+      "Menys de 100.000 euros",
+      521,
+      20.1
+     ]
+    ],
+    "grans": [
+     [
+      "Primari",
+      93.8,
+      97.5,
+      2.9
+     ],
+     [
+      "Indústria",
+      629.6,
+      638.9,
+      19.0
+     ],
+     [
+      "Construcció",
+      520.7,
+      569.8,
+      17.0
+     ],
+     [
+      "Serveis",
+      1960.7,
+      2051.3,
+      61.1
+     ]
+    ]
+   },
+   "anys": [
+    2023,
+    2024
+   ],
+   "municipis": {
+    "17022": {
+     "nom": "la Bisbal d'Empordà",
+     "facturacio": 100.4,
+     "pes": 3.0,
+     "lloc": 10,
+     "perCapita": 8562,
+     "llocPerCapita": 28
+    },
+    "17902": {
+     "nom": "Forallac",
+     "facturacio": 88.9,
+     "pes": 2.6,
+     "lloc": 11,
+     "perCapita": 49756,
+     "llocPerCapita": 13
+    },
+    "17057": {
+     "nom": "Corçà",
+     "facturacio": 76.6,
+     "pes": 2.3,
+     "lloc": 14,
+     "perCapita": 59624,
+     "llocPerCapita": 8
+    },
+    "17901": {
+     "nom": "Cruïlles, Monells i Sant Sadurní de l'Heura",
+     "facturacio": 39.4,
+     "pes": 1.2,
+     "lloc": 19,
+     "perCapita": 29248,
+     "llocPerCapita": 16
+    },
+    "17205": {
+     "nom": "Ullastret",
+     "facturacio": 1.7,
+     "pes": 0.1,
+     "lloc": 31,
+     "perCapita": 6703,
+     "llocPerCapita": 30
+    }
+   },
+   "empreses": [
+    {
+     "nom": "CASA WESTFALIA SAU",
+     "municipi": "17902",
+     "facturacio": 29.7,
+     "nif": "A17045923",
+     "llocDemarcacio": 178,
+     "llocComarca": 17
+    },
+    {
+     "nom": "PORTES BISBAL SL",
+     "municipi": "17901",
+     "facturacio": 26.4,
+     "nif": "B55123806",
+     "llocDemarcacio": 199,
+     "llocComarca": 23,
+     "sectors": [
+      {
+       "sector": "Productes metàl·lics, excepte maquinària (25)",
+       "lloc": 4
+      }
+     ]
+    },
+    {
+     "nom": "BUGADERIA L'EMPORDA, SA",
+     "municipi": "17057",
+     "facturacio": 18.4,
+     "sectors": [
+      {
+       "sector": "Intermediaris del comerç (461)",
+       "lloc": 7
+      }
+     ]
+    },
+    {
+     "nom": "ESTACIO SERVEI CORCA SA",
+     "municipi": "17057",
+     "facturacio": 12.0,
+     "sectors": [
+      {
+       "sector": "Comerç al detall de combustibles per a l'automoció (473)",
+       "lloc": 9
+      }
+     ]
+    },
+    {
+     "nom": "BURGOS GASULL SL",
+     "municipi": "17022",
+     "facturacio": 8.4,
+     "sectors": [
+      {
+       "sector": "Construcció d'immobles i d'obres d'enginyeria civil (41 i 42)",
+       "lloc": 21
+      }
+     ]
+    },
+    {
+     "nom": "CONSTRUCCIONS JOSEP ALSINA SL",
+     "municipi": "17022",
+     "facturacio": 7.4,
+     "sectors": [
+      {
+       "sector": "Activitats especialitzades en construcció (43)",
+       "lloc": 19
+      }
+     ]
+    },
+    {
+     "nom": "COLIPLEX SL",
+     "municipi": "17902",
+     "facturacio": 5.7,
+     "sectors": [
+      {
+       "sector": "Tèxtil, confecció, cuir i calçat (13 a 15)",
+       "lloc": 14
+      }
+     ]
+    },
+    {
+     "nom": "CERAMICA FERRES SL",
+     "municipi": "17057",
+     "facturacio": 4.5,
+     "sectors": [
+      {
+       "sector": "Productes minerals no metàl·lics (23)",
+       "lloc": 16
+      }
+     ]
+    },
+    {
+     "nom": "CONVENIENCE FOOD SL",
+     "municipi": "17902",
+     "facturacio": 4.2,
+     "sectors": [
+      {
+       "sector": "Intermediaris del comerç (461)",
+       "lloc": 20
+      }
+     ]
+    },
+    {
+     "nom": "HOUSTON PARTY SL",
+     "municipi": "17057",
+     "facturacio": 3.2,
+     "sectors": [
+      {
+       "sector": "Informació i comunicacions (58 a 63)",
+       "lloc": 24
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES BISBAL SL",
+     "municipi": "17057",
+     "facturacio": 1.4,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 10
+      }
+     ]
+    },
+    {
+     "nom": "ARGILES COLADES SA",
+     "municipi": "17057",
+     "facturacio": 1.2,
+     "sectors": [
+      {
+       "sector": "Indústries extractives (B)",
+       "lloc": 12
+      }
+     ]
+    },
+    {
+     "nom": "ALLIANCE PACK SL",
+     "municipi": "17902",
+     "facturacio": 0.1,
+     "sectors": [
+      {
+       "sector": "Metal·lúrgia (24)",
+       "lloc": 16
+      }
+     ]
+    }
+   ],
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_Empresarial_2026_baixa.pdf"
+  }
+ },
+ "noLlegides": []
+}

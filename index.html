@@ -247,6 +247,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="hut"><h2>🏠 Habitatges d'ús turístic</h2><p class="buit">Carregant…</p></section>
   <section id="turisme"><h2>🧳 Turistes que hi arriben</h2><p class="buit">Carregant…</p></section>
   <section id="vehicles"><h2>🚗 Vehicles nous matriculats</h2><p class="buit">Carregant…</p></section>
+  <section id="empreses"><h2>🏭 Empreses i facturació</h2><p class="buit">Carregant…</p></section>
   <section id="seguretat"><h2>🚨 Seguretat i emergències</h2><p class="buit">Carregant…</p></section>
   <section id="entitats"><h2>🤝 Entitats i associacions</h2><p class="buit">Carregant…</p></section>
   <section id="renda"><h2>🤲 Renda garantida de ciutadania</h2><p class="buit">Carregant…</p></section>
@@ -817,7 +818,7 @@ const MODE_SLOW = PARAMS.has("slow");
 const INCRUSTAT = PARAMS.has("incrustat");
 const RX_INICI_SLOW = /^CONTRACTACI/i;
 // Si el resum no porta l'apartat de la contractació, aquests blocs propis són slow.
-const PROPIS_SLOW = ["dades-municipals", "renda", "hut", "turisme", "vehicles", "habitatge", "aigua", "ramaderia",
+const PROPIS_SLOW = ["dades-municipals", "renda", "hut", "turisme", "vehicles", "empreses", "habitatge", "aigua", "ramaderia",
   "residus", "seguretat", "entitats", "escoles", "eleccions"];
 if (INCRUSTAT) document.documentElement.classList.add("incrustat");
 
@@ -839,6 +840,8 @@ const BLOCS_PROPIS = [
   { id: "turisme", nom: "Turistes", titol: "TURISTES QUE PERNOCTEN (TELEFONIA MÒBIL)", enLlocDe: /^ATUR/i },
   // 01.11.2026: vehicles matriculats (DGT), després dels turistes.
   { id: "vehicles", nom: "Vehicles", titol: "VEHICLES NOUS MATRICULATS", enLlocDe: /^ATUR/i },
+  // 09.11.2026: estudi anual de la Diputació (Registre Mercantil).
+  { id: "empreses", nom: "Empreses", titol: "EMPRESES I FACTURACIÓ (REGISTRE MERCANTIL)", enLlocDe: /^ATUR/i },
   // 27.10.2026: lloguer i habitatges buits, al costat dels habitatges turístics.
   { id: "habitatge", nom: "Lloguer i pisos buits", titol: "LLOGUER I HABITATGES BUITS", enLlocDe: /^ATUR/i },
   { id: "aigua", nom: "Aigua potable", titol: "AIGUA POTABLE (ANALÍTIQUES DEL SINAC I DE LA MANCOMUNITAT)", enLlocDe: /^ATUR/i },
@@ -2340,6 +2343,99 @@ async function carregaVehicles() {
 }
 
 // -----------------------------------------------------------------------------
+// EMPRESES I FACTURACIÓ (09.11.2026): l'estudi anual «Estructura empresarial de
+// la demarcació de Girona» de la Diputació (dades del Registre Mercantil), que
+// el workflow «Estructura empresarial» (empreses/) baixa quan en surt una edició
+// nova i desa a dades/empreses.json. Una fitxa per municipi amb la facturació,
+// el lloc a la comarca i les seves empreses que surten als rànquings de l'estudi;
+// les variacions són respecte a l'edició de l'any anterior.
+// -----------------------------------------------------------------------------
+const TITOL_EMP = "EMPRESES I FACTURACIÓ (REGISTRE MERCANTIL)";
+let EMP = null;
+const mCa = v => Number(v || 0).toLocaleString("ca-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const ordCa = n => n + ({ 1: "r", 2: "n", 3: "r", 4: "t" }[n] || "è");
+// «el 9,1 %», però «l'1,2 %» i «l'11 %».
+const artNum = t => /^1(1)?([,\s\u00a0]|$)/.test(t) ? "l'" + t : "el " + t;
+const clauEmp = s => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+const pctVar = (ara, abans) => {
+  if (!abans) return "";
+  const p = (ara - abans) / abans * 100, t = Math.abs(p).toLocaleString("ca-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "\u00a0%";
+  return Math.abs(p) < 0.05 ? `<span class="var">igual</span>` : `<span class="${p > 0 ? "amunt" : "avall"}">${p > 0 ? "▲" : "▼"} ${t}</span>`;
+};
+// L'edició anterior només serveix per comparar si les seves dades són de l'any just abans.
+const edAnterior = ed => {
+  const a = Object.values(EMP.edicions).find(x => x.anys[1] === ed.anys[1] - 1);
+  return a || null;
+};
+
+function cosEmpreses(ed, ant, c) {
+  const m = ed.municipis[c], ma = ant && ant.municipis[c];
+  const llista = ed.empreses.filter(e => e.municipi === c);
+  const anteriors = Object.fromEntries((ant ? ant.empreses : []).map(e => [clauEmp(e.nom), e]));
+  const evol = Object.values(EMP.edicions).filter(x => x.municipis[c]).sort((a, b) => a.anys[1] - b.anys[1]);
+  return `<div class="xifres">` +
+      `<div class="xifra"><div class="etq">Facturació ${ed.anys[1]}</div><div class="val">${mCa(m.facturacio)} M€</div><div class="det">${ma ? pctVar(m.facturacio, ma.facturacio) + ` respecte al ${ant.anys[1]} (${mCa(ma.facturacio)} M€)` : "&nbsp;"}</div></div>` +
+      `<div class="xifra"><div class="etq">Lloc al Baix Empordà</div><div class="val">${ordCa(m.lloc)}</div><div class="det">de ${nCa(ed.municipisComarca)} municipis · ${mCa(m.pes)} % de la comarca${ma ? ` · el ${ant.anys[1]}, ${ordCa(ma.lloc)}` : ""}</div></div>` +
+      (m.perCapita ? `<div class="xifra"><div class="etq">Facturació per habitant</div><div class="val">${nCa(m.perCapita)} €</div><div class="det">${ordCa(m.llocPerCapita)} de la comarca (mitjana: ${nCa(ed.comarca.perCapita ? ed.comarca.perCapita[1] : 0)} €)</div></div>` : "") +
+    `</div>` +
+    (llista.length ? `<h4>Empreses que surten als rànquings de l'estudi</h4><div class="taula"><table><thead><tr><th>Empresa</th><th class="n">Facturació</th><th class="n">Variació</th><th>Rànquings</th></tr></thead><tbody>` +
+      llista.map(e => {
+        const a = anteriors[clauEmp(e.nom)];
+        const r = [];
+        if (e.llocComarca) r.push(`${ordCa(e.llocComarca)} de la comarca${a && a.llocComarca ? ` (abans ${ordCa(a.llocComarca)})` : ""}`);
+        if (e.llocDemarcacio) r.push(`${ordCa(e.llocDemarcacio)} de la demarcació${a && a.llocDemarcacio ? ` (abans ${ordCa(a.llocDemarcacio)})` : ""}`);
+        (e.sectors || []).forEach(s => r.push(`${ordCa(s.lloc)} del sector «${esc(s.sector)}»`));
+        return `<tr><td style="white-space:normal"><b>${esc(e.nom)}</b></td><td class="n">${mCa(e.facturacio)} M€</td>` +
+          `<td class="n">${a ? pctVar(e.facturacio, a.facturacio) : ""}</td><td style="white-space:normal;font-size:.82rem">${r.join("; ")}</td></tr>`;
+      }).join("") + `</tbody></table></div>`
+    : `<p class="det">Cap empresa del municipi no surt als rànquings de l'estudi.</p>`) +
+    (evol.length > 1 ? `<h4>Evolució de la facturació</h4><p class="det">${evol.map(x => `${x.anys[1]}: <b>${mCa(x.municipis[c].facturacio)} M€</b>`).join(" · ")}</p>` : "");
+}
+
+function pintaEmpreses(el, any) {
+  const ed = EMP.edicions[any], ant = edAnterior(ed);
+  const codis = MUNS4.filter(c => ed.municipis[c]);
+  const suma = codis.reduce((s, c) => s + ed.municipis[c].facturacio, 0);
+  const sumaAnt = ant && codis.every(c => ant.municipis[c]) ? codis.reduce((s, c) => s + ant.municipis[c].facturacio, 0) : null;
+  const pes = (suma / ed.comarca.facturacio * 100).toLocaleString("ca-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "\u00a0%";
+  const com = ed.comarca, edicions = Object.keys(EMP.edicions).sort((a, b) => b - a);
+  el.innerHTML = `<h2>${(el.dataset.numero ? el.dataset.numero + " " : "🏭 ") + TITOL_EMP}</h2>` +
+    `<p class="font">Comptes del ${ed.anys[1]} · revisat el ${dataIso(EMP.generat)} · Font: ` +
+    `<a href="${esc(ed.url || "https://www.ddgi.cat/xifra/menu_est.asp")}" target="_blank" rel="noopener">Diputació de Girona, «Estructura empresarial de la demarcació de Girona», edició ${ed.edicio}</a> (Registre Mercantil)</p>` +
+    (edicions.length > 1 ? `<div style="margin:8px 0"><select id="triaEmpreses" aria-label="Edició de l'estudi">${edicions.map(a =>
+      `<option value="${a}"${a === String(any) ? " selected" : ""}>Edició ${a} (comptes del ${EMP.edicions[a].anys[1]})</option>`).join("")}</select></div>` : "") +
+    `<p>Les societats mercantils dels cinc municipis van facturar <b>${mCa(suma)} milions d'euros</b> el ${ed.anys[1]}` +
+    (sumaAnt ? `, ${pctVar(suma, sumaAnt)} respecte al ${ant.anys[1]} (${mCa(sumaAnt)} M€)` : "") +
+    `. Són ${artNum(pes)} de la facturació del Baix Empordà, que va ser de ${mCa(com.facturacio)} M€ entre ${nCa(com.empreses[1])} empreses.</p>` +
+    plegaMun(codis, c => `${mCa(ed.municipis[c].facturacio)} M€${ant && ant.municipis[c] ? " " + pctVar(ed.municipis[c].facturacio, ant.municipis[c].facturacio) : ""}`, "emp") +
+    `<details class="fitxa plegable"><summary><h3>Tot el Baix Empordà</h3><span class="resum-mun">${nCa(com.empreses[1])} empreses</span></summary>` +
+      `<div class="xifres">` +
+        `<div class="xifra"><div class="etq">Facturació ${ed.anys[1]}</div><div class="val">${mCa(com.facturacio)} M€</div><div class="det">${com.facturacioAnys ? pctVar(com.facturacioAnys[1], com.facturacioAnys[0]) + ` respecte al ${ed.anys[0]}` : ""}</div></div>` +
+        `<div class="xifra"><div class="etq">Empreses</div><div class="val">${nCa(com.empreses[1])}</div><div class="det">${nCa(com.empreses[0])} el ${ed.anys[0]}</div></div>` +
+        (com.ocupacio ? `<div class="xifra"><div class="etq">Treballadors</div><div class="val">${nCa(com.ocupacio[1])}</div><div class="det">${nCa(com.ocupacio[0])} el ${ed.anys[0]}</div></div>` : "") +
+      `</div>` +
+      `<h4>Empreses segons la facturació</h4><div class="taula"><table><tbody>` +
+        com.trams.map(([t, n, p]) => `<tr><td style="white-space:normal">${esc(t)}</td><td class="n">${nCa(n)}</td><td class="n">${mCa(p)} %</td></tr>`).join("") + `</tbody></table></div>` +
+      `<h4>Facturació per grans sectors</h4><div class="taula"><table><tbody>` +
+        com.grans.map(([t, a, b, p]) => `<tr><td>${esc(t)}</td><td class="n">${mCa(b)} M€</td><td class="n">${mCa(p)} %</td></tr>`).join("") + `</tbody></table></div>` +
+    `</details>` +
+    `<p class="nota" style="color:#6b6b66;font-size:.85rem">L'estudi compta les societats mercantils (no els autònoms) segons el domicili social i la xifra de negoci dels comptes dipositats al Registre Mercantil. Només hi surten amb nom les empreses dels rànquings de l'estudi (les 25 primeres de la comarca, les 250 de la demarcació i les 25 de cada sector). Les variacions són respecte a l'edició de l'any anterior.</p>`;
+  activaPlega(el, (c, caixa) => { caixa.innerHTML = cosEmpreses(ed, ant, c); }, "emp");
+  const sel = el.querySelector("#triaEmpreses");
+  if (sel) sel.addEventListener("change", () => pintaEmpreses(el, sel.value));
+  if (typeof normalitzaDates === "function") normalitzaDates(el);
+}
+
+async function carregaEmpreses() {
+  const el = document.getElementById("empreses");
+  if (!el) return;
+  try { EMP = await obtenir("dades/empreses.json"); }
+  catch (e) { el.innerHTML = `<h2>🏭 ${TITOL_EMP}</h2><p class="buit">Encara no s'ha baixat l'estudi de la Diputació.</p>`; return; }
+  try { pintaEmpreses(el, Object.keys(EMP.edicions).sort((a, b) => b - a)[0]); }
+  catch (err) { console.error(err); el.innerHTML = `<h2>🏭 ${TITOL_EMP}</h2><p class="buit">No s'han pogut mostrar les dades.</p>`; }
+}
+
+// -----------------------------------------------------------------------------
 // AIGUA POTABLE: un sol bloc amb una fitxa per municipi. Analítiques del SINAC
 // (el darrer butlletí amb tot el detall i els anteriors, que s'obren clicant-hi)
 // i, a Corçà i a Cruïlles, Monells i Sant Sadurní, les de la Mancomunitat.
@@ -2510,6 +2606,7 @@ async function inicia() {
   carregaObertes();
   carregaTurisme();
   carregaVehicles();
+  carregaEmpreses();
 }
 inicia();
 </script>

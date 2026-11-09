@@ -86,7 +86,8 @@ const TROSSOS = [
   ["R", ["dades-municipals", "contractacio", "subvencions", "puosc", "renda"]],
   // Treball; habitatge (edat dels edificis, lloguer i pisos buits, ús turístic), turisme i vehicles.
   ["A", ["atur", "edificis"]],
-  ["R", ["habitatge", "hut", "turisme", "vehicles", "aigua"]],
+  // 09.11.2026: empreses i facturació (Registre Mercantil), just després del treball.
+  ["R", ["empreses", "habitatge", "hut", "turisme", "vehicles", "aigua"]],
   // Aigua (potable, preu, subterrània) i energia.
   ["A", ["preu-aigua", "piezometres", "energia"]],
   // Residus, ramaderia, seguretat, escoles, entitats i, per acabar, les eleccions.
@@ -95,7 +96,7 @@ const TROSSOS = [
 const PAGINA = { R: "../", A: "../../tauler/" };
 // 31.10.2026: es canvia a cada canvi de les pàgines, perquè el navegador no faci servir
 // una còpia antiga (que no sabria triar els blocs i els mostraria tots, repetits).
-const VERSIO = "20261102m";
+const VERSIO = "20261109e";
 const PARTS = TROSSOS.map(([pag, blocs], i) => {
   const altres = TROSSOS.filter(([p], j) => p === pag && j !== i).flatMap(([, b]) => b);
   const ultim = TROSSOS.map(([p]) => p).lastIndexOf(pag) === i;

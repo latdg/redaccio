@@ -70,10 +70,10 @@ Explotació de les dades de les empreses del Registre Mercantil
 
 
 
-Presentació.................................................................................... 7                     Metal·lúrgia (24)..................................................................................... 169
+Presentació. .................................................................................. 7                     Metal·lúrgia (24). ................................................................................... 169
                                                                                                                       Productes metàl·lics, excepte maquinària (25)............................... 175
 Introducció. ................................................................................... 9
-                                                                                                                      Equips elèctrics, productes informàtics i electrònics (26 i 27)..... 181
+                                                                                                                      Equips elèctrics, productes informàtics i electrònics (26 i 27). ... 181
 
 Consideracions metodològiques. ...........................................11                                          Maquinària i equips (28)...................................................................... 187
                                                                                                                       Vehicles de motor i altres materials de transport (29 i 30)........... 193
@@ -86,7 +86,7 @@ Anàlisi sectorial. ............................................................
 
 Dades generals...........................................................................26                           Activitats especialitzades en construcció (43). .............................. 217
 
-Demarcació de Girona............................................................................ 27                   Venda i reparació de vehicles de motor (45).................................... 223
+Demarcació de Girona. .......................................................................... 27                   Venda i reparació de vehicles de motor (45). .................................. 223
                                                                                                                       Intermediaris del comerç (461).......................................................... 229
 Comarques..................................................................................41
                                                                                                                       Comerç a l’engròs d’alimentació i begudes (462 i 463)................. 235
@@ -101,31 +101,31 @@ Garrotxa. ......................................................................
 Gironès...................................................................................................... 75
                                                                                                                       Comerç al detall d’alimentació i begudes (472).............................. 265
 Pla de l’Estany.......................................................................................... 83
-                                                                                                                      Comerç al detall de combustibles per a l’automoció (473)........... 271
+                                                                                                                      Comerç al detall de combustibles per a l’automoció (473). ......... 271
 Ripollès...................................................................................................... 91
                                                                                                                       Comerç al detall de TIC, ús domèstic
 Selva. ......................................................................................................... 99
                                                                                                                       i productes culturals (474 a 476). ..................................................... 277
 
-Sectors........................................................................................107                    Comerç al detall d’altres articles:
+Sectors. ......................................................................................107                    Comerç al detall d’altres articles:
 
-Demarcació de Girona.......................................................................... 109                    de vestir, farmàcia... (477 a 479)....................................................... 283
+Demarcació de Girona. ........................................................................ 109                    de vestir, farmàcia... (477 a 479)....................................................... 283
 
 Agricultura, ramaderia, silvicultura i pesca (A). ............................... 115                                 Transport i emmagatzematge (49 a 53). ......................................... 289
 
-Indústries extractives (B)..................................................................... 121                   Hostaleria (55 i 56)................................................................................ 295
+Indústries extractives (B)..................................................................... 121                   Hostaleria (55 i 56). .............................................................................. 295
 
 Productes alimentaris i begudes (10 a 12). ..................................... 127                                  Informació i comunicacions (58 a 63).............................................. 301
 
 Tèxtil, confecció, cuir i calçat (13 a 15)............................................. 133                           Activitats financeres i d’assegurances (64 a 66). ........................... 307
 
-Fusta i suro (16)..................................................................................... 139            Activitats immobiliàries (68)............................................................... 313
+Fusta i suro (16). ................................................................................... 139            Activitats immobiliàries (68)............................................................... 313
 
-Paper i arts gràfiques (17 i 18)............................................................ 145                      Activitats professionals, científiques i tècniques (69 a 75)........... 319
+Paper i arts gràfiques (17 i 18). .......................................................... 145                      Activitats professionals, científiques i tècniques (69 a 75)........... 319
 
 Químiques i farmacèutiques (19 a 21). ............................................ 151                                Activitats administratives i serveis auxiliars (77 a 82)................... 325
 Cautxú i plàstic (22).............................................................................. 157               Educació, sanitat, serveis socials i administració pública (84 a 88)...331
-Productes minerals no metàl·lics (23).............................................. 163                               Activitats artístiques, recreatives i altres serveis (90 a 99)........... 337
+Productes minerals no metàl·lics (23).............................................. 163                               Activitats artístiques, recreatives i altres serveis (90 a 99). ......... 337
                                                       Diputació de Girona | Estructura empresarial de la demarcació de Girona 2026
 
 
@@ -163,8 +163,7 @@ de mecanismes que afavoreixin l’increment de la compe-
 titivitat empresarial dels negocis ubicats a la demarcació,
                                                                     nible (ODS) de l’Agenda 2030 es facin realitat en cada una
 perquè progrés econòmic i progrés social esdevenen un
-                                                                    de les accions que posem en marxa: crear ocupació des de
-binomi indissoluble.
+binomi indissoluble.                                                de les accions que posem en marxa: crear ocupació des de
                                                                     la perspectiva de la igualtat d’oportunitats i de gènere; faci-
 Totes les accions, ja siguin directes o bé indirectes, sumen,       litar la transformació digital i impulsar la innovació; fomen-
 i la millora en la competitivitat empresarial i l’increment en      tar la consolidació i el creixement del teixit empresarial, i
@@ -515,7 +514,8 @@ semiremolcs
                                                                    473 Comerç al detall de combustibles per a l’automoció
 30 Fabricació d’altres materials de transport
                                                                    en establiments especialitzats
-Altres indústries manufactureres (31 a 33)                         Comerç al detall de TIC, ús domèstic i productes culturals
+Altres indústries manufactureres (31 a 33)
+                                                                   Comerç al detall de TIC, ús domèstic i productes culturals
 31 Fabricació de mobles                                            (474 a 476)
 32 Indústries manufactureres diverses                              474 Comerç al detall d’equips per a les TIC en
 33 Reparació i instal·lació de maquinària i equips                 establiments especialitzats
@@ -975,7 +975,8 @@ La projecció de la facturació pel 2025 preveu un increment
 del volum de negoci de la comarca del ↑4,5 %, uns 0,3
                                                                     vuit comarques de la demarcació de Girona, però el pes del
 punts percentuals per sota de l’increment que es preveu
-a la demarcació.                                                    sector es distribueix bàsicament en tres comarques. Es
+                                                                    sector es distribueix bàsicament en tres comarques. Es
+a la demarcació.
                                                                     tracta de la Selva (on el sector concentra el 57,5 % del volum
                                                                     de negoci que generen les 23 empreses de la comarca), la
 Anàlisi sectorial                                                   Garrotxa (27,6 %) i el Gironès (9,2 %).
@@ -1296,22 +1297,22 @@ nòmica i majoritàriament de nova creació: 922 societats            de respons
  Entre 100.000 i 500.000 euros                                              5.411        37,6 %        5.481        37,2 %
 
                                                                                                                                 Cerdanya
- Menys de 100.000 euros                                                     2.802       19,5 %         2.850        19,4 %
+ Menys de 100.000 euros                                                     2.802        19,5 %        2.850        19,4 %
 
  Antiguitat de les empreses                                               14.406         100 %       14.719         100 %
  Abans de 1970                                                               163           1,1 %         173           1,2 %
  Entre 1970 i 1984                                                           697           4,8 %         676           4,6 %
- Entre 1985 i 1999                                                          4.072       28,3 %         4.048        27,5 %
- Entre 2000 i 2014                                                          5.606       38,9 %         5.559        37,8 %
- De 2015 fins ara                                                           3.868       26,8 %         4.263        29,0 %      Garrotxa
+ Entre 1985 i 1999                                                          4.072        28,3 %        4.048        27,5 %
+ Entre 2000 i 2014                                                          5.606        38,9 %        5.559        37,8 %
+ De 2015 fins ara                                                           3.868        26,8 %        4.263        29,0 %      Garrotxa
 
  Magnituds empresarials
  Facturació (milions d’euros)                                             36.343               -      37.039               -
  Facturació per capita                                                    44.696               -      44.393               -
- Pes de la facturació sobre la demarcació                                       -      100,0 %              -      100,0 %
- Ocupació                                                                172.394               -    177.095                -    Gironès
+ Pes de la facturació sobre la demarcació                                        -     100,0 %              -      100,0 %
+ Ocupació                                                                172.394               -     177.095               -    Gironès
  Ocupació per 1.000 habitants                                                212               -         212               -
- Pes de l’ocupació sobre la demarcació                                          -      100,0 %              -      100,0 %
+ Pes de l’ocupació sobre la demarcació                                           -     100,0 %              -      100,0 %
 
  Distribució de la facturació (en milions d’euros)                      36.343,4         100 %      37.038,7        100 %
 
@@ -1319,7 +1320,7 @@ nòmica i majoritàriament de nova creació: 922 societats            de respons
 
                                                                                                                                Pla de l’Estany
  Primari                                                                    690,4          1,9 %       733,7           2,0 %
- Indústria                                                               14.021,0       38,6 %      14.334,8        38,7 %
+ Indústria                                                               14.021,0        38,6 %     14.334,8        38,7 %
  Construcció                                                              2.394,1          6,6 %     2.506,6           6,8 %
  Serveis                                                                 19.237,9        52,9 %     19.463,7        52,5 %
 
@@ -2000,16 +2001,16 @@ Ordre        CIF       Nom                                                      
  163     A17011305     EDUARDO PUIG SA                                            Fornells de la Selva          31,4
  164     B17494808     COMERC DE PEIX ROS SL                                                   Blanes           31,2
  165     B83327460     INNERIA SOLUTIONS SLU                                        Cassà de la Selva           31,2
- 166     A17378928      BAC VALVES SA                                                         Figueres          31,0
- 167     B09909540      INTERCARGIRONA SL                                                     Figueres          31,0
- 168     B17678848      NATURAL CRIA SL                                                      Banyoles           30,9
- 169     A17216359      PEIXOS PUIGNAU SA                                                       Girona          30,8
- 170     A17094715      COMERCIAL MASOLIVER SA                                    Sant Joan les Fonts           30,7
- 171     A17003849      FIBRAN, SA                                       Sant Joan de les Abadesses             30,5
- 172     B17431396      EUROMERCAT ESCUDERO SL                                            La Jonquera           30,4
- 173     A17030529      BEULAS SA                                                            Arbúcies           30,0
- 174     B55004238      VALIDA SOLUTIONS SL                                                  Bescanó            29,9
- 175     B17229675      RESERVA BATALLE SL                                                 Riudarenes           29,9
+ 166     A17378928     BAC VALVES SA                                                          Figueres          31,0
+ 167     B09909540     INTERCARGIRONA SL                                                      Figueres          31,0
+ 168     B17678848     NATURAL CRIA SL                                                       Banyoles           30,9
+ 169     A17216359     PEIXOS PUIGNAU SA                                                        Girona          30,8
+ 170     A17094715     COMERCIAL MASOLIVER SA                                     Sant Joan les Fonts           30,7
+ 171     A17003849     FIBRAN, SA                                        Sant Joan de les Abadesses             30,5
+ 172     B17431396     EUROMERCAT ESCUDERO SL                                            La Jonquera            30,4
+ 173     A17030529     BEULAS SA                                                             Arbúcies           30,0
+ 174     B55004238     VALIDA SOLUTIONS SL                                                   Bescanó            29,9
+ 175     B17229675     RESERVA BATALLE SL                                                  Riudarenes           29,9
  176     A17092909     MINERALS GIRONA, SA                                                    Figueres          29,8
  177     B17975947     MORAGUES BOU SL                                                          Girona          29,7
  178     A17045923     CASA WESTFALIA SAU                                                     Forallac          29,7
@@ -2874,6 +2875,7 @@ Municipis segons xifra de negoci
    20      Regencós                                                     27,8          0,8 %
    21      Palau-sator                                                  18,0          0,5 %
    22      Bellcaire d’Empordà                                          15,3          0,5 %     Garrotxa
+
    23      Fontanilles                                                  14,2          0,4 %
    24      Serra de Daró                                                13,1          0,4 %
    25      Verges                                                       10,5          0,3 %
@@ -2883,7 +2885,6 @@ Municipis segons xifra de negoci
    29      Albons                                                        2,3          0,1 %
    30      Ultramort                                                     2,1          0,1 %
    31      Ullastret                                                     1,7          0,1 %
-
 
 
                                                                                                Pla de l’Estany
@@ -2988,6 +2989,7 @@ Rànquing de les 25 empreses amb més xifra de negoci
    20     AGGLOTAP SA                                                          Palafrugell                   27,8
    21     AUTOMOCIO I SERVEIS DEL NORD-EST SL                                  Palafrugell                   27,3
    22     SARFA SL                                                                  Begur                    26,6     Garrotxa
+
    23     PORTES BISBAL SL                      Cruïlles, Monells i Sant Sadurní de l’Heura                  26,4
    24     JODOFI SL                                                                   Pals                   26,4
    25     RAMADERA MONTPEDROS SL                                                    Gualta                   23,2
@@ -3056,9 +3058,10 @@ Font: Registre Mercantil.                                                       
  Magnituds empresarials
  Facturació (milions d’euros)                                               286,9              -       307,1               -
  Facturació per capita                                                    14.454               -      15.268               -
- Pes de la facturació sobre la demarcació                                        -         0,8 %            -          0,8 %
- Ocupació                                                                   2.118              -       2.321               -     Gironès
 
+                                                                                                                                 Gironès
+ Pes de la facturació sobre la demarcació                                        -         0,8 %            -          0,8 %
+ Ocupació                                                                   2.118              -       2.321               -
  Ocupació per 1.000 habitants                                                107               -         115               -
  Pes de l’ocupació sobre la demarcació                                           -         1,2 %            -          1,3 %
 
@@ -3411,6 +3414,7 @@ Rànquing de les 25 empreses amb més xifra de negoci
    20     CAL SABONAIRE SL                              Fontanals de Cerdanya                    2,8
    21     CAMPUS CERDANYA SL                                       Puigcerdà                     2,8
    22     CATLOAD SL                                                      Alp                    2,6     Garrotxa
+
    23     GAECA PROJECTES I OBRES SL                                    Llívia                   2,6
    24     BARENFER SL                                              Puigcerdà                     2,4
    25     BASADELL HOLDING SL                                            Das                     2,4
@@ -3479,9 +3483,10 @@ Font: Registre Mercantil.                                                       
  Magnituds empresarials
  Facturació (milions d’euros)                                             3.760,4              -     3.955,5               -
  Facturació per capita                                                    61.280               -      62.449               -
- Pes de la facturació sobre la demarcació                                        -       10,3 %             -        10,7 %
- Ocupació                                                                 15.728               -      16.146               -     Gironès
 
+                                                                                                                                 Gironès
+ Pes de la facturació sobre la demarcació                                        -       10,3 %             -        10,7 %
+ Ocupació                                                                 15.728               -      16.146               -
  Ocupació per 1.000 habitants                                                256               -         255               -
  Pes de l’ocupació sobre la demarcació                                           -         9,1 %            -          9,1 %
 
@@ -3743,7 +3748,7 @@ Municipis segons xifra de negoci
    19      Montagut i Oix                             8,4           0,2 %
    20      Mieres                                     7,1           0,2 %
    21      Sales de Llierca                           1,1         0,03 %
-           Garrotxa                             3.955,5            100 %      Garrotxa
+           Garrotxa                              3.955,5           100 %      Garrotxa
 
 Font: Registre Mercantil.             (En milions d’euros)
 
@@ -3837,6 +3842,7 @@ Rànquing de les 25 empreses amb més xifra de negoci
    20     INDUSTRIA TECNICA DEL PLASTICO SA               La Vall de Bianya                  24,8
    21     BASSOLS ENERGIA COMERCIAL SL                                Olot                   24,7
    22     CARNICAS J COLOMER SA                                Les Preses                    22,1     Garrotxa
+
    23     CALES DE LLIERCA SA                                   Argelaguer                   21,9
    24     INDUSTRIAL AGUSTI 1876 SL                                   Olot                   20,5
    25     CARTOLOT SA                                          Les Preses                    20,5
@@ -3901,18 +3907,18 @@ Font: Registre Mercantil.                                                     (E
  Abans de 1970                                                                 42          1,1 %          44           1,1 %
  Entre 1970 i 1984                                                           190           5,0 %         190           4,9 %
  Entre 1985 i 1999                                                          1.039        27,1 %        1.014        26,2 %
- Entre 2000 i 2014                                                          1.510       39,3 %         1.473        38,1 %
- De 2015 fins ara                                                           1.057       27,5 %         1.146        29,6 %      Garrotxa
+ Entre 2000 i 2014                                                          1.510        39,3 %        1.473        38,1 %
+ De 2015 fins ara                                                           1.057        27,5 %        1.146        29,6 %      Garrotxa
 
 
  Magnituds empresarials
  Facturació (milions d’euros)                                            10.067,6              -    10.284,8               -
  Facturació per capita                                                    49.868               -      49.217               -
- Pes de la facturació sobre la demarcació                                       -       27,7 %              -       27,8 %
+ Pes de la facturació sobre la demarcació                                        -       27,7 %             -       27,8 %
  Ocupació                                                                 61.773               -      63.643               -    Gironès
 
  Ocupació per 1.000 habitants                                                306               -         305               -
- Pes de l’ocupació sobre la demarcació                                          -       35,8 %              -       35,9 %
+ Pes de l’ocupació sobre la demarcació                                           -       35,8 %             -       35,9 %
 
  Distribució de la facturació (en milions d’euros)                      10.067,6         100 %      10.284,8         100 %
 
@@ -3920,7 +3926,7 @@ Font: Registre Mercantil.                                                     (E
 
                                                                                                                                Pla de l’Estany
  Primari                                                                    120,0          1,2 %       130,9           1,3 %
- Indústria                                                                3.122,2       31,0 %       3.009,7        29,3 %
+ Indústria                                                                3.122,2        31,0 %      3.009,7        29,3 %
  Construcció                                                                783,5          7,8 %       855,0           8,3 %
  Serveis                                                                  6.041,8        60,0 %      6.289,2        61,2 %
 
@@ -4061,7 +4067,7 @@ Comerç al detall en establiments no especialitzats (471)                       
 Comerç al detall d’alimentació i begudes (472)                                          53,1          0,5 %
 Comerç al detall de combustibles per a l’automoció (473)                                33,5          0,3 %     Gironès
 Comerç al detall de TIC, ús domèstic i productes culturals (474 a 476)                  86,7          0,8 %
-Comerç al detall d’altres articles: de vestir, farmàcia... (477 a 479)                 154,2          1,5 %
+Comerç al detall d’altres articles: de vestir, farmàcia... (477 a 479)                154,2           1,5 %
 
 
                                                                                       302,4           2,9 %
@@ -4173,6 +4179,7 @@ Municipis segons xifra de negoci
    20      Sant Jordi Desvalls                    20,2          0,2 %
    21      Sant Joan de Mollet                    10,7          0,1 %
    22      Sant Andreu Salou                       5,4          0,1 %     Garrotxa
+
    23      Canet d’Adri                            4,9          0,0 %
    24      Sant Martí Vell                         2,6          0,0 %
    25      Sant Martí de Llémena                   2,4        0,02 %
@@ -4273,6 +4280,7 @@ Rànquing de les 25 empreses amb més xifra de negoci
    20     MED PLAYA MANAGEMENT SL                    Girona                   71,1
    21     GIRONA FUTBOL CLUB, SAD                    Girona                   69,9
    22     SOM ENERGIA SCCL.                          Girona                   69,7     Garrotxa
+
    23     KINGSPAN INSULATION SAU        Cassà de la Selva                    65,0
    24     ROUSSELOT GELATIN SL                Cervià de Ter                   63,5
    25     FORNELLS MOTOR SL             Fornells de la Selva                  57,7
@@ -4687,6 +4695,7 @@ Rànquing de les 25 empreses amb més xifra de negoci
    20     RP ROYAL DISTRIBUTION SL                      Porqueres                    29,1
    21     RAMADERIA AYATS SL                     Cornellà del Terri                  28,6
    22     ESPADRILLES BANYOLES SL                        Banyoles                    25,2     Garrotxa
+
    23     COSGRA SA                                       Crespià                    24,8
    24     OLIVERAS DERIVATS I MATERIALS SL       Cornellà del Terri                  24,0
    25     EMBUTIDOS SARQUELLA SL                         Banyoles                    23,3
@@ -5111,6 +5120,7 @@ Rànquing de les 25 empreses amb més xifra de negoci
    20     RAMADERIA MONTNEGRE SL                 Sant Joan de les Abadesses                   6,5
    21     DELTER ALIMENTACIO SL                                      Ripoll                   5,9
    22     SOLTER SOLDADURA SL                                 Campdevànol                     5,2     Garrotxa
+
    23     INFORMATICS M I B RIPOLL SL                                Ripoll                   5,0
    24     MAX SERVICE SL                                    Ribes de Freser                   4,9
    25     ARTESANIA PIRINEU SL                   Sant Joan de les Abadesses                   4,8
@@ -5447,6 +5457,7 @@ Municipis segons xifra de negoci
    20      Sant Hilari Sacalm                             59,9         0,6 %
    21      Fogars de la Selva                             47,1         0,5 %
    22      Riells i Viabrea                               42,6         0,4 %     Garrotxa
+
    23      Sant Julià del Llor i Bonmatí                  36,8         0,4 %
    24      Brunyola i Sant Martí Sapresa                  17,9         0,2 %
    25      Susqueda                                        1,1        0,01 %
@@ -5545,6 +5556,7 @@ Rànquing de les 25 empreses amb més xifra de negoci
    20     LACTIA AGROALIMENTARIA SL                            Vidreres                   91,1
    21     ROBERLO SA                              Riudellots de la Selva                  90,0
    22     SANT DALMAI SA                                 Vilobí d’Onyar                   79,6     Garrotxa
+
    23     TRETY SAU                                Maçanet de la Selva                    72,5
    24     FRECARN SL                               Maçanet de la Selva                    71,4
    25     J.B.M. CAMPLLONG SL                            Vilobí d’Onyar                   62,1
@@ -5579,79 +5591,79 @@ Font: Registre Mercantil.                                                  (En m
 
 
                                                               Sectors | 107
-                                               Diputació de Girona | Estructura empresarial de la demarcació de Girona 2026
+                                              Diputació de Girona | Estructura empresarial de la demarcació de Girona 2026
 
 
 
 
-                                                                                                                                 Demarcació de Girona
+                                                                                                                             Demarcació de Girona
 
 Demarcació de Girona
 Dades generals
-Estimació de la facturació de 2025: 38.820 milions d’euros                                                                       A
+Estimació de la facturació de 2025: 38.820 milions d’euros                                                                   A
 
 
- Concepte                                                                 Exercici 2023                  Exercici 2024
- Empreses                                                                14.406         100 %          14.719        100 %       B
+ Concepte                                                                Exercici 2023               Exercici 2024
+ Empreses                                                               14.406         100 %       14.719         100 %      B
 
- Societats anònimes                                                        1.026          7,1 %          1.003           6,8 %
- Societats limitades i altres                                            13.380         92,9 %          13.716       93,2 %
+ Societats anònimes                                                       1.026          7,1 %       1.003           6,8 %
+ Societats limitades i altres                                           13.380         92,9 %       13.716        93,2 %
 
- Empreses segons facturació anual                                        14.406         100 %          14.719        100 %       10 - 12
+ Empreses segons facturació anual                                       14.406         100 %       14.719         100 %      10 - 12
 
- Més de deu milions d’euros                                                 476           3,3 %            476           3,2 %
- Entre cinc i deu milions d’euros                                           473           3,3 %            504           3,4 %
- Entre un i cinc milions d’euros                                           2.779        19,3 %           2.905       19,7 %
- Entre 500.000 i 1.000.000 d’euros                                         2.465        17,1 %           2.503       17,0 %      13 - 15
- Entre 100.000 i 500.000 euros                                             5.411        37,6 %           5.481       37,2 %
- Menys de 100.000 euros                                                    2.802       19,5 %            2.850       19,4 %
+ Més de deu milions d’euros                                                476           3,3 %         476           3,2 %
+ Entre cinc i deu milions d’euros                                          473           3,3 %         504           3,4 %
+ Entre un i cinc milions d’euros                                          2.779        19,3 %        2.905        19,7 %
+ Entre 500.000 i 1.000.000 d’euros                                        2.465        17,1 %        2.503        17,0 %     13 - 15
+ Entre 100.000 i 500.000 euros                                            5.411        37,6 %        5.481        37,2 %
+ Menys de 100.000 euros                                                   2.802        19,5 %        2.850        19,4 %
 
- Antiguitat de les empreses                                              14.406         100 %          14.719        100 %       16
- Abans de 1970                                                              163           1,1 %            173           1,2 %
- Entre 1970 i 1984                                                          697           4,8 %            676           4,6 %
- Entre 1985 i 1999                                                         4.072       28,3 %            4.048       27,5 %
+ Antiguitat de les empreses                                             14.406         100 %       14.719         100 %      16
+ Abans de 1970                                                             163           1,1 %         173           1,2 %
+ Entre 1970 i 1984                                                         697           4,8 %         676           4,6 %
+ Entre 1985 i 1999                                                        4.072        28,3 %        4.048        27,5 %
 
-                                                                                                                                 17 - 18
- Entre 2000 i 2014                                                         5.606       38,9 %            5.559       37,8 %
- De 2015 fins ara                                                          3.868       26,8 %            4.263       29,0 %
+                                                                                                                             17 - 18
+ Entre 2000 i 2014                                                        5.606        38,9 %        5.559        37,8 %
+ De 2015 fins ara                                                         3.868        26,8 %        4.263        29,0 %
 
  Magnituds empresarials
- Facturació (milions d’euros)                                           36.343,4              -       37.038,7               -
+ Facturació (milions d’euros)                                          36.343,4              -    37.038,7               -
 
-                                                                                                                                 19 - 21
- Facturació sector / Facturació total                                          -      100,0 %                -      100,0 %
- Ocupació                                                               172.394               -        177.095               -
- Ocupació sector / Ocupació total                                              -      100,0 %                -      100,0 %
+                                                                                                                             19 - 21
+ Facturació sector / Facturació total                                          -     100,0 %              -      100,0 %
+ Ocupació                                                              172.394               -     177.095               -
+ Ocupació sector / Ocupació total                                              -     100,0 %              -      100,0 %
 
  Concentració sectorial
-                                                                                                                                 22
+                                                                                                                             22
  Facturació de l’1 % de les empreses del sector que més facturen
-                                                                               -       48,6 %                -       48,2 %
+                                                                               -       48,6 %             -       48,2 %
  sobre la facturació total del sector
  Ocupació de l’1 % de les empreses del sector que més facturen
-                                                                               -       28,6 %                -       29,7 %
- sobre l’ocupació total del sector                                                                                               23
+                                                                               -       28,6 %             -       29,7 %
+ sobre l’ocupació total del sector                                                                                           23
 
  Facturació del 5 % de les empreses del sector que més facturen
-                                                                               -       71,0 %                -       70,3 %
+                                                                               -       71,0 %             -       70,3 %
  sobre la facturació total del sector
  Ocupació del 5 % de les empreses del sector que més facturen
-                                                                                                                                 24
- sobre l’ocupació total del sector                                             -       47,9 %                -       48,4 %
+                                                                                                                             24
+ sobre l’ocupació total del sector                                             -       47,9 %             -       48,4 %
 
  Pes del sector sobre l’economia catalana
- Empreses: demarcació Girona / Catalunya                                       -       10,6 %                -       10,6 %      25
- Ocupació: demarcació Girona / Catalunya                                        -         9,3 %              -           9,2 %
- Facturació: demarcació Girona / Catalunya                                      -         8,0 %              -           7,8 %
+ Empreses: demarcació Girona / Catalunya                                       -       10,6 %             -       10,6 %     25
+ Ocupació: demarcació Girona / Catalunya                                       -         9,3 %            -          9,2 %
+ Facturació: demarcació Girona / Catalunya                                     -         8,0 %            -          7,8 %
 
 
 Font: Registre Mercantil.
-                                                                                                                                 26 - 27
+                                                                                                                             26 - 27
 
 
 
 
-                                                                                                  Demarcació de Girona | 109     28
+                                                                                             Demarcació de Girona | 109      28
 Diputació de Girona | Estructura empresarial de la demarcació de Girona 2026
 
 
@@ -6456,7 +6468,7 @@ Indústries extractives (B)
  17. Diferències de canvi                                                 1.467         0,0 %              105.281          0,2 %
  18. Deteriorament per alienacions financeres                             1.473         0,0 %                1.837          0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                                –566.535         –1,1 %            –333.129         –0,6 %
+ B) RESULTAT FINANCER (14+15+16+17+18)                                –566.535        –1,1 %             –333.129         –0,6 %
 
                                                                                                                                       19 - 21
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                  1.391.796          2,8 %           2.136.774           3,9 %
@@ -8130,8 +8142,8 @@ Paper i arts gràfiques (17 i 18)
 
  Ordre Nom                                                                                  Municipi            Facturació
 
-   1      ARCONVERT SA                                                                  Sant Gregori                  349,8
-   2      ENVASES PLASTICOS DEL TER, SA                                         Torroella de Montgrí                    70,4
+   1      ARCONVERT SA                                                                   Sant Gregori                 349,8
+   2      ENVASES PLASTICOS DEL TER, SA                                          Torroella de Montgrí                   70,4
    3      PAPELERA DE SARRIA SL                                                         Sarrià de Ter                   49,5
    4      LC PAPER 1881, SA                                                                   Besalú                    48,6
    5      HAMELIN BRANDS SL                                                                     Flaçà                   44,7
@@ -8141,12 +8153,12 @@ Paper i arts gràfiques (17 i 18)
    9      INGOGROUP IMPRESION Y DISEÑO SA                                       Riudellots de la Selva                  14,6
    10     IFLEX FLEXIBLE PACKAGING SA                                                             Ullà                  14,3
    11     OLSER IMPREMTA SL                                                               Les Preses                    13,0
-   12     ESTUDI GRAF SA                                                                    Aiguaviva                   13,0
+   12     ESTUDI GRAF SA                                                                   Aiguaviva                    13,0
    13     CELULOSA INDUSTRIAL DEL ALTO TER SA                                            Camprodon                      12,9
    14     IMPREMTA PAGES SL                                                                   Anglès                     8,6
    15     MANIPULATS GARROTXA SL                                               Sant Jaume de Llierca                     7,5
    16     GRAFIQUES ALZAMORA SA                                                                Girona                    6,2
-   17     AVIVA SISTEM GRUP SL                                                              Aiguaviva                    5,3
+   17     AVIVA SISTEM GRUP SL                                                             Aiguaviva                     5,3
    18     ENPLATER GRABADOS SL                                                   Torroella de Montgrí                    4,4
    19     AUBERT IMPRIMEIX SL                                                                    Olot                    3,5
    20     PAPERERA DE GIRONA, SA                                                        Sarrià de Ter                    3,1
@@ -9074,7 +9086,7 @@ Productes minerals no metàl·lics (23)
  17. Diferències de canvi                                             –164.561         –0,1 %             –46.105         –0,0 %
  18. Deteriorament per alienacions financeres                          –30.626         –0,0 %               33.494         0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –2.592.321         –0,9 %          –1.853.959         –0,6 %
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –2.592.321        –0,9 %           –1.853.959         –0,6 %
 
                                                                                                                                      19 - 21
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 19.166.739          6,3 %          11.675.509          4,0 %
@@ -9448,7 +9460,7 @@ Metal·lúrgia (24)
  17. Diferències de canvi                                                   –53        –0,0 %                –263         –0,0 %
  18. Deteriorament per alienacions financeres                          –16.997         –0,0 %             –26.243         –0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                                –578.541         –0,9 %            –442.581         –0,8 %
+ B) RESULTAT FINANCER (14+15+16+17+18)                                –578.541        –0,9 %             –442.581         –0,8 %
 
                                                                                                                                      19 - 21
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                  3.066.393          4,9 %              20.966          0,0 %
@@ -9798,12 +9810,12 @@ Productes metàl·lics, excepte maquinària (25)
  6. Despeses de personal                                          –162.062.568        –23,8 %        –163.821.432        –25,4 %     10 - 12
  7. Altres despeses d’explotació                                   –96.073.590        –14,1 %         –90.688.863        –14,0 %
  8. Amortització de l’actiu immobilitzat                           –20.567.496         –3,0 %         –20.585.882         –3,2 %
- 9. Imputació de subvencions de l’actiu immobilitzat                  1.034.417         0,2 %             623.515          0,1 %
- 10. Excessos de provisions                                                    -             -            242.690          0,0 %
+ 9. Imputació de subvencions de l’actiu immobilitzat                  1.034.417         0,2 %              623.515         0,1 %
+ 10. Excessos de provisions                                                    -             -             242.690         0,0 %
                                                                                                                                      13 - 15
  11. Deteriorament i resultat per alienacions                            14.077         0,0 %            3.354.782         0,5 %
  12. Diferència negativa de les combinacions de negoci                   20.352         0,0 %                2.222         0,0 %
- 13. Altres resultats                                                  112.085          0,0 %             441.266          0,1 %
+ 13. Altres resultats                                                  112.085          0,0 %              441.266         0,1 %
 
                                                                                                                                      16
  A) RESULTAT D’EXPLOTACIÓ (suma d’1 a 13)                           43.037.027          6,3 %          41.898.542          6,5 %
@@ -9814,7 +9826,7 @@ Productes metàl·lics, excepte maquinària (25)
  17. Diferències de canvi                                                13.511         0,0 %               75.257         0,0 %
  18. Deteriorament per alienacions financeres                          –46.752         –0,0 %               73.159         0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –3.635.060         –0,5 %          –2.897.431         –0,4 %
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –3.635.060        –0,5 %           –2.897.431         –0,4 %
 
                                                                                                                                      19 - 21
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 39.401.967          5,8 %          39.001.110          6,0 %
@@ -10549,7 +10561,7 @@ Maquinària i equips (28)
  6. Despeses de personal                                          –197.143.087        –22,0 %        –206.546.503        –22,1 %
  7. Altres despeses d’explotació                                  –122.354.235        –13,7 %        –129.051.655        –13,8 %
  8. Amortització de l’actiu immobilitzat                           –24.064.451         –2,7 %         –25.254.579         –2,7 %
- 9. Imputació de subvencions de l’actiu immobilitzat                   345.443          0,0 %             588.695          0,1 %
+ 9. Imputació de subvencions de l’actiu immobilitzat                   345.443          0,0 %              588.695         0,1 %
  10. Excessos de provisions                                                    -             -              28.500         0,0 %
  11. Deteriorament i resultat per alienacions                         1.032.367         0,1 %            1.804.674         0,2 %     13 - 15
 
@@ -11302,7 +11314,7 @@ Altres indústries manufactureres (31 a 33)                                     
  15. Despeses financeres                                            –1.453.571         –0,4 %           –1.598.778         –0,4 %     461
  16. Variació de valor en instruments financers                        209.564          0,1 %             –148.634         –0,0 %
  17. Diferències de canvi                                                19.956         0,0 %               33.405          0,0 %
- 18. Deteriorament per alienacions financeres                            37.143         0,0 %                   916         0,0 %
+ 18. Deteriorament per alienacions financeres                            37.143         0,0 %                  916          0,0 %
 
  B) RESULTAT FINANCER (14+15+16+17+18)                                –665.597         –0,2 %          –1.052.692         –0,3 %      462 - 463
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 24.774.465          6,7 %          24.881.197           6,3 %
@@ -12399,7 +12411,7 @@ Activitats especialitzades en construcció (43)                                 
  17. Diferències de canvi                                                 6.034         0,0 %              126.420          0,0 %
  18. Deteriorament per alienacions financeres                            85.766         0,0 %              123.656          0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –4.167.428         –0,4 %         –31.006.768         –2,9 %      462 - 463
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –4.167.428        –0,4 %          –31.006.768         –2,9 %      462 - 463
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 60.412.711          5,9 %          37.409.443           3,4 %
  19. Impost sobre beneficis                                        –14.226.372         –1,4 %         –14.707.947          –1,4 %
 
@@ -12572,7 +12584,7 @@ Activitats especialitzades en construcció (43)
    2      OSG SERVEIS GRUP SL                                                                 Girona                   24,4
    3      SINOPHOS GROUP LLORET SL                                                     Lloret de Mar                   15,7
    4      EXPERT LINE SL                                                                  Vilablareix                  14,7
-   5      APLICACIONS ELECTRIQUES SA                                                            Salt                   14,2
+   5      APLICACIONS ELECTRIQUES SA                                                             Salt                  14,2
    6      BELLAPART SA                                                                   Les Preses                    12,7
    7      EXCAVACIONS J PERAFERRER SL                                          La Tallada d’Empordà                    12,4
    8      INSTALACIONES ELECTRICAS CAT SA                                                  Hostalric                   12,3
@@ -13129,7 +13141,7 @@ Intermediaris del comerç (461)                                                 
  17. Diferències de canvi                                                32.322         0,0 %          –1.390.144         –0,1 %
  18. Deteriorament per alienacions financeres                         1.054.363         0,1 %              894.402         0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –4.373.447         –0,3 %              41.014          0,0 %     462 - 463
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –4.373.447        –0,3 %               41.014          0,0 %     462 - 463
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 40.342.535          2,5 %          99.464.132          4,6 %
  19. Impost sobre beneficis                                         –8.783.648         –0,5 %         –22.279.214         –1,0 %
 
@@ -13494,7 +13506,7 @@ Comerç a l’engròs d’alimentació i begudes (462 i 463)                    
  17. Diferències de canvi                                             –372.328         –0,0 %              295.766         0,0 %
  18. Deteriorament per alienacions financeres                          287.630          0,0 %              419.909         0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –6.033.758         –0,2 %          –3.904.264         –0,1 %     462 - 463
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –6.033.758        –0,2 %           –3.904.264         –0,1 %     462 - 463
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                               103.594.678           3,0 %         116.093.592          3,3 %
  19. Impost sobre beneficis                                        –24.291.904         –0,7 %         –26.668.220         –0,8 %
 
@@ -13859,7 +13871,7 @@ Comerç a l’engròs de productes d’ús domèstic (464)                      
  17. Diferències de canvi                                              272.692          0,0 %            –133.252         –0,0 %
  18. Deteriorament per alienacions financeres                         –955.240         –0,1 %               35.295         0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –3.537.922         –0,5 %          –5.084.238         –0,8 %     462 - 463
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –3.537.922        –0,5 %           –5.084.238         –0,8 %     462 - 463
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 54.501.369          8,4 %          43.003.467          6,5 %
  19. Impost sobre beneficis                                        –13.028.322         –2,0 %         –10.208.668         –1,6 %
 
@@ -14226,7 +14238,7 @@ Comerç a l’engròs de TIC i maquinària (465 i 466)                          
  17. Diferències de canvi                                             –360.289         –0,1 %            –105.343         –0,0 %
  18. Deteriorament per alienacions financeres                         –336.475         –0,1 %             –72.336         –0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –1.412.842         –0,4 %          –1.782.894         –0,4 %     462 - 463
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –1.412.842        –0,4 %           –1.782.894         –0,4 %     462 - 463
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 26.882.248          7,0 %          28.551.146          6,9 %
  19. Impost sobre beneficis                                         –5.706.648         –1,5 %          –6.449.259         –1,6 %
 
@@ -15135,7 +15147,7 @@ Comerç al detall en establiments no especialitzats (471)
    8      SUPERFRUIT DEL SUR SL                                                              Girona                    5,9
    9      SUPERMERCAT PIJOAN SL                                                Calonge i Sant Antoni                   5,5
    10     FRANCESC COLLELL SL                                                   Sant Joan les Fonts                    5,4
-   11     INNOVA DIDACTIC SL                                                                    Olot                   4,8
+   11     INNOVA DIDACTIC SL                                                                   Olot                    4,8
    12     CITY THANDI SL                                                                     Girona                    3,9
    13     COMAMERCAT SL                                                               Tossa de Mar                     3,4
    14     JANIL ALIMENTACIO SL                                                    Fogars de la Selva                   3,0
@@ -15144,11 +15156,11 @@ Comerç al detall en establiments no especialitzats (471)
    17     COMERCIAL POLCINBERT SL                                                           Portbou                    2,5
    18     COMA BRAVA SL                                                               Tossa de Mar                     2,3
    19     FRUITES NURIA SL                                                                  Ventalló                   2,3
-   20     GURBACHAN SL                                                                          Olot                   2,3
+   20     GURBACHAN SL                                                                         Olot                    2,3
    21     ESTABLIMENTS D’ALIMENTACIO SA                                                      Girona                    2,3
    22     SUPER MC SUN SL                                                       Castelló d’Empúries                    2,2
    23     SUPERMERCATS LA PARADA SL                                                        Vilamalla                   1,9
-   24     TORKE MULTISERVICIOS SL                                                               Olot                   1,8
+   24     TORKE MULTISERVICIOS SL                                                              Olot                    1,8
    25     NEUTRALIDAD XH SL                                                            La Jonquera                     1,7
 
 Font: Registre Mercantil.                                                                              (En milions d’euros)
@@ -15321,7 +15333,7 @@ Comerç al detall d’alimentació i begudes (472)                              
  17. Diferències de canvi                                              –83.629         –0,0 %                3.669         0,0 %
  18. Deteriorament per alienacions financeres                       –4.952.761         –1,3 %               21.104         0,0 %
 
- B) RESULTAT FINANCER (14+15+16+17+18)                              –6.569.609         –1,7 %          –1.221.122         –0,4 %     462 - 463
+ B) RESULTAT FINANCER (14+15+16+17+18)                              –6.569.609        –1,7 %           –1.221.122         –0,4 %     462 - 463
  C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 10.280.437          2,7 %          13.065.308          4,1 %
  19. Impost sobre beneficis                                         –3.059.290         –0,8 %          –3.150.308         –1,0 %
 
@@ -15929,7 +15941,7 @@ Estimació de la facturació de 2025: 566 milions d’euros
  Magnituds empresarials
  Facturació (milions d’euros)                                              463,9              -        536,8              -
  Facturació sector / Facturació total                                           -         1,3 %             -         1,4 %    68
- Ocupació                                                                  2.346              -        2.562              -
+ Ocupació                                                                 2.346               -        2.562              -
  Ocupació sector / Ocupació total                                               -         1,4 %             -         1,4 %
 
  Concentració sectorial
@@ -16234,7 +16246,6 @@ Comerç al detall de TIC, ús domèstic i productes culturals (474 a 476)
    23     INTERLLAR CUINA SL                                                                       Vidreres                     2,8
    24     RADIO PEPE SA                                                                            Palamós                      2,7
    25     RIGAU GERMANS JUST SERVEIS DE GIRONA SL                                                Llambilles                     2,7
-
 
 Font: Registre Mercantil.                                                                                       (En milions d’euros)
 
@@ -17170,7 +17181,7 @@ Hostaleria (55 i 56)
 
  TOTAL ACTIU (A+B)                                        2.543.714.124         100 %    2.736.857.180       100 %
 
- PATRIMONI NET I PASSIU                                            Euros            %            Euros           %
+ PATRIMONI NET I PASSIU                                            Euros            %           Euros            %
  A) PATRIMONI NET                                         1.413.297.779         55,6 %   1.541.957.004       56,3 %
  Fons propis                                               1.411.143.292        55,5 %   1.538.548.810       56,2 %
  Ajustos per canvis de valor                                     276.478         0,0 %        277.565         0,0 %
@@ -17291,7 +17302,6 @@ Hostaleria (55 i 56)
    23     S’AGARO MEDITERRANEA SL                                     Castell d’Aro, Platja d’Aro i s’Agaró                   8,5
    24     CAMPING L’AMFORA SL                                                        Sant Pere Pescador                       8,3
    25     MAR DE LLORET SL                                                                         Girona                     8,1
-
 
 Font: Registre Mercantil.                                                                                     (En milions d’euros)
 
@@ -17458,7 +17468,7 @@ Informació i comunicacions (58 a 63)
  A) RESULTAT D’EXPLOTACIÓ (suma d’1 a 13)                           42.373.904         12,3 %          34.609.787         10,0 %     58 - 63
  14. Ingressos financers                                              5.629.259         1,6 %            7.218.360         2,1 %
  15. Despeses financeres                                            –1.912.288         –0,6 %          –3.228.963         –0,9 %
- 16. Variació de valor en instruments financers                        177.992          0,1 %             401.000          0,1 %
+ 16. Variació de valor en instruments financers                        177.992          0,1 %              401.000         0,1 %
  17. Diferències de canvi                                              –48.257         –0,0 %             –64.368         –0,0 %
 
                                                                                                                                      64 - 66
@@ -17873,7 +17883,7 @@ Activitats financeres i d’assegurances (64 a 66)
 
  TOTAL ACTIU (A+B)                                        3.441.928.020         100 %    4.637.169.713       100 %
 
- PATRIMONI NET I PASSIU                                            Euros            %            Euros           %
+ PATRIMONI NET I PASSIU                                            Euros            %           Euros            %
  A) PATRIMONI NET                                         2.890.864.833         84,0 %   3.917.076.114       84,5 %
  Fons propis                                               2.873.048.269        83,5 %   3.898.033.013       84,1 %
  Ajustos per canvis de valor                                  17.748.804         0,5 %      18.953.725        0,4 %
@@ -18022,7 +18032,7 @@ Estimació de la facturació de 2025: 427 milions d’euros
  Societats limitades i altres                                             1.149        91,8 %         1.220         91,2 %
 
  Empreses segons facturació anual                                        1.251         100 %          1.338         100 %
- Més de deu milions d’euros                                                   2          0,2 %            2           0,1 %
+ Més de deu milions d’euros                                                   2          0,2 %             2          0,1 %
  Entre cinc i deu milions d’euros                                             4          0,3 %             7          0,5 %
  Entre un i cinc milions d’euros                                             59          4,7 %           78           5,8 %    55 - 56
  Entre 500.000 i 1.000.000 d’euros                                           94          7,5 %          102           7,6 %
@@ -18398,10 +18408,8 @@ Estimació de la facturació de 2025: 807 milions d’euros
  Ocupació sector / Ocupació total                                               -          3,8 %              -         4,1 %
 
  Concentració sectorial
-
-                                                                                                                                  69 - 75
  Facturació de l’1 % de les empreses del sector que més facturen
-                                                                                -        37,0 %               -       33,9 %
+                                                                                -        37,0 %               -       33,9 %      69 - 75
  sobre la facturació total del sector
  Ocupació de l’1 % de les empreses del sector que més facturen
                                                                                 -        24,1 %               -       22,4 %
@@ -18875,10 +18883,10 @@ Activitats administratives i serveis auxiliars (77 a 82)
 
  B) RESULTAT FINANCER (14+15+16+17+18)                               8.434.528           0,8 %             2.091.909           0,2 %
 
- C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 44.937.244           4,2 %           42.934.915             3,4 %
+ C) RESULTAT ABANS D’IMPOSTOS (A+B)                                 44.937.244           4,2 %           42.934.915            3,4 %
  19. Impost sobre beneficis                                         –8.476.349          –0,8 %            –9.496.391          –0,8 %
                                                                                                                                           68
- D) RESULTAT DE L’EXERCICI (C+19+20)                                36.460.895           3,4 %           33.438.524             2,7 %
+ D) RESULTAT DE L’EXERCICI (C+19+20)                                36.460.895           3,4 %           33.438.524            2,7 %
 
 
 
@@ -19030,7 +19038,7 @@ Activitats administratives i serveis auxiliars (77 a 82)
    1      EUROFIRMS ETT SL                                                        Cassà de la Selva                  434,8
    2      MARLEX PEOPLE ETT SL                                                                Girona                 155,8
    3      ARENA TOUR SL                                                                Lloret de Mar                 137,2
-   4      ST SERVICES IBERIA SL                                                Torroella de Montgrí                    36,8
+   4      ST SERVICES IBERIA SL                                                 Torroella de Montgrí                   36,8
    5      MOTORMAR SA                                                          Sant Feliu de Guíxols                   34,5
    6      ROYALVERD SERVICE SL                                                           Les Preses                    20,3
    7      TRACCIONS GIRONA SL                                                      Cornellà del Terri                  12,6

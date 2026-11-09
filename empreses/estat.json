@@ -1,9 +1,24 @@
 {
  "edicions": {
   "2026": {
-   "url": "https://promoeco.ddgi.cat/wp-content/uploads/2026/11/Estructura_Empresarial_2026.pdf",
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_Empresarial_2026_baixa.pdf",
    "baixat": "2026-11-09",
-   "bytes": 7936771
+   "bytes": 16773454
+  },
+  "2022": {
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_Empresarial_demarcació_de_Girona 2022_ACCESSIBLE.pdf",
+   "baixat": "2026-11-09",
+   "bytes": 11807894
+  },
+  "2023": {
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_empresarial_demarcacio_Girona_2023_baixa.pdf",
+   "baixat": "2026-11-09",
+   "bytes": 5579674
+  },
+  "2025": {
+   "url": "https://www.ddgi.cat/xifra/estudis/Estructura_Empresarial_2025_baixa.pdf",
+   "baixat": "2026-11-09",
+   "bytes": 16261408
   }
  }
 }

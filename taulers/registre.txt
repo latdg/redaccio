@@ -19,4 +19,4 @@ Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
       <dc:date>2026-11-01T23:00:00Z</dc:date>
     </item>
     
-Ajuntament d'Ullastret: 1 anuncis de l'última setmana
+Ajuntament d'Ullastret: 0 anuncis de l'última setmana

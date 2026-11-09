@@ -30,6 +30,21 @@ def edicions_media():
             if len(items) < 100: break
     return trobades
 
+def edicions_xifra():
+    """L'apartat «Estudis» del XIFRA de la Diputació, on hi ha totes les edicions."""
+    trobades = {}
+    try:
+        r = requests.get("https://www.ddgi.cat/xifra/menu_est.asp", headers=UA, timeout=60)
+        r.encoding = r.apparent_encoding
+        for href in re.findall(r'href=["\']([^"\']+\.pdf)["\']', r.text, re.I):
+            nom = requests.utils.unquote(href.rsplit("/", 1)[-1])
+            m = re.search(r"estructura.*?(20\d\d)", nom, re.I)
+            if m:
+                trobades.setdefault(int(m.group(1)), requests.compat.urljoin("https://www.ddgi.cat/xifra/", href))
+    except requests.RequestException as e:
+        print("XIFRA:", e)
+    return trobades
+
 def edicio_provable(any_):
     """Si la mediateca no respon, prova l'adreça habitual mes a mes."""
     for mes in range(12, 0, -1):
@@ -42,7 +57,9 @@ def edicio_provable(any_):
     return None
 
 estat = json.load(open(ESTAT)) if os.path.exists(ESTAT) else {"edicions": {}}
-trobades = edicions_media()
+trobades = edicions_xifra()
+for a, u in edicions_media().items():
+    trobades.setdefault(a, u)
 avui = datetime.date.today().year
 for a in range(2022, avui + 2):
     if a not in trobades and str(a) not in estat["edicions"]:

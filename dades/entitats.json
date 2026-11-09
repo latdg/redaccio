@@ -1,6 +1,6 @@
 {
- "generat": "2026-11-02T13:48:57+00:00",
- "actualitzatFont": "2026-10-30T19:06:24+00:00",
+ "generat": "2026-11-09T14:19:05+00:00",
+ "actualitzatFont": "2026-11-06T19:06:14+00:00",
  "font": "Registre d'entitats de Catalunya (Departament de Justícia), dades obertes de la Generalitat",
  "primeraRevisio": false,
  "municipis": {
@@ -5637,7 +5637,7 @@
      "junta": [
       {
        "carrec": "Presidenta",
-       "persona": "Eva Gasull Bonet"
+       "persona": "Eva Gasull Pujol"
       },
       {
        "carrec": "Secretària",
@@ -5646,6 +5646,62 @@
       {
        "carrec": "Tresorer",
        "persona": "Diego Conde Navarro"
+      },
+      {
+       "carrec": "Vocal 1r",
+       "persona": "Carmen Raya Saavedra"
+      },
+      {
+       "carrec": "Vocal 1r",
+       "persona": "Cristina Canals Frigola"
+      },
+      {
+       "carrec": "Vocal 2n",
+       "persona": "Judit Cadanet Polinariu"
+      },
+      {
+       "carrec": "Vocal 2n",
+       "persona": "Mercè Font Roda"
+      },
+      {
+       "carrec": "Vocal 3r",
+       "persona": "Marc Casals Masós"
+      },
+      {
+       "carrec": "Vocal 4t",
+       "persona": "Jorge Rafael Lopez Binachi"
+      },
+      {
+       "carrec": "Vocal 4t",
+       "persona": "Judit Cadanet Polinariu"
+      },
+      {
+       "carrec": "Vocal 4t",
+       "persona": "Montserrat Llenas Mercader"
+      },
+      {
+       "carrec": "Vocal 5è",
+       "persona": "Albert González Roig"
+      },
+      {
+       "carrec": "Vocal 6è",
+       "persona": "Jorge Rafael Lopez Binachi"
+      },
+      {
+       "carrec": "Vocal 6è",
+       "persona": "Marta Puigmiquel Casamort"
+      },
+      {
+       "carrec": "Vocal 13è",
+       "persona": "Marina Gomez Rosell"
+      },
+      {
+       "carrec": "Vocal 14è",
+       "persona": "Miriam Comas Serrat"
+      },
+      {
+       "carrec": "Vocal 15è",
+       "persona": "Anna Colls Ruiz"
       }
      ]
     },

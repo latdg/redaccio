@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light only">
+<title>La TdG correu</title>
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px}
+.capcalera{display:flex;align-items:center;gap:12px}
+h1{margin:0 auto 0 0;font-size:1.6rem}
+.panells{display:flex;gap:14px}
+.panells a{font-size:1.5rem;line-height:1;text-decoration:none}
+@media (max-width:600px){h1{font-size:1.25rem}.panells{gap:9px}.panells a{font-size:1.25rem}}
+main{padding-top:16px;padding-bottom:32px}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;min-width:0}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+.boto{padding:6px 12px;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:#fff}
+.boto.clar{background:var(--targeta);color:var(--accent)}
+.boto.perill{background:var(--targeta);color:#a3161b;border-color:#a3161b}
+select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text)}
+.vistes{display:inline-flex;border:1px solid var(--linia);border-radius:8px;overflow:hidden}
+.vistes button{background:var(--targeta);border:0;padding:5px 12px;color:var(--text)}
+.vistes button[aria-pressed=true]{background:var(--accent);color:#fff}
+.font{color:var(--suau);font-size:.85rem}
+.avis{color:#a3161b;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <h1>✉️ La TdG correu</h1>
+    <span class="panells" aria-label="Altres panells de La TdG">
+      <a href="../" title="La TdG redacció" aria-label="La TdG redacció">✍️</a>
+      <a href="https://latdg.github.io/tauler/" title="La TdG ampliada" aria-label="La TdG ampliada">➕</a>
+      <a href="../dades/" title="La TdG dades" aria-label="La TdG dades">📊</a>
+      <a href="../tdt/" title="La TdG sala de control audiovisual" aria-label="La TdG sala de control audiovisual">📺</a>
+      <a href="https://latdg.github.io/tauler/fonoteca/" title="La TdG fonoteca" aria-label="La TdG fonoteca">🎙️</a>
+    </span>
+  </div>
+</header>
+<main>
+  <section id="clauBox" hidden>
+    <p style="margin:0 0 8px">🔒 Escriu la clau de La TdG.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <input type="password" id="pin" placeholder="Clau" autocomplete="current-password" style="flex:1 1 200px">
+      <label class="font"><input type="checkbox" id="recorda" checked> Recorda-la en aquest aparell</label>
+      <button type="button" class="boto" id="entra">Entra</button>
+    </div>
+    <p class="avis" id="clauEstat"></p>
+  </section>
+  <section id="correu" hidden></section>
+  <p class="font" id="peu" hidden>El compte es configura a ⚙️ amb l'URL de l'Apps Script «Correu del tauler» del compte de La TdG; queda desada en aquest aparell. <button type="button" class="boto clar" id="surt" style="padding:2px 8px">Oblida la clau</button></p>
+</main>
+<script src="correu.js?v=1"></script>
+<script>
+(function () {
+  "use strict";
+  const CLAU_DESADA = "llampsPin";   // la mateixa clau dels llamps, l'agenda i el publicador
+  const COMPTES = "latdgCorreuComptes";
+  const $ = id => document.getElementById(id);
+  const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
+  const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
+  let PIN = llegeix(CLAU_DESADA), gestor = null;
+  const comptes = () => { try { return JSON.parse(llegeix(COMPTES) || "[]"); } catch (e) { return []; } };
+  function mostra() {
+    $("clauBox").hidden = true; $("correu").hidden = false; $("peu").hidden = false;
+    if (!gestor) {
+      gestor = window.Correu.munta($("correu"), {
+        comptes: comptes,
+        desaComptes: l => escriu(COMPTES, JSON.stringify(l)),
+        clau: () => PIN
+      });
+      if (comptes().length) gestor.carrega();
+    }
+  }
+  $("entra").addEventListener("click", () => {
+    const v = $("pin").value.trim();
+    if (!v) { $("clauEstat").textContent = "Escriu la clau."; return; }
+    PIN = v; if ($("recorda").checked) escriu(CLAU_DESADA, v);
+    $("pin").value = ""; mostra();
+  });
+  $("pin").addEventListener("keydown", e => { if (e.key === "Enter") $("entra").click(); });
+  $("surt").addEventListener("click", () => { escriu(CLAU_DESADA, ""); location.reload(); });
+  if (PIN) mostra(); else $("clauBox").hidden = false;
+})();
+</script>
+</body>
+</html>

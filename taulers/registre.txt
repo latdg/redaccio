@@ -9,14 +9,14 @@ Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
     </item>
     
 Consorci de les Gavarres: 0 anuncis de l'última setmana
-Ajuntament d'Ullastret · pàgina 1: 42 anuncis; primeres dates: ['2026-11-02', '2026-10-06', '2026-10-06', '2026-08-04', '2026-08-04']
+Ajuntament d'Ullastret · pàgina 1: 41 anuncis; primeres dates: ['2026-10-06', '2026-10-06', '2026-08-04', '2026-08-04', '2026-07-28']
 Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
-      <title>Convocatoria Ple extraordinari</title>
-      <link>https://tauler.seu-e.cat/detall?idEns=1720570005&amp;idEdicte=1720570005_743969</link>
-      <description>Convocatoria Ple extraordinari, a les 16h a la sala de plens municipal</description>
-      <pubDate>Sun, 01 Nov 2026 23:00:00 GMT</pubDate>
-      <guid>https://tauler.seu-e.cat/detall?idEns=1720570005&amp;idEdicte=1720570005_743969</guid>
-      <dc:date>2026-11-01T23:00:00Z</dc:date>
+      <title>EXPOSICIÓ PÚBLICA NOMBRE ELECTORS</title>
+      <link>https://tauler.seu-e.cat/detall?idEns=1720570005&amp;idEdicte=1720570005_735070</link>
+      <description>En compliment de la Resolució de 24 de febrer de 2006, s'exposa el nombre d'electors i electores del municipi.</description>
+      <pubDate>Mon, 05 Oct 2026 22:00:00 GMT</pubDate>
+      <guid>https://tauler.seu-e.cat/detall?idEns=1720570005&amp;idEdicte=1720570005_735070</guid>
+      <dc:date>2026-10-05T22:00:00Z</dc:date>
     </item>
     
 Ajuntament d'Ullastret: 0 anuncis de l'última setmana

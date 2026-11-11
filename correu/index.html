@@ -15,6 +15,7 @@ header{padding-top:24px}
 .capcalera{display:flex;align-items:center;gap:12px}
 h1{margin:0 auto 0 0;font-size:1.6rem}
 .panells{display:flex;gap:14px}
+.candau{flex:0 0 auto;white-space:nowrap}
 .panells a{font-size:1.5rem;line-height:1;text-decoration:none}
 @media (max-width:600px){h1{font-size:1.25rem}.panells{gap:9px}.panells a{font-size:1.25rem}}
 main{padding-top:16px;padding-bottom:32px}
@@ -43,6 +44,7 @@ select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-r
       <a href="../tdt/" title="La TdG sala de control audiovisual" aria-label="La TdG sala de control audiovisual">📺</a>
       <a href="https://latdg.github.io/tauler/fonoteca/" title="La TdG fonoteca" aria-label="La TdG fonoteca">🎙️</a>
     </span>
+    <button type="button" class="boto candau" id="candau">🔒 Obre</button>
   </div>
 </header>
 <main>
@@ -68,9 +70,18 @@ select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-r
   const llegeix = k => { try { return localStorage.getItem(k) || ""; } catch (e) { return ""; } };
   const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
   let PIN = llegeix(CLAU_DESADA), gestor = null;
+  const TANCAT = "latdgCorreuTancat";
   const comptes = () => { try { return JSON.parse(llegeix(COMPTES) || "[]"); } catch (e) { return []; } };
+  function tanca() {
+    $("clauBox").hidden = true; $("correu").hidden = true; $("peu").hidden = true;
+    $("candau").textContent = "🔒 Obre"; escriu(TANCAT, "1");
+  }
+  function obre() {
+    if (PIN) mostra(); else { $("clauBox").hidden = false; $("pin").focus(); }
+  }
   function mostra() {
     $("clauBox").hidden = true; $("correu").hidden = false; $("peu").hidden = false;
+    $("candau").textContent = "🔓 Tanca"; escriu(TANCAT, "");
     if (!gestor) {
       gestor = window.Correu.munta($("correu"), {
         comptes: comptes,
@@ -78,7 +89,7 @@ select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-r
         clau: () => PIN
       });
       if (comptes().length) gestor.carrega();
-    }
+    } else if (comptes().length) gestor.carrega();
   }
   $("entra").addEventListener("click", () => {
     const v = $("pin").value.trim();
@@ -87,8 +98,9 @@ select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-r
     $("pin").value = ""; mostra();
   });
   $("pin").addEventListener("keydown", e => { if (e.key === "Enter") $("entra").click(); });
+  $("candau").addEventListener("click", () => { if ($("correu").hidden) obre(); else tanca(); });
   $("surt").addEventListener("click", () => { escriu(CLAU_DESADA, ""); location.reload(); });
-  if (PIN) mostra(); else $("clauBox").hidden = false;
+  if (PIN && !llegeix(TANCAT)) mostra(); else if (PIN) tanca(); else $("clauBox").hidden = false;
 })();
 </script>
 </body>

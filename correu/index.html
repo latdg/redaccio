@@ -16,8 +16,6 @@ header{padding-top:24px}
 h1{margin:0 auto 0 0;font-size:1.6rem}
 .panells{display:flex;gap:14px}
 .candau{flex:0 0 auto;white-space:nowrap}
-.plega-correu{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 12px;padding:10px 16px;background:var(--targeta);border:1px solid var(--linia);border-radius:12px;font:inherit;font-weight:700;color:var(--text);text-align:left}
-.plega-correu .fletxa{color:var(--accent)}
 .panells a{font-size:1.5rem;line-height:1;text-decoration:none}
 @media (max-width:600px){h1{font-size:1.25rem}.panells{gap:9px}.panells a{font-size:1.25rem}}
 main{padding-top:16px;padding-bottom:32px}
@@ -59,7 +57,6 @@ select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-r
     </div>
     <p class="avis" id="clauEstat"></p>
   </section>
-  <button type="button" class="plega-correu" id="plegaCorreu" aria-expanded="false" aria-controls="correu" hidden>📬 Correu <span class="fletxa" aria-hidden="true">▸</span></button>
   <section id="correu" hidden></section>
   <p class="font" id="peu" hidden>El compte es configura a ⚙️ amb l'URL de l'Apps Script «Correu del tauler» del compte de La TdG; queda desada en aquest aparell. <button type="button" class="boto clar" id="surt" style="padding:2px 8px">Oblida la clau</button></p>
 </main>
@@ -75,20 +72,15 @@ select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-r
   let PIN = llegeix(CLAU_DESADA), gestor = null;
   const TANCAT = "latdgCorreuTancat";
   const comptes = () => { try { return JSON.parse(llegeix(COMPTES) || "[]"); } catch (e) { return []; } };
-  let desplegat = false;
-  function pintaPlec() {
-    $("correu").hidden = !desplegat; $("plegaCorreu").setAttribute("aria-expanded", desplegat);
-    $("plegaCorreu").querySelector(".fletxa").textContent = desplegat ? "▾" : "▸";
-  }
   function tanca() {
-    $("clauBox").hidden = true; $("correu").hidden = true; $("peu").hidden = true; $("plegaCorreu").hidden = true; desplegat = false;
+    $("clauBox").hidden = true; $("correu").hidden = true; $("peu").hidden = true;
     $("candau").textContent = "🔒 Obre"; escriu(TANCAT, "1");
   }
   function obre() {
     if (PIN) mostra(); else { $("clauBox").hidden = false; $("pin").focus(); }
   }
   function mostra() {
-    $("clauBox").hidden = true; $("plegaCorreu").hidden = false; $("peu").hidden = false; desplegat = false; pintaPlec();
+    $("clauBox").hidden = true; $("correu").hidden = false; $("peu").hidden = false;
     $("candau").textContent = "🔓 Tanca"; escriu(TANCAT, "");
     if (!gestor) {
       gestor = window.Correu.munta($("correu"), {
@@ -106,8 +98,7 @@ select,input{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-r
     $("pin").value = ""; mostra();
   });
   $("pin").addEventListener("keydown", e => { if (e.key === "Enter") $("entra").click(); });
-  $("candau").addEventListener("click", () => { if ($("plegaCorreu").hidden) obre(); else tanca(); });
-  $("plegaCorreu").addEventListener("click", () => { desplegat = !desplegat; pintaPlec(); });
+  $("candau").addEventListener("click", () => { if ($("correu").hidden) obre(); else tanca(); });
   $("surt").addEventListener("click", () => { escriu(CLAU_DESADA, ""); location.reload(); });
   if (PIN && !llegeix(TANCAT)) mostra(); else if (PIN) tanca(); else $("clauBox").hidden = false;
 })();

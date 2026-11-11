@@ -54,7 +54,7 @@
 
   function munta(arrel, op) {
     if (!document.getElementById("cr-estil")) { const st = document.createElement("style"); st.id = "cr-estil"; st.textContent = CSS; document.head.appendChild(st); }
-    let compte = 0, vista = "llista", filtre = "is:unread in:inbox", cerca = "", fils = [], fil = null, avis = "", avisErr = false, carregant = false, redacta = null, configura = false, programats = [];
+    let compte = 0, vista = "llista", filtre = "in:inbox", cerca = "", fils = [], fil = null, avis = "", avisErr = false, carregant = false, redacta = null, configura = false, programats = [];
     const comptes = () => (op.comptes() || []).filter(c => c && c.url);
     const actual = () => { const l = comptes(); if (!l.length) return null; compte = Math.min(compte, l.length - 1); return l[compte]; };
 

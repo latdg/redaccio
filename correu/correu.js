@@ -113,7 +113,8 @@
       if (!d.ok) throw new Error(d.error || "Error desconegut");
       return d;
     }
-    const diu = (t, err) => { avis = t || ""; avisErr = !!err; pinta(); };
+    let desfer = null;   // l'últim correu arxivat, per poder-lo tornar a la safata
+    const diu = (t, err, d) => { avis = t || ""; avisErr = !!err; desfer = d || null; pinta(); };
 
     async function carrega() {
       if (!actual()) { pinta(); return; }
@@ -208,13 +209,15 @@
       carregant = false; pinta();
     }
     async function accio(nom, id, text) {
+      const c = compteFil(), idx = fils.findIndex(x => x.id === id), item = fils[idx];
       try {
-        await crida({ accio: nom, id: id, llegit: false }); memo.delete(id);
+        await crida({ accio: nom, id: id, llegit: false }, c); memo.delete(id);
         fils = fils.filter(x => x.id !== id || nom === "llegit");
         if (nom === "llegit") { const f = fils.find(x => x.id === id); if (f) f.noLlegit = true; }
-        vista = "llista"; fil = null; diu(text);
+        vista = "llista"; fil = null; visor = null; diu(text, false, nom === "arxiva" && item ? { id: id, c: c, item: item, idx: idx } : null);
       } catch (e) { diu(e.message, true); }
     }
+
 
     function pinta() {
       const l = comptes(), c = actual();
@@ -230,7 +233,7 @@
       if (c) h += '<button type="button" class="boto clar" data-cr="refresca" title="Torna a carregar">↻</button><button type="button" class="boto" data-cr="nou">✏️ Nou</button>';
       h += '<button type="button" class="boto clar" data-cr="comptes" title="Comptes">⚙️</button></div></div>';
       if (c && vista === "llista") h += '<div class="cr-eines"><input type="search" data-cr="cerca" placeholder="Cerca (com a Gmail: from:, subject:…)" value="' + esc(cerca) + '" style="flex:1 1 200px;font:inherit;padding:6px 8px;border:1px solid var(--linia,#e3e1db);border-radius:8px"></div>';
-      if (avis) h += '<p class="cr-avis' + (avisErr ? " err" : "") + '">' + esc(avis) + "</p>";
+      if (avis) h += '<p class="cr-avis' + (avisErr ? " err" : "") + '">' + esc(avis) + (desfer ? ' <button type="button" class="boto clar" data-cr="desfes">↶ Desfés</button>' : "") + "</p>";
 
       if (configura || !l.length) {
         const llista = op.comptes() || [];
@@ -255,7 +258,7 @@
         h += '<div class="cr-eines"><button type="button" class="boto clar" data-cr="torna">‹ Torna</button><div class="esq">' +
           '<button type="button" class="boto clar" data-cr="respon">↩︎ Respon</button><button type="button" class="boto clar" data-cr="respontots">↩︎ A tots</button>' +
           (op.tasca ? '<button type="button" class="boto clar" data-cr="tasca">+ Tasca</button>' : "") +
-          '<button type="button" class="boto clar" data-cr="nollegit">No llegit</button><button type="button" class="boto" data-cr="arxiva" title="L\'arxiva i surt de la safata">✓ Fet</button><button type="button" class="boto perill" data-cr="esborra" title="A la paperera del compte (30 dies per recuperar-lo)">🗑 Esborra</button></div></div>' +
+          '<button type="button" class="boto clar" data-cr="nollegit">No llegit</button><button type="button" class="boto" data-cr="arxiva" title="Treu el correu de la safata d\'entrada, com «Arxiva» de Gmail">🗄 Arxiva</button><button type="button" class="boto perill" data-cr="esborra" title="A la paperera del compte (30 dies per recuperar-lo)">🗑 Esborra</button></div></div>' +
           '<h3 style="margin:4px 0 6px">' + esc(fil.assumpte) + ' <a href="' + esc(fil.enllac) + '" target="_blank" rel="noopener" style="font-size:.8rem;font-weight:400">obre a Gmail ↗</a></h3>' +
           fil.missatges.map((m, mi) => '<div class="cr-msg"><div class="cap"><b>' + esc(nomDe(m.de)) + "</b><span>" + esc(adrecaDe(m.de)) + "</span><span>" + dataLlarga(m.data) + "</span>" + (m.a ? "<span>Per a: " + esc(m.a) + "</span>" : "") + (m.cc ? "<span>Cc: " + esc(m.cc) + "</span>" : "") + '</div><div class="cos">' + enllaca(m.cos) + "</div>" + adjunts(m, mi) + "</div>").join("");
       } else if (vista === "programats") {
@@ -286,6 +289,14 @@
       else if (a === "nollegit" && fil) accio("llegit", fil.id, "Marcat com a no llegit.");
       else if (a === "tasca" && fil && op.tasca) { op.tasca({ text: fil.assumpte, enllac: fil.enllac, compte: (actual() || {}).nom }); diu("Afegit a les tasques: «" + fil.assumpte + "»."); vista = "fil"; pinta(); }
       else if (a === "adjunt" && fil) obreAdjunt(Number(b.dataset.m), Number(b.dataset.a));
+      else if (a === "desfes" && desfer) {
+        const d = desfer; b.disabled = true;
+        try {
+          await crida({ accio: "desarxiva", id: d.id }, d.c);
+          if (!fils.some(x => x.id === d.id)) fils.splice(Math.min(d.idx, fils.length), 0, d.item);
+          diu("Desfet: «" + d.item.assumpte + "» torna a la safata d'entrada.");
+        } catch (e) { diu(/desconeguda/i.test(e.message) ? "Per poder desfer cal actualitzar l'Apps Script del compte (CorreuTauler.gs)." : e.message, true, /desconeguda/i.test(e.message) ? null : d); }
+      }
       else if (a === "tancavisor") { visor = null; pinta(); }
       else if (a === "nou") { redacta = { a: "", cc: "", cco: "", assumpte: "", cos: sigCos(comptes()[Math.max(compte, 0)]) }; configura = false; pinta(); }
       else if ((a === "respon" || a === "respontots") && fil) {

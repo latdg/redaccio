@@ -59,6 +59,15 @@ button:disabled{opacity:.45;cursor:default}
 .text:focus{border-color:var(--text)}
 .text p{margin:0 0 .9em}
 .text:empty::before{content:attr(data-ph);color:var(--suau)}
+/* CORREU (12.11.2026): el gestor de correu, ara dins de Notícies del guió */
+select{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text);max-width:100%}
+.boto{padding:6px 12px}
+.boto.clar{background:var(--targeta);color:var(--accent)}
+.boto.perill{background:var(--targeta);color:#a3161b;border-color:#a3161b}
+.vistes{display:inline-flex;border:1px solid var(--linia);border-radius:8px;overflow:hidden}
+.vistes button{background:var(--targeta);border:0;border-radius:0;padding:5px 12px;color:var(--text)}
+.vistes button[aria-pressed=true]{background:var(--accent);color:#fff}
+#correuBox .cr-form textarea{min-height:160px}
 </style>
 </head>
 <body>
@@ -95,6 +104,12 @@ button:disabled{opacity:.45;cursor:default}
   </section>
 
   <div id="panell" hidden style="display:grid;gap:16px">
+    <!-- 12.11.2026: CORREU de La TdG, primer bloc (abans pàgina pròpia a /correu/). -->
+    <section id="correuBox">
+      <h2 style="margin:0 0 10px">✉️ Correu de La TdG</h2>
+      <div id="correu"></div>
+      <p class="font">El compte es configura a ⚙️ amb l'URL de l'Apps Script «Correu del tauler» del compte de La TdG; queda desada en aquest aparell.</p>
+    </section>
         <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;align-items:start">
       <div>
         <div class="fila">
@@ -134,6 +149,7 @@ button:disabled{opacity:.45;cursor:default}
   </div>
 </div>
 
+<script src="../correu/correu.js?v=4"></script>
 <script>
 const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
 // 03.11.2026: Web App del projecte d'Apps Script «La TdG» (GuioPanell.gs) que
@@ -184,6 +200,7 @@ async function entra() {
     const demanat = (location.hash.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
     carregaDia(demanat && demanat !== NOTES_DIA ? demanat : iso(new Date()));
     carregaNotes();
+    muntaCorreu();
   } catch (e) {
     PIN = "";
     $("clauEstat").textContent = "❌ " + (e instanceof TypeError ? "No s'ha pogut connectar amb el Worker." : e.message);
@@ -568,6 +585,20 @@ $("notes").addEventListener("click", async e => {
     } catch (err) { alert("❌ " + err.message); }
   }
 });
+
+// --- Correu (12.11.2026) ---
+const COMPTES_CORREU = "latdgCorreuComptes";   // la mateixa configuració que tenia la pàgina /correu/
+let GESTOR_CORREU = null;
+function muntaCorreu() {
+  if (GESTOR_CORREU || !window.Correu) return;
+  const comptes = () => { try { return JSON.parse(llegeix(COMPTES_CORREU) || "[]"); } catch (e) { return []; } };
+  GESTOR_CORREU = window.Correu.munta($("correu"), {
+    comptes,
+    desaComptes: l => escriu(COMPTES_CORREU, JSON.stringify(l)),
+    clau: () => PIN
+  });
+  if (comptes().length) GESTOR_CORREU.carrega();
+}
 
 const desada = llegeix(CLAU_DESADA);
 $("recorda").checked = !!desada;

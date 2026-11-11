@@ -49,6 +49,8 @@
     document.head.appendChild(s);
   }));
   // La signatura de cada compte (⚙️) s'afegeix al text en escriure un correu
+  // Arxivats: el que no és a la safata d'entrada (ni enviat, ni a la paperera, ni brossa, ni esborrany)
+  const ARXIU = "-in:inbox -in:sent -in:trash -in:spam -in:drafts";
   const sigCos = c => { const s = String((c && c.signatura) || "").replace(/\s+$/, ""); return s.trim() ? "\n\n" + s : ""; };
   const filaCompte = x => '<div class="cr-compte"><div class="fila"><input type="text" class="cr-nom" placeholder="Nom (p. ex. XTEC)" value="' + esc(x.nom) + '" style="flex:0 1 9em"><input type="text" class="cr-url" placeholder="https://script.google.com/macros/s/…/exec" value="' + esc(x.url) + '"><button type="button" class="boto perill" data-cr="treucompte" title="Treu">✕</button></div>' +
     '<label>Signatura (s\'afegeix sola als correus que s\'escriuen des d\'aquest compte)<textarea class="cr-sig" rows="3" style="min-height:70px" placeholder="Nom i cognoms&#10;Càrrec · Centre">' + esc(x.signatura || "") + "</textarea></label></div>";
@@ -226,7 +228,7 @@
       else if (c) h += "<b>" + esc(c.nom) + "</b>";
       if (c && vista !== "fil") {
         h += '<select data-cr="filtre" aria-label="Què es mostra">' +
-          [["is:unread in:inbox", "No llegits"], ["in:inbox", "Safata d'entrada"], ["is:starred", "Destacats"], ["in:sent", "Enviats"], ["programats", "Programats"]]
+          [["is:unread in:inbox", "No llegits"], ["in:inbox", "Safata d'entrada"], [ARXIU, "Arxivats"], ["is:starred", "Destacats"], ["in:sent", "Enviats"], ["programats", "Programats"]]
             .map(([v, t]) => '<option value="' + v + '"' + ((vista === "programats" ? "programats" : filtre) === v ? " selected" : "") + ">" + t + "</option>").join("") + "</select>";
       }
       h += '<div class="esq">';
@@ -258,7 +260,7 @@
         h += '<div class="cr-eines"><button type="button" class="boto clar" data-cr="torna">‹ Torna</button><div class="esq">' +
           '<button type="button" class="boto clar" data-cr="respon">↩︎ Respon</button><button type="button" class="boto clar" data-cr="respontots">↩︎ A tots</button>' +
           (op.tasca ? '<button type="button" class="boto clar" data-cr="tasca">+ Tasca</button>' : "") +
-          '<button type="button" class="boto clar" data-cr="nollegit">No llegit</button><button type="button" class="boto" data-cr="arxiva" title="Treu el correu de la safata d\'entrada, com «Arxiva» de Gmail">🗄 Arxiva</button><button type="button" class="boto perill" data-cr="esborra" title="A la paperera del compte (30 dies per recuperar-lo)">🗑 Esborra</button></div></div>' +
+          '<button type="button" class="boto clar" data-cr="nollegit">No llegit</button>' + (filtre === ARXIU ? '<button type="button" class="boto" data-cr="desarxiva" title="Torna el correu a la safata d\'entrada">📥 A la safata</button>' : '<button type="button" class="boto" data-cr="arxiva" title="Treu el correu de la safata d\'entrada, com «Arxiva» de Gmail">🗄 Arxiva</button>') + '<button type="button" class="boto perill" data-cr="esborra" title="A la paperera del compte (30 dies per recuperar-lo)">🗑 Esborra</button></div></div>' +
           '<h3 style="margin:4px 0 6px">' + esc(fil.assumpte) + ' <a href="' + esc(fil.enllac) + '" target="_blank" rel="noopener" style="font-size:.8rem;font-weight:400">obre a Gmail ↗</a></h3>' +
           fil.missatges.map((m, mi) => '<div class="cr-msg"><div class="cap"><b>' + esc(nomDe(m.de)) + "</b><span>" + esc(adrecaDe(m.de)) + "</span><span>" + dataLlarga(m.data) + "</span>" + (m.a ? "<span>Per a: " + esc(m.a) + "</span>" : "") + (m.cc ? "<span>Cc: " + esc(m.cc) + "</span>" : "") + '</div><div class="cos">' + enllaca(m.cos) + "</div>" + adjunts(m, mi) + "</div>").join("");
       } else if (vista === "programats") {
@@ -289,6 +291,7 @@
       else if (a === "nollegit" && fil) accio("llegit", fil.id, "Marcat com a no llegit.");
       else if (a === "tasca" && fil && op.tasca) { op.tasca({ text: fil.assumpte, enllac: fil.enllac, compte: (actual() || {}).nom }); diu("Afegit a les tasques: «" + fil.assumpte + "»."); vista = "fil"; pinta(); }
       else if (a === "adjunt" && fil) obreAdjunt(Number(b.dataset.m), Number(b.dataset.a));
+      else if (a === "desarxiva" && fil) accio("desarxiva", fil.id, "«" + fil.assumpte + "» torna a la safata d'entrada.");
       else if (a === "desfes" && desfer) {
         const d = desfer; b.disabled = true;
         try {

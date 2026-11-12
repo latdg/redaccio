@@ -71,6 +71,8 @@ select{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius
 .vistes button{background:var(--targeta);border:0;border-radius:0;padding:5px 12px;color:var(--text)}
 .vistes button[aria-pressed=true]{background:var(--accent);color:#fff}
 #correuBox .cr-form textarea{min-height:160px}
+.cr-num{display:inline-block;margin-left:6px;padding:1px 9px;border-radius:999px;background:var(--accent);color:#fff;font-size:.8rem;font-weight:700;vertical-align:2px}
+.cr-num small{font-weight:400;opacity:.9;font-size:inherit}
 </style>
 </head>
 <body>
@@ -105,7 +107,7 @@ select{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius
   <div id="panell" hidden style="display:grid;gap:16px">
     <!-- 12.11.2026: CORREU de La TdG, primer bloc (abans pàgina pròpia a /correu/). -->
     <section id="correuBox">
-      <h2 style="margin:0 0 10px">✉️ Correu de La TdG</h2>
+      <h2 style="margin:0 0 10px">📬 Correu de La TdG <span class="cr-num" id="correuNum" hidden></span></h2>
       <div id="correu"></div>
       <p class="font">El compte es configura a ⚙️ amb l'URL de l'Apps Script «Correu del tauler» del compte de La TdG; queda desada en aquest aparell.</p>
     </section>
@@ -148,7 +150,7 @@ select{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius
   </div>
 </div>
 
-<script src="../correu/correu.js?v=7"></script>
+<script src="../correu/correu.js?v=8"></script>
 <script>
 const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
 // 03.11.2026: Web App del projecte d'Apps Script «La TdG» (GuioPanell.gs) que
@@ -594,7 +596,15 @@ function muntaCorreu() {
   GESTOR_CORREU = window.Correu.munta($("correu"), {
     comptes,
     desaComptes: l => escriu(COMPTES_CORREU, JSON.stringify(l)),
-    clau: () => PIN
+    clau: () => PIN,
+    // 12.11.2026: nombre de correus a la safata d'entrada, com a l'Institut de la Bitàcola
+    comptador: r => {
+      const el = $("correuNum");
+      if (!r) { el.hidden = true; el.textContent = ""; return; }
+      el.hidden = false;
+      el.innerHTML = r.n + (r.ple ? "+" : "") + (r.nl ? " <small>· " + r.nl + " sense llegir</small>" : "");
+      el.title = r.n + (r.ple ? "+" : "") + " a la safata d'entrada" + (r.nl ? " (" + r.nl + " sense llegir)" : "");
+    }
   });
   if (comptes().length) GESTOR_CORREU.carrega();
 }

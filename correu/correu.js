@@ -7,7 +7,8 @@
 //     comptes: () => [{ nom, url }],         // on és l'Apps Script de cada compte
 //     desaComptes: llista => {},             // es crida quan es canvien a ⚙️
 //     clau: () => "…",                       // la clau (PIN) de les peticions
-//     tasca: ({ text, enllac }) => {}        // opcional: botó «+ Tasca»
+//     tasca: ({ text, enllac }) => {},       // opcional: botó «+ Tasca»
+//     comptador: ({ n, nl, ple }) => {}      // opcional: correus a la safata d'entrada
 //   });
 // =============================================================================
 (function () {
@@ -221,7 +222,18 @@
     }
 
 
+    // 12.11.2026: comptador de la safata d'entrada (al costat del títol del bloc).
+    // «ple»: la llista ha arribat al màxim que es demana (30) i, per tant, n'hi pot haver més.
+    let recompte = null;
+    function compta() {
+      if (!op.comptador) return;
+      if (vista !== "programats" && filtre === "in:inbox" && !cerca && !carregant && !configura)
+        recompte = { n: fils.length, nl: fils.filter(f => f.noLlegit).length, ple: fils.length >= 30 };
+      op.comptador(actual() ? recompte : null);
+    }
+
     function pinta() {
+      compta();
       const l = comptes(), c = actual();
       let h = '<div class="cr-eines">';
       if (l.length > 1) h += '<div class="vistes" role="group" aria-label="Compte">' + l.map((x, i) => '<button type="button" data-cr="compte" data-i="' + i + '" aria-pressed="' + (x === c) + '">' + esc(x.nom) + "</button>").join("") + "</div>";

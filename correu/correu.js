@@ -264,7 +264,7 @@
       else if (c) h += "<b>" + esc(c.nom) + "</b>";
       if (c && vista !== "fil") {
         h += '<select data-cr="filtre" aria-label="Què es mostra">' +
-          [["is:unread in:inbox", "No llegits"], ["in:inbox", "Safata d'entrada"], [ARXIU, "Arxivats"], ["is:starred", "Destacats"], ["in:sent", "Enviats"], ["programats", "Programats"], ["in:trash", "Eliminats"]]
+          [["is:unread in:inbox", "No llegits"], ["in:inbox", "Safata d'entrada"], [ARXIU, "Arxivats"], ["in:sent", "Enviats"], ["programats", "Programats"], ["in:trash", "Eliminats"]]
             .map(([v, t]) => '<option value="' + v + '"' + ((vista === "programats" ? "programats" : filtre) === v ? " selected" : "") + ">" + t + "</option>").join("") + "</select>";
       }
       h += '<div class="esq">';

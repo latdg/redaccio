@@ -166,6 +166,8 @@ const escriu = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.r
 const dos = n => String(n).padStart(2, "0");
 const iso = d => d.getFullYear() + "-" + dos(d.getMonth() + 1) + "-" + dos(d.getDate());
 const dataCa = s => s.split("-").reverse().join(".");
+// 13.11.2026: a partir de les 8 del matí, per defecte s'obre el guió de l'endemà.
+const diaPerDefecte = () => { const d = new Date(); if (d.getHours() >= 8) d.setDate(d.getDate() + 1); return iso(d); };
 const nouId = () => Math.random().toString(36).slice(2, 12);
 
 let PIN = "", DIA = "", SHA = null, BRUT = false, DIES_AMB = [];
@@ -199,7 +201,9 @@ async function entra() {
     escriu(CLAU_DESADA, $("recorda").checked ? PIN : "");
     $("clauBox").hidden = true; $("panell").hidden = false; $("peu").hidden = false;
     const demanat = (location.hash.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
-    carregaDia(demanat && demanat !== NOTES_DIA ? demanat : iso(new Date()));
+    const perDefecte = diaPerDefecte();
+    // Un # antic a l'adreça (d'un dia ja passat) no mana: s'obre el dia per defecte.
+    carregaDia(demanat && demanat !== NOTES_DIA && demanat >= perDefecte ? demanat : perDefecte);
     carregaNotes();
     muntaCorreu();
   } catch (e) {

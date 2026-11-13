@@ -264,7 +264,7 @@
       else if (c) h += "<b>" + esc(c.nom) + "</b>";
       if (c && vista !== "fil") {
         h += '<select data-cr="filtre" aria-label="Què es mostra">' +
-          [["is:unread in:inbox", "No llegits"], ["in:inbox", "Safata d'entrada"], [ARXIU, "Arxivats"], ["in:sent", "Enviats"], ["programats", "Programats"], ["in:trash", "Eliminats"]]
+          [["in:inbox", "Safata d'entrada"], [ARXIU, "Arxivats"], ["in:sent", "Enviats"], ["programats", "Programats"], ["in:trash", "Eliminats"]]
             .map(([v, t]) => '<option value="' + v + '"' + ((vista === "programats" ? "programats" : filtre) === v ? " selected" : "") + ">" + t + "</option>").join("") + "</select>";
       }
       h += '<div class="esq">';
@@ -302,7 +302,7 @@
       } else if (vista === "programats") {
         h += programats.length ? programats.map(p => '<div class="cr-fil" style="cursor:default"><span class="de">' + esc(p.id ? "Resposta" : p.a) + '</span><span class="dt">' + dataLlarga(p.quan) + '</span><span class="as">' + esc(p.assumpte || "(resposta)") + '</span><span class="fr"><button type="button" class="boto perill" data-cr="anulla" data-clau="' + esc(p.clau) + '">Anul·la</button></span></div>').join("") : '<p class="cr-buit">No hi ha cap correu programat.</p>';
       } else {
-        h += fils.length ? fils.map(f => '<div class="cr-fil' + (f.noLlegit ? " nou" : "") + '" data-cr="obre" data-id="' + esc(f.id) + '"><span class="de">' + esc(nomDe(f.de)) + (f.n > 1 ? " (" + f.n + ")" : "") + '</span><span class="dt">' + (f.adjunts ? "📎 " : "") + dataCurta(f.data) + '</span><span class="as">' + esc(f.assumpte) + '</span><span class="fr">' + esc(f.fragment) + "</span></div>").join("") : '<p class="cr-buit">' + (filtre.indexOf("is:unread") >= 0 && !cerca ? "Cap correu per llegir. Tot al dia! ✓" : "No hi ha cap correu.") + "</p>";
+        h += fils.length ? fils.map(f => '<div class="cr-fil' + (f.noLlegit ? " nou" : "") + '" data-cr="obre" data-id="' + esc(f.id) + '"><span class="de">' + esc(nomDe(f.de)) + (f.n > 1 ? " (" + f.n + ")" : "") + '</span><span class="dt">' + (f.adjunts ? "📎 " : "") + dataCurta(f.data) + '</span><span class="as">' + esc(f.assumpte) + '</span><span class="fr">' + esc(f.fragment) + "</span></div>").join("") : '<p class="cr-buit">' + "No hi ha cap correu." + "</p>";
       }
       arrel.innerHTML = h;
     }

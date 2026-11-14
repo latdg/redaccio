@@ -105,6 +105,8 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
 .prog-llista .h{font-variant-numeric:tabular-nums;color:var(--suau);flex-shrink:0;width:3.2em}
 .prog-llista .t{flex:1;min-width:0}
 .prog-llista .t small{display:block;color:var(--suau);font-size:.8rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prog-llista li[data-d]{cursor:pointer}
+.prog-llista li.obert .t small{display:block;-webkit-line-clamp:unset;overflow:visible}
 .prog-llista button{padding:2px 8px;font-size:.8rem;flex-shrink:0}
 </style>
 </head>
@@ -393,9 +395,11 @@ function pintaProgramacio() {
         li.textContent = (dia === avui ? "Avui, " : dia === dema ? "Demà, " : "") + dia; ul.append(li);
       }
       const li = document.createElement("li");
+      // 14.11.2026: tocant el programa es llegeix la descripció sencera (i es torna a plegar).
+      if (e[3]) { li.dataset.d = "1"; li.onclick = ev => { if (!ev.target.closest("button")) li.classList.toggle("obert"); }; }
       if (i === idx) li.className = "actiu"; else if (fi <= s) li.className = "passat";
       const g = genere(e[4]);
-      li.innerHTML = `<span class="h">${hora(d)}</span><span class="t">${esc(e[2])}${g ? ` <span style="color:var(--suau);font-size:.8rem">· ${esc(g)}</span>` : ""}${e[3] ? `<small title="${esc(e[3])}">${esc(e[3])}</small>` : ""}</span>`;
+      li.innerHTML = `<span class="h">${hora(d)}</span><span class="t">${esc(e[2])}${g ? ` <span style="color:var(--suau);font-size:.8rem">· ${esc(g)}</span>` : ""}${e[3] ? `<small>${esc(e[3])}</small>` : ""}</span>`;
       if (gravable && fi > s) {
         const b = document.createElement("button"); b.type = "button"; b.className = "suau";
         b.textContent = i === idx ? "⏺ Grava'l" : "⏰ Grava'l"; b.title = i === idx ? "Prepara la gravació del que en queda" : "Prepara la gravació programada d'aquesta emissió";
@@ -404,10 +408,10 @@ function pintaProgramacio() {
       ul.append(li);
     });
     const actiu = ul.querySelector("li.actiu");
-    if (actiu) ul.scrollTop = actiu.offsetTop - ul.querySelector("li.dia").offsetHeight - 4;
+    if (actiu) requestAnimationFrame(() => { ul.scrollTop = actiu.offsetTop - ul.querySelector("li.dia").offsetHeight - 4; });
   }
   const q = EPG && EPG.actualitzat ? EPG.actualitzat.split(" ") : null;
-  $("progPeu").textContent = "Programació de TDTChannels" + (q ? `, actualitzada ${elDia(q[0])} a les ${q[1] || ""} h` : "") + ". Pot no coincidir amb el minut exacte de l'emissió.";
+  $("progPeu").textContent = "Programació de TDTChannels" + (q ? `, actualitzada ${elDia(q[0])} a les ${q[1] || ""} h` : "") + ". Toca un programa per llegir-ne la descripció sencera. Pot no coincidir amb el minut exacte de l'emissió.";
 }
 // Cada minut es refresca el que s'emet; cada 3 hores, el fitxer de programació.
 setInterval(() => { if (!EPG) return; if (document.activeElement !== $("cerca")) pinta(); pintaProgramacio(); }, 60000);

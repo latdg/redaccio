@@ -123,8 +123,8 @@ def programacio(ara):
                     if not hi or not e.get("t") or hi >= final or (hf and hf <= inici):
                         continue
                     d = " ".join(str(e.get("d") or "").split())
-                    if len(d) > 280:
-                        d = d[:277].rsplit(" ", 1)[0] + "…"
+                    if len(d) > 2000:   # 14.11.2026: la descripció sencera (abans es tallava a 280)
+                        d = d[:1997].rsplit(" ", 1)[0] + "…"
                     emissions.append([hi, hf, str(e["t"]).strip(), d, e.get("g") or ""])
                 if emissions:
                     canals[c["name"]] = emissions

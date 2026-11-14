@@ -1,11 +1,13 @@
 # TDT i ràdio — La TdG · 05.11.2026
 # Un cop al dia baixa les llistes de TDTChannels (tv.json i radio.json) a tdt/,
 # i còpia dels logotips nous a tdt/logos/ (els que ja hi són no es tornen a baixar).
+# 14.11.2026: i la programació (tdt/epg.json); a les altres hores, només la programació.
 name: La TdG sala de control audiovisual (llistes de TDT i ràdio)
 
 on:
   schedule:
     - cron: "17 4 * * *"
+    - cron: "47 10,16,22 * * *"
   workflow_dispatch:
 
 permissions:
@@ -23,12 +25,13 @@ jobs:
       - run: pip install requests
       - name: Baixa i desa
         run: |
-          python tdt/actualitza.py
+          if [ "${{ github.event.schedule }}" = "47 10,16,22 * * *" ]; then python tdt/actualitza.py epg; else python tdt/actualitza.py; fi
           git config user.name "La TdG (TDT)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tdt/tv.json tdt/radio.json tdt/logos
+          [ -f tdt/epg.json ] && git add tdt/epg.json
           if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
-          git commit -qm "Llistes de TDT i ràdio"
+          git commit -qm "Llistes i programació de TDT i ràdio"
           for intent in 1 2 3 4 5 6; do
             git push -q origin HEAD:main && exit 0
             sleep $((intent * 5))

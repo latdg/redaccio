@@ -89,6 +89,23 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
 .feines .mini{width:32px;height:32px;border-radius:6px;object-fit:contain;background:var(--fons);flex-shrink:0}
 .feines .estat{color:var(--suau);flex:1;min-width:160px}
 .historial li .data{color:var(--suau);font-variant-numeric:tabular-nums}
+/* 14.11.2026: programació (EPG de TDTChannels) */
+.canal small.ara{color:var(--accent);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.programa{border-top:1px solid var(--linia);margin-top:14px;padding-top:12px;display:grid;gap:10px}
+.prog-ara{display:grid;gap:4px}
+.prog-ara .hores{color:var(--suau);font-size:.85rem;font-variant-numeric:tabular-nums}
+.prog-ara .desc{font-size:.9rem;color:var(--suau)}
+.barra{height:6px;background:var(--linia);border-radius:3px;overflow:hidden}
+.barra span{display:block;height:100%;background:var(--accent)}
+.prog-llista{position:relative;list-style:none;margin:0;padding:0;max-height:360px;overflow:auto;border:1px solid var(--linia);border-radius:8px}
+.prog-llista li{display:flex;gap:10px;align-items:flex-start;padding:6px 10px;border-bottom:1px solid var(--linia);font-size:.92rem}
+.prog-llista li.dia{z-index:1;background:var(--fons);font-weight:600;font-size:.85rem;color:var(--suau);position:sticky;top:0}
+.prog-llista li.actiu{background:#fdf1ee}
+.prog-llista li.passat{opacity:.5}
+.prog-llista .h{font-variant-numeric:tabular-nums;color:var(--suau);flex-shrink:0;width:3.2em}
+.prog-llista .t{flex:1;min-width:0}
+.prog-llista .t small{display:block;color:var(--suau);font-size:.8rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prog-llista button{padding:2px 8px;font-size:.8rem;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -130,6 +147,12 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
         <iframe class="yt" id="yt" hidden allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
       <div class="avis" id="avis" hidden></div>
+
+      <div class="programa" id="programa" hidden>
+        <div class="prog-ara" id="progAra"></div>
+        <ul class="prog-llista" id="progLlista"></ul>
+        <p class="font" id="progPeu" style="margin:0"></p>
+      </div>
 
       <div class="gravacio" id="gravacio">
         <h3 style="margin:0">⏺ Grava aquest canal</h3>
@@ -288,6 +311,8 @@ function pinta() {
     if (actual && actual.c === c) b.classList.add("actiu");
     const nom = document.createElement("span"); nom.className = "nom"; nom.textContent = (pref.has(clauCanal(TIPUS, c)) ? "⭐ " : "") + c.n;
     if (etiqueta) { const sm = document.createElement("small"); sm.textContent = etiqueta; nom.append(sm); }
+    const ara = araFa(c, TIPUS);
+    if (ara) { const sm = document.createElement("small"); sm.className = "ara"; sm.textContent = "▶ " + ara.e[2]; nom.append(sm); b.title = `${c.n} · ara: ${ara.e[2]}`; }
     b.append(logo(c), nom);
     b.onclick = () => obre(c);
     g.append(b);
@@ -305,6 +330,89 @@ $("pestanyes").onclick = e => {
 $("ambit").onchange = pinta;
 $("cerca").oninput = pinta;
 
+// ---------- Programació (EPG de TDTChannels, tdt/epg.json) · 14.11.2026 ----------
+// Cada emissió: [inici, final, títol, descripció, gènere], amb les hores en segons Unix.
+let EPG = null;
+const GENERES = { NEWS: "Informatius", ENTERTAINMENT: "Entreteniment", FILM: "Cinema", MOVIE: "Cinema", SPORTS: "Esports", SPORT: "Esports",
+  DOCUMENTARY: "Documental", MUSIC: "Música", CULTURE: "Cultura", SERIES: "Sèrie", KIDS: "Infantil", CHILDREN: "Infantil",
+  INFANTIL: "Infantil", EDUCATION: "Divulgació", MAGAZINE: "Magazín", TALK: "Tertúlia", REALITY: "Reality", GAME: "Concurs", OTHER: "" };
+const genere = g => g ? (GENERES[String(g).toUpperCase()] ?? "") : "";
+async function carregaEPG() {
+  try { const r = await fetch(`epg.json?v=${Date.now()}`, { cache: "no-store" }); if (r.ok) EPG = await r.json(); } catch (e) {}
+  pinta(); if (actual) { actual.epgIdx = null; pintaProgramacio(); }
+}
+const emissions = (c, t) => (EPG && c && c.e && EPG[t] && EPG[t][c.e]) || [];
+const fiDe = (l, i) => l[i][1] || (l[i + 1] ? l[i + 1][0] : l[i][0] + 3600);
+function araFa(c, t) {
+  const s = Date.now() / 1000, l = emissions(c, t);
+  for (let i = 0; i < l.length; i++) if (l[i][0] <= s && s < fiDe(l, i)) return { e: l[i], i, l };
+  return null;
+}
+const aLocal = d => `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
+// Omple el formulari de gravació amb l'emissió (1 min abans i 3 després, per marge); no la comença: s'ha de prémer ⏺ Grava.
+function preparaGravacio(l, i) {
+  const ini = l[i][0] * 1000 - 60000, fi = fiDe(l, i) * 1000 + 180000;
+  if (ini <= Date.now()) {
+    $("inici").value = "ara"; $("inici").onchange();
+    $("durada").value = Math.max(1, Math.ceil((fi - Date.now()) / 60000));
+  } else {
+    $("inici").value = "hora"; $("hora").value = aLocal(new Date(ini)); $("inici").onchange();
+    $("durada").value = Math.ceil((fi - ini) / 60000);
+  }
+  $("estatGravacio").textContent = `«${l[i][2]}» preparat: revisa-ho i prem ⏺ Grava.`;
+  $("gravacio").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function pintaProgramacio() {
+  const box = $("programa");
+  if (!actual) { box.hidden = true; return; }
+  const l = emissions(actual.c, actual.tipus);
+  if (!l.length) { box.hidden = true; return; }
+  box.hidden = false;
+  const s = Date.now() / 1000, ara = araFa(actual.c, actual.tipus), pa = $("progAra");
+  pa.innerHTML = "";
+  if (ara) {
+    const e = ara.e, fi = fiDe(l, ara.i), pc = Math.min(100, Math.max(0, (s - e[0]) / (fi - e[0]) * 100));
+    pa.innerHTML = `<div><b>Ara:</b> ${esc(e[2])}</div><div class="hores">${hora(new Date(e[0] * 1000))}–${hora(new Date(fi * 1000))} h${genere(e[4]) ? " · " + esc(genere(e[4])) : ""} · en queden ${Math.max(0, Math.round(fi - s) / 60 | 0)} min</div><div class="barra"><span style="width:${pc.toFixed(1)}%"></span></div>${e[3] ? `<div class="desc">${esc(e[3])}</div>` : ""}`;
+    const seg = l[ara.i + 1];
+    if (seg) { const d = document.createElement("div"); d.className = "hores"; d.innerHTML = `<b>Després:</b> ${hora(new Date(seg[0] * 1000))} h · ${esc(seg[2])}`; pa.append(d); }
+  } else pa.innerHTML = `<div class="hores">Ara no hi ha programació anunciada per a aquesta ${actual.tipus === "tv" ? "cadena" : "emissora"}.</div>`;
+  const idx = ara ? ara.i : -1;
+  if (actual.epgIdx !== idx || !$("progLlista").children.length) {
+    actual.epgIdx = idx;
+    const ul = $("progLlista"); ul.innerHTML = "";
+    const avui = data(new Date()), dema = data(new Date(Date.now() + 86400e3));
+    const gravable = !$("gravacio").hidden;
+    let diaAnterior = "";
+    l.forEach((e, i) => {
+      const fi = fiDe(l, i);
+      if (fi <= s - 3 * 3600) return;   // de les passades, només les de les darreres 3 hores
+      const d = new Date(e[0] * 1000), dia = data(d);
+      if (dia !== diaAnterior) {
+        diaAnterior = dia;
+        const li = document.createElement("li"); li.className = "dia";
+        li.textContent = (dia === avui ? "Avui, " : dia === dema ? "Demà, " : "") + dia; ul.append(li);
+      }
+      const li = document.createElement("li");
+      if (i === idx) li.className = "actiu"; else if (fi <= s) li.className = "passat";
+      const g = genere(e[4]);
+      li.innerHTML = `<span class="h">${hora(d)}</span><span class="t">${esc(e[2])}${g ? ` <span style="color:var(--suau);font-size:.8rem">· ${esc(g)}</span>` : ""}${e[3] ? `<small title="${esc(e[3])}">${esc(e[3])}</small>` : ""}</span>`;
+      if (gravable && fi > s) {
+        const b = document.createElement("button"); b.type = "button"; b.className = "suau";
+        b.textContent = i === idx ? "⏺ Grava'l" : "⏰ Grava'l"; b.title = i === idx ? "Prepara la gravació del que en queda" : "Prepara la gravació programada d'aquesta emissió";
+        b.onclick = () => preparaGravacio(l, i); li.append(b);
+      }
+      ul.append(li);
+    });
+    const actiu = ul.querySelector("li.actiu");
+    if (actiu) ul.scrollTop = actiu.offsetTop - ul.querySelector("li.dia").offsetHeight - 4;
+  }
+  const q = EPG && EPG.actualitzat ? EPG.actualitzat.split(" ") : null;
+  $("progPeu").textContent = "Programació de TDTChannels" + (q ? `, actualitzada ${elDia(q[0])} a les ${q[1] || ""} h` : "") + ". Pot no coincidir amb el minut exacte de l'emissió.";
+}
+// Cada minut es refresca el que s'emet; cada 3 hores, el fitxer de programació.
+setInterval(() => { if (!EPG) return; if (document.activeElement !== $("cerca")) pinta(); pintaProgramacio(); }, 60000);
+setInterval(carregaEPG, 3 * 3600e3);
+
 // ---------- Reproductor ----------
 let actual = null;   // { c, tipus, ops, op }
 let HLS = null;
@@ -318,6 +426,7 @@ function obre(c) {
   const t = $("titolCanal"); t.innerHTML = ""; const b = document.createElement("b"); b.textContent = c.n; t.append(logo(c), b);
   $("webCanal").href = c.w || "#"; $("webCanal").hidden = !c.w;
   marcaPreferit();
+  actual.epgIdx = null; pintaProgramacio();
   const s = $("senyal"); s.innerHTML = "";
   ops.forEach((o, i) => {
     const op = document.createElement("option"); op.value = i;
@@ -875,6 +984,7 @@ function controlsGravacio() {
   const aqui = !!o && ["m3u8", "mp3", "aac", "stream"].includes(o.f);
   const casa = aqui || (!!o && o.f === "youtube");
   $("gravacio").hidden = !casa;
+  if (actual) { actual.epgIdx = null; pintaProgramacio(); }   // els botons «Grava'l» depenen de si es pot gravar
   if (!casa) return;
   // YouTube només es pot gravar a l'ordinador de casa (amb yt-dlp).
   $("on").options[0].disabled = !aqui;
@@ -967,7 +1077,7 @@ function pintaHistorial() {
     ul.append(li);
   }
 }
-carregaLlistes();
+carregaLlistes().then(carregaEPG);
 recuperaProgramades();
 $("buidaHistorial").onclick = () => { if (confirm("Vols esborrar l'historial de gravacions? (Els fitxers no s'esborren.)")) { escriu("tdtHistorial", ""); pintaHistorial(); } };
 pintaHistorial();

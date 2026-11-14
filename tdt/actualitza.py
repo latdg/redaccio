@@ -5,6 +5,10 @@ https://www.tdtchannels.com/listas/) i en desa una versió reduïda a tdt/ perqu
 pàgina tdt/index.html les llegeixi sense dependre de tdtchannels.com.
 
 Si una baixada falla o arriba buida, no es toca el fitxer que ja hi ha.
+
+14.11.2026: també la programació (EPG) de TDTChannels (epg/TV.json i epg/RADIO.json),
+reduïda a les cadenes i emissores de les llistes i a la franja d'avui i demà, a tdt/epg.json.
+«python tdt/actualitza.py epg» només baixa la programació (el workflow ho fa cada 6 hores).
 """
 import hashlib
 import json
@@ -19,6 +23,10 @@ import requests
 FONTS = {
     "tv": "https://www.tdtchannels.com/lists/tv.json",
     "radio": "https://www.tdtchannels.com/lists/radio.json",
+}
+FONTS_EPG = {
+    "tv": "https://www.tdtchannels.com/epg/TV.json",
+    "radio": "https://www.tdtchannels.com/epg/RADIO.json",
 }
 CARPETA = Path(__file__).resolve().parent
 LOGOS = CARPETA / "logos"
@@ -90,8 +98,64 @@ def redueix(dades):
     return canals
 
 
+def programacio(ara):
+    """Desa tdt/epg.json: {tv: {epg_id: [[inici, final, títol, descripció, gènere], …]}, radio: {…}}.
+    Hores en segons Unix; només des de les 00.00 d'avui fins al final de demà."""
+    inici = int(ara.replace(hour=0, minute=0, second=0, microsecond=0).timestamp())
+    final = inici + 2 * 86400 + 3600
+    sortida = {"actualitzat": ara.strftime("%d.%m.%Y %H.%M"), "font": "TDTChannels (https://www.tdtchannels.com)"}
+    bons = 0
+    for nom, url in FONTS_EPG.items():
+        try:
+            ids = {c["e"] for c in json.loads((CARPETA / f"{nom}.json").read_text(encoding="utf-8"))["canals"] if c.get("e")}
+        except Exception:  # noqa: BLE001
+            ids = None
+        try:
+            r = requests.get(url, timeout=120, headers={"User-Agent": "LaTdG-redaccio/1.0"})
+            r.raise_for_status()
+            canals = {}
+            for c in r.json():
+                if not c.get("name") or (ids is not None and c["name"] not in ids):
+                    continue
+                emissions = []
+                for e in sorted(c.get("events") or [], key=lambda e: e.get("hi") or 0):
+                    hi, hf = int(e.get("hi") or 0), int(e.get("hf") or 0)
+                    if not hi or not e.get("t") or hi >= final or (hf and hf <= inici):
+                        continue
+                    d = " ".join(str(e.get("d") or "").split())
+                    if len(d) > 280:
+                        d = d[:277].rsplit(" ", 1)[0] + "…"
+                    emissions.append([hi, hf, str(e["t"]).strip(), d, e.get("g") or ""])
+                if emissions:
+                    canals[c["name"]] = emissions
+            if len(canals) < 5:
+                raise ValueError(f"només {len(canals)} canals amb programació")
+        except Exception as e:  # noqa: BLE001
+            print(f"❌ programació {nom}: {e}")
+            continue
+        sortida[nom] = canals
+        bons += 1
+        print(f"✅ programació {nom}: {len(canals)} canals")
+    if not bons:
+        return False
+    fitxer = CARPETA / "epg.json"
+    if bons < len(FONTS_EPG) and fitxer.exists():
+        # Si una de les dues ha fallat, es manté la que ja hi havia.
+        try:
+            vell = json.loads(fitxer.read_text(encoding="utf-8"))
+            for nom in FONTS_EPG:
+                if nom not in sortida and nom in vell:
+                    sortida[nom] = vell[nom]
+        except Exception:  # noqa: BLE001
+            pass
+    fitxer.write_text(json.dumps(sortida, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return True
+
+
 def main():
     ara = datetime.now(ZoneInfo("Europe/Madrid"))
+    if sys.argv[1:] == ["epg"]:
+        sys.exit(0 if programacio(ara) else 1)
     errors = 0
     llistes = {}
     for nom, url in FONTS.items():
@@ -118,6 +182,7 @@ def main():
             json.dumps(sortida, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"
         )
         print(f"✅ {nom}: {len(canals)} canals")
+    programacio(ara)
     sys.exit(1 if errors == len(FONTS) else 0)
 
 

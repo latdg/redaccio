@@ -28,6 +28,8 @@ FONTS_EPG = {
     "tv": "https://www.tdtchannels.com/epg/TV.json",
     "radio": "https://www.tdtchannels.com/epg/RADIO.json",
 }
+# 14.11.2026: si la de TDTChannels falla, la mateixa programació publicada a OndaChannels (mateix projecte).
+RECANVI_EPG = {"radio": "https://www.ondachannels.com/epg/RADIO.json"}
 CARPETA = Path(__file__).resolve().parent
 LOGOS = CARPETA / "logos"
 TIPUS_IMATGE = {"image/png": "png", "image/jpeg": "jpg", "image/webp": "webp", "image/gif": "gif", "image/svg+xml": "svg"}
@@ -111,10 +113,21 @@ def programacio(ara):
         except Exception:  # noqa: BLE001
             ids = None
         try:
-            r = requests.get(url, timeout=120, headers={"User-Agent": "LaTdG-redaccio/1.0"})
-            r.raise_for_status()
+            try:
+                r = requests.get(url, timeout=120, headers={"User-Agent": "LaTdG-redaccio/1.0"})
+                r.raise_for_status()
+                llista = r.json()
+                if not isinstance(llista, list) or len(llista) < 5:
+                    raise ValueError("buida")
+            except Exception as e:  # noqa: BLE001
+                if nom not in RECANVI_EPG:
+                    raise
+                print(f"⚠️ programació {nom} de TDTChannels: {e}; provo OndaChannels")
+                r = requests.get(RECANVI_EPG[nom], timeout=120, headers={"User-Agent": "LaTdG-redaccio/1.0"})
+                r.raise_for_status()
+                llista = r.json()
             canals = {}
-            for c in r.json():
+            for c in llista:
                 if not c.get("name") or (ids is not None and c["name"] not in ids):
                     continue
                 emissions = []

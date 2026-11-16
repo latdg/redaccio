@@ -1,5 +1,5 @@
 {
- "generat": "2026-11-09T13:26:58+00:00",
+ "generat": "2026-11-16T13:11:53+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -9,7 +9,7 @@
  },
  "fetsPenals": {
   "abp": "ABP Baix Empordà - La Bisbal",
-  "actualitzat": "2026-10-16T11:10:28+00:00",
+  "actualitzat": "2026-11-16T11:04:58+00:00",
   "serie": [
    [
     "2023-01",
@@ -190,222 +190,234 @@
    [
     "2026-09",
     360
+   ],
+   [
+    "2026-10",
+    338
    ]
   ],
-  "darrerMes": "2026-09",
+  "darrerMes": "2026-10",
   "periode": [
-   "2025-10",
-   "2026-09"
+   "2025-11",
+   "2026-10"
   ],
-  "total12": 4223,
-  "totalAbans12": 4805,
+  "total12": 4188,
+  "totalAbans12": 4821,
   "tipus": [
    {
     "tipus": "Furt",
-    "n": 1099,
-    "abans": 1201,
+    "n": 1101,
+    "abans": 1198,
     "darrerMes": 88,
     "resolts": 211,
-    "detencions": 57
+    "detencions": 54
    },
    {
     "tipus": "Robatori amb força",
-    "n": 581,
-    "abans": 820,
-    "darrerMes": 48,
-    "resolts": 107,
-    "detencions": 86
+    "n": 580,
+    "abans": 810,
+    "darrerMes": 54,
+    "resolts": 108,
+    "detencions": 87
    },
    {
     "tipus": "Danys",
-    "n": 454,
-    "abans": 528,
-    "darrerMes": 35,
-    "resolts": 48,
-    "detencions": 5
+    "n": 458,
+    "abans": 514,
+    "darrerMes": 34,
+    "resolts": 51,
+    "detencions": 6
    },
    {
     "tipus": "Lesions",
-    "n": 373,
-    "abans": 370,
-    "darrerMes": 28,
-    "resolts": 337,
-    "detencions": 106
+    "n": 363,
+    "abans": 391,
+    "darrerMes": 32,
+    "resolts": 327,
+    "detencions": 99
    },
    {
     "tipus": "Robatori amb força interior vehicle",
-    "n": 264,
-    "abans": 295,
-    "darrerMes": 16,
-    "resolts": 31,
-    "detencions": 32
+    "n": 232,
+    "abans": 311,
+    "darrerMes": 9,
+    "resolts": 27,
+    "detencions": 28
    },
    {
     "tipus": "Estafes",
-    "n": 223,
-    "abans": 242,
-    "darrerMes": 20,
-    "resolts": 66,
-    "detencions": 14
+    "n": 213,
+    "abans": 235,
+    "darrerMes": 12,
+    "resolts": 61,
+    "detencions": 16
    },
    {
     "tipus": "Amenaces",
-    "n": 190,
-    "abans": 205,
-    "darrerMes": 14,
-    "resolts": 173,
+    "n": 201,
+    "abans": 207,
+    "darrerMes": 24,
+    "resolts": 184,
     "detencions": 48
    },
    {
     "tipus": "Conduir sota els efectes d'alcohol i drogues",
-    "n": 188,
-    "abans": 199,
-    "darrerMes": 27,
+    "n": 185,
+    "abans": 206,
+    "darrerMes": 12,
     "resolts": 158,
-    "detencions": 9
+    "detencions": 7
    },
    {
     "tipus": "Conduir sense permís",
-    "n": 165,
-    "abans": 180,
-    "darrerMes": 24,
-    "resolts": 146,
+    "n": 167,
+    "abans": 183,
+    "darrerMes": 21,
+    "resolts": 148,
     "detencions": 5
    },
    {
     "tipus": "Robatori amb violència i/o intimidació",
-    "n": 98,
-    "abans": 121,
-    "darrerMes": 10,
+    "n": 95,
+    "abans": 124,
+    "darrerMes": 4,
     "resolts": 57,
     "detencions": 49
    },
    {
     "tipus": "Altres delictes contra l'ordre públic",
-    "n": 64,
+    "n": 68,
     "abans": 67,
-    "darrerMes": 3,
-    "resolts": 59,
-    "detencions": 51
+    "darrerMes": 7,
+    "resolts": 64,
+    "detencions": 55
    },
    {
     "tipus": "Robatori i furt d'us de vehicle",
-    "n": 55,
+    "n": 59,
     "abans": 65,
-    "darrerMes": 3,
+    "darrerMes": 8,
     "resolts": 16,
-    "detencions": 9
+    "detencions": 8
    },
    {
     "tipus": "Coaccions",
-    "n": 53,
-    "abans": 55,
-    "darrerMes": 8,
-    "resolts": 44,
+    "n": 55,
+    "abans": 52,
+    "darrerMes": 4,
+    "resolts": 49,
     "detencions": 3
    },
    {
     "tipus": "Ocupació immobles",
-    "n": 49,
-    "abans": 103,
-    "darrerMes": 1,
-    "resolts": 45,
+    "n": 47,
+    "abans": 97,
+    "darrerMes": 2,
+    "resolts": 42,
     "detencions": 0
    },
    {
     "tipus": "Trencament de condemna",
     "n": 41,
     "abans": 38,
-    "darrerMes": 3,
-    "resolts": 41,
+    "darrerMes": 2,
+    "resolts": 40,
     "detencions": 23
    },
    {
-    "tipus": "Apropiació indeguda",
-    "n": 41,
-    "abans": 44,
-    "darrerMes": 4,
-    "resolts": 23,
-    "detencions": 2
+    "tipus": "Agressions sexuals i Abusos sexuals",
+    "n": 38,
+    "abans": 32,
+    "darrerMes": 3,
+    "resolts": 34,
+    "detencions": 20
    },
    {
     "tipus": "Contra la salut pública",
-    "n": 37,
+    "n": 38,
     "abans": 30,
     "darrerMes": 3,
-    "resolts": 37,
-    "detencions": 40
+    "resolts": 39,
+    "detencions": 43
    },
    {
-    "tipus": "Agressions sexuals i Abusos sexuals",
+    "tipus": "Apropiació indeguda",
     "n": 36,
-    "abans": 34,
-    "darrerMes": 1,
-    "resolts": 33,
-    "detencions": 19
+    "abans": 48,
+    "darrerMes": 2,
+    "resolts": 22,
+    "detencions": 2
    },
    {
     "tipus": "Negativa a sotmetre's a les proves",
-    "n": 32,
-    "abans": 27,
-    "darrerMes": 4,
-    "resolts": 29,
+    "n": 33,
+    "abans": 29,
+    "darrerMes": 3,
+    "resolts": 30,
     "detencions": 1
    },
    {
     "tipus": "Entrada a vivenda aliena",
     "n": 20,
-    "abans": 9,
-    "darrerMes": 0,
-    "resolts": 19,
-    "detencions": 13
+    "abans": 10,
+    "darrerMes": 1,
+    "resolts": 18,
+    "detencions": 12
    },
    {
     "tipus": "Falsedats documentals",
-    "n": 16,
-    "abans": 29,
-    "darrerMes": 1,
+    "n": 19,
+    "abans": 28,
+    "darrerMes": 4,
     "resolts": 13,
     "detencions": 2
    },
    {
     "tipus": "Contra els drets i deures familiars",
     "n": 16,
-    "abans": 14,
-    "darrerMes": 4,
-    "resolts": 13,
+    "abans": 15,
+    "darrerMes": 1,
+    "resolts": 15,
     "detencions": 0
    },
    {
     "tipus": "De la usurpació de l'estat civil",
-    "n": 13,
-    "abans": 15,
-    "darrerMes": 2,
+    "n": 12,
+    "abans": 16,
+    "darrerMes": 1,
     "resolts": 2,
     "detencions": 1
    },
    {
-    "tipus": "Tracte degradant / vexatori",
+    "tipus": "Usurpació",
     "n": 10,
     "abans": 8,
-    "darrerMes": 0,
-    "resolts": 10,
-    "detencions": 1
-   },
-   {
-    "tipus": "Descobriment i revelació de secrets",
-    "n": 9,
-    "abans": 8,
-    "darrerMes": 0,
+    "darrerMes": 1,
     "resolts": 6,
     "detencions": 0
    },
    {
-    "tipus": "Usurpació",
+    "tipus": "Tracte degradant / vexatori",
     "n": 9,
-    "abans": 8,
+    "abans": 9,
     "darrerMes": 1,
-    "resolts": 5,
+    "resolts": 10,
+    "detencions": 1
+   },
+   {
+    "tipus": "Injúria",
+    "n": 8,
+    "abans": 4,
+    "darrerMes": 1,
+    "resolts": 7,
+    "detencions": 0
+   },
+   {
+    "tipus": "Descobriment i revelació de secrets",
+    "n": 8,
+    "abans": 8,
+    "darrerMes": 0,
+    "resolts": 6,
     "detencions": 0
    },
    {
@@ -417,35 +429,11 @@
     "detencions": 0
    },
    {
-    "tipus": "Extorsió",
-    "n": 8,
-    "abans": 3,
-    "darrerMes": 0,
-    "resolts": 2,
-    "detencions": 0
-   },
-   {
-    "tipus": "Usurpació de funcions públiques i intrusisme",
-    "n": 7,
-    "abans": 6,
+    "tipus": "Receptació i altres conductes afins",
+    "n": 6,
+    "abans": 10,
     "darrerMes": 1,
     "resolts": 6,
-    "detencions": 0
-   },
-   {
-    "tipus": "Injúria",
-    "n": 7,
-    "abans": 5,
-    "darrerMes": 1,
-    "resolts": 6,
-    "detencions": 0
-   },
-   {
-    "tipus": "Conducció temerària",
-    "n": 7,
-    "abans": 14,
-    "darrerMes": 1,
-    "resolts": 7,
     "detencions": 6
    },
    {
@@ -457,18 +445,34 @@
     "detencions": 3
    },
    {
-    "tipus": "Receptació i altres conductes afins",
+    "tipus": "Extorsió",
+    "n": 6,
+    "abans": 5,
+    "darrerMes": 0,
+    "resolts": 2,
+    "detencions": 0
+   },
+   {
+    "tipus": "Usurpació de funcions públiques i intrusisme",
     "n": 5,
-    "abans": 10,
-    "darrerMes": 1,
+    "abans": 8,
+    "darrerMes": 0,
     "resolts": 4,
-    "detencions": 5
+    "detencions": 0
+   },
+   {
+    "tipus": "Conducció temerària",
+    "n": 5,
+    "abans": 14,
+    "darrerMes": 0,
+    "resolts": 5,
+    "detencions": 2
    },
    {
     "tipus": "Abandonament lloc accident",
     "n": 5,
     "abans": 5,
-    "darrerMes": 1,
+    "darrerMes": 0,
     "resolts": 3,
     "detencions": 1
    },
@@ -476,33 +480,25 @@
     "tipus": "Exhibicionisme i provocació sexual",
     "n": 4,
     "abans": 0,
-    "darrerMes": 1,
-    "resolts": 3,
+    "darrerMes": 0,
+    "resolts": 4,
     "detencions": 3
-   },
-   {
-    "tipus": "Desordres públics",
-    "n": 4,
-    "abans": 3,
-    "darrerMes": 0,
-    "resolts": 4,
-    "detencions": 9
-   },
-   {
-    "tipus": "Homicidi per imprudència",
-    "n": 4,
-    "abans": 0,
-    "darrerMes": 0,
-    "resolts": 4,
-    "detencions": 1
    },
    {
     "tipus": "Falsificació de moneda i efectes timbrats",
     "n": 3,
     "abans": 0,
-    "darrerMes": 2,
+    "darrerMes": 0,
     "resolts": 2,
     "detencions": 0
+   },
+   {
+    "tipus": "Desordres públics",
+    "n": 3,
+    "abans": 4,
+    "darrerMes": 0,
+    "resolts": 4,
+    "detencions": 3
    },
    {
     "tipus": "Contra els animals",
@@ -513,10 +509,18 @@
     "detencions": 1
    },
    {
+    "tipus": "Homicidi per imprudència",
+    "n": 3,
+    "abans": 1,
+    "darrerMes": 0,
+    "resolts": 3,
+    "detencions": 1
+   },
+   {
     "tipus": "Realització arbitrària del propi dret",
     "n": 2,
     "abans": 0,
-    "darrerMes": 1,
+    "darrerMes": 0,
     "resolts": 2,
     "detencions": 0
    },
@@ -524,15 +528,15 @@
     "tipus": "Obstrucció a la justícia i deslleialtat professional",
     "n": 2,
     "abans": 4,
-    "darrerMes": 1,
-    "resolts": 2,
+    "darrerMes": 0,
+    "resolts": 3,
     "detencions": 2
    },
    {
     "tipus": "Relatius a la prostitució",
     "n": 2,
     "abans": 2,
-    "darrerMes": 1,
+    "darrerMes": 0,
     "resolts": 1,
     "detencions": 0
    },
@@ -565,8 +569,16 @@
     "n": 1,
     "abans": 1,
     "darrerMes": 0,
-    "resolts": 2,
+    "resolts": 1,
     "detencions": 0
+   },
+   {
+    "tipus": "Homicidi Temptativa",
+    "n": 1,
+    "abans": 4,
+    "darrerMes": 1,
+    "resolts": 1,
+    "detencions": 1
    },
    {
     "tipus": "Detenció il·legal",
@@ -574,6 +586,14 @@
     "abans": 1,
     "darrerMes": 0,
     "resolts": 1,
+    "detencions": 0
+   },
+   {
+    "tipus": "Contra els drets de ciutadans estrangers",
+    "n": 1,
+    "abans": 1,
+    "darrerMes": 1,
+    "resolts": 0,
     "detencions": 0
    },
    {
@@ -586,6 +606,14 @@
    },
    {
     "tipus": "Propietat industrial",
+    "n": 1,
+    "abans": 0,
+    "darrerMes": 0,
+    "resolts": 0,
+    "detencions": 0
+   },
+   {
+    "tipus": "Calúmnia",
     "n": 1,
     "abans": 0,
     "darrerMes": 1,
@@ -603,15 +631,7 @@
    {
     "tipus": "Acusació, denúncia falsa i simulació de delictes",
     "n": 0,
-    "abans": 2,
-    "darrerMes": 0,
-    "resolts": 0,
-    "detencions": 0
-   },
-   {
-    "tipus": "Homicidi Temptativa",
-    "n": 0,
-    "abans": 6,
+    "abans": 1,
     "darrerMes": 0,
     "resolts": 0,
     "detencions": 0
@@ -651,7 +671,7 @@
    {
     "tipus": "Organitzacions i grups criminals",
     "n": 0,
-    "abans": 5,
+    "abans": 4,
     "darrerMes": 0,
     "resolts": 0,
     "detencions": 4
@@ -689,14 +709,6 @@
     "detencions": 0
    },
    {
-    "tipus": "Contra els drets de ciutadans estrangers",
-    "n": 0,
-    "abans": 1,
-    "darrerMes": 0,
-    "resolts": 0,
-    "detencions": 0
-   },
-   {
     "tipus": "Homicidi Consumat",
     "n": 0,
     "abans": 0,
@@ -707,7 +719,7 @@
    {
     "tipus": "Contra l'ordenació del territori",
     "n": 0,
-    "abans": 1,
+    "abans": 0,
     "darrerMes": 0,
     "resolts": 0,
     "detencions": 0
@@ -725,242 +737,234 @@
    {
     "tipus": "Furt",
     "coneguts": 88,
-    "resolts": 7,
-    "detencions": 0,
-    "abans": 108,
+    "resolts": 17,
+    "detencions": 1,
+    "abans": 86,
     "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
     "tipus": "Robatori amb força",
-    "coneguts": 48,
-    "resolts": 11,
-    "detencions": 9,
-    "abans": 54,
+    "coneguts": 54,
+    "resolts": 9,
+    "detencions": 8,
+    "abans": 55,
     "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
     "tipus": "Danys",
-    "coneguts": 35,
-    "resolts": 7,
+    "coneguts": 34,
+    "resolts": 6,
     "detencions": 1,
-    "abans": 45,
+    "abans": 30,
     "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
     "tipus": "Lesions",
-    "coneguts": 28,
-    "resolts": 26,
-    "detencions": 5,
-    "abans": 34,
+    "coneguts": 32,
+    "resolts": 30,
+    "detencions": 4,
+    "abans": 42,
     "titol": "De les lesions"
    },
    {
-    "tipus": "Conduir sota els efectes d'alcohol i drogues",
-    "coneguts": 27,
-    "resolts": 25,
-    "detencions": 1,
-    "abans": 15,
-    "titol": "Delictes contra la seguretat viària"
+    "tipus": "Amenaces",
+    "coneguts": 24,
+    "resolts": 23,
+    "detencions": 7,
+    "abans": 13,
+    "titol": "Delictes contra la llibertat"
    },
    {
     "tipus": "Conduir sense permís",
-    "coneguts": 24,
-    "resolts": 21,
+    "coneguts": 21,
+    "resolts": 19,
     "detencions": 0,
-    "abans": 15,
+    "abans": 19,
     "titol": "Delictes contra la seguretat viària"
    },
    {
     "tipus": "Estafes",
-    "coneguts": 20,
-    "resolts": 6,
-    "detencions": 4,
-    "abans": 24,
+    "coneguts": 12,
+    "resolts": 4,
+    "detencions": 2,
+    "abans": 22,
     "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
-    "tipus": "Robatori amb força interior vehicle",
-    "coneguts": 16,
-    "resolts": 2,
-    "detencions": 1,
-    "abans": 25,
-    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
-   },
-   {
-    "tipus": "Amenaces",
-    "coneguts": 14,
-    "resolts": 16,
-    "detencions": 4,
+    "tipus": "Conduir sota els efectes d'alcohol i drogues",
+    "coneguts": 12,
+    "resolts": 13,
+    "detencions": 0,
     "abans": 15,
-    "titol": "Delictes contra la llibertat"
-   },
-   {
-    "tipus": "Robatori amb violència i/o intimidació",
-    "coneguts": 10,
-    "resolts": 9,
-    "detencions": 10,
-    "abans": 10,
-    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
-   },
-   {
-    "tipus": "Coaccions",
-    "coneguts": 8,
-    "resolts": 5,
-    "detencions": 0,
-    "abans": 4,
-    "titol": "Delictes contra la llibertat"
-   },
-   {
-    "tipus": "Apropiació indeguda",
-    "coneguts": 4,
-    "resolts": 3,
-    "detencions": 0,
-    "abans": 3,
-    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
-   },
-   {
-    "tipus": "Negativa a sotmetre's a les proves",
-    "coneguts": 4,
-    "resolts": 3,
-    "detencions": 0,
-    "abans": 1,
     "titol": "Delictes contra la seguretat viària"
    },
    {
-    "tipus": "Contra els drets i deures familiars",
+    "tipus": "Robatori amb força interior vehicle",
+    "coneguts": 9,
+    "resolts": 1,
+    "detencions": 1,
+    "abans": 41,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Robatori i furt d'us de vehicle",
+    "coneguts": 8,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 4,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Altres delictes contra l'ordre públic",
+    "coneguts": 7,
+    "resolts": 7,
+    "detencions": 5,
+    "abans": 3,
+    "titol": "Delictes contra l'ordre públic"
+   },
+   {
+    "tipus": "Robatori amb violència i/o intimidació",
+    "coneguts": 4,
+    "resolts": 4,
+    "detencions": 2,
+    "abans": 7,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Falsedats documentals",
     "coneguts": 4,
     "resolts": 2,
     "detencions": 0,
-    "abans": 3,
-    "titol": "Delictes contra les relacions familiars"
+    "abans": 1,
+    "titol": "De les falsedats"
+   },
+   {
+    "tipus": "Coaccions",
+    "coneguts": 4,
+    "resolts": 6,
+    "detencions": 0,
+    "abans": 2,
+    "titol": "Delictes contra la llibertat"
    },
    {
     "tipus": "Contra la salut pública",
     "coneguts": 3,
     "resolts": 3,
-    "detencions": 3,
-    "abans": 4,
+    "detencions": 4,
+    "abans": 2,
     "titol": "Dels delictes contra la seguretat col·lectiva"
    },
    {
-    "tipus": "Robatori i furt d'us de vehicle",
-    "coneguts": 3,
-    "resolts": 1,
-    "detencions": 2,
-    "abans": 5,
-    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
-   },
-   {
-    "tipus": "Trencament de condemna",
-    "coneguts": 3,
-    "resolts": 3,
-    "detencions": 2,
-    "abans": 1,
-    "titol": "Delictes contra l'Administració de justícia"
-   },
-   {
-    "tipus": "Altres delictes contra l'ordre públic",
+    "tipus": "Agressions sexuals i Abusos sexuals",
     "coneguts": 3,
     "resolts": 2,
     "detencions": 1,
-    "abans": 9,
-    "titol": "Delictes contra l'ordre públic"
-   },
-   {
-    "tipus": "De la usurpació de l'estat civil",
-    "coneguts": 2,
-    "resolts": 0,
-    "detencions": 0,
-    "abans": 0,
-    "titol": "De les falsedats"
-   },
-   {
-    "tipus": "Falsificació de moneda i efectes timbrats",
-    "coneguts": 2,
-    "resolts": 1,
-    "detencions": 0,
-    "abans": 0,
-    "titol": "De les falsedats"
-   },
-   {
-    "tipus": "Falsedats documentals",
-    "coneguts": 1,
-    "resolts": 1,
-    "detencions": 1,
-    "abans": 3,
-    "titol": "De les falsedats"
-   },
-   {
-    "tipus": "Conducció temerària",
-    "coneguts": 1,
-    "resolts": 1,
-    "detencions": 1,
     "abans": 1,
+    "titol": "Delictes contra la llibertat i la indemnitat sexuals"
+   },
+   {
+    "tipus": "Negativa a sotmetre's a les proves",
+    "coneguts": 3,
+    "resolts": 2,
+    "detencions": 0,
+    "abans": 2,
     "titol": "Delictes contra la seguretat viària"
    },
    {
-    "tipus": "Receptació i altres conductes afins",
-    "coneguts": 1,
-    "resolts": 0,
-    "detencions": 1,
-    "abans": 0,
-    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
-   },
-   {
-    "tipus": "Obstrucció a la justícia i deslleialtat professional",
-    "coneguts": 1,
+    "tipus": "Trencament de condemna",
+    "coneguts": 2,
     "resolts": 1,
-    "detencions": 1,
-    "abans": 0,
+    "detencions": 3,
+    "abans": 2,
     "titol": "Delictes contra l'Administració de justícia"
    },
    {
-    "tipus": "Ocupació immobles",
-    "coneguts": 1,
-    "resolts": 2,
+    "tipus": "Apropiació indeguda",
+    "coneguts": 2,
+    "resolts": 1,
     "detencions": 0,
     "abans": 7,
     "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
-    "tipus": "Agressions sexuals i Abusos sexuals",
-    "coneguts": 1,
+    "tipus": "Ocupació immobles",
+    "coneguts": 2,
     "resolts": 1,
     "detencions": 0,
-    "abans": 3,
-    "titol": "Delictes contra la llibertat i la indemnitat sexuals"
+    "abans": 4,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
-    "tipus": "Usurpació de funcions públiques i intrusisme",
+    "tipus": "Homicidi Temptativa",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 1,
+    "abans": 0,
+    "titol": "De l’homicidi i les seves formes"
+   },
+   {
+    "tipus": "Receptació i altres conductes afins",
     "coneguts": 1,
     "resolts": 2,
-    "detencions": 0,
+    "detencions": 1,
     "abans": 0,
-    "titol": "De les falsedats"
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
-    "tipus": "Propietat industrial",
+    "tipus": "De la usurpació de l'estat civil",
     "coneguts": 1,
     "resolts": 0,
     "detencions": 0,
-    "abans": 0,
-    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+    "abans": 2,
+    "titol": "De les falsedats"
+   },
+   {
+    "tipus": "Tracte degradant / vexatori",
+    "coneguts": 1,
+    "resolts": 1,
+    "detencions": 0,
+    "abans": 2,
+    "titol": "De les tortures i altres delictes contra la integritat moral"
+   },
+   {
+    "tipus": "Entrada a vivenda aliena",
+    "coneguts": 1,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 1,
+    "titol": "Delictes contra la intimitat, el dret a la pròpia imatge i la inviolabilitat del domicili"
+   },
+   {
+    "tipus": "Contra els drets i deures familiars",
+    "coneguts": 1,
+    "resolts": 3,
+    "detencions": 0,
+    "abans": 1,
+    "titol": "Delictes contra les relacions familiars"
    },
    {
     "tipus": "Usurpació",
     "coneguts": 1,
-    "resolts": 0,
+    "resolts": 1,
     "detencions": 0,
     "abans": 0,
     "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
    },
    {
-    "tipus": "Realització arbitrària del propi dret",
+    "tipus": "Contra els drets de ciutadans estrangers",
     "coneguts": 1,
-    "resolts": 1,
+    "resolts": 0,
     "detencions": 0,
     "abans": 0,
-    "titol": "Delictes contra l'Administració de justícia"
+    "titol": "Delictes contra els drets dels ciutadans estrangers"
+   },
+   {
+    "tipus": "Calúmnia",
+    "coneguts": 1,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 0,
+    "titol": "Delictes contra l’honor"
    },
    {
     "tipus": "Injúria",
@@ -971,28 +975,36 @@
     "titol": "Delictes contra l’honor"
    },
    {
-    "tipus": "Exhibicionisme i provocació sexual",
-    "coneguts": 1,
+    "tipus": "Homicidi per imprudència",
+    "coneguts": 0,
     "resolts": 0,
     "detencions": 0,
-    "abans": 0,
-    "titol": "Delictes contra la llibertat i la indemnitat sexuals"
+    "abans": 1,
+    "titol": "De l’homicidi i les seves formes"
    },
    {
-    "tipus": "Relatius a la prostitució",
-    "coneguts": 1,
-    "resolts": 1,
-    "detencions": 0,
-    "abans": 0,
-    "titol": "Delictes contra la llibertat i la indemnitat sexuals"
-   },
-   {
-    "tipus": "Abandonament lloc accident",
-    "coneguts": 1,
+    "tipus": "Usurpació de funcions públiques i intrusisme",
+    "coneguts": 0,
     "resolts": 0,
     "detencions": 0,
-    "abans": 0,
-    "titol": "Delictes contra la seguretat viària"
+    "abans": 2,
+    "titol": "De les falsedats"
+   },
+   {
+    "tipus": "Extorsió",
+    "coneguts": 0,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 2,
+    "titol": "Delictes contra el patrimoni i contra l’ordre socioeconòmic"
+   },
+   {
+    "tipus": "Desordres públics",
+    "coneguts": 0,
+    "resolts": 0,
+    "detencions": 0,
+    "abans": 1,
+    "titol": "Delictes contra l'ordre públic"
    },
    {
     "tipus": "Descobriment i revelació de secrets",
@@ -1003,25 +1015,17 @@
     "titol": "Delictes contra la intimitat, el dret a la pròpia imatge i la inviolabilitat del domicili"
    },
    {
-    "tipus": "Entrada a vivenda aliena",
+    "tipus": "Conducció temerària",
     "coneguts": 0,
     "resolts": 0,
     "detencions": 0,
-    "abans": 1,
-    "titol": "Delictes contra la intimitat, el dret a la pròpia imatge i la inviolabilitat del domicili"
-   },
-   {
-    "tipus": "Protecció de la flora, fauna i animals domèstics",
-    "coneguts": 0,
-    "resolts": 0,
-    "detencions": 0,
-    "abans": 1,
-    "titol": "Dels delictes relatius a l’ordenació del territori i l’urbanisme, la protecció del patrimoni històric i el medi ambient"
+    "abans": 2,
+    "titol": "Delictes contra la seguretat viària"
    }
   ],
-  "mesAnyAnterior": "2025-09",
-  "resolts12": 1796,
-  "detencions12": 614,
+  "mesAnyAnterior": "2025-10",
+  "resolts12": 1805,
+  "detencions12": 600,
   "serieDetencions": [
    [
     "2023-01",
@@ -1202,6 +1206,10 @@
    [
     "2026-09",
     47
+   ],
+   [
+    "2026-10",
+    41
    ]
   ]
  },
@@ -3951,7 +3959,7 @@
   }
  },
  "e112": {
-  "actualitzat": "2026-10-10T08:01:37+00:00",
+  "actualitzat": "2026-11-10T08:01:29+00:00",
   "municipis": {
    "17022": {
     "serie": [
@@ -4134,69 +4142,73 @@
      [
       "2026-09",
       179
+     ],
+     [
+      "2026-10",
+      118
      ]
     ],
-    "darrerMes": "2026-09",
+    "darrerMes": "2026-10",
     "periode": [
-     "2025-10",
-     "2026-09"
+     "2025-11",
+     "2026-10"
     ],
-    "total12": 1549,
-    "totalAbans12": 1404,
+    "total12": 1535,
+    "totalAbans12": 1416,
     "tipus": [
      {
-      "tipus": "Seguretat",
-      "n": 512,
-      "abans": 521,
-      "darrerMes": 56
+      "tipus": "Assistència sanitària",
+      "n": 518,
+      "abans": 489,
+      "darrerMes": 47
      },
      {
-      "tipus": "Assistència sanitària",
-      "n": 505,
-      "abans": 508,
-      "darrerMes": 61
+      "tipus": "Seguretat",
+      "n": 488,
+      "abans": 522,
+      "darrerMes": 31
      },
      {
       "tipus": "Altres incidències",
-      "n": 118,
-      "abans": 104,
+      "n": 120,
+      "abans": 110,
       "darrerMes": 13
      },
      {
       "tipus": "Trànsit",
-      "n": 116,
-      "abans": 94,
-      "darrerMes": 20
+      "n": 115,
+      "abans": 105,
+      "darrerMes": 11
      },
      {
       "tipus": "Incendi",
       "n": 106,
-      "abans": 63,
-      "darrerMes": 2
+      "abans": 68,
+      "darrerMes": 6
      },
      {
       "tipus": "Civisme",
-      "n": 101,
-      "abans": 85,
-      "darrerMes": 8
+      "n": 96,
+      "abans": 89,
+      "darrerMes": 4
      },
      {
       "tipus": "Meteorologia",
-      "n": 55,
-      "abans": 12,
-      "darrerMes": 17
+      "n": 56,
+      "abans": 11,
+      "darrerMes": 1
      },
      {
       "tipus": "Accident",
-      "n": 14,
-      "abans": 7,
+      "n": 15,
+      "abans": 8,
       "darrerMes": 2
      },
      {
       "tipus": "Fuita (aigua, gas, altres)",
-      "n": 14,
-      "abans": 8,
-      "darrerMes": 0
+      "n": 13,
+      "abans": 12,
+      "darrerMes": 3
      },
      {
       "tipus": "Medi ambient",
@@ -4387,51 +4399,55 @@
      [
       "2026-09",
       25
+     ],
+     [
+      "2026-10",
+      31
      ]
     ],
-    "darrerMes": "2026-09",
+    "darrerMes": "2026-10",
     "periode": [
-     "2025-10",
-     "2026-09"
+     "2025-11",
+     "2026-10"
     ],
-    "total12": 271,
-    "totalAbans12": 235,
+    "total12": 285,
+    "totalAbans12": 227,
     "tipus": [
      {
       "tipus": "Trànsit",
-      "n": 89,
-      "abans": 87,
+      "n": 99,
+      "abans": 82,
       "darrerMes": 12
      },
      {
       "tipus": "Assistència sanitària",
       "n": 51,
-      "abans": 57,
-      "darrerMes": 3
+      "abans": 55,
+      "darrerMes": 8
      },
      {
       "tipus": "Seguretat",
-      "n": 43,
-      "abans": 44,
-      "darrerMes": 3
+      "n": 42,
+      "abans": 45,
+      "darrerMes": 5
      },
      {
       "tipus": "Altres incidències",
-      "n": 27,
-      "abans": 13,
-      "darrerMes": 0
+      "n": 28,
+      "abans": 14,
+      "darrerMes": 2
      },
      {
       "tipus": "Civisme",
-      "n": 26,
+      "n": 27,
       "abans": 16,
-      "darrerMes": 4
+      "darrerMes": 1
      },
      {
       "tipus": "Incendi",
-      "n": 17,
-      "abans": 11,
-      "darrerMes": 1
+      "n": 19,
+      "abans": 8,
+      "darrerMes": 2
      },
      {
       "tipus": "Meteorologia",
@@ -4443,19 +4459,19 @@
       "tipus": "Accident",
       "n": 4,
       "abans": 2,
-      "darrerMes": 1
+      "darrerMes": 0
      },
      {
       "tipus": "Medi ambient",
       "n": 4,
       "abans": 0,
-      "darrerMes": 1
+      "darrerMes": 0
      },
      {
       "tipus": "Fuita (aigua, gas, altres)",
-      "n": 2,
+      "n": 3,
       "abans": 0,
-      "darrerMes": 0
+      "darrerMes": 1
      }
     ]
    },
@@ -4640,43 +4656,47 @@
      [
       "2026-09",
       52
+     ],
+     [
+      "2026-10",
+      24
      ]
     ],
-    "darrerMes": "2026-09",
+    "darrerMes": "2026-10",
     "periode": [
-     "2025-10",
-     "2026-09"
+     "2025-11",
+     "2026-10"
     ],
-    "total12": 484,
-    "totalAbans12": 366,
+    "total12": 468,
+    "totalAbans12": 373,
     "tipus": [
      {
       "tipus": "Trànsit",
-      "n": 146,
-      "abans": 109,
-      "darrerMes": 24
+      "n": 150,
+      "abans": 106,
+      "darrerMes": 11
      },
      {
       "tipus": "Assistència sanitària",
-      "n": 106,
-      "abans": 81,
+      "n": 96,
+      "abans": 91,
       "darrerMes": 6
      },
      {
       "tipus": "Seguretat",
-      "n": 78,
-      "abans": 80,
-      "darrerMes": 8
+      "n": 74,
+      "abans": 74,
+      "darrerMes": 2
      },
      {
       "tipus": "Altres incidències",
-      "n": 55,
-      "abans": 39,
-      "darrerMes": 3
+      "n": 52,
+      "abans": 41,
+      "darrerMes": 2
      },
      {
       "tipus": "Incendi",
-      "n": 40,
+      "n": 39,
       "abans": 16,
       "darrerMes": 0
      },
@@ -4684,25 +4704,25 @@
       "tipus": "Meteorologia",
       "n": 19,
       "abans": 11,
-      "darrerMes": 7
+      "darrerMes": 0
      },
      {
       "tipus": "Civisme",
-      "n": 19,
-      "abans": 17,
-      "darrerMes": 1
+      "n": 16,
+      "abans": 20,
+      "darrerMes": 0
      },
      {
       "tipus": "Accident",
-      "n": 11,
-      "abans": 8,
-      "darrerMes": 0
+      "n": 12,
+      "abans": 9,
+      "darrerMes": 3
      },
      {
       "tipus": "Fuita (aigua, gas, altres)",
       "n": 5,
       "abans": 1,
-      "darrerMes": 3
+      "darrerMes": 0
      },
      {
       "tipus": "Medi ambient",
@@ -4893,51 +4913,55 @@
      [
       "2026-09",
       30
+     ],
+     [
+      "2026-10",
+      27
      ]
     ],
-    "darrerMes": "2026-09",
+    "darrerMes": "2026-10",
     "periode": [
-     "2025-10",
-     "2026-09"
+     "2025-11",
+     "2026-10"
     ],
-    "total12": 297,
-    "totalAbans12": 218,
+    "total12": 309,
+    "totalAbans12": 216,
     "tipus": [
      {
       "tipus": "Trànsit",
-      "n": 62,
+      "n": 68,
       "abans": 58,
-      "darrerMes": 9
-     },
-     {
-      "tipus": "Seguretat",
-      "n": 50,
-      "abans": 45,
-      "darrerMes": 3
+      "darrerMes": 11
      },
      {
       "tipus": "Assistència sanitària",
-      "n": 49,
-      "abans": 48,
-      "darrerMes": 6
+      "n": 53,
+      "abans": 44,
+      "darrerMes": 8
+     },
+     {
+      "tipus": "Seguretat",
+      "n": 48,
+      "abans": 47,
+      "darrerMes": 2
      },
      {
       "tipus": "Incendi",
-      "n": 44,
+      "n": 47,
       "abans": 12,
-      "darrerMes": 1
+      "darrerMes": 3
      },
      {
       "tipus": "Altres incidències",
       "n": 38,
-      "abans": 24,
-      "darrerMes": 4
+      "abans": 25,
+      "darrerMes": 1
      },
      {
       "tipus": "Civisme",
       "n": 18,
       "abans": 15,
-      "darrerMes": 5
+      "darrerMes": 1
      },
      {
       "tipus": "Meteorologia",
@@ -4946,21 +4970,21 @@
       "darrerMes": 0
      },
      {
-      "tipus": "Medi ambient",
-      "n": 10,
-      "abans": 3,
-      "darrerMes": 1
-     },
-     {
       "tipus": "Accident",
-      "n": 9,
+      "n": 10,
       "abans": 6,
       "darrerMes": 1
      },
      {
+      "tipus": "Medi ambient",
+      "n": 10,
+      "abans": 3,
+      "darrerMes": 0
+     },
+     {
       "tipus": "Fuita (aigua, gas, altres)",
       "n": 0,
-      "abans": 2,
+      "abans": 1,
       "darrerMes": 0
      }
     ]
@@ -5146,51 +5170,55 @@
      [
       "2026-09",
       11
+     ],
+     [
+      "2026-10",
+      11
      ]
     ],
-    "darrerMes": "2026-09",
+    "darrerMes": "2026-10",
     "periode": [
-     "2025-10",
-     "2026-09"
+     "2025-11",
+     "2026-10"
     ],
-    "total12": 92,
-    "totalAbans12": 56,
+    "total12": 97,
+    "totalAbans12": 59,
     "tipus": [
      {
       "tipus": "Trànsit",
-      "n": 27,
+      "n": 28,
+      "abans": 15,
+      "darrerMes": 4
+     },
+     {
+      "tipus": "Assistència sanitària",
+      "n": 21,
       "abans": 13,
       "darrerMes": 3
      },
      {
-      "tipus": "Assistència sanitària",
-      "n": 20,
-      "abans": 11,
+      "tipus": "Altres incidències",
+      "n": 15,
+      "abans": 10,
       "darrerMes": 2
      },
      {
-      "tipus": "Altres incidències",
-      "n": 13,
-      "abans": 10,
-      "darrerMes": 2
+      "tipus": "Meteorologia",
+      "n": 8,
+      "abans": 0,
+      "darrerMes": 1
      },
      {
       "tipus": "Incendi",
       "n": 7,
       "abans": 3,
-      "darrerMes": 2
+      "darrerMes": 0
      },
      {
       "tipus": "Seguretat",
       "n": 7,
       "abans": 14,
       "darrerMes": 1
-     },
-     {
-      "tipus": "Meteorologia",
-      "n": 7,
-      "abans": 0,
-      "darrerMes": 0
      },
      {
       "tipus": "Civisme",
@@ -5201,8 +5229,8 @@
      {
       "tipus": "Medi ambient",
       "n": 3,
-      "abans": 2,
-      "darrerMes": 1
+      "abans": 1,
+      "darrerMes": 0
      },
      {
       "tipus": "Accident",
@@ -5220,73 +5248,73 @@
    }
   },
   "comarca": {
-   "darrerMes": "2026-09",
+   "darrerMes": "2026-10",
    "periode": [
-    "2025-10",
-    "2026-09"
+    "2025-11",
+    "2026-10"
    ],
-   "total12": 31335,
-   "totalAbans12": 28198,
+   "total12": 31526,
+   "totalAbans12": 28312,
    "tipus": [
     {
      "tipus": "Assistència sanitària",
-     "n": 11185,
-     "abans": 10760,
-     "darrerMes": 1007
+     "n": 11273,
+     "abans": 10765,
+     "darrerMes": 852
     },
     {
      "tipus": "Seguretat",
-     "n": 8071,
-     "abans": 7981,
-     "darrerMes": 694
+     "n": 8006,
+     "abans": 8002,
+     "darrerMes": 529
     },
     {
      "tipus": "Trànsit",
-     "n": 4335,
-     "abans": 3845,
-     "darrerMes": 392
+     "n": 4342,
+     "abans": 3893,
+     "darrerMes": 282
     },
     {
      "tipus": "Altres incidències",
-     "n": 2565,
-     "abans": 2125,
-     "darrerMes": 204
+     "n": 2589,
+     "abans": 2158,
+     "darrerMes": 175
     },
     {
      "tipus": "Civisme",
-     "n": 1531,
-     "abans": 1359,
-     "darrerMes": 152
+     "n": 1526,
+     "abans": 1365,
+     "darrerMes": 78
     },
     {
      "tipus": "Incendi",
-     "n": 1425,
-     "abans": 1002,
-     "darrerMes": 75
+     "n": 1435,
+     "abans": 1006,
+     "darrerMes": 68
     },
     {
      "tipus": "Meteorologia",
-     "n": 998,
-     "abans": 225,
-     "darrerMes": 44
+     "n": 1116,
+     "abans": 224,
+     "darrerMes": 120
     },
     {
      "tipus": "Accident",
-     "n": 523,
-     "abans": 416,
-     "darrerMes": 54
-    },
-    {
-     "tipus": "Medi ambient",
-     "n": 442,
-     "abans": 280,
+     "n": 526,
+     "abans": 423,
      "darrerMes": 35
     },
     {
+     "tipus": "Medi ambient",
+     "n": 446,
+     "abans": 277,
+     "darrerMes": 14
+    },
+    {
      "tipus": "Fuita (aigua, gas, altres)",
-     "n": 260,
-     "abans": 205,
-     "darrerMes": 24
+     "n": 267,
+     "abans": 199,
+     "darrerMes": 18
     }
    ]
   }

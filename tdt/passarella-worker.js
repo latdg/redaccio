@@ -9,8 +9,14 @@
 // 05.11.2026: POST /casa encarrega una gravació a l'ordinador de casa: llança el workflow
 // «Gravació a casa» (gravacio.yml) de latdg/vigilant-plens. Necessita el secret
 // GITHUB_TOKEN (testimoni de GitHub amb permís «Actions: read and write» en aquest repo).
+// 21.11.2026: estat de les gravacions a casa.
+//   POST /estat  el portàtil hi diu com va una gravació (gravant, feta, error), amb la clau
+//                que li dona aquest mateix Worker en encarregar-la; es desa com una execució
+//                buida del workflow «Estat de gravació» (estat-gravacio.yml), sense gastar minuts.
+//   GET  /estat  la sala de control hi demana les últimes gravacions a casa i com van.
 
 const ORIGENS = ["https://latdg.github.io"];
+const REPO = "https://api.github.com/repos/latdg/vigilant-plens/actions";
 const TIPUS_PERMESOS = /^(audio\/|video\/|application\/(vnd\.apple\.mpegurl|x-mpegurl|octet-stream|mp4|dash\+xml)|binary\/octet-stream)/i;
 
 export default {
@@ -24,10 +30,14 @@ export default {
       "Vary": "Origin",
     };
     if (req.method === "OPTIONS") return new Response(null, { headers: cors });
+    const cami = new URL(req.url).pathname;
+    // El portàtil no és una pàgina web (no porta «Origin»): entra amb la clau de la gravació.
+    if (cami === "/estat" && req.method === "POST") return rebEstat(req, env, cors);
     if (!ORIGENS.includes(origen)) return new Response("Només per a La TdG.", { status: 403, headers: cors });
 
     const aqui = new URL(req.url);
     if (aqui.pathname === "/casa") return encarregaACasa(req, env, cors);
+    if (aqui.pathname === "/estat") return donaEstat(env, cors);
     const u = aqui.searchParams.get("u");
     const ref = aqui.searchParams.get("ref");
     if (!u || !/^https?:\/\//i.test(u)) return new Response("Falta l'adreça.", { status: 400, headers: cors });
@@ -89,14 +99,74 @@ async function encarregaACasa(req, env, cors) {
     ref: text(d.ref, 300),
     inici: String(Math.max(0, Math.floor(+d.inici || 0))),
     minuts: String(Math.max(1, Math.min(360, Math.round(+d.minuts || 0)))),
-    qualitat: text(d.qualitat || "auto", 20),
+    qualitat: text(d.qualitat || "auto", 20).replace(/\|/g, " "),
   };
+  inputs.canal = inputs.canal.replace(/\|/g, " ");
   if (!inputs.id || !/^https?:\/\//.test(inputs.url) || !+d.minuts) return json({ ok: false, error: "Falten dades (adreça o durada)." }, 400);
-  const r = await fetch("https://api.github.com/repos/latdg/vigilant-plens/actions/workflows/gravacio.yml/dispatches", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: "application/vnd.github+json", "User-Agent": "latdg-senyal", "Content-Type": "application/json" },
+  inputs.clau = await clauDe(env, inputs.id);
+  const r = await fetch(`${REPO}/workflows/gravacio.yml/dispatches`, {
+    method: "POST", headers: capGitHub(env),
     body: JSON.stringify({ ref: "main", inputs }),
   });
   if (r.status === 204) return json({ ok: true });
   return json({ ok: false, error: `GitHub ha dit ${r.status}: ${(await r.text()).slice(0, 200)}` }, 502);
+}
+
+// ---------- 21.11.2026: estat de les gravacions a casa ----------
+const capGitHub = env => ({ Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: "application/vnd.github+json", "User-Agent": "latdg-senyal", "Content-Type": "application/json" });
+
+// Clau de cada gravació: només qui la va rebre (el portàtil) en pot informar l'estat.
+async function clauDe(env, id) {
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(env.GITHUB_TOKEN), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", k, new TextEncoder().encode("gravacio:" + id));
+  return [...new Uint8Array(sig)].slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function rebEstat(req, env, cors) {
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { ...cors, "Content-Type": "application/json" } });
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Falta el secret GITHUB_TOKEN al Worker." }, 500);
+  let d;
+  try { d = await req.json(); } catch (e) { return json({ ok: false, error: "Dades incorrectes." }, 400); }
+  const id = String(d.id || "").slice(0, 40).replace(/[^\w-]/g, "");
+  const estat = String(d.estat || "");
+  if (!id || !["gravant", "feta", "error"].includes(estat)) return json({ ok: false, error: "Dades incorrectes." }, 400);
+  if (String(d.clau || "") !== await clauDe(env, id)) return json({ ok: false, error: "Clau incorrecta." }, 403);
+  const text = String(d.text || "").replace(/[|\r\n]+/g, " ").trim().slice(0, 120);
+  const r = await fetch(`${REPO}/workflows/estat-gravacio.yml/dispatches`, {
+    method: "POST", headers: capGitHub(env),
+    body: JSON.stringify({ ref: "main", inputs: { id, estat, text } }),
+  });
+  if (r.status === 204) return json({ ok: true });
+  return json({ ok: false, error: `GitHub ha dit ${r.status}` }, 502);
+}
+
+async function donaEstat(env, cors) {
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "no-store" } });
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Falta el secret GITHUB_TOKEN al Worker." }, 500);
+  const llista = async cami => {
+    try { const r = await fetch(`${REPO}/${cami}`, { headers: capGitHub(env) }); return r.ok ? (await r.json()).workflow_runs || [] : []; }
+    catch (e) { return []; }
+  };
+  const [encarrecs, estats] = await Promise.all([
+    llista("workflows/gravacio.yml/runs?per_page=30&event=workflow_dispatch"),
+    llista("workflows/estat-gravacio.yml/runs?per_page=100&event=workflow_dispatch"),
+  ]);
+  const darrer = {};   // les execucions arriben de la més nova a la més antiga
+  for (const r of estats) {
+    const [id, estat, ...resta] = String(r.display_title || "").split(" | ");
+    if (id && estat && !darrer[id]) darrer[id] = { estat: estat.trim(), text: resta.join(" | ").trim(), quan: r.created_at };
+  }
+  const gravacions = [];
+  for (const r of encarrecs) {
+    const parts = String(r.display_title || "").split(" | ");
+    if (parts.length !== 4) continue;     // encàrrecs d'abans del 21.11.2026
+    const [id, canal, minuts, inici] = parts.map(x => x.trim());
+    let estat, text = "";
+    if (darrer[id]) ({ estat, text } = darrer[id]);
+    else if (r.status !== "completed") estat = "encarregada";
+    else if (r.conclusion === "success") estat = "programada";
+    else { estat = "error"; text = "el portàtil no l'ha pogut programar"; }
+    gravacions.push({ id, canal, minuts: +minuts || 0, inici: +inici || 0, encarregada: r.created_at, estat, text });
+  }
+  return json({ ok: true, gravacions: gravacions.slice(0, 15) });
 }

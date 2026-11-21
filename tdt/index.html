@@ -193,6 +193,13 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
       <p class="font">Es graven en aquest aparell: la pàgina ha de quedar oberta (la pantalla no s'apaga sola mentre n'hi ha).</p>
     </section>
 
+    <!-- GRAVACIONS A CASA (21.11.2026) -->
+    <section id="seccioCasa" hidden>
+      <h2>🏠 Gravacions a l'ordinador de casa</h2>
+      <ul class="historial" id="casa"></ul>
+      <p class="font" id="peuCasa" style="margin:8px 0 0">Les encarregades des de qualsevol aparell. Quan una s'acaba, arriba un avís per Telegram (bot de plens). Els fitxers són a D:\LaTdG\gravacionstv.</p>
+    </section>
+
     <!-- LLISTA -->
     <section>
       <div class="pestanyes" id="pestanyes">
@@ -1049,6 +1056,7 @@ $("grava").onclick = async () => {
       const ara = new Date(), h = historial();
       h.unshift({ quan: `${data(ara)} ${hora(ara)}`, canal: actual.c.n, nom: "", segons: 0, bytes: 0, nota: `🏠 encarregada a l'ordinador de casa · ${quan ? quanText : "ara"} · ${fmtMin(minuts)} min` });
       escriu("tdtHistorial", JSON.stringify(h.slice(0, 60))); pintaHistorial();
+      setTimeout(carregaCasa, 4000);
     } catch (e) { $("estatGravacio").textContent = "❌ No s'ha pogut encarregar: " + e.message; }
     finally { $("grava").disabled = false; }
     return;
@@ -1088,8 +1096,51 @@ function pintaHistorial() {
     ul.append(li);
   }
 }
+// ---------- Gravacions a l'ordinador de casa (21.11.2026) ----------
+// La passarel·la (GET /estat) diu les últimes gravacions encarregades a casa i com van:
+// encarregada → programada → gravant → feta / error. Es torna a mirar sola mentre n'hi ha cap de pendent.
+let RELLOTGE_CASA = null;
+async function carregaCasa() {
+  clearTimeout(RELLOTGE_CASA);
+  let d = null;
+  try { const r = await fetch(`${PASSARELLA}/estat?v=${Date.now()}`, { cache: "no-store" }); d = await r.json().catch(() => null); } catch (e) {}
+  const ul = $("casa");
+  $("seccioCasa").hidden = false;
+  if (!d || !d.ok) {
+    ul.innerHTML = `<li class="font">${d && d.error ? esc(d.error) : "No es pot consultar ara mateix (cal que la passarel·la latdg-senyal tingui el codi nou de tdt/passarella-worker.js)."}</li>`;
+    RELLOTGE_CASA = setTimeout(carregaCasa, 300000);
+    return;
+  }
+  const g = d.gravacions || [];
+  if (!g.length) { ul.innerHTML = '<li class="font">Encara no n\'hi ha cap.</li>'; RELLOTGE_CASA = setTimeout(carregaCasa, 300000); return; }
+  const ara = Date.now();
+  let pendents = false;
+  ul.innerHTML = "";
+  for (const x of g) {
+    const inici = x.inici || Date.parse(x.encarregada);
+    const fi = inici + x.minuts * 60000;
+    let estat;
+    if (x.estat === "encarregada") { estat = "📨 encarregada, esperant el portàtil"; pendents = true; }
+    else if (x.estat === "programada") {
+      if (ara < inici) { estat = `⏰ programada`; pendents = true; }
+      else if (ara < fi + 10 * 60000) { estat = "⏳ a punt de començar"; pendents = true; }
+      else estat = "❔ sense notícies del portàtil (potser estava apagat)";
+    }
+    else if (x.estat === "gravant") { estat = `⏺ gravant${x.text ? ` fins a les ${esc(x.text)} h` : ""}`; pendents = true; }
+    else if (x.estat === "feta") estat = `✅ feta${x.text ? ` · ${esc(x.text)}` : ""}`;
+    else estat = `❌ ${esc(x.text || "no s'ha pogut gravar")}`;
+    const d0 = new Date(inici);
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="data">${data(d0)} ${hora(d0)}</span><b>${esc(x.canal)}</b><span>${fmtMin(x.minuts)} min · ${estat}</span>`;
+    ul.append(li);
+  }
+  RELLOTGE_CASA = setTimeout(carregaCasa, pendents ? 30000 : 300000);
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") carregaCasa(); });
+
 carregaLlistes().then(carregaEPG);
 recuperaProgramades();
+carregaCasa();
 $("buidaHistorial").onclick = () => { if (confirm("Vols esborrar l'historial de gravacions? (Els fitxers no s'esborren.)")) { escriu("tdtHistorial", ""); pintaHistorial(); } };
 pintaHistorial();
 

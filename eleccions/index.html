@@ -14,7 +14,7 @@
   una zona del mapa obre la fitxa i marca la secció. El 29N és una elecció més de la
   llista (dades/eleccions-29n.json, quan hi hagi l'accés d'Interior per als mitjans),
   que es refresca sola cada minut.
-  · Evolució: totes les eleccions de dades/eleccions.json, municipi a municipi.
+  · Evolució: dins de cada fitxa, totes les eleccions del mateix tipus en aquell municipi.
   21.11.2026: sense la suma de les cinc poblacions (no és cap unitat real i la Bisbal
   hi pesa gairebé el 70 %), enlloc de la pàgina.
 -->
@@ -37,10 +37,6 @@ h2{margin:0 0 6px;font-size:1.15rem}
 .buit{color:var(--suau)}
 .eines{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
 select{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-radius:8px;background:#fff;max-width:100%}
-.muns{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
-.muns button{display:flex;align-items:center;gap:6px;font:inherit;font-size:.9rem;padding:4px 10px 4px 6px;border:1px solid var(--linia);border-radius:20px;background:#fff;cursor:pointer}
-.muns button img{height:26px;width:auto}
-.muns button.triat{border-color:var(--accent);background:#fbeee9;font-weight:600}
 .taula{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:.92rem}
 th,td{padding:6px 8px;border-bottom:1px solid var(--linia);text-align:left;vertical-align:top}
@@ -66,6 +62,7 @@ details.mun>summary .res{margin-left:auto;color:var(--suau);font-size:.9rem;text
 .leaflet-popup-content{font:14px/1.4 system-ui,sans-serif;min-width:190px}
 .leaflet-popup-content table{font-size:.85rem}
 .leaflet-popup-content td{padding:2px 4px}
+tr.actual td{background:#f3f1ec;font-weight:600}
 tr.marcada td{background:#fbeee9;transition:background .3s}
 .estat29{background:#fbeee9;border-radius:8px;padding:8px 10px;margin:8px 0;font-size:.9rem}
 footer{color:var(--suau);font-size:.85rem;padding-bottom:24px}
@@ -102,7 +99,6 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:24px}
     <p class="nota" id="hNota"></p>
     <div id="hFitxes"><p class="buit">Carregant…</p></div>
   </section>
-  <section id="evolucio"><h2>📈 EVOLUCIÓ</h2><p class="buit">Carregant…</p></section>
 </main>
 
 <footer><p id="credits"></p>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
@@ -140,46 +136,31 @@ function trobaAnterior(r, ant) {
     ant.resultats.find(x => clauCand(x.sigles).split(" ")[0] === k.split(" ")[0] && k.split(" ")[0].length > 2) || null;
 }
 
-function dadesDe(e, mun) { return e.municipis[mun] || null; }
 
 
 // ---------------------------------------------------------------------------
-// EVOLUCIÓ: una fila per elecció del tipus triat, de la més recent a la més antiga.
+// EVOLUCIÓ (21.11.2026): dins de la fitxa de cada municipi, totes les eleccions del
+// mateix tipus que la triada, amb la triada marcada.
 // ---------------------------------------------------------------------------
-let triaTipus = "congres", triaMun = ORDRE_MUN[0];
-function pintaEvolucio() {
-  const el = document.getElementById("evolucio");
-  const ll = ELEC.eleccions.filter(e => e.tipus === triaTipus).sort((a, b) => b.data.localeCompare(a.data));
-  const botons = ORDRE_MUN.map(c => [c, nomMun(c), imgEscut(c)])
-    .map(([c, nom, img]) => `<button type="button" data-mun="${c}" class="${c === triaMun ? "triat" : ""}">${img}${esc(nom)}</button>`).join("");
-  const files = ll.map((e, i) => {
-    const m = dadesDe(e, triaMun);
-    if (!m) return `<tr><td>${esc(e.nom)}</td><td colspan="5" class="buit">Sense dades</td></tr>`;
-    const antE = ll.slice(i + 1).find(x => dadesDe(x, triaMun));
-    const ant = antE ? dadesDe(antE, triaMun) : null;
-    const [p, s] = m.resultats;
+const NOM_TIPUS = { congres: "al Congrés", municipals: "a les municipals", parlament: "al Parlament de Catalunya", europees: "al Parlament Europeu", referendum: "als referèndums" };
+function taulaEvolucio(codi, e) {
+  const ll = ELEC.eleccions.filter(x => x.tipus === e.tipus && x.municipis[codi]).sort((a, b) => b.data.localeCompare(a.data));
+  if (ll.length < 2) return "";
+  const files = ll.map((x, i) => {
+    const m = x.municipis[codi], ant = ll[i + 1] ? ll[i + 1].municipis[codi] : null;
+    const [p, s2] = m.resultats;
     const dp = ant ? m.participacio - ant.participacio : null;
-    const reg = triaTipus === "municipals" && p && m.regidors ? ` · ${p.electes || 0}/${m.regidors}` : "";
-    return `<tr><td>${esc(e.nom)}</td>` +
+    const reg = x.tipus === "municipals" && p && m.regidors ? ` · ${p.electes || 0}/${m.regidors}` : "";
+    return `<tr${x.id === e.id ? ' class="actual"' : ""}><td>${esc(x.nom)}</td>` +
       `<td class="n">${pctCa(m.participacio)}${dp !== null ? ` <small>${difCa(dp)}</small>` : ""}</td>` +
       `<td>${p ? `<b>${esc(p.sigles)}</b>${reg}` : "—"}</td><td class="n">${p ? pctCa(p.pct) : ""}</td>` +
-      `<td>${s ? esc(s.sigles) : "—"}</td><td class="n">${s ? pctCa(s.pct) : ""}</td></tr>`;
+      `<td>${s2 ? esc(s2.sigles) : "—"}</td><td class="n">${s2 ? pctCa(s2.pct) : ""}</td></tr>`;
   }).join("");
-  el.innerHTML = `<h2>📈 EVOLUCIÓ</h2>` +
-    `<p class="font">Font: Ministeri de l'Interior i Generalitat de Catalunya (resultats oficials).</p>` +
-    `<div class="eines"><select id="selTipus" aria-label="Tipus d'elecció">${TIPUS.filter(([t]) => ELEC.eleccions.some(e => e.tipus === t))
-      .map(([t, n]) => `<option value="${t}"${t === triaTipus ? " selected" : ""}>${esc(n)}</option>`).join("")}</select></div>` +
-    `<div class="muns">${botons}</div>` +
+  return `<details><summary style="cursor:pointer;margin-top:10px"><b>📈 Evolució ${esc(NOM_TIPUS[e.tipus] || "")} (${ll.length} eleccions)</b></summary>` +
     `<div class="taula"><table><thead><tr><th>Elecció</th><th class="n">Participació</th><th>Primera força</th><th class="n">%</th><th>Segona</th><th class="n">%</th></tr></thead><tbody>${files}</tbody></table></div>` +
-    `<p class="nota">Percentatges sobre vots vàlids. La diferència de participació és en punts respecte a l'elecció anterior del mateix tipus.</p>`;
-  document.getElementById("selTipus").onchange = ev => { triaTipus = ev.target.value; pintaEvolucio(); };
-  el.querySelectorAll(".muns button").forEach(b => b.onclick = () => { triaMun = b.dataset.mun; pintaEvolucio(); });
+    `<p class="nota">La diferència de participació és en punts respecte a l'elecció anterior del mateix tipus.</p></details>`;
 }
 
-// ---------------------------------------------------------------------------
-// 29N EN DIRECTE: dades/eleccions-29n.json, amb la mateixa forma que eleccions.json
-// per municipi, més «escrutat» (%) i «actualitzat» (hora). Es compara amb el Congrés 2023.
-// ---------------------------------------------------------------------------
 let GEO = null, MAPA = null, CAPA = null, DIRECTE = null;
 const normSec = s => { const [d, x] = String(s).split("-"); return (+d) + "-" + (+x); };
 const COLORS = [
@@ -277,7 +258,7 @@ function pintaFitxes(k, e) {
   cont.innerHTML = llista.filter(x => x[3]).map(([c, nom, img, m, a]) =>
     `<details class="mun" data-mun="${c}"${oberts.includes(c) ? " open" : ""}><summary>${img}<b>${esc(nom)}</b>` +
     `<span class="res">${m.resultats[0] ? `${esc(m.resultats[0].sigles)} · ${pctCa(m.resultats[0].pct)}` : ""}${m.escrutat != null ? `<br>Escrutat: ${pctCa(m.escrutat)}` : ""}</span></summary>` +
-    fitxa(m, a, mun, c) + `</details>`).join("") +
+    fitxa(m, a, mun, c) + taulaEvolucio(c, e) + `</details>`).join("") +
     `<p class="nota">Percentatges sobre vots vàlids (candidatures i blanc). «Dif.», punts respecte a ${ant ? esc(ant.nom) : "l'elecció anterior del mateix tipus"}; «nova», candidatura que no s'hi va presentar amb les mateixes sigles. ` +
     `La participació no inclou el vot dels residents a l'estranger (CERA).</p>`;
 }
@@ -440,11 +421,9 @@ async function iniciaResultats() {
   try { ELEC = await json("../dades/eleccions.json"); } catch (e) { ELEC = null; }
   if (!ELEC || !ELEC.eleccions || !ELEC.eleccions.length) {
     document.getElementById("historic").innerHTML = `<h2>🗳️ HISTÒRIC DE RESULTATS</h2><p class="buit">No s'han pogut carregar els resultats electorals.</p>`;
-    document.getElementById("evolucio").hidden = true;
     return;
   }
   await iniciaResultats();
-  pintaEvolucio();
   const commons = Object.values(ESCUTS).filter(x => x && x.pagina).map(x => `<a href="${esc(x.pagina)}" target="_blank" rel="noopener">${esc(x.llicencia || "Commons")}</a>`).join(", ");
   if (commons) document.getElementById("credits").innerHTML = `Escuts: Wikimedia Commons (${commons}${ESCUTS["17901"] && ESCUTS["17901"].local ? "; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament" : ""}).`;
 })();

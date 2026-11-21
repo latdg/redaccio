@@ -70,6 +70,7 @@ audio{width:100%;margin-top:10px}
 body.ambPle{overflow:hidden}
 .compta{font-size:.8rem;color:var(--suau)}
 /* VU-metre de la transcripció (21.11.2026): esquerre i dret, de −60 a 0 dB */
+.recupera{margin:10px 0;padding:10px 12px;border:1px solid #e0b252;background:#fff8e6;border-radius:10px;font-size:.92rem}
 .vu{margin:10px 0 4px;padding:8px 10px;background:#15171a;border-radius:8px;color:#cfd3d8;font:12px/1.2 ui-monospace,Menlo,Consolas,monospace}
 .vu-fila{display:grid;grid-template-columns:14px 1fr 52px;gap:8px;align-items:center;margin:3px 0}
 .vu-fila b{color:#9aa0a6}
@@ -138,6 +139,11 @@ body.ambPle{overflow:hidden}
         <input type="file" id="trFitxer" accept="audio/*,video/*" hidden>
         <button type="button" id="trAtura" hidden>⏹️ Atura</button>
         <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="trMinuts" checked> Amb el minut</label>
+        <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem" title="Grava sense transcriure (gasta menys bateria) i transcriu quan aturis"><input type="checkbox" id="trNomesGrava"> 🔋 Només grava (transcriu en aturar)</label>
+      </div>
+      <div class="recupera" id="trRecupera" hidden>
+        <span id="trRecuperaText"></span>
+        <div class="fila" style="margin-top:6px"><button type="button" id="trRecuperaSi">🛟 Recupera-la</button><button type="button" class="suau" id="trRecuperaNo">🗑️ Esborra-la</button></div>
       </div>
       <div class="barra" id="trBarra" hidden><span></span></div>
       <div class="vu" id="trNivell" hidden title="Nivell del so que entra (dB): esquerre i dret">
@@ -154,9 +160,10 @@ body.ambPle{overflow:hidden}
         <button type="button" class="suau" id="trCopia">📋 Copia</button>
         <button type="button" class="suau" id="trAudio" disabled>⬇️ Desa l'àudio</button>
         <button type="button" class="suau" id="trEditor" disabled>✂️ Obre l'àudio a l'editor</button>
+        <button type="button" class="suau" id="trTranscriuAudio" hidden>📝 Transcriu-la</button>
         <button type="button" class="suau" id="trEsborra">🗑️ Esborra</button>
       </div>
-      <p class="font">El text surt en minúscules i gairebé sense puntuació; en fer-ne el resum o la notícia, el bot de resums el deixa ben escrit i hi passa el corrector. «Envia al bot de resums» l'hi posa sol al xat de Telegram com a .txt, i el bot et pregunta què en vols fer. Es desa sol en aquest navegador. Motor: <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener">sherpa-onnx</a> (Apache-2.0).</p>
+      <p class="font">El text surt en minúscules i gairebé sense puntuació; en fer-ne el resum o la notícia, el bot de resums el deixa ben escrit i hi passa el corrector. «Envia al bot de resums» l'hi posa sol al xat de Telegram com a .txt, i el bot et pregunta què en vols fer. El text es desa sol en aquest navegador, i l'àudio també es va desant a l'aparell mentre grava: si la pàgina es tanca abans d'aturar, en tornar-la a obrir el podràs recuperar. Mantén la pantalla encesa i la pàgina oberta mentre graves. Motor: <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener">sherpa-onnx</a> (Apache-2.0).</p>
     </section>
 
     <section>

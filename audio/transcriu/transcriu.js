@@ -118,11 +118,72 @@ function capcalera(font) {
   t.value += (t.value && !t.value.endsWith("\n") ? "\n" : "") + (t.value ? "\n" : "") + `— ${avui()} · ${ara()} · ${font} —\n`;
   escriu(DESA_TEXT, t.value);
 }
+let nomesGrava = false;   // mode «només grava»: es transcriu en aturar
 function mostraRetard() {
   if (!actiu) return;
+  if (nomesGrava) { estat(`🔴 Gravant · ${minut((Date.now() - iniciSessio) / 1000)} · es transcriurà quan aturis`); return; }
   const r = enviat / TAXA - processat;
   const temps = minut(enviat / TAXA);
   estat(`🔴 Escoltant · ${temps}` + (r > 6 ? ` · el text va ${Math.round(r)} s endarrerit (aquest aparell és lent; s'hi posarà al dia)` : ""));
+}
+
+// --- Còpia de seguretat de l'àudio a l'aparell (IndexedDB), 21.11.2026 ---
+// Cada 5 segons es desa el tros gravat. Si la pàgina es tanca o peta abans d'aturar,
+// en tornar-la a obrir surt l'avís per recuperar la gravació.
+const BD = (() => {
+  let p = null;
+  const obre = () => p || (p = new Promise((res, rej) => {
+    const r = indexedDB.open("latdg-transcriu", 1);
+    r.onupgradeneeded = () => { const d = r.result; d.createObjectStore("sessions", { keyPath: "id" }); d.createObjectStore("trossos", { autoIncrement: true }).createIndex("sessio", "sessio"); };
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const tx = async (magatzems, mode, f) => { const d = await obre(); return new Promise((res, rej) => { const t = d.transaction(magatzems, mode); const out = f(t); t.oncomplete = () => res(out && out.result !== undefined ? out.result : out); t.onerror = () => rej(t.error); }); };
+  return {
+    nova: ses => tx(["sessions"], "readwrite", t => t.objectStore("sessions").put(ses)),
+    afegeix: (sessio, blob) => tx(["trossos"], "readwrite", t => t.objectStore("trossos").add({ sessio, blob })),
+    sessions: () => tx(["sessions"], "readonly", t => t.objectStore("sessions").getAll()),
+    trossos: sessio => tx(["trossos"], "readonly", t => t.objectStore("trossos").index("sessio").getAll(sessio)),
+    esborra: async sessio => {
+      await tx(["sessions", "trossos"], "readwrite", t => {
+        t.objectStore("sessions").delete(sessio);
+        const idx = t.objectStore("trossos").index("sessio").openKeyCursor(IDBKeyRange.only(sessio));
+        idx.onsuccess = () => { const c = idx.result; if (c) { t.objectStore("trossos").delete(c.primaryKey); c.continue(); } };
+      });
+    },
+  };
+})();
+let sessioId = null, sessioDades = null;
+async function blobSessio(ses) {
+  const tr = await BD.trossos(ses.id);
+  return new Blob(tr.map(t => t.blob), { type: ses.tipus || "audio/webm" });
+}
+async function mostraRecuperables() {
+  try {
+    const totes = (await BD.sessions()).filter(x => !x.acabada && x.id !== sessioId).sort((a, b) => b.id - a.id);
+    const ses = totes[0];
+    if (!ses) { $("trRecupera").hidden = true; return; }
+    const d = new Date(ses.id);
+    $("trRecuperaText").textContent = `🛟 Hi ha una gravació del ${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()} a les ${z(d.getHours())}:${z(d.getMinutes())} (uns ${minut(ses.durada || 0)}) que no es va acabar d'aturar.`;
+    $("trRecupera").hidden = false;
+    $("trRecuperaSi").onclick = async () => {
+      const blob = await blobSessio(ses);
+      const f = new File([blob], `gravacio_${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}_${z(d.getHours())}.${z(d.getMinutes())}.${/ogg/.test(blob.type) ? "ogg" : /mp4/.test(blob.type) ? "m4a" : "webm"}`, { type: blob.type });
+      audioDesat = f; $("trAudio").disabled = $("trEditor").disabled = false;
+      ses.acabada = true; await BD.nova(ses);
+      $("trRecupera").hidden = true;
+      estat("🛟 Gravació recuperada: la pots desar, obrir a l'editor o transcriure-la.");
+      $("trTranscriuAudio").hidden = false;
+      mostraRecuperables();
+    };
+    $("trRecuperaNo").onclick = async () => {
+      if (!confirm("Segur que vols esborrar aquesta gravació?")) return;
+      await BD.esborra(ses.id); mostraRecuperables();
+    };
+  } catch (e) { $("trRecupera").hidden = true; }
+}
+// En començar una gravació nova s'esborren les anteriors ja acabades (no les pendents de recuperar).
+async function netejaAcabades() {
+  try { for (const x of await BD.sessions()) if (x.acabada) await BD.esborra(x.id); } catch (e) {}
 }
 
 // --- Àudio: de qualsevol freqüència a 16 kHz mono ---
@@ -140,11 +201,13 @@ function a16k(x, taxa) {
 
 async function comenca(font) {
   if (actiu) return;
+  nomesGrava = $("trNomesGrava").checked;
   let stream;
   // Micròfon: primer el model (pot trigar la primera vegada) i després s'obre el micro,
   // perquè no es perdi el començament. La pestanya s'ha de triar de seguida (el navegador
   // només la deixa compartir just després del clic), i per això va al revés.
-  if (font === "mic") {
+  // En el mode «només grava» el model no cal fins que s'atura.
+  if (font === "mic" && !nomesGrava) {
     botons(true); estat("Preparant…");
     try { await preparaMotor(); } catch (e) { botons(false); barra(null); estat(e.message === "Aturat." ? "Aturat." : "❌ " + e.message); return; }
   }
@@ -154,6 +217,7 @@ async function comenca(font) {
       stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true, systemAudio: "include" });
       if (!stream.getAudioTracks().length) {
         stream.getTracks().forEach(t => t.stop());
+        botons(false);
         estat("❌ No arriba so: torna-ho a provar i marca «Comparteix també l'àudio de la pestanya».");
         return;
       }
@@ -161,12 +225,16 @@ async function comenca(font) {
   } catch (e) { botons(false); estat("❌ " + (font === "mic" ? "No s'ha pogut fer servir el micròfon." : "No s'ha compartit cap pestanya.")); return; }
 
   botons(true);
-  estat("Preparant…");
-  try { await preparaMotor(); } catch (e) { stream.getTracks().forEach(t => t.stop()); botons(false); estat("❌ " + e.message); return; }
+  if (!nomesGrava) {
+    estat("Preparant…");
+    try { await preparaMotor(); } catch (e) { stream.getTracks().forEach(t => t.stop()); botons(false); estat("❌ " + e.message); return; }
+  }
 
   flux = stream; actiu = true; enviat = 0; processat = 0; iniciSessio = Date.now();
-  motor.postMessage({ tipus: "reinicia" });
-  capcalera(font === "mic" ? "Micròfon" : "So d'una pestanya");
+  if (!nomesGrava) {
+    motor.postMessage({ tipus: "reinicia" });
+    capcalera(font === "mic" ? "Micròfon" : "So d'una pestanya");
+  }
   ctx = new AudioContext();
   const origen = ctx.createMediaStreamSource(new MediaStream(stream.getAudioTracks()));
   node = ctx.createScriptProcessor(4096, 2, 1);
@@ -174,6 +242,7 @@ async function comenca(font) {
     if (!actiu) return;
     const ib = e.inputBuffer, esq = ib.getChannelData(0), dre = ib.numberOfChannels > 1 ? ib.getChannelData(1) : esq;
     nivells([dB(esq), dB(dre)]);
+    if (nomesGrava) return;
     // Per transcriure, una sola pista: la mitjana dels dos costats
     const x = new Float32Array(esq.length);
     for (let i = 0; i < x.length; i++) x[i] = (esq[i] + dre[i]) / 2;
@@ -183,19 +252,37 @@ async function comenca(font) {
   };
   origen.connect(node); node.connect(ctx.destination);   // (la sortida va en silenci)
   stream.getAudioTracks()[0].addEventListener("ended", () => atura());
-  // Còpia de l'àudio, per desar-lo o obrir-lo a l'editor
-  trossos = []; audioDesat = null;
+
+  // Còpia de l'àudio: a la memòria (per desar-lo o obrir-lo a l'editor) i, a trossos,
+  // a l'aparell, per si la pàgina es tanca abans d'aturar.
+  trossos = []; audioDesat = null; $("trTranscriuAudio").hidden = true;
+  await netejaAcabades();
+  sessioId = iniciSessio;
   try {
-    gravadora = new MediaRecorder(new MediaStream(stream.getAudioTracks()));
-    gravadora.ondataavailable = e => { if (e.data.size) trossos.push(e.data); };
-    gravadora.onstop = () => { audioDesat = new Blob(trossos, { type: gravadora.mimeType || "audio/webm" }); $("trAudio").disabled = $("trEditor").disabled = false; };
-    gravadora.start(1000);
+    const opcions = { audioBitsPerSecond: 64000 };
+    for (const t of ["audio/webm;codecs=opus", "audio/ogg;codecs=opus", "audio/mp4"]) if (MediaRecorder.isTypeSupported?.(t)) { opcions.mimeType = t; break; }
+    gravadora = new MediaRecorder(new MediaStream(stream.getAudioTracks()), opcions);
+    sessioDades = { id: sessioId, font, tipus: gravadora.mimeType || "audio/webm", acabada: false, durada: 0 };
+    BD.nova(sessioDades).catch(() => {});
+    gravadora.ondataavailable = e => {
+      if (!e.data.size) return;
+      trossos.push(e.data);
+      BD.afegeix(sessioId, e.data).catch(() => {});
+      sessioDades.durada = (Date.now() - iniciSessio) / 1000;
+      BD.nova(sessioDades).catch(() => {});
+    };
+    gravadora.start(5000);
   } catch (e) { gravadora = null; }
   try { bloqueig = await navigator.wakeLock?.request("screen"); } catch (e) {}
   $("trNivell").hidden = false;
   rellotge = setInterval(mostraRetard, 1000);
   mostraRetard();
 }
+
+// La pantalla es torna a mantenir encesa si es torna a la pàgina mentre es grava.
+document.addEventListener("visibilitychange", async () => {
+  if (actiu && document.visibilityState === "visible" && !bloqueig) { try { bloqueig = await navigator.wakeLock?.request("screen"); } catch (e) {} }
+});
 
 async function atura() {
   if (!actiu) return;
@@ -204,30 +291,55 @@ async function atura() {
   $("trNivell").hidden = true; nivells([-60, -60]);
   try { node && node.disconnect(); } catch (e) {}
   try { ctx && ctx.close(); } catch (e) {}
-  try { gravadora && gravadora.state !== "inactive" && gravadora.stop(); } catch (e) {}
+  const gravacioFeta = new Promise(r => {
+    if (!gravadora || gravadora.state === "inactive") return r();
+    gravadora.onstop = () => r();
+    try { gravadora.stop(); } catch (e) { r(); }
+  });
   flux && flux.getTracks().forEach(t => t.stop());
   try { bloqueig && bloqueig.release(); } catch (e) {} bloqueig = null;
-  estat("Acabant l'última frase…");
-  await new Promise(r => { acabat = r; motor.postMessage({ tipus: "fi" }); });
+  const durada = (Date.now() - iniciSessio) / 1000;
+  if (!nomesGrava) {
+    estat("Acabant l'última frase…");
+    await new Promise(r => { acabat = r; motor.postMessage({ tipus: "fi" }); });
+  }
+  await gravacioFeta;
+  if (trossos.length) {
+    const tipus = (gravadora && gravadora.mimeType) || "audio/webm";
+    audioDesat = new File(trossos, nom(/ogg/.test(tipus) ? "ogg" : /mp4/.test(tipus) ? "m4a" : "webm"), { type: tipus });
+    $("trAudio").disabled = $("trEditor").disabled = false;
+  }
+  if (sessioDades) { sessioDades.acabada = true; sessioDades.durada = durada; BD.nova(sessioDades).catch(() => {}); }
   botons(false);
-  estat(`✅ Fet: ${minut((Date.now() - iniciSessio) / 1000)} transcrits.`);
+  if (nomesGrava && audioDesat) {
+    estat(`⏹️ Gravats ${minut(durada)}. Ara es transcriu…`);
+    await fitxer(audioDesat, "Gravació (només grava)");
+  } else estat(`✅ Fet: ${minut(durada)} transcrits.`);
 }
 
-async function fitxer(f) {
+async function fitxer(f, etiquetaFont) {
   if (actiu || !f) return;
   botons(true);
   try {
     await preparaMotor();
-    estat("Llegint el fitxer…"); barra(0);
+    estat("Llegint l'àudio…"); barra(0);
     const dades = await f.arrayBuffer();
-    const tmp = new AudioContext();
+    // Es descodifica directament a 16 kHz (gasta molta menys memòria en enregistraments llargs)
+    let tmp;
+    try { tmp = new AudioContext({ sampleRate: TAXA }); } catch (e) { tmp = new AudioContext(); }
     const buf = await tmp.decodeAudioData(dades); tmp.close();
-    const off = new OfflineAudioContext(1, Math.ceil(buf.duration * TAXA), TAXA);
-    const s = off.createBufferSource(); s.buffer = buf; s.connect(off.destination); s.start();
-    const x = (await off.startRendering()).getChannelData(0);
+    let x;
+    if (buf.sampleRate === TAXA) {
+      x = buf.getChannelData(0);
+      if (buf.numberOfChannels > 1) { const d = buf.getChannelData(1), m = new Float32Array(x.length); for (let i = 0; i < m.length; i++) m[i] = (x[i] + d[i]) / 2; x = m; }
+    } else {
+      const off = new OfflineAudioContext(1, Math.ceil(buf.duration * TAXA), TAXA);
+      const s = off.createBufferSource(); s.buffer = buf; s.connect(off.destination); s.start();
+      x = (await off.startRendering()).getChannelData(0);
+    }
     motor.postMessage({ tipus: "reinicia" });
-    capcalera("Fitxer «" + f.name + "»");
-    actiu = true; enviat = 0; processat = 0;
+    capcalera(etiquetaFont || ("Fitxer «" + f.name + "»"));
+    actiu = true; nomesGrava = false; enviat = 0; processat = 0;
     const T = TAXA * 5;
     for (let i = 0; i < x.length; i += T) {
       const y = x.slice(i, i + T); enviat += y.length;
@@ -238,6 +350,7 @@ async function fitxer(f) {
     await new Promise(r => { acabat = r; motor.postMessage({ tipus: "fi" }); });
     clearInterval(seg); barra(null);
     audioDesat = f; $("trAudio").disabled = $("trEditor").disabled = false;
+    $("trTranscriuAudio").hidden = true;
     estat(`✅ Fet: ${minut(x.length / TAXA)} transcrits.`);
   } catch (e) {
     barra(null); actiu = false;
@@ -314,6 +427,8 @@ $("trEditor").onclick = () => {
   } catch (e) { estat("No s'ha pogut obrir a l'editor: desa l'àudio i arrossega'l a l'editor."); }
 };
 botons(false);
+$("trTranscriuAudio").onclick = () => { if (audioDesat) fitxer(audioDesat, "Gravació recuperada"); };
+mostraRecuperables();
 (async () => {
   try {
     const cau = await caches.open(MEMORIA_CAU);

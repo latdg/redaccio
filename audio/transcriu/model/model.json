@@ -1,0 +1,32 @@
+{
+ "model": "projecte-aina/stt_ca-es_conformer_transducer_large (int8)",
+ "fitxers": {
+  "encoder.int8.onnx": {
+   "mida": 137421319,
+   "parts": [
+    "encoder.int8.onnx.00",
+    "encoder.int8.onnx.01",
+    "encoder.int8.onnx.02",
+    "encoder.int8.onnx.03"
+   ]
+  },
+  "decoder.int8.onnx": {
+   "mida": 3464344,
+   "parts": [
+    "decoder.int8.onnx.00"
+   ]
+  },
+  "joiner.int8.onnx": {
+   "mida": 913589,
+   "parts": [
+    "joiner.int8.onnx.00"
+   ]
+  },
+  "tokens.txt": {
+   "mida": 1955,
+   "parts": [
+    "tokens.txt"
+   ]
+  }
+ }
+}

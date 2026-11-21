@@ -266,13 +266,12 @@ $("trPestanya").onclick = () => comenca("pestanya");
 $("trFitxerBtn").onclick = () => $("trFitxer").click();
 $("trFitxer").onchange = e => fitxer(e.target.files[0]);
 $("trAtura").onclick = () => { if (actiu) atura(); else if (cancella) cancella(); };
-// Al bot de resums: al mòbil, pel menú de compartir (Telegram › LaTdG_resums_bot);
-// on no es poden compartir fitxers, es desa el .txt i s'obre el bot per arrossegar-l'hi.
+// Al bot de resums (21.11.2026): el text va al Worker latdg-resums (/estudi) amb la
+// clau de la pàgina; el Worker el posa al xat del bot com a .txt i pregunta què se'n
+// vol fer. Si el Worker no respon, com abans: compartir (mòbil) o desar i obrir el bot.
+const WORKER_RESUMS = "https://latdg-resums.ignasicorney.workers.dev/estudi";
 const BOT_RESUMS = "https://t.me/LaTdG_resums_bot";
-$("trBot").onclick = async () => {
-  const text = $("trText").value.trim();
-  if (!text) { estat("Encara no hi ha cap text per enviar."); return; }
-  const f = new File([text + "\n"], nom("txt"), { type: "text/plain" });
+async function perCompartir(f) {
   if (navigator.canShare && navigator.canShare({ files: [f] }) && matchMedia("(pointer:coarse)").matches) {
     try { await navigator.share({ files: [f], title: "Transcripció" }); estat("Tria Telegram i el bot de resums; et preguntarà què en vols fer."); return; }
     catch (e) { if (e.name === "AbortError") return; }
@@ -280,6 +279,21 @@ $("trBot").onclick = async () => {
   baixa(f, f.name);
   window.open(BOT_RESUMS, "_blank", "noopener");
   estat("S'ha desat el .txt i s'ha obert el bot de resums: arrossega-hi el fitxer i et preguntarà què en vols fer.");
+}
+$("trBot").onclick = async () => {
+  const text = $("trText").value.trim();
+  if (!text) { estat("Encara no hi ha cap text per enviar."); return; }
+  const nomTxt = nom("txt");
+  $("trBot").disabled = true; estat("Enviant al bot de resums…");
+  try {
+    const r = await fetch(WORKER_RESUMS, { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pin: ($("pin") ? $("pin").value.trim() : ""), text, nom: nomTxt }) });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok && d.ok) estat("✅ Enviat al bot de resums: obre Telegram i tria què en vols fer (notícia, resum, traducció…).");
+    else estat("❌ " + (d.error || ("El bot de resums ha respost HTTP " + r.status + ".")));
+  } catch (e) {
+    await perCompartir(new File([text + "\n"], nomTxt, { type: "text/plain" }));
+  } finally { $("trBot").disabled = false; }
 };
 $("trWord").onclick = async () => {
   const t = $("trText").value.trim();

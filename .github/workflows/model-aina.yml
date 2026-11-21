@@ -1,0 +1,79 @@
+# Model de transcripció del Projecte Aina per a l'estudi d'àudio — La TdG · 21.11.2026
+# Converteix projecte-aina/stt_ca-es_conformer_transducer_large (el que fa servir
+# Murmur per al català i el castellà barrejats) al format de sherpa-onnx, el prova
+# amb àudios de mostra i el desa a audio/transcriu/model/ partit en trossos de 40 MB
+# (GitHub no accepta fitxers de més de 100 MB). Només cal executar-lo un cop.
+name: Model Aina per a l'estudi d'àudio
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/model-aina.yml
+      - audio/transcriu/eines/exporta_model.py
+
+permissions:
+  contents: write
+
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Instal·la NeMo
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libsndfile1 > /dev/null
+          pip install -q torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+          pip install -q "nemo_toolkit[asr]" onnx onnxruntime huggingface_hub sherpa-onnx edge-tts soundfile
+      - name: Baixa el model
+        run: |
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          p = snapshot_download("projecte-aina/stt_ca-es_conformer_transducer_large", local_dir="aina")
+          import os; print(os.listdir(p))
+          PY
+      - name: Exporta a ONNX
+        run: |
+          mkdir -p sortida && cd sortida
+          python ../audio/transcriu/eines/exporta_model.py "$(ls ../aina/*.nemo | head -1)"
+      - name: Àudios de prova
+        run: |
+          edge-tts --voice ca-ES-JoanaNeural --text "Bon dia. L'Ajuntament de la Bisbal d'Empordà ha aprovat aquest dimarts el pressupost per a l'any vinent, amb els vots a favor de l'equip de govern." --write-media p1.mp3
+          edge-tts --voice ca-ES-EnricNeural --text "El regidor ha explicat que les obres del carrer de l'Aigüeta començaran al gener i que duraran uns tres mesos." --write-media p2.mp3
+          edge-tts --voice es-ES-AlvaroNeural --text "Buenos días, hoy hablamos con los vecinos de Corçà sobre el nuevo servicio de autobús." --write-media p3.mp3
+          for f in p1 p2 p3; do ffmpeg -loglevel error -y -i $f.mp3 -ar 16000 -ac 1 $f.wav; done
+      - name: Prova el model
+        run: python audio/transcriu/eines/prova_model.py sortida p1.wav p2.wav p3.wav
+      - name: Desa el model
+        run: |
+          D=audio/transcriu/model
+          rm -rf $D && mkdir -p $D
+          cp sortida/tokens.txt sortida/prova.json $D/
+          python - <<'PY'
+          import os, json
+          D = "audio/transcriu/model"; T = 40 * 1024 * 1024; info = {"model": "projecte-aina/stt_ca-es_conformer_transducer_large (int8)", "fitxers": {}}
+          for n in ["encoder", "decoder", "joiner"]:
+              dades = open(f"sortida/{n}.int8.onnx", "rb").read(); parts = []
+              for i in range(0, len(dades), T):
+                  nom = f"{n}.int8.onnx.{i // T:02d}"; open(f"{D}/{nom}", "wb").write(dades[i:i + T]); parts.append(nom)
+              info["fitxers"][f"{n}.int8.onnx"] = {"mida": len(dades), "parts": parts}
+          info["fitxers"]["tokens.txt"] = {"mida": os.path.getsize(f"{D}/tokens.txt"), "parts": ["tokens.txt"]}
+          json.dump(info, open(f"{D}/model.json", "w"), indent=1)
+          print(json.dumps(info, indent=1))
+          PY
+          git config user.name "La TdG (model Aina)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $D
+          git commit -qm "Model Aina ca-es per a la transcripció de l'estudi d'àudio"
+          for intent in 1 2 3 4 5 6; do
+            git push -q origin HEAD:main && exit 0
+            sleep $((intent * 5))
+            git pull -q --rebase origin main || { git rebase --abort; exit 1; }
+          done
+          exit 1

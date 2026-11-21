@@ -356,10 +356,18 @@ async function iniciaMapa() {
       ELEC.eleccions.filter(x => x.tipus === t).sort((a, b) => b.data.localeCompare(a.data)).map(x => `<option value="${x.id}">${esc(x.nom)}</option>`).join("") + `</optgroup>`).join("");
   sel.value = DIRECTE && DIRECTE.municipis ? "29N" : ELEC.eleccions.filter(x => x.tipus === "congres").sort((a, b) => b.data.localeCompare(a.data))[0].id;
   MAPA = L.map("mapa", { scrollWheelZoom: false, zoomSnap: 0.25 });
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a> · Seccions: INE'
+  // 21.11.2026: OpenStreetMap estàndard, esvaït (com el mapa dels edificis de La TdG dades),
+  // perquè els colors dels resultats es llegeixin bé. CARTO ja demana clau.
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19, opacity: .45, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Seccions: INE'
   }).addTo(MAPA);
-  MAPA.fitBounds(L.geoJSON(GEO).getBounds(), { padding: [10, 10] });
+  // L'encuadrament es fa quan el mapa ja té mida (al mòbil pot no tenir-ne en el primer moment).
+  const limits = L.geoJSON(GEO).getBounds();
+  const encuadra = () => { MAPA.invalidateSize(); MAPA.fitBounds(limits, { padding: [10, 10], maxZoom: 14 }); };
+  encuadra();
+  let encuadrat = false;
+  new ResizeObserver(() => { if (!encuadrat && document.getElementById("mapa").offsetWidth > 0) { encuadrat = true; encuadra(); } }).observe(document.getElementById("mapa"));
+  setTimeout(encuadra, 800);
   omplenaVistes(); pintaMapa();
   sel.onchange = () => { omplenaVistes(); pintaMapa(); };
   document.getElementById("mapaVista").onchange = pintaMapa;

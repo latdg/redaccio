@@ -1131,6 +1131,7 @@ async function carregaCasa() {
     else if (x.estat === "canviant") { estat = "✏️ canviant-la, esperant el portàtil"; pendents = true; }
     else if (x.estat === "anullant") { estat = "✖ anul·lant-la, esperant el portàtil"; pendents = true; }
     else if (x.estat === "anullada") estat = "✖ anul·lada";
+    else if (x.estat === "aturant") { estat = "⏹ aturant-la i desant el que s'ha gravat"; pendents = true; }
     else if (x.estat === "gravant") { estat = `⏺ gravant${x.text ? ` fins a les ${esc(x.text)} h` : ""}`; pendents = true; }
     else if (x.estat === "feta") estat = `✅ feta${x.text ? ` · ${esc(x.text)}` : ""}`;
     else estat = `❌ ${esc(x.text || "no s'ha pogut gravar")}`;
@@ -1139,13 +1140,14 @@ async function carregaCasa() {
     li.innerHTML = `<span class="data">${data(d0)} ${hora(d0)}</span><b>${esc(x.canal)}</b><span>${fmtMin(x.minuts)} min · ${estat}</span>`;
     // 21.11.2026: les programades que encara no han començat es poden canviar o anul·lar.
     if (x.estat === "programada" && ara < inici) afegeixGestio(li, x, inici);
+    else if (x.estat === "gravant") afegeixAtura(li, x);
     ul.append(li);
   }
   RELLOTGE_CASA = setTimeout(carregaCasa, pendents ? 30000 : 300000);
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") carregaCasa(); });
 
-// --- 21.11.2026: canviar l'hora o la durada d'una gravació a casa, o anul·lar-la ---
+// --- 21.11.2026: canviar l'hora o la durada d'una gravació a casa, anul·lar-la o aturar-la ---
 var EDITANT_CASA = false;   // mentre s'edita, la llista no es refà sola
 function afegeixGestio(li, x, inici) {
   const canvia = document.createElement("button"); canvia.type = "button"; canvia.className = "suau"; canvia.textContent = "✏️ Canvia";
@@ -1181,6 +1183,18 @@ function afegeixGestio(li, x, inici) {
     li.append(ed);
   };
   li.append(canvia, anulla, nota);
+}
+function afegeixAtura(li, x) {
+  const bt = document.createElement("button"); bt.type = "button"; bt.className = "suau"; bt.textContent = "⏹ Atura";
+  const nota = document.createElement("span"); nota.className = "font";
+  bt.onclick = async () => {
+    if (!confirm(`Vols aturar ara la gravació de ${x.canal}? Es desarà el que s'hagi gravat fins ara.`)) return;
+    bt.disabled = true; nota.textContent = "Aturant…";
+    const r = await gestionaACasa({ id: x.id, accio: "atura" });
+    if (!r.ok) { nota.textContent = "❌ " + r.error; bt.disabled = false; return; }
+    setTimeout(carregaCasa, 4000);
+  };
+  li.append(bt, nota);
 }
 async function gestionaACasa(cos) {
   try {

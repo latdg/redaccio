@@ -14,8 +14,8 @@
 //                que li dona aquest mateix Worker en encarregar-la; es desa com una execució
 //                buida del workflow «Estat de gravació» (estat-gravacio.yml), sense gastar minuts.
 //   GET  /estat  la sala de control hi demana les últimes gravacions a casa i com van.
-// 21.11.2026: POST /gestiona {id, accio: "canvia"|"anulla", inici, minuts} canvia l'hora o la
-//   durada d'una gravació programada a casa, o l'anul·la: llança el workflow «Gestió de
+// 21.11.2026: POST /gestiona {id, accio: "canvia"|"anulla"|"atura", inici, minuts} canvia l'hora o la
+//   durada d'una gravació programada a casa, l'anul·la o atura la que s'està fent: llança el workflow «Gestió de
 //   gravació» (gestio-gravacio.yml) de latdg/vigilant-plens.
 
 const ORIGENS = ["https://latdg.github.io"];
@@ -124,7 +124,7 @@ async function gestionaACasa(req, env, cors) {
   let d;
   try { d = await req.json(); } catch (e) { return json({ ok: false, error: "Dades incorrectes." }, 400); }
   const id = String(d.id || "").slice(0, 40).replace(/[^\w-]/g, "");
-  const accio = d.accio === "anulla" ? "anulla" : d.accio === "canvia" ? "canvia" : "";
+  const accio = ["anulla", "canvia", "atura"].includes(d.accio) ? d.accio : "";
   if (!id || !accio) return json({ ok: false, error: "Dades incorrectes." }, 400);
   const inputs = { id, accio, inici: "0", minuts: "" };
   if (accio === "canvia") {
@@ -204,7 +204,11 @@ async function donaEstat(env, cors) {
     const g = gestio[id];
     let estat, text = "";
     if (g && (!darrer[id] || darrer[id].quan < g.quan)) {
-      if (g.status !== "completed") estat = g.accio === "anulla" ? "anullant" : "canviant";
+      if (g.accio === "atura") {   // l'estat «feta» l'envia després el portàtil, en acabar de desar-la
+        if (g.status === "completed" && g.conclusion !== "success") { estat = "error"; text = "el portàtil no l'ha pogut aturar"; }
+        else estat = "aturant";
+      }
+      else if (g.status !== "completed") estat = g.accio === "anulla" ? "anullant" : "canviant";
       else if (g.conclusion === "success") estat = g.accio === "anulla" ? "anullada" : "programada";
       else { estat = "error"; text = g.accio === "anulla" ? "el portàtil no l'ha pogut anul·lar" : "el portàtil no l'ha pogut canviar"; }
     }

@@ -1,4 +1,4 @@
-# Seccions censals per al mapa electoral — La TdG · 21.11.2026
+# Seccions censals per al mapa electoral — La TdG · 21.11.2026 (2a versió: filtre CQL o caixa)
 # Baixa de l'INE (OGC API Features, seccionat vigent) el contorn de les seccions
 # censals dels cinc municipis i el desa a eleccions/seccions.geojson. Es llança sol
 # quan es canvia aquest fitxer, o a mà; l'INE només actualitza el seccionat un cop l'any.
@@ -21,24 +21,46 @@ jobs:
       - name: Baixa i desa
         run: |
           python3 - <<'PY'
-          import json, urllib.request
-          URL = "https://www.ine.es/geoserver/ogc/features/v1/collections/WMS_INE_SECCIONES_G01:SU.VectorStatisticalUnit/items?f=json&limit=100&CUMUN="
+          import json, urllib.request, urllib.parse
+          BASE = "https://www.ine.es/geoserver/ogc/features/v1/collections/WMS_INE_SECCIONES_G01:SU.VectorStatisticalUnit/items"
           MUNS = ["17022", "17902", "17057", "17901", "17205"]
           def arrodoneix(c):
               return [arrodoneix(x) for x in c] if isinstance(c[0], list) else [round(c[0], 5), round(c[1], 5)]
+          def baixa(params):
+              url = BASE + "?" + urllib.parse.urlencode(params)
+              tot = []
+              while url:
+                  print("GET", url)
+                  with urllib.request.urlopen(url, timeout=90) as r:
+                      d = json.load(r)
+                  tot += d.get("features", [])
+                  url = next((l["href"] for l in d.get("links", []) if l.get("rel") == "next"), None)
+                  if len(tot) > 5000: break
+              return tot
+          def dels_nostres(fs):
+              return [f for f in fs if str(f["properties"].get("CUMUN", "")).zfill(5) in MUNS]
+          # 1) Filtre CQL per municipi; 2) si no, la caixa de la zona i es filtra aquí.
+          trobades = []
+          try:
+              trobades = dels_nostres(baixa({"f": "json", "limit": 500, "filter-lang": "cql-text",
+                  "filter": "CUMUN IN (" + ",".join("'%s'" % m for m in MUNS) + ")"}))
+          except Exception as e:
+              print("CQL no:", e)
+          if {f["properties"]["CUMUN"] for f in trobades} != set(MUNS):
+              mostra = baixa({"f": "json", "limit": 1000, "bbox": "2.90,41.88,3.20,42.08"})
+              if mostra: print("Exemple de propietats:", mostra[0]["properties"])
+              trobades = dels_nostres(mostra)
+          falten = set(MUNS) - {str(f["properties"]["CUMUN"]).zfill(5) for f in trobades}
+          if falten: raise SystemExit("Falten municipis: %s" % sorted(falten))
           feats = []
-          for m in MUNS:
-              with urllib.request.urlopen(URL + m, timeout=60) as r:
-                  d = json.load(r)
-              trobades = [f for f in d.get("features", []) if str(f["properties"].get("CUMUN")) == m]
-              if not trobades:
-                  raise SystemExit("Cap secció per a " + m)
-              for f in trobades:
-                  p = f["properties"]
-                  g = f["geometry"]
-                  g["coordinates"] = arrodoneix(g["coordinates"])
-                  feats.append({"type": "Feature", "geometry": g, "properties": {
-                      "municipi": m, "nom": p.get("NMUN"), "districte": int(p["CDIS"]), "seccio": int(p["CSEC"]), "codi": p.get("CUSEC")}})
+          for f in trobades:
+              p = f["properties"]
+              g = f["geometry"]
+              g["coordinates"] = arrodoneix(g["coordinates"])
+              feats.append({"type": "Feature", "geometry": g, "properties": {
+                  "municipi": str(p["CUMUN"]).zfill(5), "nom": p.get("NMUN"), "districte": int(p["CDIS"]), "seccio": int(p["CSEC"]), "codi": p.get("CUSEC")}})
+          xs = [c for f in feats for c in json.dumps(f["geometry"]["coordinates"]).replace("[", "").replace("]", "").split(",")][:2]
+          print("Primera coordenada:", xs)
           json.dump({"type": "FeatureCollection", "font": "INE, seccionat censal vigent (OGC API Features)", "features": feats},
                     open("eleccions/seccions.geojson", "w"), ensure_ascii=False, separators=(",", ":"))
           print(len(feats), "seccions:", [(f["properties"]["municipi"], f["properties"]["districte"], f["properties"]["seccio"]) for f in feats])

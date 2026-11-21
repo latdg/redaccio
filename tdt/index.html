@@ -283,7 +283,8 @@ function omplAmbits() {
     if (!vist.has(k)) { vist.add(k); opcio(k, c.p === "Spain" ? nomAmbit(c.a) : `🌍 ${c.p} · ${nomAmbit(c.a)}`); }
   }
   const valors = [...sel.options].map(o => o.value);
-  sel.value = valors.includes(abans) ? abans : valors.includes("*pref") ? "*pref" : valors.includes(AMBIT_PER_DEFECTE) ? AMBIT_PER_DEFECTE : "*tots";
+  // 21.11.2026: la pàgina s'obre sempre amb «Totes».
+  sel.value = valors.includes(abans) ? abans : "*tots";
 }
 
 function inicials(nom) {

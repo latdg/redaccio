@@ -14,6 +14,9 @@
 //                que li dona aquest mateix Worker en encarregar-la; es desa com una execució
 //                buida del workflow «Estat de gravació» (estat-gravacio.yml), sense gastar minuts.
 //   GET  /estat  la sala de control hi demana les últimes gravacions a casa i com van.
+// 21.11.2026: POST /gestiona {id, accio: "canvia"|"anulla", inici, minuts} canvia l'hora o la
+//   durada d'una gravació programada a casa, o l'anul·la: llança el workflow «Gestió de
+//   gravació» (gestio-gravacio.yml) de latdg/vigilant-plens.
 
 const ORIGENS = ["https://latdg.github.io"];
 const REPO = "https://api.github.com/repos/latdg/vigilant-plens/actions";
@@ -38,6 +41,7 @@ export default {
     const aqui = new URL(req.url);
     if (aqui.pathname === "/casa") return encarregaACasa(req, env, cors);
     if (aqui.pathname === "/estat") return donaEstat(env, cors);
+    if (aqui.pathname === "/gestiona") return gestionaACasa(req, env, cors);
     const u = aqui.searchParams.get("u");
     const ref = aqui.searchParams.get("ref");
     if (!u || !/^https?:\/\//i.test(u)) return new Response("Falta l'adreça.", { status: 400, headers: cors });
@@ -112,6 +116,31 @@ async function encarregaACasa(req, env, cors) {
   return json({ ok: false, error: `GitHub ha dit ${r.status}: ${(await r.text()).slice(0, 200)}` }, 502);
 }
 
+// ---------- 21.11.2026: canviar o anul·lar una gravació programada a casa ----------
+async function gestionaACasa(req, env, cors) {
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { ...cors, "Content-Type": "application/json" } });
+  if (req.method !== "POST") return json({ ok: false, error: "Cal un POST." }, 405);
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Falta el secret GITHUB_TOKEN al Worker." }, 500);
+  let d;
+  try { d = await req.json(); } catch (e) { return json({ ok: false, error: "Dades incorrectes." }, 400); }
+  const id = String(d.id || "").slice(0, 40).replace(/[^\w-]/g, "");
+  const accio = d.accio === "anulla" ? "anulla" : d.accio === "canvia" ? "canvia" : "";
+  if (!id || !accio) return json({ ok: false, error: "Dades incorrectes." }, 400);
+  const inputs = { id, accio, inici: "0", minuts: "" };
+  if (accio === "canvia") {
+    const inici = Math.floor(+d.inici || 0), minuts = Math.round(+d.minuts || 0);
+    if (inici <= Date.now()) return json({ ok: false, error: "Aquesta hora ja ha passat." }, 400);
+    if (minuts < 1 || minuts > 360) return json({ ok: false, error: "La durada ha de ser d'1 a 360 minuts." }, 400);
+    inputs.inici = String(inici); inputs.minuts = String(minuts);
+  }
+  const r = await fetch(`${REPO}/workflows/gestio-gravacio.yml/dispatches`, {
+    method: "POST", headers: capGitHub(env),
+    body: JSON.stringify({ ref: "main", inputs }),
+  });
+  if (r.status === 204) return json({ ok: true });
+  return json({ ok: false, error: `GitHub ha dit ${r.status}: ${(await r.text()).slice(0, 200)}` }, 502);
+}
+
 // ---------- 21.11.2026: estat de les gravacions a casa ----------
 const capGitHub = env => ({ Authorization: `Bearer ${env.GITHUB_TOKEN}`, Accept: "application/vnd.github+json", "User-Agent": "latdg-senyal", "Content-Type": "application/json" });
 
@@ -147,10 +176,20 @@ async function donaEstat(env, cors) {
     try { const r = await fetch(`${REPO}/${cami}`, { headers: capGitHub(env) }); return r.ok ? (await r.json()).workflow_runs || [] : []; }
     catch (e) { return []; }
   };
-  const [encarrecs, estats] = await Promise.all([
+  const [encarrecs, estats, gestions] = await Promise.all([
     llista("workflows/gravacio.yml/runs?per_page=30&event=workflow_dispatch"),
     llista("workflows/estat-gravacio.yml/runs?per_page=100&event=workflow_dispatch"),
+    llista("workflows/gestio-gravacio.yml/runs?per_page=50&event=workflow_dispatch"),
   ]);
+  // Canvis i anul·lacions (gestio-gravacio.yml): el darrer de cada gravació mana, i el darrer
+  // canvi d'hora o de durada substitueix les dades de l'encàrrec.
+  const gestio = {}, canvi = {};
+  for (const r of gestions) {
+    const [id, accio, minuts, inici] = String(r.display_title || "").split(" | ").map(x => x.trim());
+    if (!id || !accio) continue;
+    if (!gestio[id]) gestio[id] = { accio, quan: r.created_at, status: r.status, conclusion: r.conclusion };
+    if (accio === "canvia" && !canvi[id]) canvi[id] = { minuts: +minuts || 0, inici: +inici || 0 };
+  }
   const darrer = {};   // les execucions arriben de la més nova a la més antiga
   for (const r of estats) {
     const [id, estat, ...resta] = String(r.display_title || "").split(" | ");
@@ -160,9 +199,16 @@ async function donaEstat(env, cors) {
   for (const r of encarrecs) {
     const parts = String(r.display_title || "").split(" | ");
     if (parts.length !== 4) continue;     // encàrrecs d'abans del 21.11.2026
-    const [id, canal, minuts, inici] = parts.map(x => x.trim());
+    const [id, canal, minuts0, inici0] = parts.map(x => x.trim());
+    const minuts = canvi[id] ? canvi[id].minuts : minuts0, inici = canvi[id] ? canvi[id].inici : inici0;
+    const g = gestio[id];
     let estat, text = "";
-    if (darrer[id]) ({ estat, text } = darrer[id]);
+    if (g && (!darrer[id] || darrer[id].quan < g.quan)) {
+      if (g.status !== "completed") estat = g.accio === "anulla" ? "anullant" : "canviant";
+      else if (g.conclusion === "success") estat = g.accio === "anulla" ? "anullada" : "programada";
+      else { estat = "error"; text = g.accio === "anulla" ? "el portàtil no l'ha pogut anul·lar" : "el portàtil no l'ha pogut canviar"; }
+    }
+    else if (darrer[id]) ({ estat, text } = darrer[id]);
     else if (r.status !== "completed") estat = "encarregada";
     else if (r.conclusion === "success") estat = "programada";
     else { estat = "error"; text = "el portàtil no l'ha pogut programar"; }

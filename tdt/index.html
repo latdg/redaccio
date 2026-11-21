@@ -1103,6 +1103,7 @@ function pintaHistorial() {
 let RELLOTGE_CASA = null;
 async function carregaCasa() {
   clearTimeout(RELLOTGE_CASA);
+  if (EDITANT_CASA) return;
   let d = null;
   try { const r = await fetch(`${PASSARELLA}/estat?v=${Date.now()}`, { cache: "no-store" }); d = await r.json().catch(() => null); } catch (e) {}
   const ul = $("casa");
@@ -1127,17 +1128,68 @@ async function carregaCasa() {
       else if (ara < fi + 10 * 60000) { estat = "⏳ a punt de començar"; pendents = true; }
       else estat = "❔ sense notícies del portàtil (potser estava apagat)";
     }
+    else if (x.estat === "canviant") { estat = "✏️ canviant-la, esperant el portàtil"; pendents = true; }
+    else if (x.estat === "anullant") { estat = "✖ anul·lant-la, esperant el portàtil"; pendents = true; }
+    else if (x.estat === "anullada") estat = "✖ anul·lada";
     else if (x.estat === "gravant") { estat = `⏺ gravant${x.text ? ` fins a les ${esc(x.text)} h` : ""}`; pendents = true; }
     else if (x.estat === "feta") estat = `✅ feta${x.text ? ` · ${esc(x.text)}` : ""}`;
     else estat = `❌ ${esc(x.text || "no s'ha pogut gravar")}`;
     const d0 = new Date(inici);
     const li = document.createElement("li");
     li.innerHTML = `<span class="data">${data(d0)} ${hora(d0)}</span><b>${esc(x.canal)}</b><span>${fmtMin(x.minuts)} min · ${estat}</span>`;
+    // 21.11.2026: les programades que encara no han començat es poden canviar o anul·lar.
+    if (x.estat === "programada" && ara < inici) afegeixGestio(li, x, inici);
     ul.append(li);
   }
   RELLOTGE_CASA = setTimeout(carregaCasa, pendents ? 30000 : 300000);
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") carregaCasa(); });
+
+// --- 21.11.2026: canviar l'hora o la durada d'una gravació a casa, o anul·lar-la ---
+var EDITANT_CASA = false;   // mentre s'edita, la llista no es refà sola
+function afegeixGestio(li, x, inici) {
+  const canvia = document.createElement("button"); canvia.type = "button"; canvia.className = "suau"; canvia.textContent = "✏️ Canvia";
+  const anulla = document.createElement("button"); anulla.type = "button"; anulla.className = "suau"; anulla.textContent = "✖ Anul·la";
+  const nota = document.createElement("span"); nota.className = "font";
+  anulla.onclick = async () => {
+    if (!confirm(`Vols anul·lar la gravació de ${x.canal} del ${data(new Date(inici))} a les ${hora(new Date(inici))} h?`)) return;
+    canvia.disabled = anulla.disabled = true; nota.textContent = "Anul·lant…";
+    const r = await gestionaACasa({ id: x.id, accio: "anulla" });
+    if (!r.ok) { nota.textContent = "❌ " + r.error; canvia.disabled = anulla.disabled = false; return; }
+    setTimeout(carregaCasa, 4000);
+  };
+  canvia.onclick = () => {
+    if (li.querySelector(".editor")) return;
+    EDITANT_CASA = true; clearTimeout(RELLOTGE_CASA);
+    const d = new Date(inici);
+    const ed = document.createElement("div"); ed.className = "fila editor"; ed.style.width = "100%";
+    ed.innerHTML = `<label>Inici <input type="datetime-local"></label><label>Minuts <input type="number" min="1" max="360" style="width:90px"></label><button type="button">Desa</button><button type="button" class="suau">Tanca</button>`;
+    const [hi, mi] = ed.querySelectorAll("input"), [desa, tanca] = ed.querySelectorAll("button");
+    hi.value = `${d.getFullYear()}-${z(d.getMonth() + 1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;
+    mi.value = x.minuts;
+    tanca.onclick = () => { ed.remove(); EDITANT_CASA = false; carregaCasa(); };
+    desa.onclick = async () => {
+      const quan = new Date(hi.value).getTime(), minuts = Math.round(+mi.value || 0);
+      if (isNaN(quan)) { nota.textContent = "Tria el dia i l'hora d'inici."; return; }
+      if (quan <= Date.now()) { nota.textContent = "Aquesta hora ja ha passat."; return; }
+      if (minuts < 1 || minuts > 360) { nota.textContent = "La durada ha de ser d'1 a 360 minuts."; return; }
+      desa.disabled = true; nota.textContent = "Desant…";
+      const r = await gestionaACasa({ id: x.id, accio: "canvia", inici: quan, minuts });
+      if (!r.ok) { nota.textContent = "❌ " + r.error; desa.disabled = false; return; }
+      ed.remove(); EDITANT_CASA = false; setTimeout(carregaCasa, 4000);
+    };
+    li.append(ed);
+  };
+  li.append(canvia, anulla, nota);
+}
+async function gestionaACasa(cos) {
+  try {
+    const r = await fetch(`${PASSARELLA}/gestiona`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cos) });
+    const d = await r.json().catch(() => null);
+    if (d && d.ok) return d;
+    return { ok: false, error: d && d.error ? d.error : (r.status === 404 || r.status === 403 ? "la passarel·la latdg-senyal no té encara el codi nou de tdt/passarella-worker.js" : `error ${r.status}`) };
+  } catch (e) { return { ok: false, error: "no s'ha pogut connectar amb la passarel·la" }; }
+}
 
 carregaLlistes().then(carregaEPG);
 recuperaProgramades();

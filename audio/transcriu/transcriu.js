@@ -3,6 +3,8 @@
 // (el que fa servir Murmur) i sherpa-onnx en WebAssembly. Tot al navegador.
 // El text es desa sol en aquest navegador (no es perd en tancar la pàgina).
 
+import { transcripcioAWord } from "./word.js";
+
 const $ = id => document.getElementById(id);
 const TAXA = 16000;
 const DIR = new URL("./", import.meta.url);
@@ -262,6 +264,12 @@ $("trBot").onclick = async () => {
   baixa(f, f.name);
   window.open(BOT_RESUMS, "_blank", "noopener");
   estat("S'ha desat el .txt i s'ha obert el bot de resums: arrossega-hi el fitxer i et preguntarà què en vols fer.");
+};
+$("trWord").onclick = async () => {
+  const t = $("trText").value.trim();
+  if (!t) { estat("Encara no hi ha cap text per desar."); return; }
+  try { baixa(await transcripcioAWord(t, avui()), nom("docx")); }
+  catch (e) { estat("❌ No s'ha pogut fer el Word: " + (e.message || e)); }
 };
 $("trTxt").onclick = () => { if ($("trText").value.trim()) baixa(new Blob([$("trText").value], { type: "text/plain;charset=utf-8" }), nom("txt")); };
 $("trCopia").onclick = async () => { try { await navigator.clipboard.writeText($("trText").value); estat("📋 Copiat."); } catch (e) { $("trText").select(); document.execCommand("copy"); estat("📋 Copiat."); } };

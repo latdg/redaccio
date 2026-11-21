@@ -123,7 +123,8 @@ select{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius
       <div>
         <button type="button" class="suau" id="afegeix">➕ Afegeix una notícia</button>
         <p class="font">Negreta (Ctrl+B), cursiva (Ctrl+I) i subratllat (Ctrl+U) surten igual al guió. Cada Intro és un paràgraf nou.
-          El que enganxis d'una web s'enganxa sense format.</p>
+          El que enganxis d'una web s'enganxa sense format.
+          Amb 📎 (o arrossegant-los o enganxant-los) hi pots posar imatges i fitxers: queden a la notícia per consultar-los, però no van al guió.</p>
       </div>
     </section>
 
@@ -151,6 +152,7 @@ select{font:inherit;padding:8px 10px;border:1px solid var(--linia);border-radius
 </div>
 
 <script src="../correu/correu.js?v=13"></script>
+<script src="../fitxers.js?v=1"></script>
 <script>
 const WORKER = "https://latdg-agenda.ignasicorney.workers.dev";
 // 03.11.2026: Web App del projecte d'Apps Script «La TdG» (GuioPanell.gs) que
@@ -182,6 +184,8 @@ async function crida(cos) {
   if (!r.ok || !d.ok) { const e = new Error(d.error || ("HTTP " + r.status)); e.conflicte = d.conflicte; throw e; }
   return d;
 }
+// 21.11.2026: fitxers adjunts (imatges, PDF…) dins de les notícies i les notes
+Fitxers.configura({ crida });
 
 function estat(t) { $("estat").textContent = t; }
 function marcaBrut(si) {
@@ -203,7 +207,7 @@ async function entra() {
     const demanat = (location.hash.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
     const perDefecte = diaPerDefecte();
     // Un # antic a l'adreça (d'un dia ja passat) no mana: s'obre el dia per defecte.
-    carregaDia(demanat && demanat !== NOTES_DIA && demanat >= perDefecte ? demanat : perDefecte);
+    carregaDia(demanat && demanat !== NOTES_DIA && demanat !== Fitxers.CONFIG_DIA && demanat >= perDefecte ? demanat : perDefecte);
     carregaNotes();
     muntaCorreu();
   } catch (e) {
@@ -215,7 +219,7 @@ async function entra() {
 // --- Dies ---
 function pintaDies() {
   const avui = iso(new Date());
-  const llista = Array.from(new Set(DIES_AMB.filter(d => d >= avui && d !== NOTES_DIA).concat([DIA]))).sort().slice(0, 30);
+  const llista = Array.from(new Set(DIES_AMB.filter(d => d >= avui && d !== NOTES_DIA && d !== Fitxers.CONFIG_DIA).concat([DIA]))).sort().slice(0, 30);
   $("dies").innerHTML = llista.map(d => {
     const dt = new Date(d + "T00:00:00");
     const amb = DIES_AMB.includes(d);
@@ -267,7 +271,7 @@ function trossosMarca(t) {
 function marcaAHtml(text) {
   const paragrafs = String(text || "").replace(/\r\n/g, "\n").split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
   if (!paragrafs.length) return "";
-  return paragrafs.map(par => "<p>" + trossosMarca(par).map(x => {
+  return paragrafs.map(par => Fitxers.deMarca(par) || "<p>" + trossosMarca(par).map(x => {
     let h = esc(x.t).replace(/\n/g, "<br>");
     if (x.u) h = "<u>" + h + "</u>";
     if (x.i) h = "<i>" + h + "</i>";
@@ -295,6 +299,10 @@ function htmlAMarca(el) {
   const camina = (node, est) => {
     if (node.nodeType === 3) { if (node.nodeValue) trossos.push({ t: node.nodeValue, ...est }); return; }
     if (node.nodeType !== 1) return;
+    if (node.classList && node.classList.contains("fx")) {   // fitxer adjunt: paràgraf propi amb la seva marca
+      if (node.dataset.fitxer) { tancaPar(); paragrafs.push(Fitxers.aMarca(node)); }
+      return;
+    }
     const tag = node.tagName, st = node.style || {};
     if (tag === "BR") { trossos.push({ t: "\n" }); return; }
     const e = { ...est };
@@ -327,9 +335,11 @@ function afegeix(n = { id: nouId(), titol: "", text: "" }, focus = true) {
       <button type="button" data-cmd="italic" title="Cursiva (Ctrl+I)"><i>C</i></button>
       <button type="button" data-cmd="underline" title="Subratllat (Ctrl+U)"><u>S</u></button>
       <button type="button" data-cmd="removeFormat" title="Treu el format del que hagis seleccionat">✕ format</button>
+      <button type="button" data-fx="tria" title="Adjunta imatges o fitxers (també els pots arrossegar o enganxar a la caixa)">📎</button>
     </div>
     <div class="text" contenteditable="true" spellcheck="true" lang="ca" data-ph="Text de la notícia tal com l'has de llegir al guió…">${marcaAHtml(n.text)}</div>`;
   $("noticies").appendChild(s);
+  Fitxers.activa(s.querySelector(".text"), { canvi: () => { compta(s); marcaBrut(true); } });
   compta(s);
   if (focus) { numera(); s.querySelector(".text").focus(); marcaBrut(true); }
 }
@@ -344,7 +354,10 @@ function numera() {
 }
 
 function compta(s) {
-  const t = s.querySelector(".text").innerText.trim();
+  const c = s.querySelector(".text").cloneNode(true);
+  c.querySelectorAll(".fx").forEach(x => x.remove());
+  c.querySelectorAll("p, div, li, br").forEach(x => x.after(" "));
+  const t = c.textContent.trim();
   const paraules = t ? t.split(/\s+/).length : 0;
   s.querySelector(".compta").textContent = paraules ? paraules + " paraules · ~" + Math.max(1, Math.round(paraules / 2.6)) + " s" : "";
 }
@@ -441,8 +454,10 @@ $("noticies").addEventListener("input", e => {
   marcaBrut(true);
 });
 try { document.execCommand("defaultParagraphSeparator", false, "p"); document.execCommand("styleWithCSS", false, false); } catch (e) {}
-$("noticies").addEventListener("mousedown", e => { if (e.target.closest("button[data-cmd]")) e.preventDefault(); });   // no perdre la selecció
+$("noticies").addEventListener("mousedown", e => { if (e.target.closest("button[data-cmd], button[data-fx]")) e.preventDefault(); });   // no perdre la selecció
 $("noticies").addEventListener("click", e => {
+  const fx = e.target.closest("button[data-fx]");
+  if (fx) { const s = fx.closest(".noticia"); Fitxers.tria(s.querySelector(".text"), { canvi: () => { compta(s); marcaBrut(true); } }); return; }
   const c = e.target.closest("button[data-cmd]");
   if (c) {
     const caixa = c.closest(".noticia").querySelector(".text");
@@ -507,9 +522,11 @@ function afegeixNota(n = { id: nouId(), titol: "", text: "" }, focus = true) {
       <button type="button" data-cmd="italic" title="Cursiva (Ctrl+I)"><i>C</i></button>
       <button type="button" data-cmd="underline" title="Subratllat (Ctrl+U)"><u>S</u></button>
       <button type="button" data-cmd="removeFormat" title="Treu el format del que hagis seleccionat">✕ format</button>
+      <button type="button" data-fx="tria" title="Adjunta imatges o fitxers (també els pots arrossegar o enganxar a la caixa)">📎</button>
     </div>
     <div class="text" contenteditable="true" spellcheck="true" lang="ca" data-ph="Idees, dades, contactes, enllaços…">${marcaAHtml(n.text)}</div>`;
   $("notes").prepend(s);
+  Fitxers.activa(s.querySelector(".text"), { canvi: notesCanviades });
   compta(s);
   if (focus) s.querySelector(".titol-nota").focus();
 }
@@ -550,13 +567,15 @@ async function desaNotes() {
 }
 $("afegeixNota").onclick = () => { afegeixNota(); };
 $("notes").addEventListener("input", e => { const s = e.target.closest(".nota"); if (s) compta(s); notesCanviades(); });
-$("notes").addEventListener("mousedown", e => { if (e.target.closest("button[data-cmd]")) e.preventDefault(); });
+$("notes").addEventListener("mousedown", e => { if (e.target.closest("button[data-cmd], button[data-fx]")) e.preventDefault(); });
 $("notes").addEventListener("paste", e => {
   if (!e.target.closest(".text")) return;
   e.preventDefault();
   document.execCommand("insertText", false, (e.clipboardData || window.clipboardData).getData("text/plain").replace(/\r\n/g, "\n"));
 });
 $("notes").addEventListener("click", async e => {
+  const fx = e.target.closest("button[data-fx]");
+  if (fx) { Fitxers.tria(fx.closest(".nota").querySelector(".text"), { canvi: notesCanviades }); return; }
   const c = e.target.closest("button[data-cmd]");
   if (c) {
     const caixa = c.closest(".nota").querySelector(".text");

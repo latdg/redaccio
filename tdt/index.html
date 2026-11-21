@@ -197,7 +197,7 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
     <section id="seccioCasa" hidden>
       <h2>🏠 Gravacions a l'ordinador de casa</h2>
       <ul class="historial" id="casa"></ul>
-      <p class="font" id="peuCasa" style="margin:8px 0 0">Les encarregades des de qualsevol aparell. Quan una s'acaba, arriba un avís per Telegram (bot de plens). Els fitxers van a la carpeta en xarxa del router (LaTdG\gravacionstv), la mateixa de la tele; si no respon, es queden al portàtil, a D:\LaTdG\gravacionstv.</p>
+      <p class="font" id="peuCasa" style="margin:8px 0 0">Les encarregades des de qualsevol aparell. Quan una s'acaba, arriba un avís per Telegram (bot de plens). Els fitxers van a la carpeta en xarxa del router («La TdG Gravacions»), la mateixa de la tele; si no respon, es queden al portàtil, a D:\LaTdG\gravacionstv.</p>
     </section>
 
     <!-- LLISTA -->
@@ -1006,7 +1006,7 @@ function controlsGravacio() {
   $("qualitatGravBox").hidden = actual.tipus !== "tv" || (!aCasa && (o.f !== "m3u8" || $("qualitatGrav").options.length < 3));
   $("durada").placeholder = aCasa ? "obligatòria (fins a 360)" : "0 = fins que l'aturis";
   $("notaGravacio").textContent = aCasa
-    ? `Es grava al portàtil de casa, en ${actual.tipus === "tv" ? "MP4" : "MP3"}, i en acabar es desa a la carpeta en xarxa (LaTdG\\gravacionstv). No cal tenir aquesta pàgina oberta, però el portàtil ha d'estar encès (i el runner en marxa per rebre l'encàrrec).`
+    ? `Es grava al portàtil de casa, en ${actual.tipus === "tv" ? "MP4" : "MP3"}, i en acabar es desa a la carpeta en xarxa («La TdG Gravacions»). No cal tenir aquesta pàgina oberta, però el portàtil ha d'estar encès (i el runner en marxa per rebre l'encàrrec).`
     : `Es desa en ${actual.tipus === "tv" ? "MP4" : "MP3"} en aquest aparell. Pots programar-ne tantes com vulguis, de qualsevol ${actual.tipus === "tv" ? "cadena" : "emissora"}, encara que en miris una altra; la pàgina ha de quedar oberta.`;
 }
 $("on").onchange = controlsGravacio;

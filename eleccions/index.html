@@ -14,8 +14,9 @@
   una zona del mapa obre la fitxa i marca la secció. El 29N és una elecció més de la
   llista (dades/eleccions-29n.json, quan hi hagi l'accés d'Interior per als mitjans),
   que es refresca sola cada minut.
-  · Evolució: totes les eleccions de dades/eleccions.json, municipi a municipi i les
-    cinc poblacions juntes.
+  · Evolució: totes les eleccions de dades/eleccions.json, municipi a municipi.
+  21.11.2026: sense la suma de les cinc poblacions (no és cap unitat real i la Bisbal
+  hi pesa gairebé el 70 %), enlloc de la pàgina.
 -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
@@ -109,7 +110,6 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:24px}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
 const ORDRE_MUN = ["17022", "17902", "17057", "17901", "17205"];
-const TOTS = "totes";
 const TIPUS = [["congres", "Congrés"], ["municipals", "Municipals"], ["parlament", "Parlament de Catalunya"],
   ["europees", "Parlament Europeu"], ["referendum", "Referèndums"]];
 const ANTERIOR_29N = "02202307"; // Congrés 2023, per comparar l'escrutini del 29N
@@ -140,40 +140,17 @@ function trobaAnterior(r, ant) {
     ant.resultats.find(x => clauCand(x.sigles).split(" ")[0] === k.split(" ")[0] && k.split(" ")[0].length > 2) || null;
 }
 
-// Les cinc poblacions juntes: suma de cens, votants i vots per candidatura (mateixes sigles).
-function agrega(e) {
-  const codis = ORDRE_MUN.filter(c => e.municipis[c]);
-  if (!codis.length) return null;
-  const t = { nom: "Les cinc poblacions", cens: 0, votants: 0, blanc: 0, nuls: 0, valids: 0, resultats: [] };
-  const per = new Map();
-  codis.forEach(c => {
-    const m = e.municipis[c];
-    ["cens", "votants", "blanc", "nuls", "valids"].forEach(k => t[k] += Number(m[k] || 0));
-    m.resultats.forEach(r => {
-      const k = clauCand(r.sigles);
-      if (!per.has(k)) per.set(k, { sigles: r.sigles, vots: 0 });
-      per.get(k).vots += Number(r.vots || 0);
-    });
-  });
-  t.participacio = t.cens ? t.votants / t.cens * 100 : 0;
-  t.resultats = [...per.values()].map(r => ({ ...r, pct: t.valids ? r.vots / t.valids * 100 : 0 })).sort((a, b) => b.vots - a.vots);
-  t.complet = codis.length === ORDRE_MUN.length;
-  return t;
-}
-function dadesDe(e, mun) { return mun === TOTS ? agrega(e) : e.municipis[mun] || null; }
+function dadesDe(e, mun) { return e.municipis[mun] || null; }
 
 
 // ---------------------------------------------------------------------------
 // EVOLUCIÓ: una fila per elecció del tipus triat, de la més recent a la més antiga.
 // ---------------------------------------------------------------------------
-let triaTipus = "congres", triaMun = TOTS;
+let triaTipus = "congres", triaMun = ORDRE_MUN[0];
 function pintaEvolucio() {
   const el = document.getElementById("evolucio");
   const ll = ELEC.eleccions.filter(e => e.tipus === triaTipus).sort((a, b) => b.data.localeCompare(a.data));
-  // A les municipals cada poble té les seves candidatures: no se sumen.
-  if (triaTipus === "municipals" && triaMun === TOTS) triaMun = ORDRE_MUN[0];
-  const botons = (triaTipus === "municipals" ? [] : [[TOTS, "Les cinc poblacions", ""]])
-    .concat(ORDRE_MUN.map(c => [c, nomMun(c), imgEscut(c)]))
+  const botons = ORDRE_MUN.map(c => [c, nomMun(c), imgEscut(c)])
     .map(([c, nom, img]) => `<button type="button" data-mun="${c}" class="${c === triaMun ? "triat" : ""}">${img}${esc(nom)}</button>`).join("");
   const files = ll.map((e, i) => {
     const m = dadesDe(e, triaMun);
@@ -183,7 +160,7 @@ function pintaEvolucio() {
     const [p, s] = m.resultats;
     const dp = ant ? m.participacio - ant.participacio : null;
     const reg = triaTipus === "municipals" && p && m.regidors ? ` · ${p.electes || 0}/${m.regidors}` : "";
-    return `<tr><td>${esc(e.nom)}${m.complet === false ? " *" : ""}</td>` +
+    return `<tr><td>${esc(e.nom)}</td>` +
       `<td class="n">${pctCa(m.participacio)}${dp !== null ? ` <small>${difCa(dp)}</small>` : ""}</td>` +
       `<td>${p ? `<b>${esc(p.sigles)}</b>${reg}` : "—"}</td><td class="n">${p ? pctCa(p.pct) : ""}</td>` +
       `<td>${s ? esc(s.sigles) : "—"}</td><td class="n">${s ? pctCa(s.pct) : ""}</td></tr>`;
@@ -194,8 +171,7 @@ function pintaEvolucio() {
       .map(([t, n]) => `<option value="${t}"${t === triaTipus ? " selected" : ""}>${esc(n)}</option>`).join("")}</select></div>` +
     `<div class="muns">${botons}</div>` +
     `<div class="taula"><table><thead><tr><th>Elecció</th><th class="n">Participació</th><th>Primera força</th><th class="n">%</th><th>Segona</th><th class="n">%</th></tr></thead><tbody>${files}</tbody></table></div>` +
-    `<p class="nota">Percentatges sobre vots vàlids. La diferència de participació és en punts respecte a l'elecció anterior del mateix tipus. ` +
-    `Les cinc poblacions sumen les candidatures amb les mateixes sigles${ll.some(e => { const a = agrega(e); return a && !a.complet; }) ? "; * sense dades de Forallac" : ""}.</p>`;
+    `<p class="nota">Percentatges sobre vots vàlids. La diferència de participació és en punts respecte a l'elecció anterior del mateix tipus.</p>`;
   document.getElementById("selTipus").onchange = ev => { triaTipus = ev.target.value; pintaEvolucio(); };
   el.querySelectorAll(".muns button").forEach(b => b.onclick = () => { triaMun = b.dataset.mun; pintaEvolucio(); });
 }
@@ -297,15 +273,13 @@ function pintaFitxes(k, e) {
   const oberts = [...cont.querySelectorAll("details.mun[open]")].map(d => d.dataset.mun);
   const ant = anteriorDe(e), mun = e.tipus === "municipals";
   if (!Object.keys(e.municipis).length) { cont.innerHTML = ""; return; }
-  const llista = (mun ? [] : [[TOTS, "Les cinc poblacions", "", agrega(e), ant ? agrega(ant) : null]])
-    .concat(ORDRE_MUN.filter(c => e.municipis[c]).map(c => [c, e.municipis[c].nom || nomMun(c), imgEscut(c), e.municipis[c], ant && ant.municipis[c] ? ant.municipis[c] : null]));
-  if (llista[0] && llista[0][3] && e.id === "29N" && DIRECTE.escrutat != null) llista[0][3].escrutat = DIRECTE.escrutat;
+  const llista = ORDRE_MUN.filter(c => e.municipis[c]).map(c => [c, e.municipis[c].nom || nomMun(c), imgEscut(c), e.municipis[c], ant && ant.municipis[c] ? ant.municipis[c] : null]);
   cont.innerHTML = llista.filter(x => x[3]).map(([c, nom, img, m, a]) =>
     `<details class="mun" data-mun="${c}"${oberts.includes(c) ? " open" : ""}><summary>${img}<b>${esc(nom)}</b>` +
     `<span class="res">${m.resultats[0] ? `${esc(m.resultats[0].sigles)} · ${pctCa(m.resultats[0].pct)}` : ""}${m.escrutat != null ? `<br>Escrutat: ${pctCa(m.escrutat)}` : ""}</span></summary>` +
     fitxa(m, a, mun, c) + `</details>`).join("") +
     `<p class="nota">Percentatges sobre vots vàlids (candidatures i blanc). «Dif.», punts respecte a ${ant ? esc(ant.nom) : "l'elecció anterior del mateix tipus"}; «nova», candidatura que no s'hi va presentar amb les mateixes sigles. ` +
-    `La participació no inclou el vot dels residents a l'estranger (CERA). ${mun ? "" : "Les cinc poblacions sumen les candidatures amb les mateixes sigles."}</p>`;
+    `La participació no inclou el vot dels residents a l'estranger (CERA).</p>`;
 }
 // Des del mapa: obre la fitxa del municipi i marca la secció.
 function obreZona(k, codi, sec) {

@@ -197,7 +197,7 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
     <section id="seccioCasa" hidden>
       <h2>🏠 Gravacions a l'ordinador de casa</h2>
       <ul class="historial" id="casa"></ul>
-      <p class="font" id="peuCasa" style="margin:8px 0 0">Les encarregades des de qualsevol aparell. Quan una s'acaba, arriba un avís per Telegram (bot de plens). Els fitxers són a D:\LaTdG\gravacionstv.</p>
+      <p class="font" id="peuCasa" style="margin:8px 0 0">Les encarregades des de qualsevol aparell. Quan una s'acaba, arriba un avís per Telegram (bot de plens). Els fitxers van a la carpeta en xarxa del router (LaTdG\gravacionstv), la mateixa de la tele; si no respon, es queden al portàtil, a D:\LaTdG\gravacionstv.</p>
     </section>
 
     <!-- LLISTA -->
@@ -1006,7 +1006,7 @@ function controlsGravacio() {
   $("qualitatGravBox").hidden = actual.tipus !== "tv" || (!aCasa && (o.f !== "m3u8" || $("qualitatGrav").options.length < 3));
   $("durada").placeholder = aCasa ? "obligatòria (fins a 360)" : "0 = fins que l'aturis";
   $("notaGravacio").textContent = aCasa
-    ? `Es grava al portàtil de casa, en ${actual.tipus === "tv" ? "MP4" : "MP3"}, a D:\\LaTdG\\gravacionstv. No cal tenir aquesta pàgina oberta, però el portàtil ha d'estar encès (i el runner en marxa per rebre l'encàrrec).`
+    ? `Es grava al portàtil de casa, en ${actual.tipus === "tv" ? "MP4" : "MP3"}, i en acabar es desa a la carpeta en xarxa (LaTdG\\gravacionstv). No cal tenir aquesta pàgina oberta, però el portàtil ha d'estar encès (i el runner en marxa per rebre l'encàrrec).`
     : `Es desa en ${actual.tipus === "tv" ? "MP4" : "MP3"} en aquest aparell. Pots programar-ne tantes com vulguis, de qualsevol ${actual.tipus === "tv" ? "cadena" : "emissora"}, encara que en miris una altra; la pàgina ha de quedar oberta.`;
 }
 $("on").onchange = controlsGravacio;
@@ -1053,7 +1053,7 @@ $("grava").onclick = async () => {
     try {
       await encarregaACasa({ quan, minuts: Math.min(360, minuts), qualitat: $("qualitatGrav").value });
       const quanText = quan ? `${perAl(data(new Date(quan)))} a les ${hora(new Date(quan))} h` : "ara";
-      $("estatGravacio").textContent = `🏠 Encarregada a l'ordinador de casa (${quan ? "per " + quanText : "comença d'aquí a un minut"}). Es desarà a D:\\LaTdG\\gravacionstv.`;
+      $("estatGravacio").textContent = `🏠 Encarregada a l'ordinador de casa (${quan ? "per " + quanText : "comença d'aquí a un minut"}). Es desarà a la carpeta en xarxa.`;
       const ara = new Date(), h = historial();
       h.unshift({ quan: `${data(ara)} ${hora(ara)}`, canal: actual.c.n, nom: "", segons: 0, bytes: 0, nota: `🏠 encarregada a l'ordinador de casa · ${quan ? quanText : "ara"} · ${fmtMin(minuts)} min` });
       escriu("tdtHistorial", JSON.stringify(h.slice(0, 60))); pintaHistorial();

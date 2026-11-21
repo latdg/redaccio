@@ -69,6 +69,9 @@ audio{width:100%;margin-top:10px}
 .editorCaixa.ple .tancaPle{display:block;position:absolute;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));padding:6px 12px;font-size:.85rem;opacity:.85;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
 body.ambPle{overflow:hidden}
 .compta{font-size:.8rem;color:var(--suau)}
+.nivell{height:10px}
+.nivell span{background:#2e8b57;transition:width .08s}
+.nivell.fort span{background:#c0392b}
 </style>
 </head>
 <body>
@@ -126,6 +129,7 @@ body.ambPle{overflow:hidden}
         <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="trMinuts" checked> Amb el minut</label>
       </div>
       <div class="barra" id="trBarra" hidden><span></span></div>
+      <div class="barra nivell" id="trNivell" hidden title="Nivell del so que entra"><span></span></div>
       <p class="font" id="trEstat"></p>
       <textarea id="trText" lang="ca" spellcheck="false" placeholder="Aquí anirà apareixent el text, frase a frase…"></textarea>
       <div class="fila" style="margin-top:8px">

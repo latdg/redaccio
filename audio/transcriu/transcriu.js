@@ -19,16 +19,22 @@ let acabat = null;
 const estat = t => { $("trEstat").textContent = t; };
 const barra = p => { $("trBarra").hidden = p == null; if (p != null) $("trBarra").firstElementChild.style.width = Math.round(p * 100) + "%"; };
 const z = n => String(n).padStart(2, "0");
+// Indicador de nivell (VU-metre): en dB, de -60 a 0
+const nivell = p => { const el = $("trNivell"); if (!el) return; const db = p > 0 ? 20 * Math.log10(p) : -60; el.firstElementChild.style.width = Math.max(0, Math.min(100, (db + 60) / 60 * 100)) + "%"; el.classList.toggle("fort", db > -3); };
 const minut = s => { s = Math.max(0, Math.floor(s)); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60; return (h ? h + ":" + z(m) : z(m)) + ":" + z(s % 60); };
 const avui = () => { const d = new Date(); return `${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}`; };
 const ara = () => { const d = new Date(); return `${z(d.getHours())}:${z(d.getMinutes())}`; };
 
 // --- Model: es baixa un cop (137 MB) i queda a la memòria cau del navegador ---
-async function baixaModel() {
-  const info = await (await fetch(new URL("model/model.json", DIR), { cache: "no-cache" })).json();
-  const cau = "caches" in self ? await caches.open(MEMORIA_CAU) : null;
-  const total = Object.values(info.fitxers).reduce((a, f) => a + f.mida, 0);
-  let fet = 0, desat = true;
+// 21.11.2026: el progrés es mostra mentre arriben les dades (abans només en acabar
+// cada tros de 40 MB, i semblava que no fes res) i «Atura» ho pot cancel·lar.
+let cancella = null;
+async function baixaModel(senyal) {
+  const info = await (await fetch(new URL("model/model.json", DIR), { cache: "no-cache", signal: senyal })).json();
+  const cau = "caches" in self ? await caches.open(MEMORIA_CAU).catch(() => null) : null;
+  const total = Object.values(info.fitxers).reduce((a, f) => a + (f.parts[0] === "tokens.txt" ? 0 : f.mida), 0);
+  let fet = 0;
+  const mostra = desat => { barra(fet / total); estat(desat ? "Carregant el model desat en aquest aparell…" : `Baixant el model (només la primera vegada): ${Math.round(fet / 1048576)} de ${Math.round(total / 1048576)} MB…`); };
   const fitxers = {};
   for (const [nom, f] of Object.entries(info.fitxers)) {
     if (nom === "tokens.txt") continue;               // ja és dins del motor
@@ -36,17 +42,21 @@ async function baixaModel() {
     let pos = 0;
     for (const part of f.parts) {
       const url = new URL("model/" + part, DIR).href;
-      let r = cau ? await cau.match(url) : null;
-      if (!r) {
-        desat = false;
-        r = await fetch(url);
-        if (!r.ok) throw new Error(`No s'ha pogut baixar el model (${part}).`);
-        if (cau) { try { await cau.put(url, r.clone()); } catch (e) {} }
+      const r = cau ? await cau.match(url) : null;
+      if (r) {
+        const b = new Uint8Array(await r.arrayBuffer());
+        tot.set(b, pos); pos += b.length; fet += b.length; mostra(true);
+        continue;
       }
-      const b = new Uint8Array(await r.arrayBuffer());
-      tot.set(b, pos); pos += b.length; fet += b.length;
-      barra(fet / total);
-      estat(desat ? "Carregant el model desat…" : `Baixant el model: ${Math.round(fet / 1048576)} de ${Math.round(total / 1048576)} MB…`);
+      const resp = await fetch(url, { signal: senyal });
+      if (!resp.ok) throw new Error(`No s'ha pogut baixar el model (${part}).`);
+      const lector = resp.body.getReader(), inici = pos;
+      for (;;) {
+        const { done, value } = await lector.read();
+        if (done) break;
+        tot.set(value, pos); pos += value.length; fet += value.length; mostra(false);
+      }
+      if (cau) { try { await cau.put(url, new Response(tot.slice(inici, pos))); } catch (e) {} }
     }
     fitxers[nom.split(".")[0]] = tot.buffer;
   }
@@ -56,8 +66,10 @@ async function baixaModel() {
 function preparaMotor() {
   if (motorLlest) return motorLlest;
   motorLlest = new Promise((resol, rebutja) => {
+    const ctl = new AbortController();
+    cancella = () => { ctl.abort(); rebutja(new Error("Aturat.")); };
     motor = new Worker(new URL("motor.js", DIR));
-    let fitxers = baixaModel().catch(e => { rebutja(e); return null; });
+    let fitxers = baixaModel(ctl.signal).catch(e => { rebutja(ctl.signal.aborted ? new Error("Aturat.") : e); return null; });
     motor.onmessage = async e => {
       const m = e.data;
       if (m.tipus === "motor") {
@@ -65,7 +77,7 @@ function preparaMotor() {
         estat("Preparant el model…");
         motor.postMessage({ tipus: "model", fitxers: f }, Object.values(f));
         fitxers = null;
-      } else if (m.tipus === "llest") { barra(null); resol(); }
+      } else if (m.tipus === "llest") { barra(null); cancella = null; resol(); }
       else if (m.tipus === "frase") afegeix(m);
       else if (m.tipus === "posicio") { processat = m.s; mostraRetard(); }
       else if (m.tipus === "acabat") { if (acabat) { acabat(); acabat = null; } }
@@ -73,7 +85,7 @@ function preparaMotor() {
     };
     motor.onerror = e => { const err = new Error("El motor de transcripció no s'ha pogut engegar en aquest navegador."); estat("❌ " + err.message); rebutja(err); };
   });
-  motorLlest.catch(() => { motorLlest = null; try { motor && motor.terminate(); } catch (e) {} motor = null; barra(null); });
+  motorLlest.catch(() => { motorLlest = null; cancella = null; try { motor && motor.terminate(); } catch (e) {} motor = null; barra(null); });
   return motorLlest;
 }
 
@@ -118,7 +130,7 @@ async function comenca(font) {
   // només la deixa compartir just després del clic), i per això va al revés.
   if (font === "mic") {
     botons(true); estat("Preparant…");
-    try { await preparaMotor(); } catch (e) { botons(false); estat("❌ " + e.message); return; }
+    try { await preparaMotor(); } catch (e) { botons(false); barra(null); estat(e.message === "Aturat." ? "Aturat." : "❌ " + e.message); return; }
   }
   try {
     if (font === "mic") stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
@@ -144,7 +156,10 @@ async function comenca(font) {
   node = ctx.createScriptProcessor(4096, 1, 1);
   node.onaudioprocess = e => {
     if (!actiu) return;
-    const y = a16k(e.inputBuffer.getChannelData(0), ctx.sampleRate);
+    const x = e.inputBuffer.getChannelData(0);
+    let pic = 0; for (let i = 0; i < x.length; i += 4) { const v = Math.abs(x[i]); if (v > pic) pic = v; }
+    nivell(pic);
+    const y = a16k(x, ctx.sampleRate);
     enviat += y.length;
     motor.postMessage({ tipus: "audio", mostres: y }, [y.buffer]);
   };
@@ -159,6 +174,7 @@ async function comenca(font) {
     gravadora.start(1000);
   } catch (e) { gravadora = null; }
   try { bloqueig = await navigator.wakeLock?.request("screen"); } catch (e) {}
+  $("trNivell").hidden = false;
   rellotge = setInterval(mostraRetard, 1000);
   mostraRetard();
 }
@@ -167,6 +183,7 @@ async function atura() {
   if (!actiu) return;
   actiu = false;
   clearInterval(rellotge);
+  $("trNivell").hidden = true; nivell(0);
   try { node && node.disconnect(); } catch (e) {}
   try { ctx && ctx.close(); } catch (e) {}
   try { gravadora && gravadora.state !== "inactive" && gravadora.stop(); } catch (e) {}
@@ -230,7 +247,7 @@ $("trMic").onclick = () => comenca("mic");
 $("trPestanya").onclick = () => comenca("pestanya");
 $("trFitxerBtn").onclick = () => $("trFitxer").click();
 $("trFitxer").onchange = e => fitxer(e.target.files[0]);
-$("trAtura").onclick = () => actiu ? atura() : null;
+$("trAtura").onclick = () => { if (actiu) atura(); else if (cancella) cancella(); };
 // Al bot de resums: al mòbil, pel menú de compartir (Telegram › LaTdG_resums_bot);
 // on no es poden compartir fitxers, es desa el .txt i s'obre el bot per arrossegar-l'hi.
 const BOT_RESUMS = "https://t.me/LaTdG_resums_bot";

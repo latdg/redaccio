@@ -19,6 +19,9 @@
    2. EDITOR: AudioMass (codi obert, MIT), copiat a editor/ tal com és. Retalla,
       enganxa, normalitza, treu soroll, canvia volum i velocitat, i exporta MP3/WAV.
       La locució es pot obrir a l'editor amb un botó.
+   3. TRANSCRIPCIÓ (21.11.2026): micròfon, so d'una pestanya o fitxer → text, al mateix
+      navegador, amb el model ca-es del Projecte Aina (el de Murmur) i sherpa-onnx en
+      WebAssembly. Codi a transcriu/ (model a transcriu/model/, motor a transcriu/wasm/).
 -->
 <style>
 :root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
@@ -109,6 +112,30 @@ body.ambPle{overflow:hidden}
         <button type="button" class="tancaPle" id="tancaPle" aria-label="Surt de la pantalla completa">✕ Surt</button>
       </div>
       <p class="font">Editor: <a href="https://github.com/pkalogiros/AudioMass" target="_blank" rel="noopener">AudioMass</a> (codi obert, llicència MIT).</p>
+    </section>
+
+    <section id="transcripcio">
+      <h2>📝 Transcripció</h2>
+      <p class="font" style="margin:4px 0 10px">En català i en castellà, també barrejats, amb el model del <a href="https://huggingface.co/projecte-aina/stt_ca-es_conformer_transducer_large" target="_blank" rel="noopener">Projecte Aina</a> (el mateix que fa servir Murmur). Es fa en aquest navegador: l'àudio no surt de l'aparell. La primera vegada baixa el model (137 MB, millor amb wifi) i després queda desat. <span id="trModel"></span></p>
+      <div class="fila">
+        <button type="button" id="trMic">🎙️ Micròfon</button>
+        <button type="button" class="suau" id="trPestanya" title="Per exemple, un ple per YouTube o un canal de la sala de control">🖥️ So d'una pestanya</button>
+        <button type="button" class="suau" id="trFitxerBtn">📂 Fitxer</button>
+        <input type="file" id="trFitxer" accept="audio/*,video/*" hidden>
+        <button type="button" id="trAtura" hidden>⏹️ Atura</button>
+        <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="trMinuts" checked> Amb el minut</label>
+      </div>
+      <div class="barra" id="trBarra" hidden><span></span></div>
+      <p class="font" id="trEstat"></p>
+      <textarea id="trText" lang="ca" spellcheck="false" placeholder="Aquí anirà apareixent el text, frase a frase…"></textarea>
+      <div class="fila" style="margin-top:8px">
+        <button type="button" class="suau" id="trTxt">⬇️ Desa el .txt</button>
+        <button type="button" class="suau" id="trCopia">📋 Copia</button>
+        <button type="button" class="suau" id="trAudio" disabled>⬇️ Desa l'àudio</button>
+        <button type="button" class="suau" id="trEditor" disabled>✂️ Obre l'àudio a l'editor</button>
+        <button type="button" class="suau" id="trEsborra">🗑️ Esborra</button>
+      </div>
+      <p class="font">El text surt en minúscules i gairebé sense puntuació; en fer-ne el resum o la notícia, el bot de resums el deixa ben escrit. Es desa sol en aquest navegador. Motor: <a href="https://github.com/k2-fsa/sherpa-onnx" target="_blank" rel="noopener">sherpa-onnx</a> (Apache-2.0).</p>
     </section>
 
     <section>
@@ -330,5 +357,6 @@ const desada = llegeix(CLAU_DESADA);
 $("recorda").checked = !!desada;
 if (desada) { $("pin").value = desada; entra(); }
 </script>
+<script type="module" src="transcriu/transcriu.js"></script>
 </body>
 </html>

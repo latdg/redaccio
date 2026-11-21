@@ -231,6 +231,21 @@ $("trPestanya").onclick = () => comenca("pestanya");
 $("trFitxerBtn").onclick = () => $("trFitxer").click();
 $("trFitxer").onchange = e => fitxer(e.target.files[0]);
 $("trAtura").onclick = () => actiu ? atura() : null;
+// Al bot de resums: al mòbil, pel menú de compartir (Telegram › LaTdG_resums_bot);
+// on no es poden compartir fitxers, es desa el .txt i s'obre el bot per arrossegar-l'hi.
+const BOT_RESUMS = "https://t.me/LaTdG_resums_bot";
+$("trBot").onclick = async () => {
+  const text = $("trText").value.trim();
+  if (!text) { estat("Encara no hi ha cap text per enviar."); return; }
+  const f = new File([text + "\n"], nom("txt"), { type: "text/plain" });
+  if (navigator.canShare && navigator.canShare({ files: [f] }) && matchMedia("(pointer:coarse)").matches) {
+    try { await navigator.share({ files: [f], title: "Transcripció" }); estat("Tria Telegram i el bot de resums; et preguntarà què en vols fer."); return; }
+    catch (e) { if (e.name === "AbortError") return; }
+  }
+  baixa(f, f.name);
+  window.open(BOT_RESUMS, "_blank", "noopener");
+  estat("S'ha desat el .txt i s'ha obert el bot de resums: arrossega-hi el fitxer i et preguntarà què en vols fer.");
+};
 $("trTxt").onclick = () => { if ($("trText").value.trim()) baixa(new Blob([$("trText").value], { type: "text/plain;charset=utf-8" }), nom("txt")); };
 $("trCopia").onclick = async () => { try { await navigator.clipboard.writeText($("trText").value); estat("📋 Copiat."); } catch (e) { $("trText").select(); document.execCommand("copy"); estat("📋 Copiat."); } };
 $("trEsborra").onclick = () => { if ($("trText").value && confirm("Vols esborrar tota la transcripció?")) { $("trText").value = ""; escriu(DESA_TEXT, ""); } };

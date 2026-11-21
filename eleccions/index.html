@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>La TdG eleccions</title>
+<!--
+  LA TdG ELECCIONS — La TdG · 21.11.2026
+  Pàgina interna (no enllaçada enlloc) per a les eleccions generals del 29N.
+  · 29N: llegeix dades/eleccions-29n.json quan existeixi (el bolcarà el lector del
+    repositori de resultats provisionals d'Interior per als mitjans, quan hi hagi accés).
+  · Evolució: totes les eleccions de dades/eleccions.json (les mateixes del bloc de
+    resultats electorals de La TdG dades), municipi a municipi i les cinc poblacions juntes.
+  · Detall: el bloc de resultats electorals de La TdG redacció, incrustat tal com és.
+-->
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main,footer{max-width:1100px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px;padding-bottom:8px}
+h1{margin:0;font-size:1.6rem}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tornada{display:flex;align-items:center;gap:12px;margin-left:auto}
+.tornada a{font-size:1.6rem;line-height:1;text-decoration:none}
+.sub{color:var(--suau);margin:4px 0 12px}
+a{color:var(--accent)}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;margin:16px 0}
+h2{margin:0 0 6px;font-size:1.15rem}
+.font,.nota{color:var(--suau);font-size:.85rem;margin:4px 0}
+.buit{color:var(--suau)}
+.eines{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+select{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-radius:8px;background:#fff;max-width:100%}
+.muns{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.muns button{display:flex;align-items:center;gap:6px;font:inherit;font-size:.9rem;padding:4px 10px 4px 6px;border:1px solid var(--linia);border-radius:20px;background:#fff;cursor:pointer}
+.muns button img{height:26px;width:auto}
+.muns button.triat{border-color:var(--accent);background:#fbeee9;font-weight:600}
+.taula{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:6px 8px;border-bottom:1px solid var(--linia);text-align:left;vertical-align:top}
+th{font-size:.8rem;color:var(--suau);font-weight:600}
+td.n,th.n{text-align:right;white-space:nowrap}
+.amunt{color:#2e7d32}.avall{color:#c62828}
+.xifres{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:10px 0}
+.xifra{border:1px solid var(--linia);border-radius:10px;padding:10px}
+.xifra .etq{font-size:.8rem;color:var(--suau)}
+.xifra .val{font-size:1.4rem;font-weight:700}
+.xifra .det{font-size:.85rem;color:var(--suau)}
+.barra{display:block;height:10px;background:var(--accent);border-radius:3px}
+details.mun{border:1px solid var(--linia);border-radius:10px;margin:8px 0;padding:0 10px}
+details.mun>summary{display:flex;align-items:center;gap:10px;cursor:pointer;padding:8px 0;list-style:none}
+details.mun>summary::-webkit-details-marker{display:none}
+details.mun>summary img{height:36px;width:auto}
+details.mun>summary .res{margin-left:auto;color:var(--suau);font-size:.9rem;text-align:right}
+iframe.detall{width:100%;border:0;display:block;min-height:300px}
+footer{color:var(--suau);font-size:.85rem;padding-bottom:24px}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <h1>🗳️ La TdG eleccions</h1>
+    <div class="tornada">
+      <a href="../" title="La TdG redacció" aria-label="La TdG redacció">✍️</a>
+      <a href="../dades/" title="La TdG dades" aria-label="La TdG dades">📊</a>
+    </div>
+  </div>
+  <p class="sub">Eleccions generals del 29.11.2026 i tots els resultats anteriors de la Bisbal d'Empordà, Forallac, Corçà, Ullastret i Cruïlles, Monells i Sant Sadurní de l'Heura.</p>
+</header>
+
+<main>
+  <section id="directe"><h2>🔴 29N EN DIRECTE</h2><p class="buit">Carregant…</p></section>
+  <section id="evolucio"><h2>📈 EVOLUCIÓ</h2><p class="buit">Carregant…</p></section>
+  <section id="detall"><h2>🗂️ RESULTATS DETALLATS</h2>
+    <p class="font">El mateix bloc de resultats electorals de La TdG redacció: totes les eleccions des del 1976, municipi a municipi i per seccions censals.</p>
+    <iframe class="detall" id="frDetall" title="Resultats electorals detallats" scrolling="no" src="../?slow&incrustat&blocs=eleccions&v=20261121"></iframe>
+  </section>
+</main>
+
+<footer><p id="credits"></p>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
+
+<script>
+const ORDRE_MUN = ["17022", "17902", "17057", "17901", "17205"];
+const TOTS = "totes";
+const TIPUS = [["congres", "Congrés"], ["municipals", "Municipals"], ["parlament", "Parlament de Catalunya"],
+  ["europees", "Parlament Europeu"], ["referendum", "Referèndums"]];
+const ANTERIOR_29N = "02202307"; // Congrés 2023, per comparar l'escrutini del 29N
+const esc = s => String(s ?? "").replace(/[&<>"]/g, x => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[x]));
+const nCa = n => Number(n || 0).toLocaleString("ca-ES");
+const pctCa = (v, d = 1) => Number(v || 0).toLocaleString("ca-ES", { minimumFractionDigits: d, maximumFractionDigits: d }) + " %";
+const difCa = d => `<span class="${d >= 0 ? "amunt" : "avall"}">${d >= 0 ? "+" : "−"}${Math.abs(d).toLocaleString("ca-ES", { maximumFractionDigits: 1 })}</span>`;
+const clauCand = s => String(s || "").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\./g, "").replace(/[^A-Z0-9]+/g, " ").trim();
+let ELEC = null, ESCUTS = {};
+
+async function json(cami) {
+  const r = await fetch(cami + (cami.includes("?") ? "&" : "?") + "v=" + Date.now(), { cache: "no-store" });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+function imgEscut(c) {
+  if (!ESCUTS[c]) return "";
+  return `<img src="../escuts/${esc(ESCUTS[c].local || c + "-petit.png")}" alt="">`;
+}
+function nomMun(c) {
+  for (const e of (ELEC ? ELEC.eleccions : [])) if (e.municipis[c]) return e.municipis[c].nom;
+  return c;
+}
+function trobaAnterior(r, ant) {
+  if (!ant) return null;
+  const k = clauCand(r.sigles);
+  return ant.resultats.find(x => clauCand(x.sigles) === k) ||
+    ant.resultats.find(x => clauCand(x.sigles).split(" ")[0] === k.split(" ")[0] && k.split(" ")[0].length > 2) || null;
+}
+
+// Les cinc poblacions juntes: suma de cens, votants i vots per candidatura (mateixes sigles).
+function agrega(e) {
+  const codis = ORDRE_MUN.filter(c => e.municipis[c]);
+  if (!codis.length) return null;
+  const t = { nom: "Les cinc poblacions", cens: 0, votants: 0, blanc: 0, nuls: 0, valids: 0, resultats: [] };
+  const per = new Map();
+  codis.forEach(c => {
+    const m = e.municipis[c];
+    ["cens", "votants", "blanc", "nuls", "valids"].forEach(k => t[k] += Number(m[k] || 0));
+    m.resultats.forEach(r => {
+      const k = clauCand(r.sigles);
+      if (!per.has(k)) per.set(k, { sigles: r.sigles, vots: 0 });
+      per.get(k).vots += Number(r.vots || 0);
+    });
+  });
+  t.participacio = t.cens ? t.votants / t.cens * 100 : 0;
+  t.resultats = [...per.values()].map(r => ({ ...r, pct: t.valids ? r.vots / t.valids * 100 : 0 })).sort((a, b) => b.vots - a.vots);
+  t.complet = codis.length === ORDRE_MUN.length;
+  return t;
+}
+function dadesDe(e, mun) { return mun === TOTS ? agrega(e) : e.municipis[mun] || null; }
+
+// ---------------------------------------------------------------------------
+// EVOLUCIÓ: una fila per elecció del tipus triat, de la més recent a la més antiga.
+// ---------------------------------------------------------------------------
+let triaTipus = "congres", triaMun = TOTS;
+function pintaEvolucio() {
+  const el = document.getElementById("evolucio");
+  const ll = ELEC.eleccions.filter(e => e.tipus === triaTipus).sort((a, b) => b.data.localeCompare(a.data));
+  // A les municipals cada poble té les seves candidatures: no se sumen.
+  if (triaTipus === "municipals" && triaMun === TOTS) triaMun = ORDRE_MUN[0];
+  const botons = (triaTipus === "municipals" ? [] : [[TOTS, "Les cinc poblacions", ""]])
+    .concat(ORDRE_MUN.map(c => [c, nomMun(c), imgEscut(c)]))
+    .map(([c, nom, img]) => `<button type="button" data-mun="${c}" class="${c === triaMun ? "triat" : ""}">${img}${esc(nom)}</button>`).join("");
+  const files = ll.map((e, i) => {
+    const m = dadesDe(e, triaMun);
+    if (!m) return `<tr><td>${esc(e.nom)}</td><td colspan="5" class="buit">Sense dades</td></tr>`;
+    const antE = ll.slice(i + 1).find(x => dadesDe(x, triaMun));
+    const ant = antE ? dadesDe(antE, triaMun) : null;
+    const [p, s] = m.resultats;
+    const dp = ant ? m.participacio - ant.participacio : null;
+    const reg = triaTipus === "municipals" && p && m.regidors ? ` · ${p.electes || 0}/${m.regidors}` : "";
+    return `<tr><td>${esc(e.nom)}${m.complet === false ? " *" : ""}</td>` +
+      `<td class="n">${pctCa(m.participacio)}${dp !== null ? ` <small>${difCa(dp)}</small>` : ""}</td>` +
+      `<td>${p ? `<b>${esc(p.sigles)}</b>${reg}` : "—"}</td><td class="n">${p ? pctCa(p.pct) : ""}</td>` +
+      `<td>${s ? esc(s.sigles) : "—"}</td><td class="n">${s ? pctCa(s.pct) : ""}</td></tr>`;
+  }).join("");
+  el.innerHTML = `<h2>📈 EVOLUCIÓ</h2>` +
+    `<p class="font">Font: Ministeri de l'Interior i Generalitat de Catalunya (resultats oficials).</p>` +
+    `<div class="eines"><select id="selTipus" aria-label="Tipus d'elecció">${TIPUS.filter(([t]) => ELEC.eleccions.some(e => e.tipus === t))
+      .map(([t, n]) => `<option value="${t}"${t === triaTipus ? " selected" : ""}>${esc(n)}</option>`).join("")}</select></div>` +
+    `<div class="muns">${botons}</div>` +
+    `<div class="taula"><table><thead><tr><th>Elecció</th><th class="n">Participació</th><th>Primera força</th><th class="n">%</th><th>Segona</th><th class="n">%</th></tr></thead><tbody>${files}</tbody></table></div>` +
+    `<p class="nota">Percentatges sobre vots vàlids. La diferència de participació és en punts respecte a l'elecció anterior del mateix tipus. ` +
+    `Les cinc poblacions sumen les candidatures amb les mateixes sigles${ll.some(e => { const a = agrega(e); return a && !a.complet; }) ? "; * sense dades de Forallac" : ""}.</p>`;
+  document.getElementById("selTipus").onchange = ev => { triaTipus = ev.target.value; pintaEvolucio(); };
+  el.querySelectorAll(".muns button").forEach(b => b.onclick = () => { triaMun = b.dataset.mun; pintaEvolucio(); });
+}
+
+// ---------------------------------------------------------------------------
+// 29N EN DIRECTE: dades/eleccions-29n.json, amb la mateixa forma que eleccions.json
+// per municipi, més «escrutat» (%) i «actualitzat» (hora). Es compara amb el Congrés 2023.
+// ---------------------------------------------------------------------------
+function taulaResultats(m, ant) {
+  const max = Math.max(1, ...m.resultats.map(r => r.pct));
+  return `<div class="taula"><table><thead><tr><th>Candidatura</th><th style="width:30%"></th><th class="n">Vots</th><th class="n">%</th><th class="n">Dif. 2023</th></tr></thead><tbody>` +
+    m.resultats.map(r => {
+      const a = trobaAnterior(r, ant);
+      return `<tr><td>${esc(r.sigles)}</td><td><span class="barra" style="width:${(r.pct / max * 100).toFixed(0)}%"></span></td>` +
+        `<td class="n">${nCa(r.vots)}</td><td class="n"><b>${pctCa(r.pct)}</b></td><td class="n">${a ? difCa(r.pct - a.pct) : "nova"}</td></tr>`;
+    }).join("") + `</tbody></table></div>`;
+}
+function fitxa29n(m, ant) {
+  const dp = ant ? m.participacio - ant.participacio : null;
+  const p = m.resultats[0];
+  return `<div class="xifres">` +
+    (m.escrutat != null ? `<div class="xifra"><div class="etq">Escrutat</div><div class="val">${pctCa(m.escrutat)}</div></div>` : "") +
+    `<div class="xifra"><div class="etq">Participació</div><div class="val">${pctCa(m.participacio)}</div><div class="det">${nCa(m.votants)} de ${nCa(m.cens)} electors${dp !== null ? ` · ${difCa(dp)} punts` : ""}</div></div>` +
+    `<div class="xifra"><div class="etq">Primera força</div><div class="val" style="font-size:1.1rem">${p ? esc(p.sigles) : "—"}</div><div class="det">${p ? pctCa(p.pct) : ""}</div></div>` +
+    `</div>` + taulaResultats(m, ant);
+}
+async function pintaDirecte() {
+  const el = document.getElementById("directe");
+  let D = null;
+  try { D = await json("../dades/eleccions-29n.json"); } catch (e) { D = null; }
+  if (!D || !D.municipis || !Object.keys(D.municipis).length) {
+    el.innerHTML = `<h2>🔴 29N EN DIRECTE</h2><p class="buit">Encara no hi ha dades de l'escrutini. Els col·legis tanquen a les 20.00 h del 29.11.2026; ` +
+      `els resultats provisionals arribaran aquí sols quan hi hagi l'accés al repositori d'Interior per als mitjans.</p>`;
+    return;
+  }
+  const ant23 = ELEC && ELEC.eleccions.find(e => e.id === ANTERIOR_29N);
+  const hora = D.actualitzat ? new Date(D.actualitzat) : null;
+  const quan = hora && !isNaN(hora) ? `${String(hora.getDate()).padStart(2, "0")}.${String(hora.getMonth() + 1).padStart(2, "0")}.${hora.getFullYear()}, ` +
+    `${hora.toLocaleTimeString("ca-ES", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" })} h` : "";
+  const fals = { municipis: D.municipis };
+  const total = agrega(fals);
+  if (total && D.escrutat != null) total.escrutat = D.escrutat;
+  const antTotal = ant23 ? agrega(ant23) : null;
+  const blocs = (total ? [[TOTS, "Les cinc poblacions", "", total, antTotal]] : [])
+    .concat(ORDRE_MUN.filter(c => D.municipis[c]).map(c => [c, D.municipis[c].nom || nomMun(c), imgEscut(c), D.municipis[c], ant23 && ant23.municipis[c]]));
+  el.innerHTML = `<h2>🔴 29N EN DIRECTE</h2>` +
+    `<p class="font">Resultats provisionals del Congrés · Font: ${esc(D.font || "Ministeri de l'Interior")}${quan ? ` · Actualitzat: ${quan}` : ""}</p>` +
+    blocs.map(([c, nom, img, m, ant], i) => `<details class="mun"${i === 0 ? " open" : ""}><summary>${img}<b>${esc(nom)}</b>` +
+      `<span class="res">${m.resultats[0] ? `${esc(m.resultats[0].sigles)} · ${pctCa(m.resultats[0].pct)}` : ""}${m.escrutat != null ? `<br>Escrutat: ${pctCa(m.escrutat)}` : ""}</span></summary>` +
+      fitxa29n(m, ant || null) + `</details>`).join("") +
+    `<p class="nota">Percentatges sobre vots vàlids. «Dif. 2023», punts respecte al Congrés del 23.07.2023.</p>`;
+}
+
+// L'iframe del detall creix tant com el seu contingut (mateixa adreça, latdg.github.io).
+function ajustaDetall() {
+  const fr = document.getElementById("frDetall");
+  try {
+    const d = fr.contentDocument;
+    if (!d || !d.body) return;
+    const h = Math.ceil(d.documentElement.getBoundingClientRect().height);
+    if (h > 50 && Math.abs(h - fr.offsetHeight) > 2) fr.style.height = h + "px";
+  } catch (e) {}
+}
+
+(async function () {
+  try { ESCUTS = await json("../escuts/credits.json"); } catch (e) { ESCUTS = {}; }
+  Object.keys(ESCUTS).forEach(k => { if (k.startsWith("_")) delete ESCUTS[k]; });
+  try { ELEC = await json("../dades/eleccions.json"); } catch (e) { ELEC = null; }
+  if (ELEC && ELEC.eleccions && ELEC.eleccions.length) pintaEvolucio();
+  else document.getElementById("evolucio").innerHTML = `<h2>📈 EVOLUCIÓ</h2><p class="buit">No s'han pogut carregar els resultats electorals.</p>`;
+  await pintaDirecte();
+  // Durant l'escrutini, el bloc del 29N es refresca sol cada minut.
+  setInterval(pintaDirecte, 60000);
+  const commons = Object.values(ESCUTS).filter(x => x && x.pagina).map(x => `<a href="${esc(x.pagina)}" target="_blank" rel="noopener">${esc(x.llicencia || "Commons")}</a>`).join(", ");
+  if (commons) document.getElementById("credits").innerHTML = `Escuts: Wikimedia Commons (${commons}${ESCUTS["17901"] && ESCUTS["17901"].local ? "; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament" : ""}).`;
+})();
+setInterval(ajustaDetall, 700);
+document.getElementById("frDetall").addEventListener("load", ajustaDetall);
+</script>
+</body>
+</html>

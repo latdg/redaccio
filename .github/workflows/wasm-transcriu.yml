@@ -27,9 +27,9 @@ jobs:
       - name: Baixa sherpa-onnx
         run: |
           git clone -q --depth 1 --branch $SHERPA_TAG https://github.com/k2-fsa/sherpa-onnx sherpa
-          grep -rh -A2 "setup-emsdk" sherpa/.github/workflows/wasm-simd-hf-space-*vad-asr* | head -8 || true
-          V=$(grep -rh -A2 "setup-emsdk" sherpa/.github/workflows/wasm-simd-hf-space-*vad-asr* | grep -o "version: *[0-9.]*" | head -1 | grep -o "[0-9.]*$")
-          echo "EMSDK_V=${V:-3.1.53}" >> $GITHUB_ENV
+          # La versió d'Emscripten que l'script de sherpa-onnx diu que funciona
+          V=$(grep -o "emsdk install [0-9.]*" sherpa/build-wasm-simd-vad-asr.sh | head -1 | grep -o "[0-9.]*$")
+          echo "EMSDK_V=${V:-4.0.23}" >> $GITHUB_ENV
           ls sherpa/wasm/vad-asr
       - name: Emscripten
         run: |
@@ -40,9 +40,10 @@ jobs:
           source emsdk/emsdk_env.sh > /dev/null
           cd sherpa
           mkdir -p wasm/vad-asr/assets
+          cp ../audio/transcriu/model/tokens.txt wasm/vad-asr/assets/
           curl -sSL -o wasm/vad-asr/assets/silero_vad.onnx https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx
           ls -la wasm/vad-asr/assets
-          ./build-wasm-simd-vad-asr.sh > ../compila.log 2>&1 || { tail -80 ../compila.log; exit 1; }
+          ./build-wasm-simd-vad-asr.sh > ../compila.log 2>&1 || { tail -80 ../compila.log; cd ..; mkdir -p audio/transcriu; tail -150 compila.log > audio/transcriu/error-compilacio.log; git config user.name "La TdG (motor de transcripció)"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"; git add audio/transcriu/error-compilacio.log; git commit -qm "Error de compilació del motor"; git pull -q --rebase origin main; git push -q origin HEAD:main; exit 1; }
           tail -5 ../compila.log
           ls -la build-wasm-simd-vad-asr/install/bin/wasm/vad-asr
       - name: Desa
@@ -57,6 +58,7 @@ jobs:
           ls -la $D
           git config user.name "La TdG (motor de transcripció)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -q --ignore-unmatch audio/transcriu/error-compilacio.log
           git add $D
           git commit -qm "Motor de transcripció en WebAssembly (sherpa-onnx $SHERPA_TAG)"
           for intent in 1 2 3 4 5 6; do

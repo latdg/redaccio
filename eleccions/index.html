@@ -9,11 +9,13 @@
 <!--
   LA TdG ELECCIONS — La TdG · 21.11.2026
   Pàgina interna (no enllaçada enlloc) per a les eleccions generals del 29N.
-  · 29N: llegeix dades/eleccions-29n.json quan existeixi (el bolcarà el lector del
-    repositori de resultats provisionals d'Interior per als mitjans, quan hi hagi accés).
-  · Evolució: totes les eleccions de dades/eleccions.json (les mateixes del bloc de
-    resultats electorals de La TdG dades), municipi a municipi i les cinc poblacions juntes.
-  · Detall: el bloc de resultats electorals de La TdG redacció, incrustat tal com és.
+  21.11.2026 (vespre): un sol bloc RESULTATS. Es tria l'elecció i surten alhora el mapa
+  per seccions censals i les fitxes de cada municipi, amb el detall per seccions; clicar
+  una zona del mapa obre la fitxa i marca la secció. El 29N és una elecció més de la
+  llista (dades/eleccions-29n.json, quan hi hagi l'accés d'Interior per als mitjans),
+  que es refresca sola cada minut.
+  · Evolució: totes les eleccions de dades/eleccions.json, municipi a municipi i les
+    cinc poblacions juntes.
 -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
@@ -55,15 +57,16 @@ details.mun>summary{display:flex;align-items:center;gap:10px;cursor:pointer;padd
 details.mun>summary::-webkit-details-marker{display:none}
 details.mun>summary img{height:36px;width:auto}
 details.mun>summary .res{margin-left:auto;color:var(--suau);font-size:.9rem;text-align:right}
-#mapa{height:480px;border-radius:10px;border:1px solid var(--linia);background:#eef0f2}
-@media (max-width:600px){#mapa{height:400px}}
+.mapa{height:480px;border-radius:10px;border:1px solid var(--linia);background:#eef0f2}
+@media (max-width:600px){.mapa{height:400px}}
 .llegenda{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0;font-size:.85rem}
 .llegenda span{display:inline-flex;align-items:center;gap:5px}
 .llegenda i{display:inline-block;width:14px;height:14px;border-radius:3px;border:1px solid rgba(0,0,0,.2)}
 .leaflet-popup-content{font:14px/1.4 system-ui,sans-serif;min-width:190px}
 .leaflet-popup-content table{font-size:.85rem}
 .leaflet-popup-content td{padding:2px 4px}
-iframe.detall{width:100%;border:0;display:block;min-height:300px}
+tr.marcada td{background:#fbeee9;transition:background .3s}
+.estat29{background:#fbeee9;border-radius:8px;padding:8px 10px;margin:8px 0;font-size:.9rem}
 footer{color:var(--suau);font-size:.85rem;padding-bottom:24px}
 </style>
 </head>
@@ -80,19 +83,25 @@ footer{color:var(--suau);font-size:.85rem;padding-bottom:24px}
 </header>
 
 <main>
-  <section id="directe"><h2>🔴 29N EN DIRECTE</h2><p class="buit">Carregant…</p></section>
+  <section id="directe"><h2>🔴 ELECCIONS GENERALS 29.11.2026</h2>
+    <p class="font" id="dFont"></p>
+    <div class="eines"><select id="dVista" aria-label="Què es pinta al mapa"></select></div>
+    <div id="dEstat"></div>
+    <div id="dMapa" class="mapa"></div>
+    <div class="llegenda" id="dLlegenda"></div>
+    <p class="nota" id="dNota"></p>
+    <div id="dAvanc"></div>
+    <div id="dFitxes"></div>
+  </section>
+  <section id="historic"><h2>🗳️ HISTÒRIC DE RESULTATS</h2>
+    <p class="font" id="hFont"></p>
+    <div class="eines"><select id="hEleccio" aria-label="Elecció"></select><select id="hVista" aria-label="Què es pinta al mapa"></select></div>
+    <div id="hMapa" class="mapa"></div>
+    <div class="llegenda" id="hLlegenda"></div>
+    <p class="nota" id="hNota"></p>
+    <div id="hFitxes"><p class="buit">Carregant…</p></div>
+  </section>
   <section id="evolucio"><h2>📈 EVOLUCIÓ</h2><p class="buit">Carregant…</p></section>
-  <section id="mapaBloc"><h2>🗺️ MAPA</h2>
-    <p class="font">Resultats per seccions censals sobre el seccionat vigent de l'INE. Quan una elecció no té el detall per seccions, o les seccions d'aquell any no coincideixen amb les d'ara, el municipi surt sencer.</p>
-    <div class="eines"><select id="mapaEleccio" aria-label="Elecció"></select><select id="mapaVista" aria-label="Què es mostra"></select></div>
-    <div id="mapa"></div>
-    <div class="llegenda" id="mapaLlegenda"></div>
-    <p class="nota" id="mapaNota"></p>
-  </section>
-  <section id="detall"><h2>🗂️ RESULTATS DETALLATS</h2>
-    <p class="font">El mateix bloc de resultats electorals de La TdG redacció: totes les eleccions des del 1976, municipi a municipi i per seccions censals.</p>
-    <iframe class="detall" id="frDetall" title="Resultats electorals detallats" scrolling="no" src="../dades/?incrustat&blocs=eleccions&v=20261121b"></iframe>
-  </section>
 </main>
 
 <footer><p id="credits"></p>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
@@ -153,6 +162,7 @@ function agrega(e) {
 }
 function dadesDe(e, mun) { return mun === TOTS ? agrega(e) : e.municipis[mun] || null; }
 
+
 // ---------------------------------------------------------------------------
 // EVOLUCIÓ: una fila per elecció del tipus triat, de la més recent a la més antiga.
 // ---------------------------------------------------------------------------
@@ -194,56 +204,6 @@ function pintaEvolucio() {
 // 29N EN DIRECTE: dades/eleccions-29n.json, amb la mateixa forma que eleccions.json
 // per municipi, més «escrutat» (%) i «actualitzat» (hora). Es compara amb el Congrés 2023.
 // ---------------------------------------------------------------------------
-function taulaResultats(m, ant) {
-  const max = Math.max(1, ...m.resultats.map(r => r.pct));
-  return `<div class="taula"><table><thead><tr><th>Candidatura</th><th style="width:30%"></th><th class="n">Vots</th><th class="n">%</th><th class="n">Dif. 2023</th></tr></thead><tbody>` +
-    m.resultats.map(r => {
-      const a = trobaAnterior(r, ant);
-      return `<tr><td>${esc(r.sigles)}</td><td><span class="barra" style="width:${(r.pct / max * 100).toFixed(0)}%"></span></td>` +
-        `<td class="n">${nCa(r.vots)}</td><td class="n"><b>${pctCa(r.pct)}</b></td><td class="n">${a ? difCa(r.pct - a.pct) : "nova"}</td></tr>`;
-    }).join("") + `</tbody></table></div>`;
-}
-function fitxa29n(m, ant) {
-  const dp = ant ? m.participacio - ant.participacio : null;
-  const p = m.resultats[0];
-  return `<div class="xifres">` +
-    (m.escrutat != null ? `<div class="xifra"><div class="etq">Escrutat</div><div class="val">${pctCa(m.escrutat)}</div></div>` : "") +
-    `<div class="xifra"><div class="etq">Participació</div><div class="val">${pctCa(m.participacio)}</div><div class="det">${nCa(m.votants)} de ${nCa(m.cens)} electors${dp !== null ? ` · ${difCa(dp)} punts` : ""}</div></div>` +
-    `<div class="xifra"><div class="etq">Primera força</div><div class="val" style="font-size:1.1rem">${p ? esc(p.sigles) : "—"}</div><div class="det">${p ? pctCa(p.pct) : ""}</div></div>` +
-    `</div>` + taulaResultats(m, ant);
-}
-async function pintaDirecte() {
-  const el = document.getElementById("directe");
-  let D = null;
-  try { D = await json("../dades/eleccions-29n.json"); } catch (e) { D = null; }
-  if (!D || !D.municipis || !Object.keys(D.municipis).length) {
-    el.innerHTML = `<h2>🔴 29N EN DIRECTE</h2><p class="buit">Encara no hi ha dades de l'escrutini. Els col·legis tanquen a les 20.00 h del 29.11.2026; ` +
-      `els resultats provisionals arribaran aquí sols quan hi hagi l'accés al repositori d'Interior per als mitjans.</p>`;
-    return;
-  }
-  const ant23 = ELEC && ELEC.eleccions.find(e => e.id === ANTERIOR_29N);
-  const hora = D.actualitzat ? new Date(D.actualitzat) : null;
-  const quan = hora && !isNaN(hora) ? `${String(hora.getDate()).padStart(2, "0")}.${String(hora.getMonth() + 1).padStart(2, "0")}.${hora.getFullYear()}, ` +
-    `${hora.toLocaleTimeString("ca-ES", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" })} h` : "";
-  const fals = { municipis: D.municipis };
-  const total = agrega(fals);
-  if (total && D.escrutat != null) total.escrutat = D.escrutat;
-  const antTotal = ant23 ? agrega(ant23) : null;
-  const blocs = (total ? [[TOTS, "Les cinc poblacions", "", total, antTotal]] : [])
-    .concat(ORDRE_MUN.filter(c => D.municipis[c]).map(c => [c, D.municipis[c].nom || nomMun(c), imgEscut(c), D.municipis[c], ant23 && ant23.municipis[c]]));
-  el.innerHTML = `<h2>🔴 29N EN DIRECTE</h2>` +
-    `<p class="font">Resultats provisionals del Congrés · Font: ${esc(D.font || "Ministeri de l'Interior")}${quan ? ` · Actualitzat: ${quan}` : ""}</p>` +
-    blocs.map(([c, nom, img, m, ant], i) => `<details class="mun"${i === 0 ? " open" : ""}><summary>${img}<b>${esc(nom)}</b>` +
-      `<span class="res">${m.resultats[0] ? `${esc(m.resultats[0].sigles)} · ${pctCa(m.resultats[0].pct)}` : ""}${m.escrutat != null ? `<br>Escrutat: ${pctCa(m.escrutat)}` : ""}</span></summary>` +
-      fitxa29n(m, ant || null) + `</details>`).join("") +
-    `<p class="nota">Percentatges sobre vots vàlids. «Dif. 2023», punts respecte al Congrés del 23.07.2023.</p>`;
-}
-
-
-// ---------------------------------------------------------------------------
-// MAPA (21.11.2026): seccions censals de l'INE (eleccions/seccions.geojson, que baixa
-// el workflow «Seccions censals») pintades amb els resultats de dades/eleccions.json.
-// ---------------------------------------------------------------------------
 let GEO = null, MAPA = null, CAPA = null, DIRECTE = null;
 const normSec = s => { const [d, x] = String(s).split("-"); return (+d) + "-" + (+x); };
 const COLORS = [
@@ -274,131 +234,246 @@ function zonaMunicipi(m) {
   return { participacio: m.participacio, valids: m.valids, votants: m.votants, cens: m.cens, items: m.resultats.map(r => ({ sigles: r.sigles, vots: r.vots, pct: r.pct })) };
 }
 function eleccioMapa(id) {
-  if (id === "29N" && DIRECTE) return { id: "29N", tipus: "congres", nom: "Congrés 29N (provisional)", municipis: DIRECTE.municipis };
+  if (id === "29N") return { id: "29N", tipus: "congres", nom: "Congrés 29N", municipis: (DIRECTE && DIRECTE.municipis) || {} };
   return ELEC.eleccions.find(e => e.id === id);
 }
 // Per a cada secció del mapa, la zona que li toca i si és la secció o el municipi sencer.
 function zonesDe(e) {
-  const res = new Map(), senceres = [];
+  const res = new Map(), senceres = [], nomesMunicipi = [];
   ORDRE_MUN.forEach(c => {
     const feats = GEO.features.filter(f => f.properties.municipi === c);
     const m = e.municipis[c];
     if (!m) { feats.forEach(f => res.set(f, null)); return; }
     const secs = new Map((m.seccions || []).map(s => [normSec(s.seccio), s]));
     const casen = secs.size === feats.length && feats.every(f => secs.has(f.properties.districte + "-" + f.properties.seccio));
-    if (!casen && feats.length > 1) senceres.push(m.nom || nomMun(c));
+    if (!casen && feats.length > 1) ((m.seccions || []).length ? senceres : nomesMunicipi).push(m.nom || nomMun(c));
     feats.forEach(f => res.set(f, casen ? { ...zonaSeccio(secs.get(f.properties.districte + "-" + f.properties.seccio)), seccio: true } : { ...zonaMunicipi(m), seccio: false }));
   });
-  return { res, senceres };
+  return { res, senceres, nomesMunicipi };
 }
 function escalaVermella(t) { // 0..1
   const a = [253, 236, 230], b = [140, 35, 15];
   return `rgb(${a.map((x, i) => Math.round(x + (b[i] - x) * t)).join(",")})`;
 }
-function pintaMapa() {
-  const e = eleccioMapa(document.getElementById("mapaEleccio").value);
-  const vista = document.getElementById("mapaVista").value;
-  const { res, senceres } = zonesDe(e);
+
+// ---------------------------------------------------------------------------
+// RESULTATS: una elecció triada, pintada al mapa i a les fitxes de sota.
+// ---------------------------------------------------------------------------
+function anteriorDe(e) {
+  if (e.id === "29N") return ELEC.eleccions.find(x => x.id === ANTERIOR_29N) || null;
+  const ordre = ELEC.eleccions.filter(x => x.tipus === e.tipus).sort((a, b) => b.data.localeCompare(a.data));
+  return ordre[ordre.indexOf(e) + 1] || null;
+}
+function fitxa(m, ant, mun, codi) {
+  const max = Math.max(1, ...m.resultats.map(r => r.pct));
+  const files = m.resultats.map(r => {
+    const a = trobaAnterior(r, ant);
+    return `<tr><td>${esc(r.sigles)}</td><td style="width:26%"><span class="barra" style="width:${(r.pct / max * 100).toFixed(0)}%;background:${colorDe(r.sigles)}"></span></td>` +
+      `<td class="n">${nCa(r.vots)}</td><td class="n"><b>${pctCa(r.pct)}</b></td>` +
+      (mun ? `<td class="n"><b>${r.electes || 0}</b>${a && a.electes !== undefined && a.electes !== r.electes ? ` <span class="${r.electes > a.electes ? "amunt" : "avall"}">(${r.electes > a.electes ? "+" : "−"}${Math.abs(r.electes - a.electes)})</span>` : ""}</td>` : "") +
+      `<td class="n">${a ? difCa(r.pct - a.pct) : "nova"}</td></tr>`;
+  }).join("");
+  const dp = ant ? m.participacio - ant.participacio : null;
+  const p = m.resultats[0];
+  const secs = (m.seccions || []).length > 1 ? `<details><summary style="cursor:pointer;margin-top:10px"><b>Per seccions censals (${m.seccions.length})</b></summary>` +
+    `<div class="taula"><table><thead><tr><th>Secció</th><th class="n">Participació</th><th>Primera força</th><th>Segona</th></tr></thead><tbody>` +
+    m.seccions.map(s => {
+      const v = Object.entries(s.vots || {}).sort((a, b) => b[1] - a[1]), q = x => s.valids ? pctCa(x / s.valids * 100) : "—";
+      return `<tr data-sec="${codi}:${normSec(s.seccio)}"><td>${esc(s.seccio)}${s.meses > 1 ? ` <span class="nota">(${s.meses} meses)</span>` : ""}</td><td class="n">${pctCa(s.participacio)}</td>` +
+        `<td>${v[0] ? `${esc(v[0][0])} · ${q(v[0][1])}` : "—"}</td><td>${v[1] ? `${esc(v[1][0])} · ${q(v[1][1])}` : "—"}</td></tr>`;
+    }).join("") + `</tbody></table></div></details>` : "";
+  return `<div class="xifres">` +
+    (m.escrutat != null ? `<div class="xifra"><div class="etq">Escrutat</div><div class="val">${pctCa(m.escrutat)}</div></div>` : "") +
+    `<div class="xifra"><div class="etq">Participació</div><div class="val">${pctCa(m.participacio)}</div><div class="det">${nCa(m.votants)} de ${nCa(m.cens)} electors${dp !== null ? ` · ${difCa(dp)} punts` : ""}</div></div>` +
+    `<div class="xifra"><div class="etq">Guanyador</div><div class="val" style="font-size:1.1rem">${p ? esc(p.sigles) : "—"}</div><div class="det">${p ? pctCa(p.pct) + (mun && m.regidors ? ` · ${p.electes || 0} de ${m.regidors} regidors` : "") : ""}</div></div>` +
+    `<div class="xifra"><div class="etq">Vots en blanc i nuls</div><div class="val">${nCa(m.blanc)} · ${nCa(m.nuls)}</div><div class="det">${pctCa(m.blanc / (m.valids || 1) * 100)} en blanc</div></div>` +
+    `</div><div class="taula"><table><thead><tr><th>Candidatura</th><th></th><th class="n">Vots</th><th class="n">%</th>${mun ? '<th class="n">Regidors</th>' : ""}<th class="n">Dif.</th></tr></thead><tbody>${files}</tbody></table></div>` + secs;
+}
+// Dos blocs iguals: «d» (29N, a dalt) i «h» (històric). Cada un té el seu mapa.
+const BLOCS = { d: { mapa: null, capa: null }, h: { mapa: null, capa: null } };
+const $ = id => document.getElementById(id);
+function pintaFitxes(k, e) {
+  const cont = $(k + "Fitxes");
+  const oberts = [...cont.querySelectorAll("details.mun[open]")].map(d => d.dataset.mun);
+  const ant = anteriorDe(e), mun = e.tipus === "municipals";
+  if (!Object.keys(e.municipis).length) { cont.innerHTML = ""; return; }
+  const llista = (mun ? [] : [[TOTS, "Les cinc poblacions", "", agrega(e), ant ? agrega(ant) : null]])
+    .concat(ORDRE_MUN.filter(c => e.municipis[c]).map(c => [c, e.municipis[c].nom || nomMun(c), imgEscut(c), e.municipis[c], ant && ant.municipis[c] ? ant.municipis[c] : null]));
+  if (llista[0] && llista[0][3] && e.id === "29N" && DIRECTE.escrutat != null) llista[0][3].escrutat = DIRECTE.escrutat;
+  cont.innerHTML = llista.filter(x => x[3]).map(([c, nom, img, m, a]) =>
+    `<details class="mun" data-mun="${c}"${oberts.includes(c) ? " open" : ""}><summary>${img}<b>${esc(nom)}</b>` +
+    `<span class="res">${m.resultats[0] ? `${esc(m.resultats[0].sigles)} · ${pctCa(m.resultats[0].pct)}` : ""}${m.escrutat != null ? `<br>Escrutat: ${pctCa(m.escrutat)}` : ""}</span></summary>` +
+    fitxa(m, a, mun, c) + `</details>`).join("") +
+    `<p class="nota">Percentatges sobre vots vàlids (candidatures i blanc). «Dif.», punts respecte a ${ant ? esc(ant.nom) : "l'elecció anterior del mateix tipus"}; «nova», candidatura que no s'hi va presentar amb les mateixes sigles. ` +
+    `La participació no inclou el vot dels residents a l'estranger (CERA). ${mun ? "" : "Les cinc poblacions sumen les candidatures amb les mateixes sigles."}</p>`;
+}
+// Des del mapa: obre la fitxa del municipi i marca la secció.
+function obreZona(k, codi, sec) {
+  const d = document.querySelector(`#${k}Fitxes details.mun[data-mun="${codi}"]`);
+  if (!d) return;
+  d.open = true;
+  const fila = sec ? d.querySelector(`tr[data-sec="${codi}:${sec}"]`) : null;
+  if (fila) { fila.closest("details").open = true; document.querySelectorAll("tr.marcada").forEach(t => t.classList.remove("marcada")); fila.classList.add("marcada"); }
+}
+// Avanços de participació del 29N (dades/eleccions-29n.json → avancos: {"14:00": {codi: %}, ...}).
+const AVANCOS = () => (DIRECTE && DIRECTE.avancos) || {};
+const horaCa = h => String(h).replace(":", ".");
+function pintaMapa(k, e) {
+  const B = BLOCS[k];
+  if (!B.mapa) return;
+  const vista = $(k + "Vista").value || "guanyador";
+  const { res, senceres, nomesMunicipi } = zonesDe(e);
+  let llegenda = "", color, valor = null, etiqueta = "";
+  if (vista.startsWith("av:")) {
+    // Avanç de participació: es pinta el municipi sencer amb el percentatge d'aquella hora.
+    const h = vista.slice(3), av = AVANCOS()[h] || {};
+    GEO.features.forEach(f => { const v = av[f.properties.municipi]; res.set(f, v == null ? null : { participacio: Number(v), items: [], seccio: false, avanc: true }); });
+    valor = z => z.participacio; etiqueta = `Participació a les ${horaCa(h)} h`;
+  } else if (vista === "participacio") { valor = z => z.participacio; }
+  else if (vista !== "guanyador") { valor = z => { const it = z.items.find(x => clauCand(x.sigles) === vista); return it ? it.pct : 0; }; }
   const vals = [...res.values()].filter(Boolean);
-  let llegenda = "";
-  let color;
-  if (vista === "guanyador") {
+  if (!valor) {
     const guany = [...new Set(vals.map(z => z.items[0] && z.items[0].sigles).filter(Boolean))];
     llegenda = guany.map(g => `<span><i style="background:${colorDe(g)}"></i>${esc(g)}</span>`).join("");
     color = z => z.items[0] ? colorDe(z.items[0].sigles) : "#ccc";
   } else {
-    const valor = vista === "participacio" ? z => z.participacio
-      : z => { const it = z.items.find(x => clauCand(x.sigles) === vista); return it ? it.pct : 0; };
     const xs = vals.map(valor), lo = Math.min(...xs), hi = Math.max(...xs);
     color = z => escalaVermella(hi > lo ? (valor(z) - lo) / (hi - lo) : .6);
-    llegenda = `<span><i style="background:${escalaVermella(0)}"></i>${pctCa(lo)}</span><span><i style="background:${escalaVermella(1)}"></i>${pctCa(hi)}</span>`;
+    llegenda = vals.length ? `<span><i style="background:${escalaVermella(0)}"></i>${pctCa(lo)}</span><span><i style="background:${escalaVermella(1)}"></i>${pctCa(hi)}</span>` : "";
   }
-  if (CAPA) CAPA.remove();
-  CAPA = L.geoJSON(GEO, {
+  if (B.capa) B.capa.remove();
+  B.capa = L.geoJSON(GEO, {
     style: f => { const z = res.get(f); return { color: "#fff", weight: 1.5, fillOpacity: z ? .78 : .15, fillColor: z ? color(z) : "#999" }; },
     onEachFeature: (f, ly) => {
-      const z = res.get(f), p = f.properties;
+      const z = res.get(f), p = f.properties, sec = p.districte + "-" + p.seccio;
       const nom = esc(nomMun(p.municipi)) + (z && z.seccio ? ` · secció ${String(p.districte).padStart(2, "0")}-${String(p.seccio).padStart(3, "0")}` : "");
-      ly.bindPopup(!z ? `<b>${nom}</b><br>Sense dades en aquesta elecció.` :
+      ly.bindPopup(!z ? `<b>${nom}</b><br>Sense dades.` : z.avanc ? `<b>${nom}</b><br>${esc(etiqueta)}: <b>${pctCa(z.participacio)}</b>` :
         `<b>${nom}</b><br>Participació: ${pctCa(z.participacio)}${z.cens ? ` (${nCa(z.votants)} de ${nCa(z.cens)})` : ""}` +
         `<table>${z.items.slice(0, 6).map(it => `<tr><td><i style="display:inline-block;width:10px;height:10px;background:${colorDe(it.sigles)}"></i> ${esc(it.sigles)}</td><td style="text-align:right">${nCa(it.vots)}</td><td style="text-align:right"><b>${pctCa(it.pct)}</b></td></tr>`).join("")}</table>`);
+      ly.on("click", () => obreZona(k, p.municipi, z && z.seccio ? sec : null));
       ly.on("mouseover", () => ly.setStyle({ weight: 3 })).on("mouseout", () => ly.setStyle({ weight: 1.5 }));
     }
-  }).addTo(MAPA);
-  document.getElementById("mapaLlegenda").innerHTML = llegenda;
-  document.getElementById("mapaNota").innerHTML = "Percentatges sobre vots vàlids. Feu clic en una zona per veure'n els resultats." +
-    (senceres.length ? (senceres.length === 1 ? ` En aquesta elecció, el municipi de ${esc(senceres[0])} es mostra sencer` : ` En aquesta elecció, els municipis de ${esc(senceres.join(" i "))} es mostren sencers`) + " (les seccions d'aquell any no coincideixen amb les d'ara)." : "");
+  }).addTo(B.mapa);
+  $(k + "Llegenda").innerHTML = llegenda;
+  let nota = "Feu clic en una zona per veure'n les dades" + (vista.startsWith("av:") ? "." : " i obrir-ne la fitxa.");
+  if (!vista.startsWith("av:")) {
+    if (senceres.length) nota += (senceres.length === 1 ? ` En aquesta elecció, el municipi de ${esc(senceres[0])} es mostra sencer` : ` En aquesta elecció, els municipis de ${esc(senceres.join(" i "))} es mostren sencers`) + " (les seccions d'aquell any no coincideixen amb les d'ara).";
+    if (nomesMunicipi.length) nota += " Aquests resultats són per municipi, sense el detall per seccions.";
+  }
+  $(k + "Nota").innerHTML = nota;
 }
-function omplenaVistes() {
-  const e = eleccioMapa(document.getElementById("mapaEleccio").value);
-  const sel = document.getElementById("mapaVista"), abans = sel.value;
+function omplenaVistes(k, e) {
+  const sel = $(k + "Vista"), abans = sel.value;
   const per = new Map();
   Object.values(e.municipis).forEach(m => m.resultats.forEach(r => {
-    const k = clauCand(r.sigles); if (!per.has(k)) per.set(k, { sigles: r.sigles, vots: 0 }); per.get(k).vots += r.vots;
+    const kk = clauCand(r.sigles); if (!per.has(kk)) per.set(kk, { sigles: r.sigles, vots: 0 }); per.get(kk).vots += r.vots;
   }));
   const cands = [...per.entries()].sort((a, b) => b[1].vots - a[1].vots).slice(0, 12);
-  sel.innerHTML = `<option value="guanyador">Força més votada</option><option value="participacio">Participació</option>` +
-    (e.tipus === "municipals" ? "" : `<optgroup label="Percentatge de vot">${cands.map(([k, c]) => `<option value="${esc(k)}">${esc(c.sigles)}</option>`).join("")}</optgroup>`);
+  const hores = k === "d" ? Object.keys(AVANCOS()).sort() : [];
+  const teRes = Object.keys(e.municipis).length > 0;
+  sel.innerHTML = (teRes ? `<option value="guanyador">Força més votada</option><option value="participacio">Participació final</option>` : "") +
+    (hores.length ? `<optgroup label="Avanços de participació">${hores.map(h => `<option value="av:${esc(h)}">Participació a les ${esc(horaCa(h))} h</option>`).join("")}</optgroup>` : "") +
+    (teRes && e.tipus !== "municipals" ? `<optgroup label="Percentatge de vot">${cands.map(([kk, c]) => `<option value="${esc(kk)}">${esc(c.sigles)}</option>`).join("")}</optgroup>` : "");
   if ([...sel.options].some(o => o.value === abans)) sel.value = abans;
+  else if (!teRes && hores.length) sel.value = "av:" + hores[hores.length - 1];
 }
-async function iniciaMapa() {
-  const bloc = document.getElementById("mapaBloc");
+function fontHist(e) {
+  return `Font: ${/generalitat/i.test(e.font || "") ? '<a href="https://resultats.dadeselectorals.gencat.cat/" target="_blank" rel="noopener">Generalitat de Catalunya</a>' : '<a href="https://infoelectoral.interior.gob.es/" target="_blank" rel="noopener">Ministeri de l\'Interior</a>'}, resultats oficials · Mapa: seccions censals vigents de l'INE`;
+}
+function quanCa(iso) {
+  const h = iso ? new Date(iso) : null;
+  if (!h || isNaN(h)) return "";
+  const p = new Intl.DateTimeFormat("ca-ES", { timeZone: "Europe/Madrid", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }).formatToParts(h);
+  const v = t => (p.find(x => x.type === t) || {}).value;
+  return `${v("day")}.${v("month")}.${v("year")}, ${v("hour")}:${v("minute")} h`;
+}
+// Taula dels avanços de participació, municipi a municipi.
+function pintaAvancos() {
+  const av = AVANCOS(), hores = Object.keys(av).sort();
+  if (!hores.length) { $("dAvanc").innerHTML = ""; return; }
+  $("dAvanc").innerHTML = `<h3 style="font-size:1rem;margin:12px 0 4px">Avanços de participació</h3><div class="taula"><table><thead><tr><th>Municipi</th>${hores.map(h => `<th class="n">${esc(horaCa(h))} h</th>`).join("")}</tr></thead><tbody>` +
+    ORDRE_MUN.map(c => `<tr><td>${esc(nomMun(c))}</td>${hores.map(h => `<td class="n">${av[h][c] != null ? pctCa(av[h][c]) : "—"}</td>`).join("")}</tr>`).join("") + `</tbody></table></div>`;
+}
+function pintaDirecteBloc() {
+  const e = eleccioMapa("29N");
+  const hiHa = DIRECTE && (Object.keys(e.municipis).length || Object.keys(AVANCOS()).length);
+  $("dFont").innerHTML = hiHa ? `Resultats provisionals del Congrés · Font: ${esc(DIRECTE.font || "Ministeri de l'Interior")}${quanCa(DIRECTE.actualitzat) ? ` · Actualitzat: ${quanCa(DIRECTE.actualitzat)}` : ""}` :
+    "Congrés dels Diputats · Resultats provisionals del Ministeri de l'Interior";
+  $("dEstat").innerHTML = hiHa ? "" : `<div class="estat29">Encara no hi ha dades. El dia de les eleccions hi sortiran sols els avanços de participació i, a partir de les 20.00 h, l'escrutini, que s'actualitza cada minut. ` +
+    `No hi ha enquestes amb resultats per a aquests municipis: les que es publiquen són per a tot l'Estat o per circumscripció.</div>`;
+  $("dMapa").style.display = hiHa ? "" : "none";
+  $("dVista").style.display = hiHa ? "" : "none";
+  if (hiHa) {
+    omplenaVistes("d", e);
+    if (BLOCS.d.mapa) { BLOCS.d.mapa.invalidateSize(); pintaMapa("d", e); }
+  } else { $("dLlegenda").innerHTML = ""; $("dNota").innerHTML = ""; }
+  pintaAvancos();
+  pintaFitxes("d", e);
+}
+function pintaHistoric() {
+  const e = eleccioMapa($("hEleccio").value);
+  $("hFont").innerHTML = fontHist(e);
+  pintaMapa("h", e);
+  pintaFitxes("h", e);
+}
+async function carregaDirecte() {
+  let D = null;
+  try { D = await json("../dades/eleccions-29n.json"); } catch (e) { D = null; }
+  const abans = DIRECTE ? DIRECTE.actualitzat : null;
+  DIRECTE = D && ((D.municipis && Object.keys(D.municipis).length) || (D.avancos && Object.keys(D.avancos).length)) ? D : null;
+  return (DIRECTE ? DIRECTE.actualitzat : null) !== abans;
+}
+function creaMapa(k) {
+  const id = k + "Mapa", el = $(id);
+  const mapa = L.map(id, { scrollWheelZoom: false, zoomSnap: 0.25 });
+  // OpenStreetMap estàndard, esvaït, perquè els colors dels resultats es llegeixin bé.
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19, opacity: .45, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Seccions: INE'
+  }).addTo(mapa);
+  // L'encuadrament es fa quan el mapa ja té mida (al mòbil, o si està amagat, pot no tenir-ne).
+  const limits = L.geoJSON(GEO).getBounds();
+  const encuadra = () => { if (el.offsetWidth > 0) { mapa.invalidateSize(); mapa.fitBounds(limits, { padding: [10, 10], maxZoom: 14 }); } };
+  encuadra();
+  let ample = el.offsetWidth;
+  new ResizeObserver(() => { if (el.offsetWidth > 0 && ample === 0) encuadra(); ample = el.offsetWidth; }).observe(el);
+  setTimeout(encuadra, 800);
+  BLOCS[k].mapa = mapa;
+}
+async function iniciaResultats() {
   try { GEO = await json("seccions.geojson"); } catch (e) { GEO = null; }
   // Les unitats amb secció 000 són els districtes sencers: només es pinten les seccions.
   if (GEO && GEO.features) GEO.features = GEO.features.filter(f => f.properties.seccio > 0);
-  if (!GEO || !GEO.features || !GEO.features.length || typeof L === "undefined") {
-    bloc.innerHTML = `<h2>🗺️ MAPA</h2><p class="buit">El mapa encara no està disponible.</p>`; return;
-  }
-  try { DIRECTE = await json("../dades/eleccions-29n.json"); } catch (e) { DIRECTE = null; }
-  const sel = document.getElementById("mapaEleccio");
-  sel.innerHTML = (DIRECTE && DIRECTE.municipis ? `<option value="29N">Congrés 29N (provisional)</option>` : "") +
-    TIPUS.filter(([t]) => ELEC.eleccions.some(x => x.tipus === t)).map(([t, n]) => `<optgroup label="${esc(n)}">` +
-      ELEC.eleccions.filter(x => x.tipus === t).sort((a, b) => b.data.localeCompare(a.data)).map(x => `<option value="${x.id}">${esc(x.nom)}</option>`).join("") + `</optgroup>`).join("");
-  sel.value = DIRECTE && DIRECTE.municipis ? "29N" : ELEC.eleccions.filter(x => x.tipus === "congres").sort((a, b) => b.data.localeCompare(a.data))[0].id;
-  MAPA = L.map("mapa", { scrollWheelZoom: false, zoomSnap: 0.25 });
-  // 21.11.2026: OpenStreetMap estàndard, esvaït (com el mapa dels edificis de La TdG dades),
-  // perquè els colors dels resultats es llegeixin bé. CARTO ja demana clau.
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19, opacity: .45, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Seccions: INE'
-  }).addTo(MAPA);
-  // L'encuadrament es fa quan el mapa ja té mida (al mòbil pot no tenir-ne en el primer moment).
-  const limits = L.geoJSON(GEO).getBounds();
-  const encuadra = () => { MAPA.invalidateSize(); MAPA.fitBounds(limits, { padding: [10, 10], maxZoom: 14 }); };
-  encuadra();
-  let encuadrat = false;
-  new ResizeObserver(() => { if (!encuadrat && document.getElementById("mapa").offsetWidth > 0) { encuadrat = true; encuadra(); } }).observe(document.getElementById("mapa"));
-  setTimeout(encuadra, 800);
-  omplenaVistes(); pintaMapa();
-  sel.onchange = () => { omplenaVistes(); pintaMapa(); };
-  document.getElementById("mapaVista").onchange = pintaMapa;
-}
-
-// L'iframe del detall creix tant com el seu contingut (mateixa adreça, latdg.github.io).
-function ajustaDetall() {
-  const fr = document.getElementById("frDetall");
-  try {
-    const d = fr.contentDocument;
-    if (!d || !d.body) return;
-    const h = Math.ceil(d.documentElement.getBoundingClientRect().height);
-    if (h > 50 && Math.abs(h - fr.offsetHeight) > 2) fr.style.height = h + "px";
-  } catch (e) {}
+  await carregaDirecte();
+  const sel = $("hEleccio");
+  sel.innerHTML = TIPUS.filter(([t]) => ELEC.eleccions.some(x => x.tipus === t)).map(([t, n]) => `<optgroup label="${esc(n)}">` +
+    ELEC.eleccions.filter(x => x.tipus === t).sort((a, b) => b.data.localeCompare(a.data)).map(x => `<option value="${x.id}">${esc(x.nom)}</option>`).join("") + `</optgroup>`).join("");
+  sel.value = ELEC.eleccions.filter(x => x.tipus === "congres").sort((a, b) => b.data.localeCompare(a.data))[0].id;
+  if (GEO && GEO.features && GEO.features.length && typeof L !== "undefined") { creaMapa("d"); creaMapa("h"); }
+  else ["dMapa", "hMapa"].forEach(id => $(id).outerHTML = `<p class="buit">El mapa no està disponible ara mateix.</p>`);
+  omplenaVistes("h", eleccioMapa(sel.value));
+  pintaHistoric();
+  pintaDirecteBloc();
+  sel.onchange = () => { omplenaVistes("h", eleccioMapa(sel.value)); pintaHistoric(); };
+  $("hVista").onchange = pintaHistoric;
+  $("dVista").onchange = () => pintaMapa("d", eleccioMapa("29N"));
+  // Cada minut es mira si hi ha dades noves del 29N; si n'hi ha, es repinta el bloc de dalt.
+  setInterval(async () => { if (await carregaDirecte()) pintaDirecteBloc(); }, 60000);
 }
 
 (async function () {
   try { ESCUTS = await json("../escuts/credits.json"); } catch (e) { ESCUTS = {}; }
   Object.keys(ESCUTS).forEach(k => { if (k.startsWith("_")) delete ESCUTS[k]; });
   try { ELEC = await json("../dades/eleccions.json"); } catch (e) { ELEC = null; }
-  if (ELEC && ELEC.eleccions && ELEC.eleccions.length) pintaEvolucio();
-  else document.getElementById("evolucio").innerHTML = `<h2>📈 EVOLUCIÓ</h2><p class="buit">No s'han pogut carregar els resultats electorals.</p>`;
-  if (ELEC && ELEC.eleccions && ELEC.eleccions.length) await iniciaMapa();
-  await pintaDirecte();
-  // Durant l'escrutini, el bloc del 29N es refresca sol cada minut.
-  setInterval(pintaDirecte, 60000);
+  if (!ELEC || !ELEC.eleccions || !ELEC.eleccions.length) {
+    document.getElementById("historic").innerHTML = `<h2>🗳️ HISTÒRIC DE RESULTATS</h2><p class="buit">No s'han pogut carregar els resultats electorals.</p>`;
+    document.getElementById("evolucio").hidden = true;
+    return;
+  }
+  await iniciaResultats();
+  pintaEvolucio();
   const commons = Object.values(ESCUTS).filter(x => x && x.pagina).map(x => `<a href="${esc(x.pagina)}" target="_blank" rel="noopener">${esc(x.llicencia || "Commons")}</a>`).join(", ");
   if (commons) document.getElementById("credits").innerHTML = `Escuts: Wikimedia Commons (${commons}${ESCUTS["17901"] && ESCUTS["17901"].local ? "; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament" : ""}).`;
 })();
-setInterval(ajustaDetall, 700);
-document.getElementById("frDetall").addEventListener("load", ajustaDetall);
 </script>
 </body>
 </html>

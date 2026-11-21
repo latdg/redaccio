@@ -1005,11 +1005,18 @@ $("on").onchange = controlsGravacio;
 
 async function encarregaACasa({ quan, minuts, qualitat }) {
   const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  const r = await fetch(`${PASSARELLA}/casa`, {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id, canal: actual.c.n, url: actual.op.u, format: actual.op.f, tipus: actual.tipus, ref: actual.c.ref || "", inici: quan || 0, minuts, qualitat }),
-  });
-  const d = await r.json().catch(() => ({}));
+  // 21.11.2026: s'envia com a text pla perquè el navegador no faci la consulta prèvia (CORS)
+  // que la passarel·la antiga rebutjava («Failed to fetch»). El Worker ho llegeix igual.
+  const VELL = "la passarel·la latdg-senyal de Cloudflare no té la funció de gravar a casa: cal enganxar-hi el codi nou de tdt/passarella-worker.js";
+  let r;
+  try {
+    r = await fetch(`${PASSARELLA}/casa`, {
+      method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify({ id, canal: actual.c.n, url: actual.op.u, format: actual.op.f, tipus: actual.tipus, ref: actual.c.ref || "", inici: quan || 0, minuts, qualitat }),
+    });
+  } catch (e) { throw new Error(navigator.onLine === false ? "no hi ha connexió" : VELL); }
+  const d = await r.json().catch(() => null);
+  if (!d) throw new Error(VELL);
   if (!r.ok || !d.ok) throw new Error(d.error || `error ${r.status}`);
 }
 $("inici").onchange = () => {

@@ -21,8 +21,22 @@ let acabat = null;
 const estat = t => { $("trEstat").textContent = t; };
 const barra = p => { $("trBarra").hidden = p == null; if (p != null) $("trBarra").firstElementChild.style.width = Math.round(p * 100) + "%"; };
 const z = n => String(n).padStart(2, "0");
-// Indicador de nivell (VU-metre): en dB, de -60 a 0
-const nivell = p => { const el = $("trNivell"); if (!el) return; const db = p > 0 ? 20 * Math.log10(p) : -60; el.firstElementChild.style.width = Math.max(0, Math.min(100, (db + 60) / 60 * 100)) + "%"; el.classList.toggle("fort", db > -3); };
+// VU-metre: esquerre i dret, en dB (de −60 a 0), amb el pic que es queda un moment
+const VU = { pic: [-60, -60], quan: [0, 0] };
+function nivells(dbs) {
+  const files = document.querySelectorAll("#trNivell .vu-fila"), ara = performance.now();
+  dbs.forEach((db, c) => {
+    const f = files[c]; if (!f) return;
+    const pct = v => Math.max(0, Math.min(100, (v + 60) / 60 * 100));
+    if (db >= VU.pic[c] || ara - VU.quan[c] > 1500) { VU.pic[c] = db; VU.quan[c] = ara; }
+    f.querySelector("span").style.clipPath = `inset(0 ${100 - pct(db)}% 0 0)`;
+    f.querySelector("i").style.left = `calc(${pct(VU.pic[c])}% - 2px)`;
+    const o = f.querySelector("output");
+    o.textContent = db <= -60 ? "−∞" : db.toFixed(1).replace("-", "−").replace(".", ",");
+    o.classList.toggle("fort", db > -3);
+  });
+}
+const dB = x => { let p = 0; for (let i = 0; i < x.length; i += 2) { const v = Math.abs(x[i]); if (v > p) p = v; } return p > 0.001 ? 20 * Math.log10(p) : -60; };
 const minut = s => { s = Math.max(0, Math.floor(s)); const h = Math.floor(s / 3600), m = Math.floor(s / 60) % 60; return (h ? h + ":" + z(m) : z(m)) + ":" + z(s % 60); };
 const avui = () => { const d = new Date(); return `${z(d.getDate())}.${z(d.getMonth() + 1)}.${d.getFullYear()}`; };
 const ara = () => { const d = new Date(); return `${z(d.getHours())}:${z(d.getMinutes())}`; };
@@ -155,12 +169,14 @@ async function comenca(font) {
   capcalera(font === "mic" ? "Micròfon" : "So d'una pestanya");
   ctx = new AudioContext();
   const origen = ctx.createMediaStreamSource(new MediaStream(stream.getAudioTracks()));
-  node = ctx.createScriptProcessor(4096, 1, 1);
+  node = ctx.createScriptProcessor(4096, 2, 1);
   node.onaudioprocess = e => {
     if (!actiu) return;
-    const x = e.inputBuffer.getChannelData(0);
-    let pic = 0; for (let i = 0; i < x.length; i += 4) { const v = Math.abs(x[i]); if (v > pic) pic = v; }
-    nivell(pic);
+    const ib = e.inputBuffer, esq = ib.getChannelData(0), dre = ib.numberOfChannels > 1 ? ib.getChannelData(1) : esq;
+    nivells([dB(esq), dB(dre)]);
+    // Per transcriure, una sola pista: la mitjana dels dos costats
+    const x = new Float32Array(esq.length);
+    for (let i = 0; i < x.length; i++) x[i] = (esq[i] + dre[i]) / 2;
     const y = a16k(x, ctx.sampleRate);
     enviat += y.length;
     motor.postMessage({ tipus: "audio", mostres: y }, [y.buffer]);
@@ -185,7 +201,7 @@ async function atura() {
   if (!actiu) return;
   actiu = false;
   clearInterval(rellotge);
-  $("trNivell").hidden = true; nivell(0);
+  $("trNivell").hidden = true; nivells([-60, -60]);
   try { node && node.disconnect(); } catch (e) {}
   try { ctx && ctx.close(); } catch (e) {}
   try { gravadora && gravadora.state !== "inactive" && gravadora.stop(); } catch (e) {}

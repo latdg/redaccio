@@ -69,9 +69,20 @@ audio{width:100%;margin-top:10px}
 .editorCaixa.ple .tancaPle{display:block;position:absolute;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));padding:6px 12px;font-size:.85rem;opacity:.85;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
 body.ambPle{overflow:hidden}
 .compta{font-size:.8rem;color:var(--suau)}
-.nivell{height:10px}
-.nivell span{background:#2e8b57;transition:width .08s}
-.nivell.fort span{background:#c0392b}
+/* VU-metre de la transcripció (21.11.2026): esquerre i dret, de −60 a 0 dB */
+.vu{margin:10px 0 4px;padding:8px 10px;background:#15171a;border-radius:8px;color:#cfd3d8;font:12px/1.2 ui-monospace,Menlo,Consolas,monospace}
+.vu-fila{display:grid;grid-template-columns:14px 1fr 52px;gap:8px;align-items:center;margin:3px 0}
+.vu-fila b{color:#9aa0a6}
+.vu-barra{position:relative;height:12px;background:#2a2d31;border-radius:3px;overflow:hidden}
+.vu-barra span{position:absolute;inset:0;background:linear-gradient(90deg,#2ecc71 0 70%,#f1c40f 80%,#e67e22 90%,#e74c3c 95%);clip-path:inset(0 100% 0 0);transition:clip-path .06s linear}
+.vu-barra i{position:absolute;top:0;bottom:0;width:2px;left:0;background:#fff;opacity:.85}
+.vu-fila output{text-align:right;font-variant-numeric:tabular-nums}
+.vu-fila output.fort{color:#e74c3c;font-weight:700}
+.vu-escala{display:grid;grid-template-columns:14px 1fr 52px;gap:8px;color:#7d838a;font-size:10px;margin-top:2px}
+.vu-escala>div{grid-column:2;position:relative;height:12px}
+.vu-escala span{position:absolute;transform:translateX(-50%)}
+.vu-escala span:first-child{transform:none}
+.vu-escala span:last-child{transform:translateX(-100%)}
 </style>
 </head>
 <body>
@@ -129,7 +140,11 @@ body.ambPle{overflow:hidden}
         <label class="fila" style="gap:6px;color:var(--suau);font-size:.9rem"><input type="checkbox" id="trMinuts" checked> Amb el minut</label>
       </div>
       <div class="barra" id="trBarra" hidden><span></span></div>
-      <div class="barra nivell" id="trNivell" hidden title="Nivell del so que entra"><span></span></div>
+      <div class="vu" id="trNivell" hidden title="Nivell del so que entra (dB): esquerre i dret">
+        <div class="vu-fila"><b>E</b><div class="vu-barra"><span></span><i></i></div><output>−∞</output></div>
+        <div class="vu-fila"><b>D</b><div class="vu-barra"><span></span><i></i></div><output>−∞</output></div>
+        <div class="vu-escala"><div><span style="left:0">−60</span><span style="left:33.33%">−40</span><span style="left:66.67%">−20</span><span style="left:80%">−12</span><span style="left:90%">−6</span><span style="left:100%">0</span></div></div>
+      </div>
       <p class="font" id="trEstat"></p>
       <textarea id="trText" lang="ca" spellcheck="false" placeholder="Aquí anirà apareixent el text, frase a frase…"></textarea>
       <div class="fila" style="margin-top:8px">

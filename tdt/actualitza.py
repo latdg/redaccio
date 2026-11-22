@@ -17,8 +17,9 @@ Les cadenes i emissores internacionals de TDTChannels es reclassifiquen per paí
 de televisió hi sumen els senyals d'iptv-org que no tenien (marcats amb «fi»). Si iptv-org falla,
 es manté el mon.json anterior i la classificació i els senyals de l'última llista bona.
 
-22.11.2026: senyals caiguts. A la mateixa execució es prova cada senyal (.m3u8 i ràdio): si no existeix,
-no respon o no envia res, es treu de la cadena. Les cadenes de TDTChannels que es queden sense cap senyal
+22.11.2026: senyals caiguts. A la mateixa execució es prova cada senyal (.m3u8 i ràdio). D'iptv-org es
+treuen els que no existeixen, no responen o no envien res; de TDTChannels, només els que segur que no
+funcionen (404, servidor inexistent o que rebutja la connexió, pàgina en lloc de senyal), i les eventuals no es proven. Les cadenes de TDTChannels que es queden sense cap senyal
 porten «mort»: 1 (la pàgina les amaga, però es poden veure a «Caigudes»); les d'iptv-org, no es desen.
 Les respostes «prohibit» (401, 403, 451) no compten com a caigudes: la prova es fa des de GitHub, fora
 d'Espanya, i moltes cadenes bloquegen per país. L'endemà es torna a provar tot.
@@ -376,7 +377,8 @@ FORMATS_PROVA = {"m3u8", "mp3", "aac", "stream"}
 
 
 def senyal_viu(op, ref=None):
-    """True si el senyal respon (o si bloqueja per país); False si és caigut."""
+    """Torna "viu", "mort" (segur: no existeix, rebutja la connexió o no és vídeo/so) o "dubte"
+    (no respon a temps o talla la connexió: pot ser un bloqueig per país)."""
     cap = {"User-Agent": UA_NAVEGADOR}
     if ref:
         cap["Referer"] = ref
@@ -384,31 +386,43 @@ def senyal_viu(op, ref=None):
         try:
             with requests.get(op["u"], timeout=(8, 12), stream=True, headers=cap, allow_redirects=True) as r:
                 if r.status_code in (401, 403, 451):
-                    return True          # bloqueig per país o per origen: des d'aquí no es pot saber
+                    return "viu"          # bloqueig per país o per origen: des d'aquí no es pot saber
+                if r.status_code in (404, 410):
+                    return "mort"
                 if r.status_code >= 400:
-                    return False
+                    return "dubte"
                 tros = b""
                 for bloc in r.iter_content(4096):
                     tros += bloc
                     if len(tros) >= 512:
                         break
                 if op["f"] == "m3u8":
-                    return b"#EXT" in tros[:1024]
-                return len(tros) > 0
-        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+                    if b"#EXT" in tros[:1024]:
+                        return "viu"
+                    return "mort" if b"<html" in tros[:1024].lower() or b"<!doctype" in tros[:1024].lower() else "dubte"
+                return "viu" if tros else "dubte"
+        except requests.exceptions.ConnectionError as e:
+            t = str(e)
+            if any(x in t for x in ("NameResolutionError", "Name or service not known", "Failed to resolve", "Connection refused")):
+                return "mort"
             if intent == 2:
-                return False
+                return "dubte"
+        except requests.exceptions.Timeout:
+            if intent == 2:
+                return "dubte"
         except Exception:  # noqa: BLE001
-            return False
-    return False
+            return "dubte"
+    return "dubte"
 
 
-def prova_senyals(canals, etiqueta):
-    """Treu de cada canal els senyals caiguts. Torna el nombre de canals que s'han quedat sense cap senyal."""
+def prova_senyals(canals, etiqueta, nomes_segurs=False):
+    """Treu de cada canal els senyals caiguts. Amb nomes_segurs, només els que segur que no funcionen."""
     feines = [(c, o) for c in canals for o in c.get("o", []) if o.get("f") in FORMATS_PROVA and o.get("u")]
     with ThreadPoolExecutor(96) as ex:
         resultats = list(ex.map(lambda co: senyal_viu(co[1], co[0].get("ref") or co[1].get("rf")), feines))
-    morts = {id(o) for (c, o), viu in zip(feines, resultats) if not viu}
+    caigut = {"mort"} if nomes_segurs else {"mort", "dubte"}
+    morts = {id(o) for (c, o), res in zip(feines, resultats) if res in caigut}
+    dubtes = sum(1 for r in resultats if r == "dubte")
     sense = 0
     for c in canals:
         if not c.get("o"):
@@ -416,15 +430,18 @@ def prova_senyals(canals, etiqueta):
         c["o"] = [o for o in c["o"] if id(o) not in morts]
         if not c["o"]:
             sense += 1
-    print(f"📡 {etiqueta}: {len(morts)} senyals caiguts de {len(feines)}; {sense} canals sense cap senyal viu")
+    print(f"📡 {etiqueta}: {len(morts)} senyals caiguts de {len(feines)} ({dubtes} sense resposta clara); {sense} canals sense cap senyal viu")
     return sense
 
 
 def marca_morts(canals):
-    """Prova els senyals de les llistes de TDTChannels i marca «mort» les que es queden sense cap."""
-    abans = {id(c): bool(c.get("o")) for c in canals}
-    prova_senyals(canals, "TDTChannels")
-    for c in canals:
+    """Prova els senyals de les llistes de TDTChannels i marca «mort» les que es queden sense cap.
+    Només compten les caigudes segures (des de fora d'Espanya, moltes tallen la connexió per bloqueig),
+    i les eventuals («EVT»), que només emeten de tant en tant, no es proven."""
+    candidats = [c for c in canals if "EVT" not in (c.get("x") or [])]
+    abans = {id(c): bool(c.get("o")) for c in candidats}
+    prova_senyals(candidats, "TDTChannels", nomes_segurs=True)
+    for c in candidats:
         if abans[id(c)] and not c.get("o"):
             c["mort"] = 1
 

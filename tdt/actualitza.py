@@ -132,6 +132,23 @@ PAISOS_NOM = {
     "singapur": "SG", "taiwan": "TW", "ghana": "GH", "chequia": "CZ", "bielorrusia": "BY", "montenegro": "ME",
     "albania": "AL", "trinidad y tobago": "TT", "gibraltar": "GI", "argelia": "DZ", "tunez": "TN", "nigeria": "NG", "sudafrica": "ZA", "kenia": "KE",
 }
+# 22.11.2026: comunitat autònoma de les cadenes espanyoles d'iptv-org (camp «subdivision», ISO 3166-2:ES,
+# que pot ser la comunitat o la província), amb el mateix nom d'àmbit que fa servir TDTChannels.
+COMUNITATS = {"AN": "Andalucía", "AR": "Aragón", "AS": "P. de Asturias", "IB": "Illes Balears", "CN": "Canarias",
+              "CB": "Cantabria", "CL": "Castilla y León", "CM": "Castilla-La Mancha", "CT": "Cataluña", "CE": "Ceuta",
+              "EX": "Extremadura", "GA": "Galicia", "RI": "La Rioja", "MD": "C. de Madrid", "ML": "Melilla",
+              "MC": "R. de Murcia", "NC": "C. Foral de Navarra", "PV": "País Vasco", "VC": "C. Valenciana"}
+PROVINCIES = {"AN": "AL CA CO GR H J MA SE", "AR": "HU TE Z", "AS": "O", "IB": "PM", "CN": "GC TF", "CB": "S",
+              "CL": "AV BU LE P SA SG SO VA ZA", "CM": "AB CR CU GU TO", "CT": "B GI L T", "EX": "BA CC",
+              "GA": "C LU OU PO", "RI": "LO", "MD": "M", "MC": "MU", "NC": "NA", "PV": "VI SS BI", "VC": "A CS V"}
+PROVINCIA_COMUNITAT = {p: ca for ca, ps in PROVINCIES.items() for p in ps.split()}
+
+
+def comunitat(subdivisio):
+    codi = str(subdivisio or "").upper().removeprefix("ES-")
+    return COMUNITATS.get(codi) or COMUNITATS.get(PROVINCIA_COMUNITAT.get(codi, ""))
+
+
 # Dominis de país que no indiquen el país (es fan servir per a qualsevol cosa).
 TLD_GENERICS = {"tv", "fm", "me", "io", "ai", "co", "ws", "cc", "to", "ly", "am", "gg", "la", "eu", "int"}
 
@@ -305,6 +322,8 @@ def mon(ara, llistes):
             if rf and not canal.get("ref"):
                 canal["ref"] = rf
             canal["o"].append(o)
+        if canal["cc"] == "ES" and comunitat(ic.get("subdivision")):
+            canal["ca"] = comunitat(ic.get("subdivision"))
         cats = [k for k in (ic.get("categories") or []) if isinstance(k, str)]
         if cats:
             canal["k"] = cats[0]

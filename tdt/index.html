@@ -18,9 +18,9 @@
     hora, amb durada; la pàgina ha de quedar oberta. Vegeu «Gravació» al codi.
   - Ordres ffmpeg / streamlink per gravar fora del navegador (ordinador de casa, runner).
   Hi ha emissores que no deixen gravar des d'una altra web (CORS): la pàgina ho diu.
-  - 22.11.2026: pestanya «🌍 Món», amb tdt/mon.json (llista oberta d'iptv-org, la de FreeTV), que
-    el mateix workflow baixa cada dia a la mateixa hora que TDTChannels. Hi van també les cadenes
-    internacionals de TDTChannels, classificades per país; filtres per país i per categoria.
+  - 22.11.2026: tdt/mon.json (llista oberta d'iptv-org, la de FreeTV), que el mateix workflow baixa
+    cada dia a la mateixa hora que TDTChannels, s'afegeix a la llista de televisió: una sola llista
+    amb filtres per àmbit (Espanya) o país (món) i per categoria; la cerca és global (tele i ràdio).
 -->
 <style>
 :root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c;--vermell:#e30613}
@@ -207,14 +207,13 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
     <!-- LLISTA -->
     <section>
       <div class="pestanyes" id="pestanyes">
-        <button type="button" data-t="tv" class="actiu">📺 Espanya</button>
+        <button type="button" data-t="tv" class="actiu">📺 Televisió</button>
         <button type="button" data-t="radio">📻 Ràdio</button>
-        <button type="button" data-t="mon">🌍 Món</button>
       </div>
       <div class="filtres">
         <select id="ambit"></select>
         <select id="categoria" hidden></select>
-        <input type="search" id="cerca" placeholder="Cerca una cadena o emissora">
+        <input type="search" id="cerca" placeholder="Cerca a totes les cadenes i emissores">
       </div>
       <div class="graella" id="graella"></div>
       <button type="button" class="suau" id="mesCanals" hidden style="margin-top:10px">Mostra'n més</button>
@@ -249,12 +248,12 @@ const netNom = s => s.replace(/[\\/:*?"<>|]+/g, " ").replace(/\s+/g, " ").trim()
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 // ---------- Llistes ----------
-const LLISTES = { tv: null, radio: null, mon: null };
+// 22.11.2026: una sola llista de televisió: TDTChannels (tv.json: Espanya i internacionals) més la
+// llista del món d'iptv-org (mon.json), amb filtres per àmbit o país i per categoria. Cada canal
+// porta «_t» ("tv" o "radio"); la cerca busca a totes dues llistes alhora.
+const LLISTES = { tv: null, radio: null };
 let TIPUS = "tv";
-// 22.11.2026: «Món» és una vista de televisió (TIPUS continua sent "tv"): les internacionals de
-// TDTChannels (tv.json) més les d'iptv-org (mon.json), classificades per país (camp «cc»).
-let MON = false, MON_CARREGANT = false;
-const PAS = 300;            // cadenes que es pinten de cop (el Món en té milers)
+const PAS = 300;            // cadenes que es pinten de cop (n'hi ha milers)
 let LIMIT = PAS;
 let NOMS_PAIS = null;
 try { NOMS_PAIS = new Intl.DisplayNames(["ca"], { type: "region" }); } catch (e) {}
@@ -266,26 +265,22 @@ const CATEGORIES_CA = { animation: "Animació", auto: "Motor", business: "Econom
   public: "Públiques", relax: "Relax", religious: "Religioses", science: "Ciència", series: "Sèries", shop: "Teletenda",
   sports: "Esports", travel: "Viatges", weather: "Temps", undefined: "Sense categoria" };
 const nomCategoria = k => CATEGORIES_CA[k] || k;
+// Àmbits temàtics de TDTChannels (Espanya) → categoria.
+const CAT_AMBIT = { "Generalistas": "general", "Informativos": "news", "Deportivos": "sports", "Infantiles": "kids", "Musicales": "music" };
+const categoriaDe = c => c.k || CAT_AMBIT[c.a] || "undefined";
 const internacional = c => c.p === "International";
-const llistaActual = () => MON ? LLISTES.mon : LLISTES[TIPUS];
+const espanyola = c => c.p === "Spain";
+let MON_ACTUALITZAT = null, MON_ESTAT = "carregant";
 async function carregaMon() {
-  if (LLISTES.mon && !LLISTES.mon.error) return;
-  if (MON_CARREGANT) return;
-  MON_CARREGANT = true;
-  $("peuLlista").textContent = "Carregant les cadenes del món…";
   let d = null;
   try { const r = await fetch(`mon.json?v=${Date.now()}`, { cache: "no-store" }); if (r.ok) d = await r.json(); } catch (e) {}
-  MON_DADES = d;
-  MON_CARREGANT = false;
-  construeixMon();
-}
-let MON_DADES;   // undefined: encara no s'ha llegit mon.json
-function construeixMon() {
-  if (MON_DADES === undefined) return;
-  const d = MON_DADES, tdt = ((LLISTES.tv && LLISTES.tv.canals) || []).filter(internacional);
-  LLISTES.mon = { canals: [...tdt, ...((d && d.canals) || [])], actualitzat: d && d.actualitzat, senseMon: !d };
-  if (!LLISTES.mon.canals.length) LLISTES.mon.error = true;
-  if (MON) { omplAmbits(); pinta(); }
+  MON_ESTAT = d ? "ok" : "error";
+  if (d && LLISTES.tv && !LLISTES.tv.error) {
+    for (const c of d.canals || []) c._t = "tv";
+    LLISTES.tv.canals.push(...(d.canals || []));
+    MON_ACTUALITZAT = d.actualitzat || null;
+  }
+  omplAmbits(); pinta();
 }
 const AMBIT_PER_DEFECTE = "Cataluña";
 // Noms dels àmbits de TDTChannels, en català.
@@ -299,7 +294,7 @@ const AMBITS_CA = { "Cataluña": "Catalunya", "Generalistas": "Generalistes", "P
 const nomAmbit = a => AMBITS_CA[a] || a;
 const PREF = "tdtPreferits";
 const preferits = () => { try { return new Set(JSON.parse(llegeix(PREF) || "[]")); } catch (e) { return new Set(); } };
-const clauCanal = (t, c) => `${t}|${c.p}|${c.n}`;
+const clauCanal = (t, c) => `${c._t || t}|${c.p}|${c.n}`;
 
 async function carregaLlistes() {
   for (const t of ["tv", "radio"]) {
@@ -307,66 +302,72 @@ async function carregaLlistes() {
       const r = await fetch(`${t}.json?v=${Date.now()}`, { cache: "no-store" });
       if (!r.ok) throw new Error(r.status);
       LLISTES[t] = await r.json();
+      for (const c of LLISTES[t].canals) c._t = t;
     } catch (e) { LLISTES[t] = { canals: [], error: true }; }
   }
-  construeixMon();
   omplAmbits(); pinta();
+  carregaMon();
 }
 
+// Valor de cada canal al desplegable: els d'Espanya, pel seu àmbit; els de fora, pel país.
+// Les cadenes espanyoles d'iptv-org amb comunitat («ca») van al mateix àmbit que les de TDTChannels.
+const clauAmbit = c => espanyola(c) ? c.a : c.ca ? c.ca : "cc:" + (c.cc || "");
+// Àmbits de TDTChannels que són comunitats autònomes (la resta són temàtics, d'abast estatal).
+const COMUNITATS = new Set(["Andalucía", "Aragón", "P. de Asturias", "Illes Balears", "Canarias", "Cantabria", "Castilla y León",
+  "Castilla-La Mancha", "Cataluña", "Ceuta", "Extremadura", "Galicia", "La Rioja", "C. de Madrid", "Melilla", "R. de Murcia",
+  "C. Foral de Navarra", "País Vasco", "C. Valenciana"]);
+const esDEspanya = c => espanyola(c) || c.cc === "ES";
 function omplAmbits() {
-  const ll = llistaActual(); if (!ll) return;
-  const vist = new Set(), sel = $("ambit"), abans = sel.value;
-  sel.innerHTML = "";
-  const opcio = (v, t, s = sel) => { const o = document.createElement("option"); o.value = v; o.textContent = t; s.append(o); };
+  const ll = LLISTES[TIPUS]; if (!ll) return;
+  const sel = $("ambit"), cs = $("categoria"), abans = sel.value, abansCat = cs.value;
+  const opcio = (v, t, s) => { const o = document.createElement("option"); o.value = v; o.textContent = t; s.append(o); return o; };
   const pref = preferits();
-  $("categoria").hidden = !MON;
-  if (MON) {
-    // Països (en català, per ordre alfabètic) i categories.
-    if (ll.canals.some(c => pref.has(clauCanal(TIPUS, c)))) opcio("*pref", "⭐ Preferits");
-    opcio("*tots", "Tots els països");
-    // 22.11.2026: el número de cada país compta només les cadenes de la categoria triada, i el de
-    // cada categoria, les del país triat; així coincideix amb el que es mostra.
-    const cs = $("categoria"), abansCat = cs.value;
-    const paisos = new Map(), cats = new Map();
-    for (const c of ll.canals) {
-      const cc = c.cc || "", k = c.k || "undefined";
-      if (!abansCat || abansCat === "*totes" || abansCat === k) paisos.set(cc, (paisos.get(cc) || 0) + 1);
-      if (!abans || !abans.startsWith("cc:") || abans === "cc:" + cc) cats.set(k, (cats.get(k) || 0) + 1);
-    }
-    if (abans && abans.startsWith("cc:") && !paisos.has(abans.slice(3))) paisos.set(abans.slice(3), 0);
-    if (abansCat && abansCat !== "*totes" && !cats.has(abansCat)) cats.set(abansCat, 0);
-    [...paisos].map(([cc, n]) => [cc, nomPais(cc), n]).sort((a, b) => (a[0] === "") - (b[0] === "") || a[1].localeCompare(b[1], "ca"))
-      .forEach(([cc, nom, n]) => opcio("cc:" + cc, `${nom} (${n})`));
-    cs.innerHTML = "";
-    opcio("*totes", "Totes les categories", cs);
-    [...cats].map(([k, n]) => [k, nomCategoria(k), n]).sort((a, b) => (a[0] === "undefined") - (b[0] === "undefined") || a[1].localeCompare(b[1], "ca"))
-      .forEach(([k, nom, n]) => opcio(k, `${nom} (${n})`, cs));
-    cs.value = [...cs.options].some(o => o.value === abansCat) ? abansCat : "*totes";
-    sel.value = [...sel.options].some(o => o.value === abans) ? abans : "*tots";
-    return;
+  const tv = TIPUS === "tv";
+  cs.hidden = !tv;
+  const catTriada = tv && abansCat && abansCat !== "*totes" ? abansCat : null;
+  // 22.11.2026: els números compten el que es veurà amb l'altre filtre triat.
+  const ambits = new Map(), cats = new Map();
+  for (const c of ll.canals) {
+    const k = clauAmbit(c), cat = categoriaDe(c);
+    if (!catTriada || cat === catTriada) ambits.set(k, (ambits.get(k) || 0) + 1);
+    if (tv && (!abans || abans === "*tots" || abans === "*pref" || abans === k || (abans === "*ES" && esDEspanya(c)))) cats.set(cat, (cats.get(cat) || 0) + 1);
   }
-  if (ll.canals.some(c => pref.has(clauCanal(TIPUS, c)) && !(TIPUS === "tv" && internacional(c)))) opcio("*pref", "⭐ Preferits");
-  opcio("*tots", "Totes");
-  // Catalunya primer; la resta, en l'ordre de la llista.
-  const ordenats = [...ll.canals].sort((a, b) => (b.a === AMBIT_PER_DEFECTE && b.p === "Spain") - (a.a === AMBIT_PER_DEFECTE && a.p === "Spain"));
-  const paisos = [];
-  for (const c of ordenats) {
-    if (TIPUS === "tv" && internacional(c)) continue;   // 22.11.2026: les internacionals de tele són al Món
-    const k = clauAmbit(c);
-    if (vist.has(k)) continue;
-    vist.add(k);
-    if (internacional(c)) paisos.push([k, nomPais(c.cc), !c.cc]);
-    else opcio(k, c.p === "Spain" ? nomAmbit(c.a) : `🌍 ${c.p} · ${nomAmbit(c.a)}`);
+  sel.innerHTML = "";
+  if (ll.canals.some(c => pref.has(clauCanal(TIPUS, c)))) opcio("*pref", "⭐ Preferits", sel);
+  opcio("*tots", "Totes", sel);
+  // 22.11.2026: Espanya primer; a dins, les temàtiques d'abast estatal (en l'ordre de TDTChannels),
+  // les comunitats autònomes (Catalunya primer, la resta per ordre alfabètic) i les altres cadenes.
+  const esp = [...new Set(ll.canals.filter(c => espanyola(c) || c.ca).map(clauAmbit))];
+  const tematics = esp.filter(a => !COMUNITATS.has(a));
+  const comunitats = esp.filter(a => COMUNITATS.has(a))
+    .sort((a, b) => (b === AMBIT_PER_DEFECTE) - (a === AMBIT_PER_DEFECTE) || nomAmbit(a).localeCompare(nomAmbit(b), "ca"));
+  const altresEsp = ll.canals.some(c => clauAmbit(c) === "cc:ES");
+  const totalEsp = esp.reduce((n, a) => n + (ambits.get(a) || 0), 0) + (ambits.get("cc:ES") || 0);
+  if (esp.length || altresEsp) {
+    const gEsp = document.createElement("optgroup"); gEsp.label = "Espanya";
+    opcio("*ES", `Espanya, totes (${totalEsp})`, gEsp);
+    if (tematics.length) { opcio("", "— Estatals —", gEsp).disabled = true; for (const a of tematics) opcio(a, `   ${nomAmbit(a)} (${ambits.get(a) || 0})`, gEsp); }
+    if (comunitats.length) { opcio("", "— Comunitats autònomes —", gEsp).disabled = true; for (const a of comunitats) opcio(a, `   ${nomAmbit(a)} (${ambits.get(a) || 0})`, gEsp); }
+    if (altresEsp) { opcio("", "— Altres —", gEsp).disabled = true; opcio("cc:ES", `   Altres cadenes espanyoles (${ambits.get("cc:ES") || 0})`, gEsp); }
+    sel.append(gEsp);
   }
-  // Les emissores internacionals, per país i per ordre alfabètic (22.11.2026).
-  paisos.sort((a, b) => a[2] - b[2] || a[1].localeCompare(b[1], "ca")).forEach(([k, nom]) => opcio(k, "🌍 " + nom));
-  const valors = [...sel.options].map(o => o.value);
-  // 21.11.2026: la pàgina s'obre sempre amb «Totes».
-  sel.value = valors.includes(abans) ? abans : "*tots";
+  // La resta de països, per ordre alfabètic; «Internacional» (sense país), al final.
+  const paisos = [...new Set(ll.canals.filter(c => !espanyola(c) && c.cc !== "ES").map(c => c.cc || ""))]
+    .map(cc => [cc, nomPais(cc)]).sort((a, b) => (a[0] === "") - (b[0] === "") || a[1].localeCompare(b[1], "ca"));
+  const gMon = document.createElement("optgroup"); gMon.label = "🌍 Altres països";
+  for (const [cc, nom] of paisos) opcio("cc:" + cc, `${nom} (${ambits.get("cc:" + cc) || 0})`, gMon);
+  if (paisos.length) sel.append(gMon);
+  // 22.11.2026: la pàgina (i cada pestanya) s'obre a dins d'Espanya («Espanya, totes»).
+  sel.value = [...sel.options].some(o => o.value === abans) ? abans : [...sel.options].some(o => o.value === "*ES") ? "*ES" : "*tots";
+  cs.innerHTML = "";
+  if (!tv) return;
+  if (catTriada && !cats.has(catTriada)) cats.set(catTriada, 0);
+  opcio("*totes", "Totes les categories", cs);
+  [...cats].map(([k, n]) => [k, nomCategoria(k), n]).sort((a, b) => (a[0] === "undefined") - (b[0] === "undefined") || a[1].localeCompare(b[1], "ca"))
+    .forEach(([k, nom, n]) => opcio(k, `${nom} (${n})`, cs));
+  cs.value = [...cs.options].some(o => o.value === abansCat) ? abansCat : "*totes";
 }
 
-// Àmbit de cada canal a la llista desplegable; les emissores internacionals, pel seu país (22.11.2026).
-const clauAmbit = c => c.p === "Spain" ? c.a : internacional(c) && TIPUS === "radio" ? "cc:" + (c.cc || "") : `${c.p} · ${c.a}`;
 function inicials(nom) {
   const s = document.createElement("span"); s.className = "inicials";
   s.textContent = nom.replace(/[^\p{L}\p{N} ]/gu, "").split(" ").filter(Boolean).slice(0, 2).map(p => p[0]).join("").toUpperCase() || "·";
@@ -379,57 +380,61 @@ function logo(c) {
   i.onerror = () => { if (c.lo && i.src !== c.lo) i.src = c.lo; else i.replaceWith(inicials(c.n)); };
   return i;
 }
-const reproduible = o => ["m3u8", "mp3", "aac", "youtube"].includes(o.f) || (o.f === "stream" && TIPUS === "radio");
+const reproduible = (o, t = TIPUS) => ["m3u8", "mp3", "aac", "youtube"].includes(o.f) || (o.f === "stream" && t === "radio");
 
 function pinta() {
-  const ll = llistaActual(), g = $("graella"); g.innerHTML = "";
+  const ll = LLISTES[TIPUS], g = $("graella"); g.innerHTML = "";
   $("mesCanals").hidden = true;
   if (!ll) return;
   if (ll.error) { $("peuLlista").textContent = "❌ No s'ha pogut llegir la llista. Encara no s'ha baixat? Llança el workflow «TDT i ràdio»."; return; }
-  const amb = $("ambit").value, q = $("cerca").value.trim().toLowerCase(), pref = preferits(), cat = $("categoria").value;
-  const llista = ll.canals.filter(c => {
-    if (!MON && TIPUS === "tv" && internacional(c)) return false;
-    if (MON && cat && cat !== "*totes" && (c.k || "undefined") !== cat) return false;
-    if (q) return c.n.toLowerCase().includes(q);
+  const amb = $("ambit").value, q = $("cerca").value.trim().toLowerCase(), pref = preferits(), cat = TIPUS === "tv" ? $("categoria").value : "";
+  let llista;
+  if (q) {
+    // 22.11.2026: la cerca és global: tele (Espanya i món) i ràdio, sense tenir en compte els filtres.
+    const totes = [...(LLISTES[TIPUS].canals || []), ...((LLISTES[TIPUS === "tv" ? "radio" : "tv"] || {}).canals || [])];
+    const net = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    const nq = net(q);
+    llista = totes.filter(c => net(c.n).includes(nq));
+  } else llista = ll.canals.filter(c => {
+    if (cat && cat !== "*totes" && categoriaDe(c) !== cat) return false;
     if (amb === "*pref") return pref.has(clauCanal(TIPUS, c));
     if (amb === "*tots") return true;
-    return MON ? "cc:" + (c.cc || "") === amb : clauAmbit(c) === amb;
+    if (amb === "*ES") return esDEspanya(c);
+    return clauAmbit(c) === amb;
   });
   for (const c of llista.slice(0, LIMIT)) {
     const b = document.createElement("button"); b.type = "button"; b.className = "canal";
-    const ops = c.o.filter(reproduible);
+    const ops = c.o.filter(o => reproduible(o, c._t));
     let etiqueta = "";
     if (!ops.length) { b.classList.add("web"); etiqueta = "Només a la seva web"; }
     else if (ops.every(o => o.f === "youtube")) etiqueta = "YouTube · no es grava";
     if (actual && actual.c === c) b.classList.add("actiu");
     const nom = document.createElement("span"); nom.className = "nom"; nom.textContent = (pref.has(clauCanal(TIPUS, c)) ? "⭐ " : "") + c.n;
+    if (q) { const sm = document.createElement("small"); sm.textContent = (c._t === "radio" ? "📻 Ràdio · " : "📺 Tele · ") + (espanyola(c) || c.ca ? "Espanya · " + nomAmbit(clauAmbit(c)) : nomPais(c.cc)); nom.append(sm); }
     if (etiqueta) { const sm = document.createElement("small"); sm.textContent = etiqueta; nom.append(sm); }
-    const ara = araFa(c, TIPUS);
+    const ara = araFa(c, c._t);
     if (ara) { const sm = document.createElement("small"); sm.className = "ara"; sm.textContent = "▶ " + ara.e[2]; nom.append(sm); b.title = `${c.n} · ara: ${ara.e[2]}`; }
     b.append(logo(c), nom);
     b.onclick = () => obre(c);
     g.append(b);
   }
-  const quan = ll.actualitzat ? ll.actualitzat.split(" ") : null;
   if (llista.length > LIMIT) { $("mesCanals").hidden = false; $("mesCanals").textContent = `Mostra'n més (se'n veuen ${LIMIT} de ${llista.length})`; }
-  const tdt = LLISTES.tv && LLISTES.tv.actualitzat ? LLISTES.tv.actualitzat.split(" ") : null;
-  $("peuLlista").textContent = `${llista.length} ${TIPUS === "tv" ? "cadenes" : "emissores"}` + (MON
-    ? (quan ? ` · Llista d'iptv-org actualitzada ${elDia(quan[0])} a les ${quan[1] || ""} h` : ll.senseMon ? " · La llista d'iptv-org encara no s'ha baixat: només hi ha les internacionals de TDTChannels" : "")
-      + (tdt ? ` · TDTChannels, ${elDia(tdt[0])}` : "")
-    : (quan ? ` · Llista de TDTChannels actualitzada ${elDia(quan[0])} a les ${quan[1] || ""} h` : ""));
+  const quan = ll.actualitzat ? ll.actualitzat.split(" ") : null, mon = MON_ACTUALITZAT ? MON_ACTUALITZAT.split(" ") : null;
+  let peu = q ? `${llista.length} resultats a tot arreu (tele i ràdio)` : `${llista.length} ${TIPUS === "tv" ? "cadenes" : "emissores"}`;
+  if (quan) peu += ` · TDTChannels actualitzada ${elDia(quan[0])} a les ${quan[1] || ""} h`;
+  if (TIPUS === "tv" || q) peu += mon ? ` · iptv-org (món) ${elDia(mon[0])} a les ${mon[1] || ""} h` : MON_ESTAT === "carregant" ? " · carregant les cadenes del món…" : " · ❌ no s'han pogut llegir les cadenes del món";
+  $("peuLlista").textContent = peu;
 }
 $("mesCanals").onclick = () => { LIMIT += PAS; pinta(); };
 
 $("pestanyes").onclick = e => {
   const b = e.target.closest("button"); if (!b) return;
-  MON = b.dataset.t === "mon";
-  TIPUS = MON ? "tv" : b.dataset.t;
+  TIPUS = b.dataset.t;
   LIMIT = PAS;
   [...$("pestanyes").children].forEach(x => x.classList.toggle("actiu", x === b));
-  $("cerca").value = ""; $("ambit").value = ""; omplAmbits(); pinta();
-  if (MON) carregaMon();
+  $("cerca").value = ""; $("ambit").value = ""; $("categoria").value = ""; omplAmbits(); pinta();
 };
-$("ambit").onchange = () => { LIMIT = PAS; if (MON) omplAmbits(); pinta(); };
+$("ambit").onchange = () => { LIMIT = PAS; omplAmbits(); pinta(); };
 $("categoria").onchange = () => { LIMIT = PAS; omplAmbits(); pinta(); };
 $("cerca").oninput = () => { LIMIT = PAS; pinta(); };
 
@@ -524,9 +529,9 @@ let HLS = null;
 const ORDRE_GEO = { CAT: 0, SP: 1 };
 
 function obre(c) {
-  const ops = c.o.filter(reproduible).map((o, i) => ({ ...o, i }))
+  const ops = c.o.filter(o => reproduible(o, c._t)).map((o, i) => ({ ...o, i }))
     .sort((a, b) => (a.f === "youtube") - (b.f === "youtube") || (ORDRE_GEO[a.g] ?? 2) - (ORDRE_GEO[b.g] ?? 2) || a.i - b.i);
-  actual = { c, tipus: TIPUS, ops, op: null };
+  actual = { c, tipus: c._t || TIPUS, ops, op: null };
   $("reproductor").hidden = false;
   const t = $("titolCanal"); t.innerHTML = ""; const b = document.createElement("b"); b.textContent = c.n; t.append(logo(c), b);
   $("webCanal").href = c.w || "#"; $("webCanal").hidden = !c.w;
@@ -541,7 +546,7 @@ function obre(c) {
   s.parentElement.hidden = ops.length < 2;
   pinta();
   window.scrollTo({ top: 0, behavior: "smooth" });
-  if (!ops.length) { aturaReproduccio(); avis(`Aquesta ${TIPUS === "tv" ? "cadena" : "emissora"} no té cap senyal obert a la llista: només es pot veure a la seva web.`); pintaOrdres(); controlsGravacio(); return; }
+  if (!ops.length) { aturaReproduccio(); avis(`Aquesta ${actual.tipus === "tv" ? "cadena" : "emissora"} no té cap senyal obert a la llista: només es pot veure a la seva web.`); pintaOrdres(); controlsGravacio(); return; }
   reprodueix(0);
 }
 $("senyal").onchange = () => {

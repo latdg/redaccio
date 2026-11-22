@@ -2,6 +2,7 @@
 # Un cop al dia baixa les llistes de TDTChannels (tv.json i radio.json) a tdt/,
 # i còpia dels logotips nous a tdt/logos/ (els que ja hi són no es tornen a baixar).
 # 14.11.2026: i la programació (tdt/epg.json); a les altres hores, només la programació.
+# 22.11.2026: a la mateixa hora (04.17), també la llista del món d'iptv-org (tdt/mon.json).
 name: La TdG sala de control audiovisual (llistes de TDT i ràdio)
 
 on:
@@ -16,7 +17,7 @@ permissions:
 jobs:
   llistes:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,6 +31,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tdt/tv.json tdt/radio.json tdt/logos
           [ -f tdt/epg.json ] && git add tdt/epg.json
+          [ -f tdt/mon.json ] && git add tdt/mon.json
           if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
           git commit -qm "Llistes i programació de TDT i ràdio"
           for intent in 1 2 3 4 5 6; do

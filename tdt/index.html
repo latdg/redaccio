@@ -361,8 +361,11 @@ function omplAmbits() {
   // L'àmbit que quedarà triat: el d'abans si encara existeix; si no, Espanya (22.11.2026).
   const hiHaPref = ll.canals.some(c => pref.has(clauCanal(TIPUS, c)));
   const amagades = ll.canals.filter(c => c._amaga).length;
+  // 22.11.2026: les caigudes (sense cap senyal viu a la revisió de cada dia) no surten a la llista.
+  const caigudes = ll.canals.filter(c => c.mort && !c._amaga).length;
   const valids = new Set(ll.canals.map(clauAmbit));
   if (amagades) valids.add("*amagades");
+  if (caigudes) valids.add("*caigudes");
   const hiHaEsp = ll.canals.some(esDEspanya);
   const ara = sel.value;
   const abans = (ara === "*tots" || (ara === "*ES" && hiHaEsp) || (ara === "*pref" && hiHaPref) || (ara && valids.has(ara))) ? ara : hiHaEsp ? "*ES" : "*tots";
@@ -372,7 +375,7 @@ function omplAmbits() {
   // 22.11.2026: els números compten el que es veurà amb l'altre filtre triat.
   const ambits = new Map(), cats = new Map();
   for (const c of ll.canals) {
-    if (c._amaga) continue;
+    if (c._amaga || c.mort) continue;
     const k = clauAmbit(c), cat = categoriaDe(c);
     if (!catTriada || cat === catTriada) ambits.set(k, (ambits.get(k) || 0) + 1);
     if (tv && (abans === "*tots" || abans === "*pref" || abans === k || (abans === "*ES" && esDEspanya(c)))) cats.set(cat, (cats.get(cat) || 0) + 1);
@@ -402,6 +405,7 @@ function omplAmbits() {
   const gMon = document.createElement("optgroup"); gMon.label = "🌍 Altres països";
   for (const [cc, nom] of paisos) opcio("cc:" + cc, `${nom} (${ambits.get("cc:" + cc) || 0})`, gMon);
   if (paisos.length) sel.append(gMon);
+  if (caigudes) opcio("*caigudes", `💤 Caigudes avui (${caigudes})`, sel);
   if (amagades) opcio("*amagades", `🙈 Amagades (${amagades})`, sel);
   // 22.11.2026: la pàgina (i cada pestanya) s'obre a dins d'Espanya («Espanya, totes»).
   sel.value = abans;
@@ -444,8 +448,10 @@ function pinta() {
   } else llista = ll.canals.filter(c => {
     if (amb === "*amagades") return !!c._amaga;
     if (c._amaga) return false;
-    if (cat && cat !== "*totes" && categoriaDe(c) !== cat) return false;
+    if (amb === "*caigudes") return !!c.mort;
     if (amb === "*pref") return pref.has(clauCanal(TIPUS, c));
+    if (c.mort) return false;
+    if (cat && cat !== "*totes" && categoriaDe(c) !== cat) return false;
     if (amb === "*tots") return true;
     if (amb === "*ES") return esDEspanya(c);
     return clauAmbit(c) === amb;
@@ -459,6 +465,7 @@ function pinta() {
     if (actual && actual.c === c) b.classList.add("actiu");
     const nom = document.createElement("span"); nom.className = "nom"; nom.textContent = (pref.has(clauCanal(TIPUS, c)) ? "⭐ " : "") + c.n;
     if (q) { const sm = document.createElement("small"); sm.textContent = (c._t === "radio" ? "📻 Ràdio · " : "📺 Tele · ") + (esDEspanya(c) ? "Espanya · " + (clauAmbit(c) === "cc:ES" ? "altres" : nomAmbit(clauAmbit(c))) : nomPais(clauAmbit(c).slice(3))); nom.append(sm); }
+    if (c.mort) { b.classList.add("web"); etiqueta = "💤 Caiguda a la revisió d'avui"; }
     if (etiqueta) { const sm = document.createElement("small"); sm.textContent = etiqueta; nom.append(sm); }
     const ara = araFa(c, c._t);
     if (ara) { const sm = document.createElement("small"); sm.className = "ara"; sm.textContent = "▶ " + ara.e[2]; nom.append(sm); b.title = `${c.n} · ara: ${ara.e[2]}`; }

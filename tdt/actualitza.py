@@ -16,6 +16,12 @@ d'adults, les tancades ni les de la llista de bloqueig, i sense les que ja hi ha
 Les cadenes i emissores internacionals de TDTChannels es reclassifiquen per país (camp «cc») i les
 de televisió hi sumen els senyals d'iptv-org que no tenien (marcats amb «fi»). Si iptv-org falla,
 es manté el mon.json anterior i la classificació i els senyals de l'última llista bona.
+
+22.11.2026: senyals caiguts. A la mateixa execució es prova cada senyal (.m3u8 i ràdio): si no existeix,
+no respon o no envia res, es treu de la cadena. Les cadenes de TDTChannels que es queden sense cap senyal
+porten «mort»: 1 (la pàgina les amaga, però es poden veure a «Caigudes»); les d'iptv-org, no es desen.
+Les respostes «prohibit» (401, 403, 451) no compten com a caigudes: la prova es fa des de GitHub, fora
+d'Espanya, i moltes cadenes bloquegen per país. L'endemà es torna a provar tot.
 """
 import hashlib
 import json
@@ -346,6 +352,11 @@ def mon(ara, llistes):
         if web:
             canal["w"] = web
         sortida.append(canal)
+    try:
+        prova_senyals(sortida, "iptv-org")
+        sortida = [c for c in sortida if c.get("o")]
+    except Exception as e:  # noqa: BLE001
+        print(f"⚠️ prova de senyals d'iptv-org: {e}")
     if len(sortida) < 500:
         print(f"❌ Món: només {len(sortida)} cadenes; es manté l'anterior")
         return False
@@ -357,6 +368,65 @@ def mon(ara, llistes):
     }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"✅ Món: {len(sortida)} cadenes")
     return True
+
+
+# ---------- Senyals caiguts · 22.11.2026 ----------
+UA_NAVEGADOR = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
+FORMATS_PROVA = {"m3u8", "mp3", "aac", "stream"}
+
+
+def senyal_viu(op, ref=None):
+    """True si el senyal respon (o si bloqueja per país); False si és caigut."""
+    cap = {"User-Agent": UA_NAVEGADOR}
+    if ref:
+        cap["Referer"] = ref
+    for intent in (1, 2):
+        try:
+            with requests.get(op["u"], timeout=(8, 12), stream=True, headers=cap, allow_redirects=True) as r:
+                if r.status_code in (401, 403, 451):
+                    return True          # bloqueig per país o per origen: des d'aquí no es pot saber
+                if r.status_code >= 400:
+                    return False
+                tros = b""
+                for bloc in r.iter_content(4096):
+                    tros += bloc
+                    if len(tros) >= 512:
+                        break
+                if op["f"] == "m3u8":
+                    return b"#EXT" in tros[:1024]
+                return len(tros) > 0
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+            if intent == 2:
+                return False
+        except Exception:  # noqa: BLE001
+            return False
+    return False
+
+
+def prova_senyals(canals, etiqueta):
+    """Treu de cada canal els senyals caiguts. Torna el nombre de canals que s'han quedat sense cap senyal."""
+    feines = [(c, o) for c in canals for o in c.get("o", []) if o.get("f") in FORMATS_PROVA and o.get("u")]
+    with ThreadPoolExecutor(96) as ex:
+        resultats = list(ex.map(lambda co: senyal_viu(co[1], co[0].get("ref") or co[1].get("rf")), feines))
+    morts = {id(o) for (c, o), viu in zip(feines, resultats) if not viu}
+    sense = 0
+    for c in canals:
+        if not c.get("o"):
+            continue
+        c["o"] = [o for o in c["o"] if id(o) not in morts]
+        if not c["o"]:
+            sense += 1
+    print(f"📡 {etiqueta}: {len(morts)} senyals caiguts de {len(feines)}; {sense} canals sense cap senyal viu")
+    return sense
+
+
+def marca_morts(canals):
+    """Prova els senyals de les llistes de TDTChannels i marca «mort» les que es queden sense cap."""
+    abans = {id(c): bool(c.get("o")) for c in canals}
+    prova_senyals(canals, "TDTChannels")
+    for c in canals:
+        if abans[id(c)] and not c.get("o"):
+            c["mort"] = 1
 
 
 def programacio(ara):
@@ -447,6 +517,12 @@ def main():
             mon(ara, llistes)
         except Exception as e:  # noqa: BLE001
             print(f"❌ Món: {e}")
+        try:
+            # Els senyals de TDTChannels es proven un cop afegits els d'iptv-org (internacionals).
+            # Els canals sense cap senyal ja d'entrada («Només a la seva web») no es toquen.
+            marca_morts([c for canals in llistes.values() for c in canals])
+        except Exception as e:  # noqa: BLE001
+            print(f"⚠️ prova de senyals de TDTChannels: {e}")
         logos_locals(llistes.values())
     for nom, canals in llistes.items():
         sortida = {

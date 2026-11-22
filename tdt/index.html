@@ -200,13 +200,14 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
     <section id="seccioCasa" hidden>
       <h2>🏠 Gravacions a l'ordinador de casa</h2>
       <ul class="historial" id="casa"></ul>
+      <button type="button" class="suau" id="buidaCasa" hidden style="margin-top:8px">🗑 Treu de la llista les acabades</button>
       <p class="font" id="peuCasa" style="margin:8px 0 0">Les encarregades des de qualsevol aparell. Quan una s'acaba, arriba un avís per Telegram (bot de plens). Els fitxers van a la carpeta en xarxa del router («La TdG Gravacions»), la mateixa de la tele; si no respon, es queden al portàtil, a D:\LaTdG\gravacionstv.</p>
     </section>
 
     <!-- LLISTA -->
     <section>
       <div class="pestanyes" id="pestanyes">
-        <button type="button" data-t="tv" class="actiu">📺 Televisió</button>
+        <button type="button" data-t="tv" class="actiu">📺 Espanya</button>
         <button type="button" data-t="radio">📻 Ràdio</button>
         <button type="button" data-t="mon">🌍 Món</button>
       </div>
@@ -1208,7 +1209,7 @@ async function carregaCasa() {
   const g = d.gravacions || [];
   if (!g.length) { ul.innerHTML = '<li class="font">Encara no n\'hi ha cap.</li>'; RELLOTGE_CASA = setTimeout(carregaCasa, 300000); return; }
   const ara = Date.now();
-  let pendents = false;
+  let pendents = false, acabades = 0;
   ul.innerHTML = "";
   for (const x of g) {
     const inici = x.inici || Date.parse(x.encarregada);
@@ -1233,8 +1234,11 @@ async function carregaCasa() {
     // 21.11.2026: les programades que encara no han començat es poden canviar o anul·lar.
     if (x.estat === "programada" && ara < inici) afegeixGestio(li, x, inici);
     else if (x.estat === "gravant") afegeixAtura(li, x);
+    // 22.11.2026: les acabades es poden treure de la llista (els fitxers no s'esborren).
+    if (["feta", "error", "anullada"].includes(x.estat) || (x.estat === "programada" && ara >= fi + 10 * 60000)) { afegeixTreu(li, x); acabades++; }
     ul.append(li);
   }
+  $("buidaCasa").hidden = !acabades;
   RELLOTGE_CASA = setTimeout(carregaCasa, pendents ? 30000 : 300000);
 }
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") carregaCasa(); });
@@ -1288,6 +1292,40 @@ function afegeixAtura(li, x) {
   };
   li.append(bt, nota);
 }
+// --- 22.11.2026: treure de la llista les gravacions a casa acabades (no esborra els fitxers) ---
+async function treuDeCasa(cos) {
+  try {
+    const r = await fetch(`${PASSARELLA}/esborra`, { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify(cos) });
+    const d = await r.json().catch(() => null);
+    if (d && d.ok) return d;
+    return { ok: false, error: d && d.error ? d.error : "la passarel·la latdg-senyal no té encara el codi nou de tdt/passarella-worker.js" };
+  } catch (e) { return { ok: false, error: navigator.onLine === false ? "no hi ha connexió" : "la passarel·la latdg-senyal no té encara el codi nou de tdt/passarella-worker.js" }; }
+}
+function afegeixTreu(li, x) {
+  const bt = document.createElement("button"); bt.type = "button"; bt.className = "suau"; bt.textContent = "🗑 Treu"; bt.title = "Treu-la de la llista (el fitxer no s'esborra)";
+  const nota = document.createElement("span"); nota.className = "font";
+  bt.onclick = async () => {
+    bt.disabled = true; nota.textContent = "Traient-la…";
+    const r = await treuDeCasa({ ids: [x.id] });
+    if (!r.ok) { nota.textContent = "❌ " + r.error; bt.disabled = false; return; }
+    li.remove(); carregaCasa();
+  };
+  li.append(bt, nota);
+}
+$("buidaCasa").onclick = async () => {
+  if (!confirm("Vols treure de la llista totes les gravacions a casa acabades (fetes, anul·lades i amb error)? Els fitxers gravats no s'esborren; les programades i les que s'estan gravant es queden.")) return;
+  const bt = $("buidaCasa"), text = bt.textContent; bt.disabled = true;
+  let total = 0;
+  for (let volta = 0; volta < 20; volta++) {
+    bt.textContent = `Traient-les… (${total})`;
+    const r = await treuDeCasa({ acabades: true });
+    if (!r.ok) { alert("❌ " + r.error); break; }
+    total += r.esborrades || 0;
+    if (!r.queden || !r.esborrades) break;
+  }
+  bt.textContent = text; bt.disabled = false;
+  carregaCasa();
+};
 async function gestionaACasa(cos) {
   try {
     const r = await fetch(`${PASSARELLA}/gestiona`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cos) });

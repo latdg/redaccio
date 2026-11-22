@@ -17,6 +17,10 @@
 // 21.11.2026: POST /gestiona {id, accio: "canvia"|"anulla"|"atura", inici, minuts} canvia l'hora o la
 //   durada d'una gravació programada a casa, l'anul·la o atura la que s'està fent: llança el workflow «Gestió de
 //   gravació» (gestio-gravacio.yml) de latdg/vigilant-plens.
+// 22.11.2026: POST /esborra {ids: [...]} o {acabades: true} treu de la llista de gravacions a casa les
+//   que ja s'han acabat (fetes, amb error, anul·lades o sense notícies): n'esborra les execucions dels
+//   workflows de latdg/vigilant-plens. Els fitxers gravats no es toquen. Les que estan programades o
+//   gravant no s'esborren mai.
 
 const ORIGENS = ["https://latdg.github.io"];
 const REPO = "https://api.github.com/repos/latdg/vigilant-plens/actions";
@@ -42,6 +46,7 @@ export default {
     if (aqui.pathname === "/casa") return encarregaACasa(req, env, cors);
     if (aqui.pathname === "/estat") return donaEstat(env, cors);
     if (aqui.pathname === "/gestiona") return gestionaACasa(req, env, cors);
+    if (aqui.pathname === "/esborra") return esborraDeCasa(req, env, cors);
     const u = aqui.searchParams.get("u");
     const ref = aqui.searchParams.get("ref");
     if (!u || !/^https?:\/\//i.test(u)) return new Response("Falta l'adreça.", { status: 400, headers: cors });
@@ -172,6 +177,12 @@ async function rebEstat(req, env, cors) {
 async function donaEstat(env, cors) {
   const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "no-store" } });
   if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Falta el secret GITHUB_TOKEN al Worker." }, 500);
+  const { gravacions } = await calculaGravacions(env);
+  return json({ ok: true, gravacions: gravacions.slice(0, 15).map(({ runs, ...g }) => g) });
+}
+
+// Totes les gravacions a casa (de la més nova a la més antiga), amb les execucions de cada una («runs»).
+async function calculaGravacions(env) {
   const llista = async cami => {
     try { const r = await fetch(`${REPO}/${cami}`, { headers: capGitHub(env) }); return r.ok ? (await r.json()).workflow_runs || [] : []; }
     catch (e) { return []; }
@@ -195,6 +206,11 @@ async function donaEstat(env, cors) {
     const [id, estat, ...resta] = String(r.display_title || "").split(" | ");
     if (id && estat && !darrer[id]) darrer[id] = { estat: estat.trim(), text: resta.join(" | ").trim(), quan: r.created_at };
   }
+  const execucions = {};   // id de la gravació → execucions d'estat i de gestió
+  for (const r of [...estats, ...gestions]) {
+    const id = String(r.display_title || "").split(" | ")[0].trim();
+    if (id) (execucions[id] = execucions[id] || []).push(r.id);
+  }
   const gravacions = [];
   for (const r of encarrecs) {
     const parts = String(r.display_title || "").split(" | ");
@@ -216,7 +232,37 @@ async function donaEstat(env, cors) {
     else if (r.status !== "completed") estat = "encarregada";
     else if (r.conclusion === "success") estat = "programada";
     else { estat = "error"; text = "el portàtil no l'ha pogut programar"; }
-    gravacions.push({ id, canal, minuts: +minuts || 0, inici: +inici || 0, encarregada: r.created_at, estat, text });
+    gravacions.push({ id, canal, minuts: +minuts || 0, inici: +inici || 0, encarregada: r.created_at, estat, text, runs: [r.id, ...(execucions[id] || [])] });
   }
-  return json({ ok: true, gravacions: gravacions.slice(0, 15) });
+  return { gravacions };
+}
+
+// ---------- 22.11.2026: treure de la llista les gravacions a casa acabades ----------
+function acabada(g) {
+  if (["feta", "error", "anullada"].includes(g.estat)) return true;
+  // programada que ja hauria d'haver acabat i de la qual el portàtil no n'ha dit res
+  const inici = g.inici || Date.parse(g.encarregada);
+  return g.estat === "programada" && Date.now() > inici + g.minuts * 60000 + 10 * 60000;
+}
+async function esborraDeCasa(req, env, cors) {
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { ...cors, "Content-Type": "application/json" } });
+  if (req.method !== "POST") return json({ ok: false, error: "Cal un POST." }, 405);
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Falta el secret GITHUB_TOKEN al Worker." }, 500);
+  let d;
+  try { d = await req.json(); } catch (e) { return json({ ok: false, error: "Dades incorrectes." }, 400); }
+  const ids = new Set((Array.isArray(d.ids) ? d.ids : []).map(x => String(x).slice(0, 40).replace(/[^\w-]/g, "")).filter(Boolean));
+  if (!ids.size && !d.acabades) return json({ ok: false, error: "Dades incorrectes." }, 400);
+  const { gravacions } = await calculaGravacions(env);
+  const triades = gravacions.filter(g => acabada(g) && (d.acabades || ids.has(g.id)));
+  // Cloudflare deixa fer unes 50 consultes per petició: se n'esborren fins a 40 execucions i la pàgina torna a demanar.
+  const runs = [];
+  for (const g of triades) { if (runs.length + g.runs.length > 40 && runs.length) break; runs.push(...g.runs); }
+  let errors = 0;
+  for (const id of runs) {
+    const r = await fetch(`${REPO}/runs/${id}`, { method: "DELETE", headers: capGitHub(env) });
+    if (r.status !== 204 && r.status !== 404) errors++;
+  }
+  if (errors && errors === runs.length) return json({ ok: false, error: "GitHub no ha deixat esborrar-les (cal que el testimoni GITHUB_TOKEN tingui permís «Actions: read and write»)." }, 502);
+  const fetes = triades.filter(g => g.runs.every(x => runs.includes(x))).length;
+  return json({ ok: true, esborrades: fetes, queden: triades.length > fetes });
 }

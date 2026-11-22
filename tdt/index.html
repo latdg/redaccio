@@ -139,8 +139,19 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
         <div class="titol-canal" id="titolCanal"></div>
         <div class="fila">
           <button type="button" class="suau" id="preferit" title="Afegeix o treu dels preferits">☆ Preferit</button>
+          <button type="button" class="suau" id="classifica" title="Canvia on surt a la llista (es manté encara que la llista s'actualitzi)">✏️ Classifica</button>
           <a id="webCanal" target="_blank" rel="noopener">Web de la cadena ↗</a>
         </div>
+      </div>
+      <!-- 22.11.2026: reclassificar una cadena o emissora (tdt/correccions.json) -->
+      <div class="fila" id="editorCanal" hidden style="margin-top:10px;padding:10px;border:1px solid var(--linia);border-radius:10px">
+        <label class="fila" style="gap:6px;font-size:.9rem">On va <select id="corAmbit"></select></label>
+        <label class="fila" style="gap:6px;font-size:.9rem" id="corCatBox">Categoria <select id="corCat"></select></label>
+        <label class="fila" style="gap:6px;font-size:.9rem"><input type="checkbox" id="corAmaga"> Amaga-la de la llista</label>
+        <button type="button" id="corDesa">Desa</button>
+        <button type="button" class="suau" id="corOriginal">Torna a com era</button>
+        <button type="button" class="suau" id="corTanca">Tanca</button>
+        <span class="font" id="corNota" style="width:100%"></span>
       </div>
       <div class="fila" style="margin-top:10px">
         <label class="fila" style="gap:6px;font-size:.9rem;color:var(--suau)">Senyal <select id="senyal"></select></label>
@@ -267,7 +278,7 @@ const CATEGORIES_CA = { animation: "Animació", auto: "Motor", business: "Econom
 const nomCategoria = k => CATEGORIES_CA[k] || k;
 // Àmbits temàtics de TDTChannels (Espanya) → categoria.
 const CAT_AMBIT = { "Generalistas": "general", "Informativos": "news", "Deportivos": "sports", "Infantiles": "kids", "Musicales": "music" };
-const categoriaDe = c => c.k || CAT_AMBIT[c.a] || "undefined";
+const categoriaDe = c => c._k || c.k || CAT_AMBIT[c.a] || "undefined";
 const internacional = c => c.p === "International";
 const espanyola = c => c.p === "Spain";
 let MON_ACTUALITZAT = null, MON_ESTAT = "carregant";
@@ -277,6 +288,7 @@ async function carregaMon() {
   MON_ESTAT = d ? "ok" : "error";
   if (d && LLISTES.tv && !LLISTES.tv.error) {
     for (const c of d.canals || []) c._t = "tv";
+    aplicaCorreccions(d.canals);
     LLISTES.tv.canals.push(...(d.canals || []));
     MON_ACTUALITZAT = d.actualitzat || null;
   }
@@ -296,13 +308,35 @@ const PREF = "tdtPreferits";
 const preferits = () => { try { return new Set(JSON.parse(llegeix(PREF) || "[]")); } catch (e) { return new Set(); } };
 const clauCanal = (t, c) => `${c._t || t}|${c.p}|${c.n}`;
 
+// ---------- Correccions fetes a mà (tdt/correccions.json) · 22.11.2026 ----------
+// {tv: {"<p>|<nom>": {ambit, k, amaga}}, radio: {…}}. Les desa el workflow «Correccions» (corregeix.yml),
+// que la passarel·la llança; es mantenen encara que les llistes s'actualitzin cada dia.
+let CORRECCIONS = { tv: {}, radio: {} };
+const clauCor = c => `${c.p}|${c.n}`;
+function aplicaCorreccions(canals) {
+  for (const c of canals || []) {
+    const k = (CORRECCIONS[c._t] || {})[clauCor(c)];
+    c._amb = k && k.ambit && k.ambit !== ambitOriginal(c) ? k.ambit : undefined;
+    c._k = (k && k.k) || undefined;
+    c._amaga = !!(k && k.amaga);
+  }
+}
+async function carregaCorreccions() {
+  try {
+    const r = await fetch(`correccions.json?v=${Date.now()}`, { cache: "no-store" });
+    if (r.ok) { const d = await r.json(); CORRECCIONS = { tv: d.tv || {}, radio: d.radio || {} }; }
+  } catch (e) {}
+}
+
 async function carregaLlistes() {
+  await carregaCorreccions();
   for (const t of ["tv", "radio"]) {
     try {
       const r = await fetch(`${t}.json?v=${Date.now()}`, { cache: "no-store" });
       if (!r.ok) throw new Error(r.status);
       LLISTES[t] = await r.json();
       for (const c of LLISTES[t].canals) c._t = t;
+      aplicaCorreccions(LLISTES[t].canals);
     } catch (e) { LLISTES[t] = { canals: [], error: true }; }
   }
   omplAmbits(); pinta();
@@ -311,12 +345,14 @@ async function carregaLlistes() {
 
 // Valor de cada canal al desplegable: els d'Espanya, pel seu àmbit; els de fora, pel país.
 // Les cadenes espanyoles d'iptv-org amb comunitat («ca») van al mateix àmbit que les de TDTChannels.
-const clauAmbit = c => espanyola(c) ? c.a : c.ca ? c.ca : "cc:" + (c.cc || "");
+const ambitOriginal = c => espanyola(c) ? c.a : c.ca ? c.ca : "cc:" + (c.cc || "");
+// 22.11.2026: les correccions fetes a mà («_amb») manen sobre la classificació de la llista.
+const clauAmbit = c => c._amb || ambitOriginal(c);
 // Àmbits de TDTChannels que són comunitats autònomes (la resta són temàtics, d'abast estatal).
 const COMUNITATS = new Set(["Andalucía", "Aragón", "P. de Asturias", "Illes Balears", "Canarias", "Cantabria", "Castilla y León",
   "Castilla-La Mancha", "Cataluña", "Ceuta", "Extremadura", "Galicia", "La Rioja", "C. de Madrid", "Melilla", "R. de Murcia",
   "C. Foral de Navarra", "País Vasco", "C. Valenciana"]);
-const esDEspanya = c => espanyola(c) || c.cc === "ES";
+const esDEspanya = c => { const a = clauAmbit(c); return a.startsWith("cc:") ? a === "cc:ES" : true; };
 function omplAmbits() {
   const ll = LLISTES[TIPUS]; if (!ll) return;
   const sel = $("ambit"), cs = $("categoria"), abansCat = cs.value;
@@ -324,7 +360,9 @@ function omplAmbits() {
   const pref = preferits();
   // L'àmbit que quedarà triat: el d'abans si encara existeix; si no, Espanya (22.11.2026).
   const hiHaPref = ll.canals.some(c => pref.has(clauCanal(TIPUS, c)));
+  const amagades = ll.canals.filter(c => c._amaga).length;
   const valids = new Set(ll.canals.map(clauAmbit));
+  if (amagades) valids.add("*amagades");
   const hiHaEsp = ll.canals.some(esDEspanya);
   const ara = sel.value;
   const abans = (ara === "*tots" || (ara === "*ES" && hiHaEsp) || (ara === "*pref" && hiHaPref) || (ara && valids.has(ara))) ? ara : hiHaEsp ? "*ES" : "*tots";
@@ -334,6 +372,7 @@ function omplAmbits() {
   // 22.11.2026: els números compten el que es veurà amb l'altre filtre triat.
   const ambits = new Map(), cats = new Map();
   for (const c of ll.canals) {
+    if (c._amaga) continue;
     const k = clauAmbit(c), cat = categoriaDe(c);
     if (!catTriada || cat === catTriada) ambits.set(k, (ambits.get(k) || 0) + 1);
     if (tv && (abans === "*tots" || abans === "*pref" || abans === k || (abans === "*ES" && esDEspanya(c)))) cats.set(cat, (cats.get(cat) || 0) + 1);
@@ -343,7 +382,7 @@ function omplAmbits() {
   opcio("*tots", "Totes", sel);
   // 22.11.2026: Espanya primer; a dins, les temàtiques d'abast estatal (en l'ordre de TDTChannels),
   // les comunitats autònomes (Catalunya primer, la resta per ordre alfabètic) i les altres cadenes.
-  const esp = [...new Set(ll.canals.filter(c => espanyola(c) || c.ca).map(clauAmbit))];
+  const esp = [...new Set(ll.canals.map(clauAmbit).filter(a => !a.startsWith("cc:")))];
   const tematics = esp.filter(a => !COMUNITATS.has(a));
   const comunitats = esp.filter(a => COMUNITATS.has(a))
     .sort((a, b) => (b === AMBIT_PER_DEFECTE) - (a === AMBIT_PER_DEFECTE) || nomAmbit(a).localeCompare(nomAmbit(b), "ca"));
@@ -358,11 +397,12 @@ function omplAmbits() {
     sel.append(gEsp);
   }
   // La resta de països, per ordre alfabètic; «Internacional» (sense país), al final.
-  const paisos = [...new Set(ll.canals.filter(c => !espanyola(c) && c.cc !== "ES").map(c => c.cc || ""))]
+  const paisos = [...new Set(ll.canals.map(clauAmbit).filter(a => a.startsWith("cc:") && a !== "cc:ES").map(a => a.slice(3)))]
     .map(cc => [cc, nomPais(cc)]).sort((a, b) => (a[0] === "") - (b[0] === "") || a[1].localeCompare(b[1], "ca"));
   const gMon = document.createElement("optgroup"); gMon.label = "🌍 Altres països";
   for (const [cc, nom] of paisos) opcio("cc:" + cc, `${nom} (${ambits.get("cc:" + cc) || 0})`, gMon);
   if (paisos.length) sel.append(gMon);
+  if (amagades) opcio("*amagades", `🙈 Amagades (${amagades})`, sel);
   // 22.11.2026: la pàgina (i cada pestanya) s'obre a dins d'Espanya («Espanya, totes»).
   sel.value = abans;
   cs.innerHTML = "";
@@ -400,8 +440,10 @@ function pinta() {
     const totes = [...(LLISTES[TIPUS].canals || []), ...((LLISTES[TIPUS === "tv" ? "radio" : "tv"] || {}).canals || [])];
     const net = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
     const nq = net(q);
-    llista = totes.filter(c => net(c.n).includes(nq));
+    llista = totes.filter(c => !c._amaga && net(c.n).includes(nq));
   } else llista = ll.canals.filter(c => {
+    if (amb === "*amagades") return !!c._amaga;
+    if (c._amaga) return false;
     if (cat && cat !== "*totes" && categoriaDe(c) !== cat) return false;
     if (amb === "*pref") return pref.has(clauCanal(TIPUS, c));
     if (amb === "*tots") return true;
@@ -416,7 +458,7 @@ function pinta() {
     else if (ops.every(o => o.f === "youtube")) etiqueta = "YouTube · no es grava";
     if (actual && actual.c === c) b.classList.add("actiu");
     const nom = document.createElement("span"); nom.className = "nom"; nom.textContent = (pref.has(clauCanal(TIPUS, c)) ? "⭐ " : "") + c.n;
-    if (q) { const sm = document.createElement("small"); sm.textContent = (c._t === "radio" ? "📻 Ràdio · " : "📺 Tele · ") + (espanyola(c) || c.ca ? "Espanya · " + nomAmbit(clauAmbit(c)) : nomPais(c.cc)); nom.append(sm); }
+    if (q) { const sm = document.createElement("small"); sm.textContent = (c._t === "radio" ? "📻 Ràdio · " : "📺 Tele · ") + (esDEspanya(c) ? "Espanya · " + (clauAmbit(c) === "cc:ES" ? "altres" : nomAmbit(clauAmbit(c))) : nomPais(clauAmbit(c).slice(3))); nom.append(sm); }
     if (etiqueta) { const sm = document.createElement("small"); sm.textContent = etiqueta; nom.append(sm); }
     const ara = araFa(c, c._t);
     if (ara) { const sm = document.createElement("small"); sm.className = "ara"; sm.textContent = "▶ " + ara.e[2]; nom.append(sm); b.title = `${c.n} · ara: ${ara.e[2]}`; }
@@ -542,6 +584,7 @@ function obre(c) {
   const t = $("titolCanal"); t.innerHTML = ""; const b = document.createElement("b"); b.textContent = c.n; t.append(logo(c), b);
   $("webCanal").href = c.w || "#"; $("webCanal").hidden = !c.w;
   marcaPreferit();
+  $("editorCanal").hidden = true;
   actual.epgIdx = null; pintaProgramacio();
   const s = $("senyal"); s.innerHTML = "";
   ops.forEach((o, i) => {
@@ -648,6 +691,65 @@ $("preferit").onclick = () => {
   marcaPreferit();
   if (actual.tipus === TIPUS) { omplAmbits(); pinta(); }
 };
+
+// ---------- Classificar una cadena a mà (22.11.2026) ----------
+function opcionsAmbit(sel, t, actualAmb) {
+  sel.innerHTML = "";
+  const opcio = (v, txt, s) => { const o = document.createElement("option"); o.value = v; o.textContent = txt; s.append(o); };
+  const canals = (LLISTES[t] && LLISTES[t].canals) || [];
+  const ambits = new Set(canals.map(clauAmbit));
+  ambits.add(actualAmb);
+  const g1 = document.createElement("optgroup"); g1.label = "Espanya · estatals";
+  [...new Set([...ambits].filter(a => !a.startsWith("cc:") && !COMUNITATS.has(a)))].forEach(a => opcio(a, nomAmbit(a), g1));
+  const g2 = document.createElement("optgroup"); g2.label = "Espanya · comunitats autònomes";
+  [...COMUNITATS].sort((a, b) => nomAmbit(a).localeCompare(nomAmbit(b), "ca")).forEach(a => opcio(a, nomAmbit(a), g2));
+  opcio("cc:ES", "Altres cadenes espanyoles", g2);
+  const g3 = document.createElement("optgroup"); g3.label = "Altres països";
+  [...ambits].filter(a => a.startsWith("cc:") && a !== "cc:ES").map(a => [a, nomPais(a.slice(3))])
+    .sort((a, b) => (a[0] === "cc:") - (b[0] === "cc:") || a[1].localeCompare(b[1], "ca")).forEach(([a, n]) => opcio(a, n, g3));
+  for (const g of [g1, g2, g3]) if (g.children.length) sel.append(g);
+  sel.value = actualAmb;
+}
+$("classifica").onclick = () => {
+  if (!actual) return;
+  const c = actual.c, ed = $("editorCanal");
+  if (!ed.hidden) { ed.hidden = true; return; }
+  opcionsAmbit($("corAmbit"), c._t, clauAmbit(c));
+  const cs = $("corCat"); cs.innerHTML = "";
+  $("corCatBox").hidden = c._t !== "tv";
+  for (const [k, n] of Object.entries(CATEGORIES_CA).sort((a, b) => (a[0] === "undefined") - (b[0] === "undefined") || a[1].localeCompare(b[1], "ca"))) {
+    const o = document.createElement("option"); o.value = k; o.textContent = n; cs.append(o);
+  }
+  cs.value = categoriaDe(c);
+  $("corAmaga").checked = !!c._amaga;
+  $("corNota").textContent = `Ara és a: ${esDEspanya(c) ? "Espanya · " + (clauAmbit(c) === "cc:ES" ? "altres cadenes" : nomAmbit(clauAmbit(c))) : nomPais(clauAmbit(c).slice(3))}${c._amb || c._k || c._amaga ? " (classificada a mà)" : ""}.`;
+  ed.hidden = false;
+};
+$("corTanca").onclick = () => { $("editorCanal").hidden = true; };
+async function desaCorreccio(c, cos) {
+  $("corDesa").disabled = $("corOriginal").disabled = true; $("corNota").textContent = "Desant…";
+  let d = null, r = null;
+  try {
+    r = await fetch(`${PASSARELLA}/corregeix`, { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" }, body: JSON.stringify({ tipus: c._t, clau: clauCor(c), ...cos }) });
+    d = await r.json().catch(() => null);
+  } catch (e) {}
+  $("corDesa").disabled = $("corOriginal").disabled = false;
+  if (!d || !d.ok) { $("corNota").textContent = "❌ " + (d && d.error ? d.error : "la passarel·la latdg-senyal no té encara el codi nou de tdt/passarella-worker.js"); return; }
+  const taula = CORRECCIONS[c._t] = CORRECCIONS[c._t] || {};
+  if (cos.esborra) delete taula[clauCor(c)]; else taula[clauCor(c)] = { ambit: cos.ambit, k: cos.k, amaga: cos.amaga };
+  aplicaCorreccions([c]);
+  $("corNota").textContent = "✅ Desat. Es manté encara que la llista s'actualitzi (als altres aparells es veu d'aquí a un o dos minuts).";
+  if (c._t === TIPUS) { omplAmbits(); pinta(); }
+}
+$("corDesa").onclick = () => {
+  const c = actual && actual.c; if (!c) return;
+  const ambit = $("corAmbit").value, k = c._t === "tv" ? $("corCat").value : "", amaga = $("corAmaga").checked;
+  const kOriginal = c.k || CAT_AMBIT[c.a] || "undefined";
+  const cos = { ambit: ambit === ambitOriginal(c) ? "" : ambit, k: k && k !== kOriginal ? k : "", amaga };
+  if (!cos.ambit && !cos.k && !cos.amaga) { desaCorreccio(c, { esborra: true }); return; }
+  desaCorreccio(c, cos);
+};
+$("corOriginal").onclick = () => { const c = actual && actual.c; if (c) desaCorreccio(c, { esborra: true }); };
 
 // ---------- Gravació ----------
 // 05.11.2026 (2a versió): cada gravació és una feina independent, de qualsevol cadena o

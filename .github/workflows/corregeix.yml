@@ -1,0 +1,80 @@
+# Correccions de la sala de control — La TdG · 22.11.2026
+# Desa a tdt/correccions.json la classificació feta a mà d'una cadena o emissora (on va, categoria,
+# amagada). El llança la passarel·la latdg-senyal (POST /corregeix) des del botó «✏️ Classifica».
+# La pàgina tdt/ aplica aquestes correccions a sobre de les llistes del dia, i per això no es perden
+# quan TDTChannels i iptv-org s'actualitzen.
+name: Correccions de la sala de control
+
+on:
+  workflow_dispatch:
+    inputs:
+      tipus: { description: "tv o radio", required: true }
+      clau: { description: "p|nom de la cadena", required: true }
+      ambit: { description: "àmbit, comunitat o cc:XX (buit: el de la llista)", required: false, default: "" }
+      k: { description: "categoria (buit: la de la llista)", required: false, default: "" }
+      amaga: { description: "1 per amagar-la", required: false, default: "0" }
+      esborra: { description: "1 per tornar-la a com era", required: false, default: "0" }
+
+run-name: "Correcció: ${{ inputs.clau }}"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: correccions
+  cancel-in-progress: false
+
+jobs:
+  desa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Desa la correcció
+        env:
+          TIPUS: ${{ inputs.tipus }}
+          CLAU: ${{ inputs.clau }}
+          AMBIT: ${{ inputs.ambit }}
+          CAT: ${{ inputs.k }}
+          AMAGA: ${{ inputs.amaga }}
+          ESBORRA: ${{ inputs.esborra }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          f = Path("tdt/correccions.json")
+          d = json.loads(f.read_text(encoding="utf-8")) if f.exists() else {}
+          tipus = os.environ["TIPUS"]
+          if tipus not in ("tv", "radio"):
+              raise SystemExit("tipus incorrecte")
+          clau = os.environ["CLAU"].strip()[:200]
+          taula = d.setdefault(tipus, {})
+          d.setdefault("tv", {}); d.setdefault("radio", {})
+          if os.environ.get("ESBORRA") == "1":
+              taula.pop(clau, None)
+          else:
+              c = {}
+              if os.environ.get("AMBIT", "").strip():
+                  c["ambit"] = os.environ["AMBIT"].strip()[:60]
+              if re.fullmatch(r"[a-z]{1,30}", os.environ.get("CAT", "").strip()):
+                  c["k"] = os.environ["CAT"].strip()
+              if os.environ.get("AMAGA") == "1":
+                  c["amaga"] = True
+              if c:
+                  taula[clau] = c
+              else:
+                  taula.pop(clau, None)
+          f.write_text(json.dumps(d, ensure_ascii=False, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+          print(f"{tipus} · {clau}: {taula.get(clau, 'com era')}")
+          PY
+          git config user.name "La TdG (correccions)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tdt/correccions.json
+          if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
+          git commit -qm "Correcció de la sala de control: ${CLAU}"
+          for intent in 1 2 3 4 5 6; do
+            git push -q origin HEAD:main && exit 0
+            sleep $((intent * 5))
+            git pull -q --rebase origin main || { git rebase --abort; exit 1; }
+          done
+          echo "No s'ha pogut pujar"; exit 1

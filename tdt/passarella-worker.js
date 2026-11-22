@@ -21,6 +21,10 @@
 //   que ja s'han acabat (fetes, amb error, anul·lades o sense notícies): n'esborra les execucions dels
 //   workflows de latdg/vigilant-plens. Els fitxers gravats no es toquen. Les que estan programades o
 //   gravant no s'esborren mai.
+// 22.11.2026: POST /corregeix {tipus, clau, ambit, k, amaga} o {tipus, clau, esborra: true} desa una
+//   classificació feta a mà d'una cadena o emissora: llança el workflow «Correccions» (corregeix.yml) de
+//   latdg/redaccio, que l'escriu a tdt/correccions.json. Cal que el testimoni GITHUB_TOKEN tingui també
+//   el repositori latdg/redaccio amb permís «Actions: read and write».
 
 const ORIGENS = ["https://latdg.github.io"];
 const REPO = "https://api.github.com/repos/latdg/vigilant-plens/actions";
@@ -47,6 +51,7 @@ export default {
     if (aqui.pathname === "/estat") return donaEstat(env, cors);
     if (aqui.pathname === "/gestiona") return gestionaACasa(req, env, cors);
     if (aqui.pathname === "/esborra") return esborraDeCasa(req, env, cors);
+    if (aqui.pathname === "/corregeix") return corregeix(req, env, cors);
     const u = aqui.searchParams.get("u");
     const ref = aqui.searchParams.get("ref");
     if (!u || !/^https?:\/\//i.test(u)) return new Response("Falta l'adreça.", { status: 400, headers: cors });
@@ -265,4 +270,26 @@ async function esborraDeCasa(req, env, cors) {
   if (errors && errors === runs.length) return json({ ok: false, error: "GitHub no ha deixat esborrar-les (cal que el testimoni GITHUB_TOKEN tingui permís «Actions: read and write»)." }, 502);
   const fetes = triades.filter(g => g.runs.every(x => runs.includes(x))).length;
   return json({ ok: true, esborrades: fetes, queden: triades.length > fetes });
+}
+
+// ---------- 22.11.2026: classificar a mà una cadena o emissora (tdt/correccions.json) ----------
+async function corregeix(req, env, cors) {
+  const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { ...cors, "Content-Type": "application/json" } });
+  if (req.method !== "POST") return json({ ok: false, error: "Cal un POST." }, 405);
+  if (!env.GITHUB_TOKEN) return json({ ok: false, error: "Falta el secret GITHUB_TOKEN al Worker." }, 500);
+  let d;
+  try { d = await req.json(); } catch (e) { return json({ ok: false, error: "Dades incorrectes." }, 400); }
+  const net = (x, n) => String(x || "").replace(/[\r\n\t]+/g, " ").trim().slice(0, n);
+  const tipus = d.tipus === "radio" ? "radio" : d.tipus === "tv" ? "tv" : "";
+  const clau = net(d.clau, 200);
+  const ambit = net(d.ambit, 60), k = net(d.k, 30).replace(/[^a-z]/g, "");
+  if (!tipus || !clau.includes("|")) return json({ ok: false, error: "Dades incorrectes." }, 400);
+  if (ambit && !/^(cc:[A-Z]{0,2}|[\p{L} .'-]+)$/u.test(ambit)) return json({ ok: false, error: "Àmbit incorrecte." }, 400);
+  const inputs = { tipus, clau, ambit, k, amaga: d.amaga ? "1" : "0", esborra: d.esborra ? "1" : "0" };
+  const r = await fetch("https://api.github.com/repos/latdg/redaccio/actions/workflows/corregeix.yml/dispatches", {
+    method: "POST", headers: capGitHub(env), body: JSON.stringify({ ref: "main", inputs }),
+  });
+  if (r.status === 204) return json({ ok: true });
+  if (r.status === 403 || r.status === 404) return json({ ok: false, error: "GitHub no deixa desar-la: cal afegir el repositori latdg/redaccio (Actions: read and write) al testimoni GITHUB_TOKEN de la passarel·la." }, 502);
+  return json({ ok: false, error: `GitHub ha dit ${r.status}` }, 502);
 }

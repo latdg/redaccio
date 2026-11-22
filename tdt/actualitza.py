@@ -196,7 +196,7 @@ def format_senyal(u):
 def baixa_iptv():
     """Torna {fitxer: dades} de l'API d'iptv-org, o None si falla alguna de les imprescindibles."""
     dades = {}
-    for nom in ("channels", "streams", "logos", "blocklist"):
+    for nom in ("channels", "streams", "logos", "blocklist", "feeds"):
         try:
             r = requests.get(IPTV + nom + ".json", timeout=180, headers={"User-Agent": "LaTdG-redaccio/1.0"})
             r.raise_for_status()
@@ -310,6 +310,16 @@ def mon(ara, llistes):
             # el logotip general de la cadena (sense «feed») té preferència
             if l["channel"] not in logos or (not l.get("feed") and logos[l["channel"]][0]):
                 logos[l["channel"]] = (bool(l.get("feed")), l["url"])
+    # Comunitat de les cadenes espanyoles segons la zona d'emissió dels seus senyals («s/ES-CT», «s/ES-B»…).
+    comunitat_feed = {}
+    for f in dades.get("feeds", []):
+        if not isinstance(f, dict) or not f.get("channel"):
+            continue
+        for zona in f.get("broadcast_area") or []:
+            if isinstance(zona, str) and zona.upper().startswith("S/ES-") and comunitat(zona[2:]):
+                if f.get("is_main") or f["channel"] not in comunitat_feed:
+                    comunitat_feed[f["channel"]] = comunitat(zona[2:])
+                break
     sortida = []
     for cid, ops in senyals.items():
         if cid in usats or not ops:
@@ -322,8 +332,10 @@ def mon(ara, llistes):
             if rf and not canal.get("ref"):
                 canal["ref"] = rf
             canal["o"].append(o)
-        if canal["cc"] == "ES" and comunitat(ic.get("subdivision")):
-            canal["ca"] = comunitat(ic.get("subdivision"))
+        if canal["cc"] == "ES":
+            ca = comunitat(ic.get("subdivision")) or comunitat_feed.get(cid)
+            if ca:
+                canal["ca"] = ca
         cats = [k for k in (ic.get("categories") or []) if isinstance(k, str)]
         if cats:
             canal["k"] = cats[0]

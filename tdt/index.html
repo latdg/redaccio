@@ -319,9 +319,15 @@ const COMUNITATS = new Set(["Andalucía", "Aragón", "P. de Asturias", "Illes Ba
 const esDEspanya = c => espanyola(c) || c.cc === "ES";
 function omplAmbits() {
   const ll = LLISTES[TIPUS]; if (!ll) return;
-  const sel = $("ambit"), cs = $("categoria"), abans = sel.value, abansCat = cs.value;
+  const sel = $("ambit"), cs = $("categoria"), abansCat = cs.value;
   const opcio = (v, t, s) => { const o = document.createElement("option"); o.value = v; o.textContent = t; s.append(o); return o; };
   const pref = preferits();
+  // L'àmbit que quedarà triat: el d'abans si encara existeix; si no, Espanya (22.11.2026).
+  const hiHaPref = ll.canals.some(c => pref.has(clauCanal(TIPUS, c)));
+  const valids = new Set(ll.canals.map(clauAmbit));
+  const hiHaEsp = ll.canals.some(esDEspanya);
+  const ara = sel.value;
+  const abans = (ara === "*tots" || (ara === "*ES" && hiHaEsp) || (ara === "*pref" && hiHaPref) || (ara && valids.has(ara))) ? ara : hiHaEsp ? "*ES" : "*tots";
   const tv = TIPUS === "tv";
   cs.hidden = !tv;
   const catTriada = tv && abansCat && abansCat !== "*totes" ? abansCat : null;
@@ -330,10 +336,10 @@ function omplAmbits() {
   for (const c of ll.canals) {
     const k = clauAmbit(c), cat = categoriaDe(c);
     if (!catTriada || cat === catTriada) ambits.set(k, (ambits.get(k) || 0) + 1);
-    if (tv && (!abans || abans === "*tots" || abans === "*pref" || abans === k || (abans === "*ES" && esDEspanya(c)))) cats.set(cat, (cats.get(cat) || 0) + 1);
+    if (tv && (abans === "*tots" || abans === "*pref" || abans === k || (abans === "*ES" && esDEspanya(c)))) cats.set(cat, (cats.get(cat) || 0) + 1);
   }
   sel.innerHTML = "";
-  if (ll.canals.some(c => pref.has(clauCanal(TIPUS, c)))) opcio("*pref", "⭐ Preferits", sel);
+  if (hiHaPref) opcio("*pref", "⭐ Preferits", sel);
   opcio("*tots", "Totes", sel);
   // 22.11.2026: Espanya primer; a dins, les temàtiques d'abast estatal (en l'ordre de TDTChannels),
   // les comunitats autònomes (Catalunya primer, la resta per ordre alfabètic) i les altres cadenes.
@@ -358,7 +364,7 @@ function omplAmbits() {
   for (const [cc, nom] of paisos) opcio("cc:" + cc, `${nom} (${ambits.get("cc:" + cc) || 0})`, gMon);
   if (paisos.length) sel.append(gMon);
   // 22.11.2026: la pàgina (i cada pestanya) s'obre a dins d'Espanya («Espanya, totes»).
-  sel.value = [...sel.options].some(o => o.value === abans) ? abans : [...sel.options].some(o => o.value === "*ES") ? "*ES" : "*tots";
+  sel.value = abans;
   cs.innerHTML = "";
   if (!tv) return;
   if (catTriada && !cats.has(catTriada)) cats.set(catTriada, 0);

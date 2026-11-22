@@ -323,14 +323,20 @@ function omplAmbits() {
     // Països (en català, per ordre alfabètic) i categories.
     if (ll.canals.some(c => pref.has(clauCanal(TIPUS, c)))) opcio("*pref", "⭐ Preferits");
     opcio("*tots", "Tots els països");
+    // 22.11.2026: el número de cada país compta només les cadenes de la categoria triada, i el de
+    // cada categoria, les del país triat; així coincideix amb el que es mostra.
+    const cs = $("categoria"), abansCat = cs.value;
     const paisos = new Map(), cats = new Map();
     for (const c of ll.canals) {
-      paisos.set(c.cc || "", (paisos.get(c.cc || "") || 0) + 1);
-      cats.set(c.k || "undefined", (cats.get(c.k || "undefined") || 0) + 1);
+      const cc = c.cc || "", k = c.k || "undefined";
+      if (!abansCat || abansCat === "*totes" || abansCat === k) paisos.set(cc, (paisos.get(cc) || 0) + 1);
+      if (!abans || !abans.startsWith("cc:") || abans === "cc:" + cc) cats.set(k, (cats.get(k) || 0) + 1);
     }
+    if (abans && abans.startsWith("cc:") && !paisos.has(abans.slice(3))) paisos.set(abans.slice(3), 0);
+    if (abansCat && abansCat !== "*totes" && !cats.has(abansCat)) cats.set(abansCat, 0);
     [...paisos].map(([cc, n]) => [cc, nomPais(cc), n]).sort((a, b) => (a[0] === "") - (b[0] === "") || a[1].localeCompare(b[1], "ca"))
       .forEach(([cc, nom, n]) => opcio("cc:" + cc, `${nom} (${n})`));
-    const cs = $("categoria"), abansCat = cs.value; cs.innerHTML = "";
+    cs.innerHTML = "";
     opcio("*totes", "Totes les categories", cs);
     [...cats].map(([k, n]) => [k, nomCategoria(k), n]).sort((a, b) => (a[0] === "undefined") - (b[0] === "undefined") || a[1].localeCompare(b[1], "ca"))
       .forEach(([k, nom, n]) => opcio(k, `${nom} (${n})`, cs));
@@ -422,8 +428,8 @@ $("pestanyes").onclick = e => {
   $("cerca").value = ""; $("ambit").value = ""; omplAmbits(); pinta();
   if (MON) carregaMon();
 };
-$("ambit").onchange = () => { LIMIT = PAS; pinta(); };
-$("categoria").onchange = () => { LIMIT = PAS; pinta(); };
+$("ambit").onchange = () => { LIMIT = PAS; if (MON) omplAmbits(); pinta(); };
+$("categoria").onchange = () => { LIMIT = PAS; omplAmbits(); pinta(); };
 $("cerca").oninput = () => { LIMIT = PAS; pinta(); };
 
 // ---------- Programació (EPG de TDTChannels, tdt/epg.json) · 14.11.2026 ----------

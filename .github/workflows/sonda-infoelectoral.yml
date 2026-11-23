@@ -1,0 +1,45 @@
+# Sonda Infoelectoral 29N — La TdG · 23.11.2026 (provisional)
+# Interior ens remet a Infoelectoral per seguir l'escrutini (els seus robots.txt permeten
+# l'accés general). Aquesta sonda mira com publica la secció del 29-N per saber d'on
+# llegir-ne les dades. Desa el que troba a eleccions/sonda/. S'esborrarà després.
+name: Sonda Infoelectoral
+on:
+  push:
+    paths: [".github/workflows/sonda-infoelectoral.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sonda:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mira
+        run: |
+          mkdir -p eleccions/sonda; cd eleccions/sonda; rm -f *
+          UA="LaTdG-eleccions/1.0 (+https://latdg.github.io; latdg@laguait.cat)"
+          B=https://infoelectoral.interior.gob.es
+          curl -sSL -A "$UA" -m 30 -D portada.cap.txt -o portada.html "$B/" || true
+          curl -sSL -A "$UA" -m 30 -o robots.txt "$B/robots.txt" || true
+          # Enllaços de la portada que parlen del 29-N, de 2026 o de resultats
+          grep -oE '(href|src)="[^"]+"' portada.html | sed 's/^[a-z]*="//;s/"$//' | sort -u > enllacos.txt || true
+          grep -iE '2026|29n|29-n|generales|resultad|avance|particip|\.js|\.json|api' enllacos.txt > interessants.txt || true
+          i=0
+          while read -r r; do
+            case "$r" in http*) u="$r";; /*) u="$B$r";; *) u="$B/$r";; esac
+            case "$u" in *infoelectoral.interior.gob.es*) ;; *) continue;; esac
+            i=$((i+1)); [ $i -gt 25 ] && break
+            curl -sSL -A "$UA" -m 30 -o "p$i.txt" "$u" || true
+            echo "p$i.txt $u $(wc -c < p$i.txt 2>/dev/null)" >> baixats.txt
+          done < interessants.txt
+          # Adreces de dades dins de tot el que s'ha baixat
+          cat portada.html p*.txt 2>/dev/null | grep -oE '["'"'"'][^"'"'"' ]*(json|/api/|/datos|/data|\.csv|\.zip|avance|resultad)[^"'"'"' ]*["'"'"']' | sort -u | head -300 > adreces-dades.txt || true
+          ls -la > llista.txt
+      - name: Desa
+        run: |
+          git config user.name "La TdG (sonda)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A eleccions/sonda
+          git commit -qm "Sonda Infoelectoral 29N" || exit 0
+          for i in 1 2 3 4 5; do git push -q origin HEAD:main && exit 0; sleep $((i*5)); git pull -q --rebase origin main; done

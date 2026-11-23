@@ -834,6 +834,7 @@ async function fraseAina(text) {
   if (!SUB.actiu || SUB.mode !== "aina") return;
   text = netejaSub(String(text || "").replace(/\s+/g, " ").trim());
   if (!text) return;
+  text = text.charAt(0).toUpperCase() + text.slice(1);   // el model d'Aina ho escriu tot en minúscula
   const llengua = $("idiomaSub").value;
   const cat = llengua === "spanish" ? await tradueix(text, "spa") : text;
   if (!SUB.actiu) return;

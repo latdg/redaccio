@@ -810,7 +810,8 @@ async function carregaWhisper() {
   SUB.carregant = (async () => {
     const T = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.5");
     const gpu = !!(navigator.gpu && await navigator.gpu.requestAdapter().catch(() => null));
-    const model = gpu ? "onnx-community/whisper-base" : "onnx-community/whisper-tiny";
+    // 23.11.2026: amb targeta gràfica, el model «small» (més precís, sobretot en català; ~250 MB la primera vegada).
+    const model = gpu ? "onnx-community/whisper-small" : "onnx-community/whisper-tiny";
     const opcions = gpu ? { device: "webgpu", dtype: { encoder_model: "fp32", decoder_model_merged: "q4" } } : { dtype: "q8" };
     const fets = {};
     opcions.progress_callback = p => {
@@ -848,7 +849,17 @@ function a16k(trossos, total, sr) {
   }
   return out;
 }
-const AL_LUCINACIONS = /^(thank you\.?|thanks for watching!?|thank you for watching\.?|you|bye\.?|merci\.?|\.+|subtitles by.*|♪+|\[.*\]|\(.*\))$|sous-titr|amara\.org|untertitel|sottotitoli|legendas pela|ondertiteling/i;
+// Whisper de vegades s'encalla repetint un tros («tien, tien, tien…»): es treuen les repeticions i,
+// si gairebé tot és repetit, es descarta.
+function netejaSub(t) {
+  const orig = t.toLowerCase().match(/[\p{L}\p{N}']+/gu) || [];
+  if (orig.length >= 6 && new Set(orig).size / orig.length < 0.4) return "";
+  for (let i = 0, abans = ""; i < 4 && abans !== t; i++) { abans = t; t = t.replace(/(\p{L}[\p{L}\p{N}']*(?:\s+[\p{L}\p{N}']+){0,3}?)(?:[\s,.;:!?-]+\1(?![\p{L}\p{N}])){2,}/giu, "$1"); }
+  const p = t.toLowerCase().match(/[\p{L}\p{N}']+/gu) || [];
+  if (p.length >= 4 && new Set(p).size / p.length < 0.4) return "";
+  return t.length > 220 ? t.slice(0, 220).replace(/\s+\S*$/, "") + "…" : t;
+}
+const AL_LUCINACIONS = /^(#+|thank you\.?|thanks for watching!?|thank you for watching\.?|you|bye\.?|merci\.?|\.+|subtitles by.*|♪+|\[.*\]|\(.*\))$|sous-titr|amara\.org|untertitel|sottotitoli|legendas pela|ondertiteling/i;
 async function tradueix(text, de) {
   try {
     // El castellà el tradueix l'Apertium de Softcatalà; la resta, el seu traductor neuronal.
@@ -863,6 +874,8 @@ async function tradueix(text, de) {
 }
 function mostraSub(text) {
   const capa = $("capaSub"), ara = Date.now();
+  const darrera = SUB.linies[SUB.linies.length - 1];
+  if (darrera && darrera.text.trim().toLowerCase() === text.trim().toLowerCase()) return;   // la mateixa frase dues vegades
   SUB.linies.push({ text, ara });
   SUB.linies = SUB.linies.filter(l => ara - l.ara < 15000).slice(-2);
   capa.innerHTML = "";
@@ -887,8 +900,8 @@ async function processaTros() {
     // Si Softcatalà tradueix directament d'aquesta llengua, es transcriu; si no, Whisper la passa a l'anglès.
     const llengua = $("idiomaSub").value || "english";
     const sc = (LLENGUES_SUB.find(l => l[0] === llengua) || [])[2];
-    const r = await SUB.asr(so, { language: llengua, task: sc ? "transcribe" : "translate", chunk_length_s: 30 });
-    const text = String((r && r.text) || "").replace(/\s+/g, " ").trim();
+    const r = await SUB.asr(so, { language: llengua, task: sc ? "transcribe" : "translate", chunk_length_s: 30, no_repeat_ngram_size: 3 });
+    const text = netejaSub(String((r && r.text) || "").replace(/\s+/g, " ").trim());
     if (!SUB.actiu || !text || AL_LUCINACIONS.test(text)) return;
     const cat = sc === "-" ? text : await tradueix(text, sc || "eng");
     if (SUB.actiu) mostraSub(cat || text + " (sense traduir: el traductor no respon)");

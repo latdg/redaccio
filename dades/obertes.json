@@ -1,5 +1,5 @@
 {
- "generat": "2026-11-16T15:36:34+00:00",
+ "generat": "2026-11-23T17:58:12+00:00",
  "municipis": {
   "17022": "la Bisbal d'Empordà",
   "17057": "Corçà",
@@ -1926,7 +1926,7 @@
   }
  },
  "ramaderia": {
-  "actualitzat": "2026-10-19T12:48:40+00:00",
+  "actualitzat": "2026-11-17T08:40:38+00:00",
   "municipis": {
    "17022": {
     "explotacions": 21,
@@ -2087,11 +2087,11 @@
     "intensiu": 39
    },
    "17901": {
-    "explotacions": 53,
+    "explotacions": 54,
     "especies": [
      {
       "especie": "Èquid",
-      "explotacions": 33,
+      "explotacions": 34,
       "places": 130
      },
      {

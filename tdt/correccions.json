@@ -1,4 +1,8 @@
 {
  "radio": {},
- "tv": {}
+ "tv": {
+  "International|TVE Internacional Europa": {
+   "ambit": "Generalistas"
+  }
+ }
 }

@@ -770,10 +770,79 @@ $("corOriginal").onclick = () => { const c = actual && actual.c; if (c) desaCorr
 // El so de la cadena es passa a text amb Whisper, dins del mateix navegador (transformers.js; amb la
 // targeta gràfica, WebGPU, si n'hi ha), i el traductor de Softcatalà el passa al català (el castellà,
 // amb Apertium; si Softcatalà no tradueix d'una llengua, Whisper la passa primer a l'anglès).
-// 23.11.2026: per a totes les cadenes; les que parlen en català només es transcriuen.
+// 23.11.2026: per a totes les cadenes; les que parlen en català només es transcriuen. Apagats per
+// defecte: s'engeguen amb el botó 💬. El català i el castellà els transcriu el model del Projecte Aina
+// (el de l'estudi d'àudio, audio/transcriu/, i del bot de plens), molt més precís que Whisper en
+// aquestes llengües i tallat per frases; el castellà després es tradueix amb Apertium.
 const PAISOS_HISPANS = new Set(["ES", "MX", "AR", "CO", "CL", "PE", "VE", "EC", "BO", "PY", "UY", "CR", "PA", "DO", "CU", "GT", "HN", "SV", "NI", "PR", "GQ"]);
 const ambSubtitols = c => !!c;
-const SUB = { actiu: false, asr: null, carregant: null, ctx: null, fonts: new Map(), proc: null, mostres: [], total: 0, ocupat: false, linies: [] };
+const SUB = { actiu: false, asr: null, carregant: null, ctx: null, fonts: new Map(), proc: null, mostres: [], total: 0, ocupat: false, linies: [], aina: null, ainaLlest: false, ainaCarregant: null, mode: "" };
+const usaAina = ll => ll === "catalan" || ll === "spanish";
+// --- Motor del Projecte Aina (el mateix de l'estudi d'àudio: mateix model i mateixa memòria cau) ---
+const AINA_DIR = new URL("../audio/transcriu/", location.href);
+async function baixaModelAina() {
+  const info = await (await fetch(new URL("model/model.json", AINA_DIR), { cache: "no-cache" })).json();
+  const cau = "caches" in self ? await caches.open("latdg-transcriu-model-v1").catch(() => null) : null;
+  const total = Object.values(info.fitxers).reduce((a, f) => a + (f.parts[0] === "tokens.txt" ? 0 : f.mida), 0);
+  let fet = 0;
+  const mostra = desat => { if (SUB.actiu) estatSub(desat ? "💬 Carregant el model de català i castellà desat en aquest aparell…" : `💬 Baixant el model de català i castellà del Projecte Aina (només la primera vegada): ${Math.round(fet / 1048576)} de ${Math.round(total / 1048576)} MB…`); };
+  const fitxers = {};
+  for (const [nom, f] of Object.entries(info.fitxers)) {
+    if (nom === "tokens.txt") continue;
+    const tot = new Uint8Array(f.mida); let pos = 0;
+    for (const part of f.parts) {
+      const url = new URL("model/" + part, AINA_DIR).href;
+      const r = cau ? await cau.match(url) : null;
+      if (r) { const b = new Uint8Array(await r.arrayBuffer()); tot.set(b, pos); pos += b.length; fet += b.length; mostra(true); continue; }
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`no s'ha pogut baixar el model (${part})`);
+      const lector = resp.body.getReader(), inici = pos;
+      for (;;) { const { done, value } = await lector.read(); if (done) break; tot.set(value, pos); pos += value.length; fet += value.length; mostra(false); }
+      if (cau) { try { await cau.put(url, new Response(tot.slice(inici, pos))); } catch (e) {} }
+    }
+    fitxers[nom.split(".")[0]] = tot.buffer;
+  }
+  return fitxers;
+}
+function preparaAina() {
+  if (SUB.ainaLlest) return Promise.resolve();
+  if (SUB.ainaCarregant) return SUB.ainaCarregant;
+  SUB.ainaCarregant = new Promise((resol, rebutja) => {
+    const w = new Worker(new URL("motor.js", AINA_DIR));
+    let fitxers = baixaModelAina().catch(e => { rebutja(e); return null; });
+    w.onmessage = async e => {
+      const m = e.data;
+      if (m.tipus === "motor") { const f = await fitxers; if (!f) return; if (SUB.actiu) estatSub("💬 Preparant el model…"); w.postMessage({ tipus: "model", fitxers: f }, Object.values(f)); fitxers = null; }
+      else if (m.tipus === "llest") { SUB.aina = w; SUB.ainaLlest = true; resol(); }
+      else if (m.tipus === "frase") fraseAina(m.text);
+      else if (m.tipus === "error") { if (!SUB.ainaLlest) rebutja(new Error(m.missatge)); else estatSub("❌ Subtítols: " + m.missatge); }
+    };
+  });
+  return SUB.ainaCarregant.finally(() => { SUB.ainaCarregant = null; });
+}
+async function fraseAina(text) {
+  if (!SUB.actiu || SUB.mode !== "aina") return;
+  text = netejaSub(String(text || "").replace(/\s+/g, " ").trim());
+  if (!text) return;
+  const llengua = $("idiomaSub").value;
+  const cat = llengua === "spanish" ? await tradueix(text, "spa") : text;
+  if (!SUB.actiu) return;
+  mostraSub(cat || text + " (sense traduir: el traductor no respon)");
+  estatSub(`💬 Subtítols actius · ${llengua === "catalan" ? "en català" : "del castellà, traduïts al català per Softcatalà"} · model del Projecte Aina · uns segons de retard`);
+}
+// Prepara el motor que toca per a la llengua triada (Aina per al català i el castellà; Whisper per a la resta).
+async function preparaMotorSub() {
+  const ll = $("idiomaSub").value;
+  if (usaAina(ll)) {
+    if (SUB.mode !== "aina" && SUB.aina) SUB.aina.postMessage({ tipus: "reinicia" });
+    SUB.mode = "aina";
+    if (!SUB.ainaLlest) { estatSub("💬 Preparant el model de català i castellà…"); await preparaAina(); }
+  } else {
+    SUB.mode = "whisper"; SUB.mostres = []; SUB.total = 0;
+    if (!SUB.asr) { estatSub("💬 Preparant el reconeixement de veu…"); await carregaWhisper(); }
+  }
+  if (SUB.actiu) estatSub("💬 Escoltant… (els primers subtítols surten d'aquí a uns segons)");
+}
 const TROS_S = 10, MAX_S = 20;
 // Llengua que es parla: Whisper l'ha de saber (si no, respon «speaking in foreign language»).
 // [codi de Whisper, nom en català, codi de Softcatalà si hi tradueix directament]
@@ -925,6 +994,12 @@ async function engegaSubtitols() {
       SUB.proc.onaudioprocess = ev => {
         if (!SUB.actiu) return;
         const d = new Float32Array(ev.inputBuffer.getChannelData(0));
+        if (SUB.mode === "aina") {
+          // El motor d'Aina rep el so a 16 kHz contínuament i talla ell mateix les frases.
+          if (SUB.ainaLlest) { const y = a16k([d], d.length, SUB.ctx.sampleRate); SUB.aina.postMessage({ tipus: "audio", mostres: y }, [y.buffer]); }
+          return;
+        }
+        if (SUB.mode !== "whisper") return;
         SUB.mostres.push(d); SUB.total += d.length;
         processaTros();
       };
@@ -933,23 +1008,23 @@ async function engegaSubtitols() {
     }
     for (const f of SUB.fonts.values()) { try { f.disconnect(SUB.proc); } catch (e) {} }
     font.connect(SUB.proc);
-    SUB.mostres = []; SUB.total = 0;
-    estatSub(SUB.asr ? "💬 Escoltant…" : "💬 Preparant el reconeixement de veu…");
-    await carregaWhisper();
-    if (SUB.actiu) estatSub("💬 Escoltant… (els primers subtítols surten d'aquí a uns segons)");
+    SUB.mostres = []; SUB.total = 0; SUB.mode = "";
+    await preparaMotorSub();
   } catch (e) {
     aturaSubtitols();
     estatSub("❌ No s'han pogut engegar els subtítols: " + (e && e.message ? e.message : e));
   }
 }
 function aturaSubtitols(silenci) {
-  SUB.actiu = false; SUB.mostres = []; SUB.total = 0; SUB.linies = [];
+  SUB.actiu = false; SUB.mostres = []; SUB.total = 0; SUB.linies = []; SUB.mode = "";
+  if (SUB.aina) SUB.aina.postMessage({ tipus: "reinicia" });
   if (SUB.proc) for (const f of SUB.fonts.values()) { try { f.disconnect(SUB.proc); } catch (e) {} }
   $("subtitols").textContent = "💬 Subtítols"; $("subtitols").classList.remove("actiu");
   $("capaSub").hidden = true; $("capaSub").innerHTML = "";
   if (!silenci) estatSub("");
 }
 $("subtitols").onclick = () => { if (SUB.actiu) aturaSubtitols(); else engegaSubtitols(); };
+$("idiomaSub").onchange = () => { if (SUB.actiu) preparaMotorSub().catch(e => estatSub("❌ Subtítols: " + (e && e.message ? e.message : e))); };
 
 // ---------- Gravació ----------
 // 05.11.2026 (2a versió): cada gravació és una feina independent, de qualsevol cadena o

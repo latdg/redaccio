@@ -1011,7 +1011,7 @@ async function engegaSubtitols() {
           const sr = SUB.ctx.sampleRate;
           SUB.mostres.push(d); SUB.total += d.length;
           // Només els darrers 6 s: el que no s'ha pogut processar es descarta.
-          while (SUB.total > AINA_TROS_S * sr && SUB.mostres.length > 1) { const v = SUB.mostres.shift(); SUB.total -= v.length; if (SUB.ainaOcupat) SUB.ainaSaltat = (SUB.ainaSaltat || 0) + v.length / sr; }
+          while (SUB.mostres.length > 1 && SUB.total - SUB.mostres[0].length >= AINA_TROS_S * sr) { const v = SUB.mostres.shift(); SUB.total -= v.length; if (SUB.ainaOcupat) SUB.ainaSaltat = (SUB.ainaSaltat || 0) + v.length / sr; }
           if (!SUB.ainaOcupat && SUB.total >= AINA_TROS_S * sr) {
             const y = a16k(SUB.mostres, SUB.total, sr);
             SUB.ainaEnviat = (SUB.ainaEnviat || 0) + y.length / 16000;

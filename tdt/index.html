@@ -767,20 +767,17 @@ $("corDesa").onclick = () => {
 $("corOriginal").onclick = () => { const c = actual && actual.c; if (c) desaCorreccio(c, { esborra: true }); };
 
 // ---------- Subtítols automàtics en català · 23.11.2026 ----------
-// Per a les cadenes i emissores de països de parla no hispana. El so de la cadena es passa a text
-// i a l'anglès amb Whisper, dins del mateix navegador (transformers.js; amb la targeta gràfica,
-// WebGPU, si n'hi ha), i el traductor de Softcatalà el passa al català. Van uns segons endarrere.
+// El so de la cadena es passa a text amb Whisper, dins del mateix navegador (transformers.js; amb la
+// targeta gràfica, WebGPU, si n'hi ha), i el traductor de Softcatalà el passa al català (el castellà,
+// amb Apertium; si Softcatalà no tradueix d'una llengua, Whisper la passa primer a l'anglès).
+// 23.11.2026: per a totes les cadenes; les que parlen en català només es transcriuen.
 const PAISOS_HISPANS = new Set(["ES", "MX", "AR", "CO", "CL", "PE", "VE", "EC", "BO", "PY", "UY", "CR", "PA", "DO", "CU", "GT", "HN", "SV", "NI", "PR", "GQ"]);
-const ambSubtitols = c => {
-  if (!c || esDEspanya(c)) return false;
-  const a = clauAmbit(c);
-  return !(a.startsWith("cc:") && PAISOS_HISPANS.has(a.slice(3)));
-};
+const ambSubtitols = c => !!c;
 const SUB = { actiu: false, asr: null, carregant: null, ctx: null, fonts: new Map(), proc: null, mostres: [], total: 0, ocupat: false, linies: [] };
 const TROS_S = 10, MAX_S = 20;
 // Llengua que es parla: Whisper l'ha de saber (si no, respon «speaking in foreign language»).
 // [codi de Whisper, nom en català, codi de Softcatalà si hi tradueix directament]
-const LLENGUES_SUB = [["english", "anglès", "eng"], ["french", "francès", "fra"], ["german", "alemany", "deu"], ["italian", "italià", "ita"],
+const LLENGUES_SUB = [["spanish", "castellà", "spa"], ["catalan", "català", "-"], ["english", "anglès", "eng"], ["french", "francès", "fra"], ["german", "alemany", "deu"], ["italian", "italià", "ita"],
   ["portuguese", "portuguès", "por"], ["dutch", "neerlandès", "nld"], ["japanese", "japonès", "jpn"], ["galician", "gallec", "glg"],
   ["basque", "basc", "eus"], ["occitan", "occità", "oci"], ["arabic", "àrab"], ["bulgarian", "búlgar"], ["chinese", "xinès"], ["korean", "coreà"],
   ["croatian", "croat"], ["czech", "txec"], ["danish", "danès"], ["finnish", "finès"], ["greek", "grec"], ["hebrew", "hebreu"], ["hindi", "hindi"],
@@ -799,7 +796,12 @@ function omplIdiomaSub(c) {
   const sel = $("idiomaSub");
   if (!sel.options.length) for (const [w, nom] of LLENGUES_SUB) { const o = document.createElement("option"); o.value = w; o.textContent = "Parla en " + nom; sel.append(o); }
   const a = c ? clauAmbit(c) : "";
-  sel.value = (a.startsWith("cc:") && LLENGUA_PAIS[a.slice(3)]) || "english";
+  let ll;
+  if (c && !a.startsWith("cc:")) ll = ["Cataluña", "Illes Balears", "C. Valenciana"].includes(a) ? "catalan" : a === "Galicia" ? "galician" : "spanish";
+  else if (a === "cc:AD") ll = "catalan";
+  else if (a.startsWith("cc:") && PAISOS_HISPANS.has(a.slice(3))) ll = "spanish";
+  else ll = (a.startsWith("cc:") && LLENGUA_PAIS[a.slice(3)]) || "english";
+  sel.value = ll;
 }
 function estatSub(t) { $("estatSub").hidden = !t; $("estatSub").textContent = t || ""; }
 async function carregaWhisper() {
@@ -849,7 +851,10 @@ function a16k(trossos, total, sr) {
 const AL_LUCINACIONS = /^(thank you\.?|thanks for watching!?|thank you for watching\.?|you|bye\.?|merci\.?|\.+|subtitles by.*|♪+|\[.*\]|\(.*\))$|sous-titr|amara\.org|untertitel|sottotitoli|legendas pela|ondertiteling/i;
 async function tradueix(text, de) {
   try {
-    const r = await fetch("https://api.softcatala.org/v2/nmt/translate/", { method: "POST", body: new URLSearchParams({ langpair: de + "|cat", q: text }) });
+    // El castellà el tradueix l'Apertium de Softcatalà; la resta, el seu traductor neuronal.
+    const r = de === "spa"
+      ? await fetch("https://www.softcatala.org/apertium/json/translate", { method: "POST", body: new URLSearchParams({ langpair: "spa|cat", q: text, markUnknown: "no" }) })
+      : await fetch("https://api.softcatala.org/v2/nmt/translate/", { method: "POST", body: new URLSearchParams({ langpair: de + "|cat", q: text }) });
     const d = await r.json();
     const t = d && d.responseData && d.responseData.translatedText;
     if (r.ok && t) return t;
@@ -885,9 +890,9 @@ async function processaTros() {
     const r = await SUB.asr(so, { language: llengua, task: sc ? "transcribe" : "translate", chunk_length_s: 30 });
     const text = String((r && r.text) || "").replace(/\s+/g, " ").trim();
     if (!SUB.actiu || !text || AL_LUCINACIONS.test(text)) return;
-    const cat = await tradueix(text, sc || "eng");
+    const cat = sc === "-" ? text : await tradueix(text, sc || "eng");
     if (SUB.actiu) mostraSub(cat || text + " (sense traduir: el traductor no respon)");
-    estatSub(`💬 Subtítols actius · traduïts al català per Softcatalà · uns ${TROS_S}-${TROS_S + 6} s de retard${SUB.gpu ? "" : " · sense targeta gràfica: pot anar lent"}`);
+    estatSub(`💬 Subtítols actius · ${sc === "-" ? "en català" : "traduïts al català per Softcatalà"} · uns ${TROS_S}-${TROS_S + 6} s de retard${SUB.gpu ? "" : " · sense targeta gràfica: pot anar lent"}`);
   } catch (e) {
     estatSub("❌ Subtítols: " + (e && e.message ? e.message : e));
   } finally { SUB.ocupat = false; }

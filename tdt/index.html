@@ -147,6 +147,10 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
           <button type="button" class="suau" id="classifica" title="Canvia on surt a la llista (es manté encara que la llista s'actualitzi)">✏️ Classifica</button>
           <button type="button" class="suau" id="subtitols" hidden title="Subtítols automàtics traduïts al català (Whisper al navegador i traductor de Softcatalà)">💬 Subtítols</button>
           <select id="idiomaSub" hidden title="Llengua que es parla en aquesta cadena (per als subtítols)"></select>
+          <select id="motorSub" hidden title="Per al català i el castellà: Aina és més precís però necessita un ordinador potent; Whisper és més ràpid i fa més errors">
+            <option value="aina">Precís (Aina)</option>
+            <option value="whisper">Ràpid (Whisper)</option>
+          </select>
           <a id="webCanal" target="_blank" rel="noopener">Web de la cadena ↗</a>
         </div>
       </div>
@@ -598,6 +602,7 @@ function obre(c) {
   marcaPreferit();
   $("editorCanal").hidden = true;
   aturaSubtitols(); $("subtitols").hidden = !ambSubtitols(c); $("idiomaSub").hidden = !ambSubtitols(c); omplIdiomaSub(c);
+  $("motorSub").hidden = !ambSubtitols(c) || !["catalan", "spanish"].includes($("idiomaSub").value);
   actual.epgIdx = null; pintaProgramacio();
   const s = $("senyal"); s.innerHTML = "";
   ops.forEach((o, i) => {
@@ -777,7 +782,10 @@ $("corOriginal").onclick = () => { const c = actual && actual.c; if (c) desaCorr
 const PAISOS_HISPANS = new Set(["ES", "MX", "AR", "CO", "CL", "PE", "VE", "EC", "BO", "PY", "UY", "CR", "PA", "DO", "CU", "GT", "HN", "SV", "NI", "PR", "GQ"]);
 const ambSubtitols = c => !!c;
 const SUB = { actiu: false, asr: null, carregant: null, ctx: null, fonts: new Map(), proc: null, mostres: [], total: 0, ocupat: false, linies: [], aina: null, ainaLlest: false, ainaCarregant: null, mode: "" };
-const usaAina = ll => ll === "catalan" || ll === "spanish";
+const usaAina = ll => (ll === "catalan" || ll === "spanish") && $("motorSub").value !== "whisper";
+// Si l'ordinador no dona l'abast amb Aina, se salta el so que no pot processar (en lloc d'acumular-lo):
+// els subtítols no s'endarrereixen, però hi pot haver frases sense subtítol.
+const AINA_MAX_RETARD_S = 6;
 // --- Motor del Projecte Aina (el mateix de l'estudi d'àudio: mateix model i mateixa memòria cau) ---
 const AINA_DIR = new URL("../audio/transcriu/", location.href);
 async function baixaModelAina() {
@@ -815,6 +823,7 @@ function preparaAina() {
       if (m.tipus === "motor") { const f = await fitxers; if (!f) return; if (SUB.actiu) estatSub("💬 Preparant el model…"); w.postMessage({ tipus: "model", fitxers: f }, Object.values(f)); fitxers = null; }
       else if (m.tipus === "llest") { SUB.aina = w; SUB.ainaLlest = true; resol(); }
       else if (m.tipus === "frase") fraseAina(m.text);
+      else if (m.tipus === "posicio") SUB.ainaFet = m.s;
       else if (m.tipus === "error") { if (!SUB.ainaLlest) rebutja(new Error(m.missatge)); else estatSub("❌ Subtítols: " + m.missatge); }
     };
   });
@@ -828,13 +837,14 @@ async function fraseAina(text) {
   const cat = llengua === "spanish" ? await tradueix(text, "spa") : text;
   if (!SUB.actiu) return;
   mostraSub(cat || text + " (sense traduir: el traductor no respon)");
-  estatSub(`💬 Subtítols actius · ${llengua === "catalan" ? "en català" : "del castellà, traduïts al català per Softcatalà"} · model del Projecte Aina · uns segons de retard`);
+  const saltat = SUB.ainaSaltat && SUB.ainaEnviat ? Math.round(100 * SUB.ainaSaltat / (SUB.ainaSaltat + SUB.ainaEnviat)) : 0;
+  estatSub(`💬 Subtítols actius · ${llengua === "catalan" ? "en català" : "del castellà, traduïts al català per Softcatalà"} · model del Projecte Aina · uns segons de retard${saltat > 15 ? ` · aquest ordinador no dona l'abast i se n'ha saltat un ${saltat} % (amb «Ràpid (Whisper)» no se'n salta cap)` : ""}`);
 }
 // Prepara el motor que toca per a la llengua triada (Aina per al català i el castellà; Whisper per a la resta).
 async function preparaMotorSub() {
   const ll = $("idiomaSub").value;
   if (usaAina(ll)) {
-    if (SUB.mode !== "aina" && SUB.aina) SUB.aina.postMessage({ tipus: "reinicia" });
+    if (SUB.mode !== "aina" && SUB.aina) { SUB.aina.postMessage({ tipus: "reinicia" }); SUB.ainaEnviat = 0; SUB.ainaFet = 0; SUB.ainaSaltat = 0; }
     SUB.mode = "aina";
     if (!SUB.ainaLlest) { estatSub("💬 Preparant el model de català i castellà…"); await preparaAina(); }
   } else {
@@ -996,7 +1006,12 @@ async function engegaSubtitols() {
         const d = new Float32Array(ev.inputBuffer.getChannelData(0));
         if (SUB.mode === "aina") {
           // El motor d'Aina rep el so a 16 kHz contínuament i talla ell mateix les frases.
-          if (SUB.ainaLlest) { const y = a16k([d], d.length, SUB.ctx.sampleRate); SUB.aina.postMessage({ tipus: "audio", mostres: y }, [y.buffer]); }
+          if (SUB.ainaLlest) {
+            const y = a16k([d], d.length, SUB.ctx.sampleRate);
+            if ((SUB.ainaEnviat || 0) - (SUB.ainaFet || 0) > AINA_MAX_RETARD_S) { SUB.ainaSaltat = (SUB.ainaSaltat || 0) + y.length / 16000; return; }
+            SUB.ainaEnviat = (SUB.ainaEnviat || 0) + y.length / 16000;
+            SUB.aina.postMessage({ tipus: "audio", mostres: y }, [y.buffer]);
+          }
           return;
         }
         if (SUB.mode !== "whisper") return;
@@ -1017,14 +1032,16 @@ async function engegaSubtitols() {
 }
 function aturaSubtitols(silenci) {
   SUB.actiu = false; SUB.mostres = []; SUB.total = 0; SUB.linies = []; SUB.mode = "";
-  if (SUB.aina) SUB.aina.postMessage({ tipus: "reinicia" });
+  if (SUB.aina) { SUB.aina.postMessage({ tipus: "reinicia" }); SUB.ainaEnviat = 0; SUB.ainaFet = 0; SUB.ainaSaltat = 0; }
   if (SUB.proc) for (const f of SUB.fonts.values()) { try { f.disconnect(SUB.proc); } catch (e) {} }
   $("subtitols").textContent = "💬 Subtítols"; $("subtitols").classList.remove("actiu");
   $("capaSub").hidden = true; $("capaSub").innerHTML = "";
   if (!silenci) estatSub("");
 }
 $("subtitols").onclick = () => { if (SUB.actiu) aturaSubtitols(); else engegaSubtitols(); };
-$("idiomaSub").onchange = () => { if (SUB.actiu) preparaMotorSub().catch(e => estatSub("❌ Subtítols: " + (e && e.message ? e.message : e))); };
+$("motorSub").onchange = () => { try { localStorage.setItem("tdtMotorSub", $("motorSub").value); } catch (e) {} if (SUB.actiu) preparaMotorSub().catch(e => estatSub("❌ Subtítols: " + (e && e.message ? e.message : e))); };
+try { const m = localStorage.getItem("tdtMotorSub"); if (m) $("motorSub").value = m; } catch (e) {}
+$("idiomaSub").onchange = () => { $("motorSub").hidden = !["catalan", "spanish"].includes($("idiomaSub").value); if (SUB.actiu) preparaMotorSub().catch(e => estatSub("❌ Subtítols: " + (e && e.message ? e.message : e))); };
 
 // ---------- Gravació ----------
 // 05.11.2026 (2a versió): cada gravació és una feina independent, de qualsevol cadena o

@@ -1,6 +1,9 @@
 {
  "radio": {},
  "tv": {
+  "International|TVE Internacional Asia y Pacífico": {
+   "ambit": "Generalistas"
+  },
   "International|TVE Internacional Europa": {
    "ambit": "Generalistas"
   },

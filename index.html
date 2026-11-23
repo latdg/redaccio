@@ -664,13 +664,24 @@ async function historicPremsa(dia) {
         const div = document.createElement("div");
         bb.nodes.forEach(n => div.appendChild(document.importNode(n, true)));
         enllacarTextos(div);
-        grupsDelText(div.innerHTML).grups.forEach(g => { const n = clauBloc === "gen" ? nomMitjaGen(g.nom) : g.nom; (per[n] = per[n] || []).push(...g.items); });
+        grupsDelText(div.innerHTML).grups.forEach(g => {
+          const items = clauBloc === "gen" ? g.items.filter(x => !esPrevisioTemps(x)) : g.items;
+          if (!items.length) return;
+          const n = clauBloc === "gen" ? nomMitjaGen(g.nom) : g.nom; (per[n] = per[n] || []).push(...items);
+        });
         });
       } catch (e) {}
     }
   } catch (e) {}
   return PER;
 }
+// 23.11.2026: les previsions del temps (Weather Underground, «El tiempo en…») no són notícies:
+// fora de la premsa generalista, també dels dies anteriors.
+const esPrevisioTemps = x => {
+  const t = String(x).replace(/<[^>]+>/g, " ").toLowerCase();
+  return /wunderground\.com|lavanguardia\.com\/eltiempo\/|eltiempo\.es\/|tiempo\.com\/|meteored\./.test(t) ||
+    /—\s*(el tiempo en|el temps a|el temps de)\b|weather forecast/.test(t);
+};
 // 31.10.2026: premsa generalista. Logotip (la icona del web del mitjà) i nom net. Els que
 // arriben per Bing porten el domini com a nom («cadenaser.com»): aquí surten amb el nom del mitjà.
 const MITJANS_GEN = [
@@ -743,6 +754,8 @@ function plegaNovetats(sec) {
   }
   // Premsa generalista: els noms diferents d'un mateix mitjà, en una sola fitxa.
   if (tipus === "premsa" && sec.dataset.premsa === "gen") {
+    grups.forEach(g => g.items = g.items.filter(x => !esPrevisioTemps(x)));
+    for (let i = grups.length - 1; i >= 0; i--) if (!grups[i].items.length) grups.splice(i, 1);
     const fusio = [];
     grups.forEach(g => { g.nom = nomMitjaGen(g.nom); const f = fusio.find(x => x.nom === g.nom); if (f) f.items.push(...g.items); else fusio.push(g); });
     grups.splice(0, grups.length, ...fusio);

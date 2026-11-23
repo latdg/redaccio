@@ -783,9 +783,10 @@ const PAISOS_HISPANS = new Set(["ES", "MX", "AR", "CO", "CL", "PE", "VE", "EC", 
 const ambSubtitols = c => !!c;
 const SUB = { actiu: false, asr: null, carregant: null, ctx: null, fonts: new Map(), proc: null, mostres: [], total: 0, ocupat: false, linies: [], aina: null, ainaLlest: false, ainaCarregant: null, mode: "" };
 const usaAina = ll => (ll === "catalan" || ll === "spanish") && $("motorSub").value !== "whisper";
-// Si l'ordinador no dona l'abast amb Aina, se salta el so que no pot processar (en lloc d'acumular-lo):
-// els subtítols no s'endarrereixen, però hi pot haver frases sense subtítol.
-const AINA_MAX_RETARD_S = 6;
+// Al motor d'Aina se li passen trossos de 6 s, i només quan ha acabat l'anterior: a la tele gairebé
+// mai hi ha silenci i el seu detector de veu acumularia minuts seguits. Si l'ordinador no dona l'abast,
+// es descarta el so que no pot processar: els subtítols no s'endarrereixen, però hi pot haver buits.
+const AINA_TROS_S = 6;
 // --- Motor del Projecte Aina (el mateix de l'estudi d'àudio: mateix model i mateixa memòria cau) ---
 const AINA_DIR = new URL("../audio/transcriu/", location.href);
 async function baixaModelAina() {
@@ -823,7 +824,7 @@ function preparaAina() {
       if (m.tipus === "motor") { const f = await fitxers; if (!f) return; if (SUB.actiu) estatSub("💬 Preparant el model…"); w.postMessage({ tipus: "model", fitxers: f }, Object.values(f)); fitxers = null; }
       else if (m.tipus === "llest") { SUB.aina = w; SUB.ainaLlest = true; resol(); }
       else if (m.tipus === "frase") fraseAina(m.text);
-      else if (m.tipus === "posicio") SUB.ainaFet = m.s;
+      else if (m.tipus === "acabat") { SUB.ainaOcupat = false; SUB.ainaFet = (SUB.ainaFet || 0) + 1; }
       else if (m.tipus === "error") { if (!SUB.ainaLlest) rebutja(new Error(m.missatge)); else estatSub("❌ Subtítols: " + m.missatge); }
     };
   });
@@ -844,7 +845,7 @@ async function fraseAina(text) {
 async function preparaMotorSub() {
   const ll = $("idiomaSub").value;
   if (usaAina(ll)) {
-    if (SUB.mode !== "aina" && SUB.aina) { SUB.aina.postMessage({ tipus: "reinicia" }); SUB.ainaEnviat = 0; SUB.ainaFet = 0; SUB.ainaSaltat = 0; }
+    if (SUB.mode !== "aina") { SUB.mostres = []; SUB.total = 0; SUB.ainaEnviat = 0; SUB.ainaSaltat = 0; }
     SUB.mode = "aina";
     if (!SUB.ainaLlest) { estatSub("💬 Preparant el model de català i castellà…"); await preparaAina(); }
   } else {
@@ -1006,11 +1007,17 @@ async function engegaSubtitols() {
         const d = new Float32Array(ev.inputBuffer.getChannelData(0));
         if (SUB.mode === "aina") {
           // El motor d'Aina rep el so a 16 kHz contínuament i talla ell mateix les frases.
-          if (SUB.ainaLlest) {
-            const y = a16k([d], d.length, SUB.ctx.sampleRate);
-            if ((SUB.ainaEnviat || 0) - (SUB.ainaFet || 0) > AINA_MAX_RETARD_S) { SUB.ainaSaltat = (SUB.ainaSaltat || 0) + y.length / 16000; return; }
+          if (!SUB.ainaLlest) return;
+          const sr = SUB.ctx.sampleRate;
+          SUB.mostres.push(d); SUB.total += d.length;
+          // Només els darrers 6 s: el que no s'ha pogut processar es descarta.
+          while (SUB.total > AINA_TROS_S * sr && SUB.mostres.length > 1) { const v = SUB.mostres.shift(); SUB.total -= v.length; if (SUB.ainaOcupat) SUB.ainaSaltat = (SUB.ainaSaltat || 0) + v.length / sr; }
+          if (!SUB.ainaOcupat && SUB.total >= AINA_TROS_S * sr) {
+            const y = a16k(SUB.mostres, SUB.total, sr);
             SUB.ainaEnviat = (SUB.ainaEnviat || 0) + y.length / 16000;
+            SUB.mostres = []; SUB.total = 0; SUB.ainaOcupat = true;
             SUB.aina.postMessage({ tipus: "audio", mostres: y }, [y.buffer]);
+            SUB.aina.postMessage({ tipus: "fi" });
           }
           return;
         }
@@ -1032,7 +1039,9 @@ async function engegaSubtitols() {
 }
 function aturaSubtitols(silenci) {
   SUB.actiu = false; SUB.mostres = []; SUB.total = 0; SUB.linies = []; SUB.mode = "";
-  if (SUB.aina) { SUB.aina.postMessage({ tipus: "reinicia" }); SUB.ainaEnviat = 0; SUB.ainaFet = 0; SUB.ainaSaltat = 0; }
+  // Si el motor d'Aina encara treballa, es para del tot (la propera vegada es torna a carregar, del disc).
+  if (SUB.aina && SUB.ainaOcupat) { try { SUB.aina.terminate(); } catch (e) {} SUB.aina = null; SUB.ainaLlest = false; }
+  SUB.ainaOcupat = false; SUB.ainaEnviat = 0; SUB.ainaSaltat = 0;
   if (SUB.proc) for (const f of SUB.fonts.values()) { try { f.disconnect(SUB.proc); } catch (e) {} }
   $("subtitols").textContent = "💬 Subtítols"; $("subtitols").classList.remove("actiu");
   $("capaSub").hidden = true; $("capaSub").innerHTML = "";

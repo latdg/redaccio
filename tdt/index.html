@@ -60,7 +60,12 @@ button:disabled{opacity:.5;cursor:default}
 .titol-canal{display:flex;align-items:center;gap:12px;min-width:0}
 .titol-canal img,.titol-canal .inicials{width:44px;height:44px;border-radius:8px;object-fit:contain;background:var(--fons);flex-shrink:0}
 .titol-canal b{font-size:1.15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pantalla{margin-top:12px}
+.pantalla{margin-top:12px;position:relative}
+/* 23.11.2026: subtítols traduïts al català */
+.subtitols{position:absolute;left:4%;right:4%;bottom:14%;text-align:center;pointer-events:none;z-index:2}
+.subtitols span{display:inline-block;background:rgba(0,0,0,.72);color:#fff;font-size:clamp(.95rem,2.2vw,1.35rem);line-height:1.35;padding:4px 10px;border-radius:6px;margin-top:4px}
+.subtitols.radio{position:static;margin-top:8px}
+.estat-sub{font-size:.85rem;color:var(--suau)}
 video{width:100%;max-height:62vh;background:#000;border-radius:8px;display:block}
 audio{width:100%;display:block}
 iframe.yt{width:100%;aspect-ratio:16/9;border:0;border-radius:8px;background:#000;display:block}
@@ -140,6 +145,7 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
         <div class="fila">
           <button type="button" class="suau" id="preferit" title="Afegeix o treu dels preferits">☆ Preferit</button>
           <button type="button" class="suau" id="classifica" title="Canvia on surt a la llista (es manté encara que la llista s'actualitzi)">✏️ Classifica</button>
+          <button type="button" class="suau" id="subtitols" hidden title="Subtítols automàtics traduïts al català (Whisper al navegador i traductor de Softcatalà)">💬 Subtítols</button>
           <a id="webCanal" target="_blank" rel="noopener">Web de la cadena ↗</a>
         </div>
       </div>
@@ -160,9 +166,11 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
       <div class="pantalla" id="pantalla">
         <video id="video" controls playsinline hidden></video>
         <audio id="audio" controls hidden></audio>
+        <div class="subtitols" id="capaSub" hidden></div>
         <iframe class="yt" id="yt" hidden allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
       <div class="avis" id="avis" hidden></div>
+      <div class="estat-sub" id="estatSub" hidden></div>
 
       <div class="programa" id="programa" hidden>
         <div class="prog-ara" id="progAra"></div>
@@ -588,6 +596,7 @@ function obre(c) {
   $("webCanal").href = c.w || "#"; $("webCanal").hidden = !c.w;
   marcaPreferit();
   $("editorCanal").hidden = true;
+  aturaSubtitols(); $("subtitols").hidden = !ambSubtitols(c);
   actual.epgIdx = null; pintaProgramacio();
   const s = $("senyal"); s.innerHTML = "";
   ops.forEach((o, i) => {
@@ -653,6 +662,8 @@ function reprodueix(i, perPassarella) {
       avis("Aquest navegador reprodueix el senyal pel seu compte i no deixa gravar-lo. Per gravar, fes servir un altre navegador o l'ordre de ffmpeg.");
     } else { avis("❌ Aquest navegador no pot reproduir senyals HLS."); }
   } else {
+    // 23.11.2026: si aquest element ja ha passat pels subtítols, el so sense permís (CORS) sortiria mut.
+    if (!perPassarella && SUB.fonts.has(m)) perPassarella = true;
     if (perPassarella) m.crossOrigin = "anonymous";
     m.src = perPassarella ? via(o.u, actual.c.ref) : o.u;
     m.onerror = () => {
@@ -753,6 +764,147 @@ $("corDesa").onclick = () => {
   desaCorreccio(c, cos);
 };
 $("corOriginal").onclick = () => { const c = actual && actual.c; if (c) desaCorreccio(c, { esborra: true }); };
+
+// ---------- Subtítols automàtics en català · 23.11.2026 ----------
+// Per a les cadenes i emissores de països de parla no hispana. El so de la cadena es passa a text
+// i a l'anglès amb Whisper, dins del mateix navegador (transformers.js; amb la targeta gràfica,
+// WebGPU, si n'hi ha), i el traductor de Softcatalà el passa al català. Van uns segons endarrere.
+const PAISOS_HISPANS = new Set(["ES", "MX", "AR", "CO", "CL", "PE", "VE", "EC", "BO", "PY", "UY", "CR", "PA", "DO", "CU", "GT", "HN", "SV", "NI", "PR", "GQ"]);
+const ambSubtitols = c => {
+  if (!c || esDEspanya(c)) return false;
+  const a = clauAmbit(c);
+  return !(a.startsWith("cc:") && PAISOS_HISPANS.has(a.slice(3)));
+};
+const SUB = { actiu: false, asr: null, carregant: null, ctx: null, fonts: new Map(), proc: null, mostres: [], total: 0, ocupat: false, linies: [] };
+const TROS_S = 8, MAX_S = 16;
+function estatSub(t) { $("estatSub").hidden = !t; $("estatSub").textContent = t || ""; }
+async function carregaWhisper() {
+  if (SUB.asr) return SUB.asr;
+  if (SUB.carregant) return SUB.carregant;
+  SUB.carregant = (async () => {
+    const T = await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.5");
+    const gpu = !!(navigator.gpu && await navigator.gpu.requestAdapter().catch(() => null));
+    const model = gpu ? "onnx-community/whisper-base" : "onnx-community/whisper-tiny";
+    const opcions = gpu ? { device: "webgpu", dtype: { encoder_model: "fp32", decoder_model_merged: "q4" } } : { dtype: "q8" };
+    const fets = {};
+    opcions.progress_callback = p => {
+      if (p.status === "progress" && p.total) {
+        fets[p.file] = [p.loaded, p.total];
+        const [a, b] = Object.values(fets).reduce((x, y) => [x[0] + y[0], x[1] + y[1]], [0, 0]);
+        if (SUB.actiu) estatSub(`💬 Baixant el model de reconeixement de veu (només la primera vegada): ${Math.round(a / 1048576)} de ${Math.round(b / 1048576)} MB…`);
+      }
+    };
+    SUB.asr = await T.pipeline("automatic-speech-recognition", model, opcions);
+    SUB.gpu = gpu;
+    return SUB.asr;
+  })();
+  try { return await SUB.carregant; } finally { SUB.carregant = null; }
+}
+function fontDe(m) {
+  if (!SUB.ctx) SUB.ctx = new (window.AudioContext || window.webkitAudioContext)();
+  if (!SUB.fonts.has(m)) {
+    // Un cop connectat, el so de l'element passa sempre pel context: també cal enviar-lo als altaveus.
+    const f = SUB.ctx.createMediaElementSource(m);
+    f.connect(SUB.ctx.destination);
+    SUB.fonts.set(m, f);
+  }
+  return SUB.fonts.get(m);
+}
+function a16k(trossos, total, sr) {
+  const tot = new Float32Array(total); let o = 0;
+  for (const t of trossos) { tot.set(t, o); o += t.length; }
+  if (sr === 16000) return tot;
+  const r = sr / 16000, n = Math.floor(tot.length / r), out = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const a = Math.floor(i * r), b = Math.min(tot.length, Math.floor((i + 1) * r));
+    let s = 0; for (let j = a; j < b; j++) s += tot[j];
+    out[i] = s / Math.max(1, b - a);
+  }
+  return out;
+}
+const AL_LUCINACIONS = /^(thank you\.?|thanks for watching!?|thank you for watching\.?|you|bye\.?|\.+|subtitles by.*|♪+|\[.*\]|\(.*\))$/i;
+async function tradueix(text) {
+  try {
+    const r = await fetch("https://api.softcatala.org/v2/nmt/translate/", { method: "POST", body: new URLSearchParams({ langpair: "eng|cat", q: text }) });
+    const d = await r.json();
+    const t = d && d.responseData && d.responseData.translatedText;
+    if (r.ok && t) return t;
+  } catch (e) {}
+  return null;
+}
+function mostraSub(text) {
+  const capa = $("capaSub"), ara = Date.now();
+  SUB.linies.push({ text, ara });
+  SUB.linies = SUB.linies.filter(l => ara - l.ara < 15000).slice(-2);
+  capa.innerHTML = "";
+  for (const l of SUB.linies) { const s = document.createElement("span"); s.textContent = l.text; capa.append(s, document.createElement("br")); }
+  capa.hidden = false;
+  clearTimeout(SUB.esborra);
+  SUB.esborra = setTimeout(() => { SUB.linies = []; capa.innerHTML = ""; }, 15000);
+}
+async function processaTros() {
+  if (SUB.ocupat || !SUB.actiu || !SUB.asr) return;
+  const sr = SUB.ctx.sampleRate;
+  if (SUB.total < TROS_S * sr) return;
+  SUB.ocupat = true;
+  // Si s'acumula feina, es descarta el so més antic per no quedar enrere.
+  while (SUB.total > MAX_S * sr && SUB.mostres.length > 1) SUB.total -= SUB.mostres.shift().length;
+  const trossos = SUB.mostres, total = SUB.total;
+  SUB.mostres = []; SUB.total = 0;
+  try {
+    const so = a16k(trossos, total, sr);
+    let e = 0; for (let i = 0; i < so.length; i += 8) e += so[i] * so[i];
+    if (Math.sqrt(e / (so.length / 8)) < 0.004) return;          // silenci
+    const r = await SUB.asr(so, { task: "translate", chunk_length_s: 30 });
+    const angles = String((r && r.text) || "").replace(/\s+/g, " ").trim();
+    if (!SUB.actiu || !angles || AL_LUCINACIONS.test(angles)) return;
+    const cat = await tradueix(angles);
+    if (SUB.actiu) mostraSub(cat || angles + " (en anglès: el traductor no respon)");
+    estatSub(`💬 Subtítols actius · traduïts al català per Softcatalà · uns ${TROS_S}-${TROS_S + 6} s de retard${SUB.gpu ? "" : " · sense targeta gràfica: pot anar lent"}`);
+  } catch (e) {
+    estatSub("❌ Subtítols: " + (e && e.message ? e.message : e));
+  } finally { SUB.ocupat = false; }
+}
+async function engegaSubtitols() {
+  const m = media();
+  if (!actual || !actual.op || actual.op.f === "youtube" || !m || m.hidden) { estatSub("💬 Els subtítols només funcionen amb senyals que es veuen aquí (no amb YouTube)."); return; }
+  SUB.actiu = true; $("subtitols").textContent = "💬 Atura els subtítols"; $("subtitols").classList.add("actiu");
+  $("capaSub").classList.toggle("radio", actual.tipus !== "tv");
+  // Per poder escoltar el so, el senyal ha de venir amb permís (CORS): la ràdio directa es passa per la passarel·la.
+  if (actual.op.f !== "m3u8" && !m.crossOrigin) { reprodueix(actual.ops.indexOf(actual.op), true); }
+  try {
+    const font = fontDe(media());
+    await SUB.ctx.resume();
+    if (!SUB.proc) {
+      SUB.proc = SUB.ctx.createScriptProcessor(4096, 1, 1);
+      SUB.proc.onaudioprocess = ev => {
+        if (!SUB.actiu) return;
+        const d = new Float32Array(ev.inputBuffer.getChannelData(0));
+        SUB.mostres.push(d); SUB.total += d.length;
+        processaTros();
+      };
+      const mut = SUB.ctx.createGain(); mut.gain.value = 0;
+      SUB.proc.connect(mut); mut.connect(SUB.ctx.destination);
+    }
+    for (const f of SUB.fonts.values()) { try { f.disconnect(SUB.proc); } catch (e) {} }
+    font.connect(SUB.proc);
+    SUB.mostres = []; SUB.total = 0;
+    estatSub(SUB.asr ? "💬 Escoltant…" : "💬 Preparant el reconeixement de veu…");
+    await carregaWhisper();
+    if (SUB.actiu) estatSub("💬 Escoltant… (els primers subtítols surten d'aquí a uns segons)");
+  } catch (e) {
+    aturaSubtitols();
+    estatSub("❌ No s'han pogut engegar els subtítols: " + (e && e.message ? e.message : e));
+  }
+}
+function aturaSubtitols(silenci) {
+  SUB.actiu = false; SUB.mostres = []; SUB.total = 0; SUB.linies = [];
+  if (SUB.proc) for (const f of SUB.fonts.values()) { try { f.disconnect(SUB.proc); } catch (e) {} }
+  $("subtitols").textContent = "💬 Subtítols"; $("subtitols").classList.remove("actiu");
+  $("capaSub").hidden = true; $("capaSub").innerHTML = "";
+  if (!silenci) estatSub("");
+}
+$("subtitols").onclick = () => { if (SUB.actiu) aturaSubtitols(); else engegaSubtitols(); };
 
 // ---------- Gravació ----------
 // 05.11.2026 (2a versió): cada gravació és una feina independent, de qualsevol cadena o

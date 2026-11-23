@@ -664,7 +664,7 @@ async function historicPremsa(dia) {
         const div = document.createElement("div");
         bb.nodes.forEach(n => div.appendChild(document.importNode(n, true)));
         enllacarTextos(div);
-        grupsDelText(div.innerHTML).grups.forEach(g => (per[g.nom] = per[g.nom] || []).push(...g.items));
+        grupsDelText(div.innerHTML).grups.forEach(g => { const n = clauBloc === "gen" ? nomMitjaGen(g.nom) : g.nom; (per[n] = per[n] || []).push(...g.items); });
         });
       } catch (e) {}
     }
@@ -688,6 +688,13 @@ const MITJANS_GEN = [
   [/elDiario|eldiario/i, "eldiario.es", "elDiario.es"], [/agencia ?catalana|acn\.cat|\bacn\b/, "acn.cat", "ACN"],
   [/regi[oó]7/, "regio7.cat", "Regió7"], [/el ?temps/, "eltemps.cat", "El Temps"], [/betev[eé]/, "beteve.cat", "betevé"],
 ];
+// 23.11.2026: un mateix mitjà pot arribar amb dos noms (Google News «La Vanguardia», Bing «lavanguardia.com»):
+// s'agrupa pel nom net, perquè surti en una sola fitxa.
+function nomMitjaGen(nom) {
+  const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const m = MITJANS_GEN.find(([rx]) => rx.test(t));
+  return m ? m[2] : nom;
+}
 function marcaMitjaGeneralista(nom) {
   const t = String(nom || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   const m = MITJANS_GEN.find(([rx]) => rx.test(t));
@@ -733,6 +740,12 @@ function plegaNovetats(sec) {
       // Si la setmana és buida, el darrer anunci publicat (queda a «Anteriors», perquè és antic).
       grups.push({ nom: "Consorci de les Gavarres", items: (TAULER_GAV.items.length ? TAULER_GAV.items : (TAULER_GAV.darrer ? [TAULER_GAV.darrer] : [])).map(x =>
         `▪ <a href="${esc(x.link)}" target="_blank" rel="noopener">${esc(x.titol)}</a>${x.data ? ` (${x.data.split("-").reverse().join(".")})` : ""}`) });
+  }
+  // Premsa generalista: els noms diferents d'un mateix mitjà, en una sola fitxa.
+  if (tipus === "premsa" && sec.dataset.premsa === "gen") {
+    const fusio = [];
+    grups.forEach(g => { g.nom = nomMitjaGen(g.nom); const f = fusio.find(x => x.nom === g.nom); if (f) f.items.push(...g.items); else fusio.push(g); });
+    grups.splice(0, grups.length, ...fusio);
   }
   if (tipus === "taulers" || tipus === "web") grups.sort((a, b) => rangAdmin(a.nom) - rangAdmin(b.nom));
   // Premsa local: també els mitjans que avui no hi surten però sí els dies anteriors.

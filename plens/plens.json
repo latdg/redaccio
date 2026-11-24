@@ -6,7 +6,7 @@
    "id": "9OpZWKe_0bc",
    "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24.11.2026",
    "data": "2026-11-24",
-   "index": false,
+   "index": true,
    "durada": 5997
   },
   {
@@ -500,5 +500,5 @@
    "index": false
   }
  ],
- "actualitzat": "24.11.2026 22.29"
+ "actualitzat": "24.11.2026 23.04"
 }

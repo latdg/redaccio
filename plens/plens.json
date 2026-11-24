@@ -1,16 +1,13 @@
 {
  "canal_id": "UCNc6EfsFKrUr8ZORmo8T-Jg",
- "directe": {
-  "id": "9OpZWKe_0bc",
-  "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24.11.2026",
-  "estat": "directe"
- },
+ "directe": null,
  "plens": [
   {
    "id": "9OpZWKe_0bc",
    "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24.11.2026",
    "data": "2026-11-24",
-   "index": false
+   "index": false,
+   "durada": 5997
   },
   {
    "id": "ZX-QRYfHnp0",
@@ -503,5 +500,5 @@
    "index": false
   }
  ],
- "actualitzat": "24.11.2026 21.09"
+ "actualitzat": "24.11.2026 22.29"
 }

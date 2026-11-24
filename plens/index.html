@@ -249,10 +249,14 @@ function cerca(text) {
 let espera = null;
 $("cerca").oninput = () => { clearTimeout(espera); espera = setTimeout(() => cerca($("cerca").value), 250); };
 
+// 24.11.2026: l'avís del directe només val si s'ha comprovat fa poc (40 minuts si és
+// en directe, 24 hores si és previst); si no, es dona per acabat.
+const directeVigent = d => { const x = d && d.directe; if (!x || !x.vist) return null; const fa = Date.now() - Date.parse(x.vist); return fa >= 0 && fa < (x.estat === "previst" ? 24 * 3600e3 : 40 * 60e3) ? x : null; };
 // ---------- Inici ----------
 async function inicia() {
   let d = { plens: [] };
   try { d = await obtenir("plens.json"); } catch (e) {}
+  d.directe = directeVigent(d);
   D.plens = d.plens || [];
   if (d.directe) {
     $("directe").innerHTML = `<span class="boleta"></span><b>${d.directe.estat === "previst" ? "Ple previst" : "En directe"}:</b> ${esc(d.directe.titol)}

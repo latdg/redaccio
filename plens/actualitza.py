@@ -146,6 +146,9 @@ def main():
         p["titol"] = titol_net(p.get("titol"))
     if directe:
         directe["titol"] = titol_net(directe.get("titol"))
+        # 24.11.2026: hora de l'última comprovació. Les pàgines amaguen l'avís si fa
+        # massa que no es comprova (els crons de GitHub de vegades no s'executen).
+        directe["vist"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     plens = sorted(per_id.values(), key=lambda p: (p.get("data") or "", p["id"]), reverse=True)
     ara = datetime.datetime.now(ZoneInfo("Europe/Madrid"))

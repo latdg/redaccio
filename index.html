@@ -1056,7 +1056,10 @@ async function inicia() {
 // Dades: plens/plens.json (workflow plens.yml).
 // -----------------------------------------------------------------------------
 let PLENS_JSON = null;
-const dadesPlens = () => PLENS_JSON || (PLENS_JSON = obtenir("plens/plens.json").catch(() => null));
+// 24.11.2026: l'avís del directe només val si s'ha comprovat fa poc (40 minuts si és
+// en directe, 24 hores si és previst); si no, es dona per acabat.
+const directeVigent = d => { const x = d && d.directe; if (!x || !x.vist) return null; const fa = Date.now() - Date.parse(x.vist); return fa >= 0 && fa < (x.estat === "previst" ? 24 * 3600e3 : 40 * 60e3) ? x : null; };
+const dadesPlens = () => PLENS_JSON || (PLENS_JSON = obtenir("plens/plens.json").then(d => (d && (d.directe = directeVigent(d)), d)).catch(() => null));
 async function liniaPlens(caixa) {
   try {
     const sec = caixa.closest("section");

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="robots" content="noindex, nofollow">
+<title>La TdG plens</title>
+<!--
+  LA TdG PLENS — La TdG redacció · 24.11.2026
+  Eina de la redacció per treballar els plens de l'Ajuntament de la Bisbal d'Empordà
+  els dies posteriors: el vídeo de YouTube del ple, els punts de l'ordre del dia amb
+  l'hora d'inici, les declaracions destacades i la transcripció, tot clicable per
+  saltar al moment del vídeo, i un cercador per a tots els plens.
+  Dades: plens/plens.json i plens/index/<vídeo>.json (workflow plens.yml).
+  El directe es mira a la sala de control (tdt/?canal=ple).
+  Enllaç directe a un moment: plens/?v=<vídeo>&t=<segons>
+-->
+<style>
+:root{--fons:#f6f5f2;--targeta:#fff;--text:#1d1d1b;--suau:#6b6b66;--linia:#e3e1db;--accent:#b4462c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fons);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header,main{max-width:1280px;margin:0 auto;padding-left:16px;padding-right:16px}
+header{padding-top:24px}
+[hidden]{display:none!important}
+h1{margin:0;font-size:1.6rem}
+h2{margin:0 0 8px;font-size:1.1rem;text-transform:uppercase}
+a{color:var(--accent)}
+.capcalera{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.capcalera .tornada{margin-left:auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.capcalera .acces{font-size:1.6rem;line-height:1;text-decoration:none}
+.podcast{display:flex;flex-direction:column;align-items:center;text-decoration:none;flex-shrink:0}
+.podcast .logo-tdg{display:block;width:76px;height:76px;border-radius:6px}
+@media (max-width:600px){.podcast .logo-tdg{width:60px;height:60px}}
+.sub{color:var(--suau);margin:4px 0 12px}
+.directe{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--targeta);border:1px solid var(--linia);border-left:4px solid #e53935;border-radius:12px;padding:10px 14px;margin:0 0 12px}
+.directe b{color:#e53935}
+@keyframes pols{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.72)}}
+.boleta{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e53935;animation:pols 1.2s infinite}
+.boto{font:inherit;font-size:.88rem;padding:6px 14px;border:1px solid var(--accent);border-radius:999px;background:var(--targeta);color:var(--accent);cursor:pointer;text-decoration:none;white-space:nowrap}
+.boto:hover{background:var(--accent);color:#fff}
+main{display:grid;gap:16px;padding-bottom:32px}
+section{background:var(--targeta);border:1px solid var(--linia);border-radius:12px;padding:16px;min-width:0;overflow-wrap:anywhere}
+.cerca{display:flex;gap:8px;flex-wrap:wrap}
+.cerca input{font:inherit;flex:1 1 260px;min-width:0;padding:8px 14px;border:1px solid var(--linia);border-radius:999px;background:var(--fons);color:var(--text)}
+.nota{color:var(--suau);font-size:.85rem;margin:6px 0 0}
+.resultats{max-height:340px;overflow:auto;margin-top:8px}
+.resultats:empty{display:none}
+.resultat{display:block;width:100%;text-align:left;font:inherit;font-size:.9rem;background:none;border:0;border-top:1px dashed var(--linia);padding:7px 0;color:var(--text);cursor:pointer}
+.resultat:first-child{border-top:0}
+.resultat .on{color:var(--accent);font-weight:600}
+.resultat:hover .on{text-decoration:underline}
+mark{background:#f6e0a8;color:inherit;padding:0 1px;border-radius:2px}
+.treball{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:900px){.treball{grid-template-columns:1fr}}
+.esquerra{position:sticky;top:12px}
+@media (max-width:900px){.esquerra{position:static}}
+.tria{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 10px}
+select{font:inherit;padding:6px 8px;border:1px solid var(--linia);border-radius:8px;background:var(--targeta);color:var(--text);max-width:100%}
+.video{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden}
+.video iframe,.video #reproductor{position:absolute;inset:0;width:100%;height:100%;border:0}
+.dades-ple{color:var(--suau);font-size:.85rem;margin:8px 0 0}
+.pestanyes{display:flex;gap:6px;margin:0 0 10px;flex-wrap:wrap}
+.pestanyes button{font:inherit;font-size:.88rem;padding:4px 14px;border:1px solid var(--linia);border-radius:999px;background:var(--targeta);color:var(--text);cursor:pointer}
+.pestanyes button.actiu{background:var(--accent);border-color:var(--accent);color:#fff}
+.llista{max-height:calc(100vh - 220px);overflow:auto;padding-right:4px}
+@media (max-width:900px){.llista{max-height:none}}
+.punt{border-top:1px solid var(--linia);padding:10px 0}
+.punt:first-child{border-top:0;padding-top:0}
+.punt.ara>.salt{font-weight:700}
+.salt{font:inherit;background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-align:left}
+.salt:hover{text-decoration:underline}
+.t{font-variant-numeric:tabular-nums;color:var(--suau);margin-right:6px;font-size:.85rem}
+.punt details{margin-top:4px}
+.punt details summary{cursor:pointer;color:var(--suau);font-size:.85rem}
+.punt .text{white-space:pre-wrap;font-size:.88rem;margin:6px 0 0}
+.decl{margin:6px 0 0 16px;padding:0;list-style:none;font-size:.9rem}
+.decl li{margin:4px 0}
+.decl .salt{color:var(--text)}
+.par{padding:6px 8px;border-radius:6px;cursor:pointer;font-size:.92rem}
+.par:hover{background:var(--fons)}
+.par.ara{background:#fbeee9;box-shadow:inset 3px 0 0 var(--accent)}
+.par .qui{font-weight:600}
+.segueix{display:flex;align-items:center;gap:6px;font-size:.85rem;color:var(--suau);margin:0 0 8px}
+.buit{color:var(--suau)}
+</style>
+</head>
+<body>
+<header>
+  <div class="capcalera">
+    <a class="podcast" href="https://laguait.cat/latdg" target="_blank" rel="noopener" title="Visita el pòdcast">
+      <img class="logo-tdg" src="https://latdg.github.io/tauler/logo-tdg.jpg" alt="La torre de guaita" width="76" height="76">
+    </a>
+    <h1>La TdG plens</h1>
+    <div class="tornada">
+      <a class="acces" target="_blank" rel="noopener" href="../" title="La TdG redacció" aria-label="La TdG redacció">✍️</a>
+      <a class="acces" target="_blank" rel="noopener" href="https://latdg.github.io/tauler/" title="La TdG ampliada" aria-label="La TdG ampliada">➕</a>
+      <a class="acces" target="_blank" rel="noopener" href="../dades/" title="La TdG dades: blocs de menys actualització, per analitzar" aria-label="La TdG dades">📊</a>
+      <a class="acces" target="_blank" rel="noopener" href="../tdt/" title="La TdG sala de control audiovisual: TDT i ràdio en directe, amb gravació" aria-label="La TdG sala de control audiovisual">📺</a>
+      <a class="acces" target="_blank" rel="noopener" href="https://latdg.github.io/tauler/fonoteca/" title="La TdG fonoteca: declaracions, conferències i actes per tornar a escoltar" aria-label="La TdG fonoteca">🎙️</a>
+    </div>
+  </div>
+  <p class="sub">Plens de l'Ajuntament de la Bisbal d'Empordà: el vídeo, els punts de l'ordre del dia, les declaracions i la transcripció.</p>
+  <div class="directe" id="directe" hidden></div>
+</header>
+
+<main>
+  <section>
+    <h2>🔎 Cerca als plens</h2>
+    <div class="cerca"><input type="search" id="cerca" placeholder="Un tema, un nom, una paraula: punts, declaracions o el que s'hi diu" aria-label="Cerca als plens"></div>
+    <p class="nota" id="notaCerca"></p>
+    <div class="resultats" id="resultats"></div>
+  </section>
+
+  <div class="treball">
+    <section class="esquerra">
+      <div class="tria"><label for="ple"><b>Ple:</b></label><select id="ple"></select></div>
+      <div class="video"><div id="reproductor"></div></div>
+      <p class="dades-ple" id="dadesPle"></p>
+    </section>
+    <section>
+      <div class="pestanyes">
+        <button id="pPunts" class="actiu">🏛️ Punts de l'ordre del dia</button>
+        <button id="pTransc">📝 Transcripció</button>
+      </div>
+      <div id="vPunts" class="llista"></div>
+      <div id="vTransc" class="llista" hidden>
+        <label class="segueix"><input type="checkbox" id="segueix" checked> Segueix el vídeo</label>
+        <div id="transc"></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const dataCa = iso => iso ? iso.split("-").reverse().join(".") : "";
+const hms = s => { s = Math.max(0, Math.floor(s || 0)); return [Math.floor(s / 3600), Math.floor(s % 3600 / 60), s % 60].map(n => String(n).padStart(2, "0")).join(":"); };
+const durada = s => !s ? "" : s >= 3600 ? `${Math.floor(s / 3600)} h ${String(Math.floor(s % 3600 / 60)).padStart(2, "0")} min` : `${Math.max(1, Math.floor(s / 60))} min`;
+const net = t => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const obtenir = c => fetch(c + "?v=" + Date.now(), { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+
+const D = { plens: [], index: {}, actual: null, player: null, llest: false, pendent: null, ara: -1 };
+
+// ---------- Reproductor (API de YouTube: salta sense recarregar el vídeo) ----------
+function onYouTubeIframeAPIReady() { D.llest = true; if (D.pendent) { const [id, s, auto] = D.pendent; D.pendent = null; carregaVideo(id, s, auto); } }
+function carregaVideo(id, s, auto) {
+  if (!D.llest || !window.YT || !YT.Player) { D.pendent = [id, s, auto]; return; }
+  if (!D.player) {
+    D.player = new YT.Player("reproductor", { videoId: id, host: "https://www.youtube-nocookie.com",
+      playerVars: { rel: 0, start: Math.floor(s || 0), autoplay: auto ? 1 : 0, playsinline: 1 } });
+    return;
+  }
+  if (auto) D.player.loadVideoById({ videoId: id, startSeconds: Math.floor(s || 0) });
+  else D.player.cueVideoById({ videoId: id, startSeconds: Math.floor(s || 0) });
+}
+function salta(s) {
+  if (D.player && D.player.seekTo) { D.player.seekTo(Math.floor(s), true); D.player.playVideo(); }
+  else carregaVideo(D.actual.id, s, true);
+  const u = new URL(location); u.searchParams.set("v", D.actual.id); u.searchParams.set("t", Math.floor(s)); history.replaceState(null, "", u);
+  if (innerWidth <= 900) document.querySelector(".video").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ---------- Un ple ----------
+function triaPle(id, s, auto) {
+  const p = D.plens.find(x => x.id === id) || D.plens[0];
+  if (!p) return;
+  D.actual = p; D.ara = -1;
+  $("ple").value = p.id;
+  const ix = D.index[p.id];
+  $("dadesPle").innerHTML = [dataCa(p.data), durada(p.durada || (ix && ix.durada)),
+    `<a href="https://www.youtube.com/watch?v=${esc(p.id)}" target="_blank" rel="noopener">Obre'l a YouTube</a>`].filter(Boolean).join(" · ");
+  carregaVideo(p.id, s || 0, auto);
+  pintaPunts(p, ix); pintaTransc(p, ix);
+}
+
+function pintaPunts(p, ix) {
+  const punts = ix && Array.isArray(ix.punts) ? ix.punts : [];
+  $("vPunts").innerHTML = punts.length ? punts.map(pt => `<div class="punt" data-s="${pt.s ?? ""}">
+      <button class="salt" data-s="${pt.s ?? 0}">${pt.s != null ? `<span class="t">${hms(pt.s)}</span>` : ""}${esc(pt.titol)}</button>
+      ${(pt.declaracions || []).length ? `<ul class="decl">${pt.declaracions.map(d => `<li><button class="salt" data-s="${d.s ?? 0}"><span class="t">${hms(d.s)}</span>«${esc(d.text)}» — ${esc(d.qui)}</button></li>`).join("")}</ul>` : ""}
+      ${pt.text ? `<details><summary>Resum del punt</summary><div class="text">${esc(pt.text)}</div></details>` : ""}
+    </div>`).join("")
+    : `<p class="buit">Encara no hi ha els punts d'aquest ple. Hi seran quan el bot de plens el transcrigui i en deixi l'índex.</p>`;
+}
+
+function pintaTransc(p, ix) {
+  const t = ix && Array.isArray(ix.transcripcio) ? ix.transcripcio : [];
+  $("transc").innerHTML = t.length ? t.map((x, i) => `<div class="par" data-i="${i}" data-s="${x.s || 0}"><span class="t">${hms(x.s)}</span>${x.qui ? `<span class="qui">${esc(x.qui)}:</span> ` : ""}${esc(x.text)}</div>`).join("")
+    : `<p class="buit">Encara no hi ha la transcripció d'aquest ple.</p>`;
+}
+
+// El punt i el paràgraf que sonen ara, ressaltats.
+setInterval(() => {
+  if (!D.player || !D.player.getCurrentTime || !D.actual) return;
+  const ara = D.player.getCurrentTime();
+  const pars = [...document.querySelectorAll("#transc .par")];
+  let i = -1;
+  for (const el of pars) { if (Number(el.dataset.s) <= ara) i = Number(el.dataset.i); else break; }
+  if (i !== D.ara) {
+    D.ara = i;
+    pars.forEach(el => el.classList.toggle("ara", Number(el.dataset.i) === i));
+    if (i >= 0 && $("segueix").checked && !$("vTransc").hidden) pars[i].scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+  const punts = [...document.querySelectorAll("#vPunts .punt")].filter(el => el.dataset.s !== "");
+  let actiu = null;
+  for (const el of punts) if (Number(el.dataset.s) <= ara) actiu = el;
+  punts.forEach(el => el.classList.toggle("ara", el === actiu));
+}, 1000);
+
+document.addEventListener("click", ev => {
+  const b = ev.target.closest(".salt, .par");
+  if (b && b.closest("main")) { ev.preventDefault(); salta(Number(b.dataset.s) || 0); return; }
+  const r = ev.target.closest(".resultat");
+  if (r) { ev.preventDefault(); if (!D.actual || D.actual.id !== r.dataset.ple) triaPle(r.dataset.ple, Number(r.dataset.s) || 0, true); else salta(Number(r.dataset.s) || 0); }
+});
+$("pPunts").onclick = () => { $("pPunts").classList.add("actiu"); $("pTransc").classList.remove("actiu"); $("vPunts").hidden = false; $("vTransc").hidden = true; };
+$("pTransc").onclick = () => { $("pTransc").classList.add("actiu"); $("pPunts").classList.remove("actiu"); $("vTransc").hidden = false; $("vPunts").hidden = true; D.ara = -1; };
+$("ple").onchange = () => { triaPle($("ple").value, 0, false); const u = new URL(location); u.searchParams.set("v", $("ple").value); u.searchParams.delete("t"); history.replaceState(null, "", u); };
+
+// ---------- Cerca a tots els plens ----------
+function marca(text, q) {
+  const t = String(text || ""), n = net(t), i = n.indexOf(q);
+  if (i < 0) return esc(t.slice(0, 160));
+  const a = Math.max(0, i - 60), b = Math.min(t.length, i + q.length + 110);
+  return (a ? "…" : "") + esc(t.slice(a, i)) + "<mark>" + esc(t.slice(i, i + q.length)) + "</mark>" + esc(t.slice(i + q.length, b)) + (b < t.length ? "…" : "");
+}
+function cerca(text) {
+  const q = net(text.trim()), caixa = $("resultats");
+  if (q.length < 3) { caixa.innerHTML = ""; return; }
+  const res = [];
+  for (const p of D.plens) {
+    const quin = dataCa(p.data) || esc(p.titol);
+    const ix = D.index[p.id];
+    if (net(p.titol).includes(q)) res.push({ p, s: 0, html: `<span class="on">${esc(p.titol)}</span>` });
+    if (!ix) continue;
+    for (const pt of ix.punts || []) if (net(pt.titol + " " + (pt.text || "")).includes(q))
+      res.push({ p, s: pt.s || 0, html: `<span class="on">${quin} · ${hms(pt.s)} · ${esc(pt.titol)}</span><br>${marca(pt.text || pt.titol, q)}` });
+    for (const t of ix.transcripcio || []) if (net(t.text).includes(q))
+      res.push({ p, s: t.s || 0, html: `<span class="on">${quin} · ${hms(t.s)}${t.qui ? " · " + esc(t.qui) : ""}</span><br>${marca(t.text, q)}` });
+  }
+  caixa.innerHTML = res.length
+    ? res.slice(0, 80).map(r => `<button class="resultat" data-ple="${esc(r.p.id)}" data-s="${r.s}">${r.html}</button>`).join("") +
+      (res.length > 80 ? `<p class="nota">I ${res.length - 80} resultats més: afina la cerca.</p>` : "")
+    : `<p class="buit">Cap resultat.</p>`;
+}
+let espera = null;
+$("cerca").oninput = () => { clearTimeout(espera); espera = setTimeout(() => cerca($("cerca").value), 250); };
+
+// ---------- Inici ----------
+async function inicia() {
+  let d = { plens: [] };
+  try { d = await obtenir("plens.json"); } catch (e) {}
+  D.plens = d.plens || [];
+  if (d.directe) {
+    $("directe").innerHTML = `<span class="boleta"></span><b>${d.directe.estat === "previst" ? "Ple previst" : "Ple en directe"}:</b> ${esc(d.directe.titol)}
+      <a class="boto" href="../tdt/?canal=ple" target="_blank" rel="noopener">📺 Escolta'l a la sala de control</a>`;
+    $("directe").hidden = false;
+  }
+  if (!D.plens.length) {
+    $("ple").innerHTML = "<option>Cap ple</option>";
+    $("vPunts").innerHTML = `<p class="buit">Encara no hi ha la llista dels plens: es genera un cop al dia.</p>`;
+    return;
+  }
+  $("ple").innerHTML = D.plens.map(p => `<option value="${esc(p.id)}">${esc(dataCa(p.data) || p.titol)}${p.index ? " · amb punts" : ""}${d.directe && d.directe.id === p.id ? " · en directe" : ""}</option>`).join("");
+  await Promise.all(D.plens.filter(p => p.index).map(async p => { try { D.index[p.id] = await obtenir(`index/${p.id}.json`); } catch (e) {} }));
+  const amb = Object.keys(D.index).length;
+  $("notaCerca").textContent = amb ? `Cerca als punts i a la transcripció de ${amb} ${amb === 1 ? "ple" : "plens"}; als altres, pel títol.`
+    : "De moment, només pel títol: els punts i la transcripció hi seran quan el bot de plens en deixi l'índex.";
+  const u = new URLSearchParams(location.search);
+  // Per defecte, l'últim ple ja acabat (el directe es mira a la sala de control).
+  const perDefecte = (D.plens.find(p => !(d.directe && d.directe.id === p.id)) || D.plens[0]).id;
+  const v = u.get("v") && D.plens.some(p => p.id === u.get("v")) ? u.get("v") : perDefecte;
+  triaPle(v, Number(u.get("t")) || 0, !!u.get("t"));
+}
+inicia();
+</script>
+</body>
+</html>

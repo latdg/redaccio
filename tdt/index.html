@@ -350,6 +350,11 @@ async function carregaLlistes() {
   }
   await afegeixCanalPle();
   omplAmbits(); pinta();
+  // 24.11.2026: tdt/?canal=ple obre directament el ple (enllaç de La TdG redacció i de La TdG plens).
+  if (new URLSearchParams(location.search).get("canal") === "ple") {
+    const ple = (LLISTES.tv.canals || []).find(c => c.ple);
+    if (ple) obre(ple);
+  }
   carregaMon();
 }
 
@@ -362,8 +367,10 @@ async function afegeixCanalPle() {
     if (!r.ok) return;
     const d = await r.json();
     if (!d.canal_id) return;
-    LLISTES.tv.canals.unshift({ n: "Ple de l'Ajuntament de la Bisbal d'Empordà", a: "Cataluña", p: "Spain", _t: "tv",
-      o: [{ f: "youtube", u: `https://www.youtube.com/channel/${d.canal_id}/live` }],
+    // Si hi ha ple en directe, primer el seu vídeo; si no, el directe del canal.
+    const o = [{ f: "youtube", u: `https://www.youtube.com/channel/${d.canal_id}/live` }];
+    if (d.directe && d.directe.id) o.unshift({ f: "youtube", u: `https://www.youtube.com/watch?v=${d.directe.id}` });
+    LLISTES.tv.canals.unshift({ n: "Ple de l'Ajuntament de la Bisbal d'Empordà", a: "Cataluña", p: "Spain", _t: "tv", ple: true, o,
       w: "https://www.youtube.com/@ajuntamentdelabisbaldempor3226/streams", x: ["EMB"],
       l: "../escuts/17022-petit.png" });
   } catch (e) {}

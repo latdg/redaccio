@@ -1077,7 +1077,7 @@ async function avisDirectePle() {
   const d = await dadesPlens();
   if (!d || !d.directe) return;
   const el = document.getElementById("pleDirecte");
-  el.innerHTML = `<span class="tdg-boleta-avui"></span><b>${d.directe.estat === "previst" ? "Ple previst" : "Ple en directe"}:</b> ${esc(d.directe.titol)} <a href="tdt/?canal=ple" target="_blank" rel="noopener">📺 Escolta'l a la sala de control</a>`;
+  el.innerHTML = `<span class="tdg-boleta-avui"></span><b>${d.directe.estat === "previst" ? "Ple previst" : "En directe"}:</b> ${esc(d.directe.titol)} <a href="tdt/?canal=ple" target="_blank" rel="noopener">📺 Escolta'l a la sala de control</a>`;
   el.hidden = false;
 }
 

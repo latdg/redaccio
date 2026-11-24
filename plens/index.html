@@ -255,7 +255,7 @@ async function inicia() {
   try { d = await obtenir("plens.json"); } catch (e) {}
   D.plens = d.plens || [];
   if (d.directe) {
-    $("directe").innerHTML = `<span class="boleta"></span><b>${d.directe.estat === "previst" ? "Ple previst" : "Ple en directe"}:</b> ${esc(d.directe.titol)}
+    $("directe").innerHTML = `<span class="boleta"></span><b>${d.directe.estat === "previst" ? "Ple previst" : "En directe"}:</b> ${esc(d.directe.titol)}
       <a class="boto" href="../tdt/?canal=ple" target="_blank" rel="noopener">📺 Escolta'l a la sala de control</a>`;
     $("directe").hidden = false;
   }

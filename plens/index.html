@@ -256,7 +256,7 @@ async function inicia() {
   D.plens = d.plens || [];
   if (d.directe) {
     $("directe").innerHTML = `<span class="boleta"></span><b>${d.directe.estat === "previst" ? "Ple previst" : "En directe"}:</b> ${esc(d.directe.titol)}
-      <a class="boto" href="../tdt/?canal=ple" target="_blank" rel="noopener">📺 Escolta'l a la sala de control</a>`;
+      <a class="boto" href="../tdt/?canal=ple" target="_blank" rel="noopener">📺 Veure'l a la sala de control</a>`;
     $("directe").hidden = false;
   }
   if (!D.plens.length) {

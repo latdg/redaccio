@@ -1,0 +1,507 @@
+{
+ "canal_id": "UCNc6EfsFKrUr8ZORmo8T-Jg",
+ "directe": {
+  "id": "9OpZWKe_0bc",
+  "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24/11/2026",
+  "estat": "directe"
+ },
+ "plens": [
+  {
+   "id": "9OpZWKe_0bc",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24/11/2026",
+   "data": "2026-11-24",
+   "index": false
+  },
+  {
+   "id": "ZX-QRYfHnp0",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 03/11/2026",
+   "data": "2026-11-03",
+   "durada": 82,
+   "index": false
+  },
+  {
+   "id": "mcizBQX-um4",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 27/10/2026",
+   "data": "2026-10-27",
+   "durada": 9495,
+   "index": false
+  },
+  {
+   "id": "ikzbIMqSCgU",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 22/09/2026",
+   "data": "2026-09-22",
+   "durada": 11555,
+   "index": false
+  },
+  {
+   "id": "ny3blMxHAbw",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 28/07/2026",
+   "data": "2026-07-28",
+   "durada": 14253,
+   "index": false
+  },
+  {
+   "id": "khuCsR3-BJI",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 30/06/2026",
+   "data": "2026-06-30",
+   "durada": 11995,
+   "index": false
+  },
+  {
+   "id": "YyDamYjLDqo",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 26/05/2026",
+   "data": "2026-05-26",
+   "durada": 6499,
+   "index": false
+  },
+  {
+   "id": "FK01mE0qLsA",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24/03/2026",
+   "data": "2026-03-24",
+   "durada": 15561,
+   "index": false
+  },
+  {
+   "id": "Mme44kDaVi4",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24/02/2026",
+   "data": "2026-02-24",
+   "durada": 10171,
+   "index": false
+  },
+  {
+   "id": "fYX8R0VCT8U",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 27/01/2026",
+   "data": "2026-01-27",
+   "durada": 8233,
+   "index": false
+  },
+  {
+   "id": "Zapohfd-VhA",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 20/01/2026",
+   "data": "2026-01-20",
+   "durada": 6764,
+   "index": false
+  },
+  {
+   "id": "LzuqhMhQDyM",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 16/12/2025",
+   "data": "2025-12-16",
+   "durada": 9645,
+   "index": false
+  },
+  {
+   "id": "y8o0CyXBkOI",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 25/11/2025",
+   "data": "2025-11-25",
+   "durada": 9471,
+   "index": false
+  },
+  {
+   "id": "ZA8uitgMar8",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 28/10/2025",
+   "data": "2025-10-28",
+   "durada": 8570,
+   "index": false
+  },
+  {
+   "id": "5D1JdmyAu9M",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 23/09/2025",
+   "data": "2025-09-23",
+   "durada": 6549,
+   "index": false
+  },
+  {
+   "id": "dkUaWjt3D7c",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 25/06/2025",
+   "data": "2025-06-25",
+   "durada": 6176,
+   "index": false
+  },
+  {
+   "id": "1kKvKBluCrw",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 27/05/2025",
+   "data": "2025-05-27",
+   "durada": 8481,
+   "index": false
+  },
+  {
+   "id": "kvpbVibiZrs",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 29/04/2025",
+   "data": "2025-04-29",
+   "durada": 6722,
+   "index": false
+  },
+  {
+   "id": "HsnNq_VszCo",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 25/03/2025",
+   "data": "2025-03-25",
+   "durada": 5695,
+   "index": false
+  },
+  {
+   "id": "BThJZFf8skU",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 25/02/2025",
+   "data": "2025-02-25",
+   "durada": 42899,
+   "index": false
+  },
+  {
+   "id": "8aD_Cp5S2uw",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 28/01/2025",
+   "data": "2025-01-28",
+   "durada": 5470,
+   "index": false
+  },
+  {
+   "id": "9egebqu-i70",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 27/12/2024",
+   "data": "2024-12-27",
+   "durada": 8312,
+   "index": false
+  },
+  {
+   "id": "izaUcuBaoZQ",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 26/11/2024",
+   "data": "2024-11-26",
+   "durada": 2934,
+   "index": false
+  },
+  {
+   "id": "W8x3s1welG4",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 29/10/2024",
+   "data": "2024-10-29",
+   "durada": 3788,
+   "index": false
+  },
+  {
+   "id": "Gmzrz-6rHBY",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 22/10/2024",
+   "data": "2024-10-22",
+   "durada": 8185,
+   "index": false
+  },
+  {
+   "id": "HAj4iIcNLPs",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 24/09/2024",
+   "data": "2024-09-24",
+   "durada": 10706,
+   "index": false
+  },
+  {
+   "id": "x2icfg0ArMg",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 08/07/2024",
+   "data": "2024-07-08",
+   "durada": 1708,
+   "index": false
+  },
+  {
+   "id": "zQANS2vxFgU",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 25/06/2024",
+   "data": "2024-06-25",
+   "durada": 3372,
+   "index": false
+  },
+  {
+   "id": "AXoWl4XoOzg",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 27/05/2024",
+   "data": "2024-05-27",
+   "durada": 9592,
+   "index": false
+  },
+  {
+   "id": "YCSCUhOZCYM",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 13/05/2024",
+   "data": "2024-05-13",
+   "durada": 1629,
+   "index": false
+  },
+  {
+   "id": "0fF-am5PYtM",
+   "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 22/04/2024",
+   "data": "2024-04-22",
+   "durada": 8109,
+   "index": false
+  },
+  {
+   "id": "4EnbODr8tcM",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 15/04/2024",
+   "data": "2024-04-15",
+   "durada": 32,
+   "index": false
+  },
+  {
+   "id": "2xqehzjbVYM",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 25/03/2024",
+   "data": "2024-03-25",
+   "durada": 4755,
+   "index": false
+  },
+  {
+   "id": "a5VR1HhlAEs",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 22/01/2024",
+   "data": "2024-01-22",
+   "durada": 13565,
+   "index": false
+  },
+  {
+   "id": "myWrDq8QIVI",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 28/12/2023",
+   "data": "2023-12-28",
+   "durada": 7356,
+   "index": false
+  },
+  {
+   "id": "FAcNyq0nrk4",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 28/11/2023",
+   "data": "2023-11-28",
+   "durada": 5597,
+   "index": false
+  },
+  {
+   "id": "MHMBJH-vxRA",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 30/10/2023",
+   "data": "2023-10-30",
+   "durada": 2557,
+   "index": false
+  },
+  {
+   "id": "E-LEqzBQcTU",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 23/10/2023",
+   "data": "2023-10-23",
+   "durada": 7988,
+   "index": false
+  },
+  {
+   "id": "nNiMSw97nVE",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 25/09/2023",
+   "data": "2023-09-25",
+   "durada": 13073,
+   "index": false
+  },
+  {
+   "id": "MRoa1FKUT0s",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 21/08/2023",
+   "data": "2023-08-21",
+   "durada": 746,
+   "index": false
+  },
+  {
+   "id": "2rFGWSEbk60",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 24/07/2023",
+   "data": "2023-07-24",
+   "durada": 3822,
+   "index": false
+  },
+  {
+   "id": "Cl6JnkYaVSI",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 10/07/2023",
+   "data": "2023-07-10",
+   "durada": 1558,
+   "index": false
+  },
+  {
+   "id": "zRqDPAzh0NM",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 23/06/2023",
+   "data": "2023-06-23",
+   "durada": 3370,
+   "index": false
+  },
+  {
+   "id": "Bc3m-Pac5S8",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 17/06/2023",
+   "data": "2023-06-17",
+   "durada": 3925,
+   "index": false
+  },
+  {
+   "id": "m9yCh_-NA34",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 14/06/2023",
+   "data": "2023-06-14",
+   "durada": 85,
+   "index": false
+  },
+  {
+   "id": "qCHtRbiVCkE",
+   "titol": "Ple extraordinari de la Bisbal pel sorteig de meses per a les eleccions municipals del 28/05/2023",
+   "data": "2023-05-28",
+   "durada": 178,
+   "index": false
+  },
+  {
+   "id": "vQ2DVN2xd2E",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 23/05/2023",
+   "data": "2023-05-23",
+   "durada": 2878,
+   "index": false
+  },
+  {
+   "id": "UJO759DzWpY",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 25/04/2023",
+   "data": "2023-04-25",
+   "durada": 4286,
+   "index": false
+  },
+  {
+   "id": "9yp__UIPUM8",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 28/02/2023",
+   "data": "2023-02-28",
+   "durada": 8638,
+   "index": false
+  },
+  {
+   "id": "QukaWkh5Omw",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 27/12/2022",
+   "data": "2022-12-27",
+   "durada": 9750,
+   "index": false
+  },
+  {
+   "id": "9P-nSDfEf_U",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 29/11/2022",
+   "data": "2022-11-29",
+   "durada": 1092,
+   "index": false
+  },
+  {
+   "id": "nBEsIW94E6o",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 15/11/2022",
+   "data": "2022-11-15",
+   "durada": 3957,
+   "index": false
+  },
+  {
+   "id": "BwDgZMsOfG0",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 25/10/2022",
+   "data": "2022-10-25",
+   "durada": 4819,
+   "index": false
+  },
+  {
+   "id": "FaWCLnXCgms",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 27/09/2022",
+   "data": "2022-09-27",
+   "durada": 6746,
+   "index": false
+  },
+  {
+   "id": "yCUhX_9s8VE",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 26/07/2022",
+   "data": "2022-07-26",
+   "durada": 2537,
+   "index": false
+  },
+  {
+   "id": "d_3j778UdS4",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 14/06/2022",
+   "data": "2022-06-14",
+   "durada": 6118,
+   "index": false
+  },
+  {
+   "id": "0OtMCMj7c-U",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 12/04/2022",
+   "data": "2022-04-12",
+   "durada": 3673,
+   "index": false
+  },
+  {
+   "id": "RLy7icTc_M0",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 08/03/2022",
+   "data": "2022-03-08",
+   "durada": 8315,
+   "index": false
+  },
+  {
+   "id": "wKHbRAtSb1k",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 22/12/2021",
+   "data": "2021-12-22",
+   "durada": 9036,
+   "index": false
+  },
+  {
+   "id": "VT6oSqW3KJA",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 16/11/2021",
+   "data": "2021-11-16",
+   "durada": 4379,
+   "index": false
+  },
+  {
+   "id": "LEnMpOQ1Urg",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 26/10/2021",
+   "data": "2021-10-26",
+   "durada": 4692,
+   "index": false
+  },
+  {
+   "id": "LwVRkjf-CmM",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 28/09/2021",
+   "data": "2021-09-28",
+   "durada": 9128,
+   "index": false
+  },
+  {
+   "id": "-DbDlvV78KI",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 27/07/2021",
+   "data": "2021-07-27",
+   "durada": 5866,
+   "index": false
+  },
+  {
+   "id": "waT7XzyCFVQ",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 29/05/2021",
+   "data": "2021-05-29",
+   "durada": 5200,
+   "index": false
+  },
+  {
+   "id": "g5U_FMR-st4",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 25/05/2021",
+   "data": "2021-05-25",
+   "durada": 8140,
+   "index": false
+  },
+  {
+   "id": "BBWYEED5-HY",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 26/01/2021",
+   "data": "2021-01-26",
+   "durada": 5879,
+   "index": false
+  },
+  {
+   "id": "d3IvXCjlKM4",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 25/01/2021",
+   "data": "2021-01-25",
+   "durada": 3530,
+   "index": false
+  },
+  {
+   "id": "nbnt9oMvH1Q",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 24/11/2020 (2a part)",
+   "data": "2020-11-24",
+   "durada": 3137,
+   "index": false
+  },
+  {
+   "id": "nL6WF3Gnxpk",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 24/11/2020",
+   "data": "2020-11-24",
+   "durada": 3935,
+   "index": false
+  },
+  {
+   "id": "pJcUYaFkhh4",
+   "titol": "Ple Municipal extraordinari de l'Ajuntament de la Bisbal d'Empordà 10/11/2020",
+   "data": "2020-11-10",
+   "durada": 6381,
+   "index": false
+  },
+  {
+   "id": "NhfPcZ_pxqA",
+   "titol": "Ple Municipal de l'Ajuntament de la Bisbal d'Empordà 27/10/2020",
+   "data": "2020-10-27",
+   "durada": 3781,
+   "index": false
+  }
+ ],
+ "actualitzat": "24.11.2026 20.42"
+}

@@ -1,4 +1,4 @@
-Consorci de les Gavarres · pàgina 1: 4 anuncis; primeres dates: ['2026-10-29', '2026-10-09', '2026-10-09', '2026-09-09']
+Consorci de les Gavarres · pàgina 1: 2 anuncis; primeres dates: ['2026-10-29', '2026-09-09']
 Primer anunci tal com arriba: <item xmlns:dc="http://purl.org/dc/elements/1.1/">
       <title>Adhesió al sistemes intern d'alertes de la Diputació de Girona</title>
       <link>https://tauler.seu-e.cat/detall?idEns=9813510007&amp;idEdicte=655696</link>

@@ -198,6 +198,30 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
 .sv-eines select{font:inherit;font-size:.85rem;padding:4px 10px;border:1px solid #e3e1db;border-radius:999px;background:#fff;color:#1d1d1b;max-width:100%}
 .sv-eines input{font:inherit;font-size:.85rem;padding:4px 12px;border:1px solid #e3e1db;border-radius:999px;background:#fff;color:#1d1d1b;min-width:0;flex:1 1 160px}
 .sv-mes{display:block;margin:12px auto 0;font:inherit;font-size:.85rem;padding:6px 16px;border:1px solid #b4462c;border-radius:999px;background:#fff;color:#b4462c;cursor:pointer}
+/* PLENS DE LA BISBAL (24.11.2026): directe, arxiu i cerca per punts */
+.ple-directe{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:4px 0 12px}
+.ple-directe .en-directe{font-weight:700;color:#e53935}
+.ple-boto{font:inherit;font-size:.88rem;padding:6px 14px;border:1px solid var(--accent);border-radius:999px;background:var(--targeta);color:var(--accent);cursor:pointer;text-decoration:none}
+.ple-boto:hover{background:var(--accent);color:#fff}
+.ple-video iframe{width:100%;max-width:760px;aspect-ratio:16/9;border:0;border-radius:8px;background:#000;display:block}
+.ple-video:not(:empty){margin:0 0 12px}
+.ple-cerca{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+.ple-cerca input{font:inherit;flex:1 1 260px;min-width:0;padding:6px 12px;border:1px solid var(--linia);border-radius:999px;background:var(--targeta);color:var(--text)}
+.ple-resultats{margin:0 0 8px}
+.ple-resultat{display:block;width:100%;text-align:left;font:inherit;font-size:.9rem;background:none;border:0;border-top:1px dashed var(--linia);padding:7px 0;color:var(--text);cursor:pointer}
+.ple-resultat:first-child{border-top:0}
+.ple-resultat:hover .ple-on{text-decoration:underline}
+.ple-on{color:var(--accent);font-weight:600}
+.ple-resultat mark{background:#f6e0a8;color:inherit;padding:0 1px;border-radius:2px}
+.ple-punts{margin:0;padding:0;list-style:none}
+.ple-punts>li{border-top:1px solid var(--linia);padding:8px 0}
+.ple-punts>li:first-child{border-top:0}
+.ple-salt{font:inherit;background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-align:left}
+.ple-salt:hover{text-decoration:underline}
+.ple-salt .t{font-variant-numeric:tabular-nums;color:var(--suau);margin-right:6px}
+.ple-decl{margin:4px 0 0 18px;padding:0;list-style:none;font-size:.88rem}
+.ple-decl li{margin:3px 0}
+.ple-decl .ple-salt{color:var(--text)}
 </style>
 </head>
 <body>
@@ -226,6 +250,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <p class="sub" id="sub">Carregant…</p>
    <nav>
     <span id="navResum" style="display:contents"><a href="#resum">Resum</a></span>
+    <a href="#plens">Plens</a>
   </nav>
 </header>
 
@@ -234,6 +259,7 @@ section.sobre h2.seguent{margin-top:24px;padding-top:20px;border-top:1px solid v
   <section id="congres"><h2>🏛️ Congrés dels Diputats</h2><p class="buit">Carregant…</p></section>
   <section id="parlament"><h2>🏛️ Parlament de Catalunya</h2><p class="buit">Carregant…</p></section>
   <section id="loteries"><h2>🍀 Loteries</h2><p class="buit">Carregant…</p></section>
+  <section id="plens"><h2>🏛️ Plens de la Bisbal</h2><p class="buit">Carregant…</p></section>
 </main>
 <footer><p class="credits-escuts">Escuts: Wikimedia Commons (<a href="https://commons.wikimedia.org/wiki/File:Escut_de_la_Bisbal_d%27Empord%C3%A0.svg" target="_blank" rel="noopener">Public domain</a>, <a href="https://commons.wikimedia.org/wiki/File:Escut_de_Cor%C3%A7%C3%A0.svg" target="_blank" rel="noopener">CC BY-SA 4.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Escudo_de_Ullastret.svg" target="_blank" rel="noopener">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/wiki/File:Escut_de_Forallac.svg" target="_blank" rel="noopener">CC BY-SA 4.0</a>; el de Cruïlles, Monells i Sant Sadurní de l'Heura, de l'Ajuntament).</p>Aquest espai és una gentilesa dels serveis informatius de la Bisbal d'Empordà i pobles veïns.</footer>
 
@@ -333,7 +359,9 @@ function pintaSeccio(s, generat) {
   if (!el) {
     el = document.createElement("section");
     el.id = s.id;
-    document.querySelector("main").appendChild(el);
+    // 24.11.2026: el bloc dels plens queda l'últim (o a dalt de tot si hi ha ple en directe).
+    const pl = document.getElementById("plens");
+    document.querySelector("main").insertBefore(el, pl && pl.parentElement === document.querySelector("main") && !(PLENS.dades || {}).directe ? pl : null);
   }
 
   // Si el bloc ja és dins del resum, porta el número i el títol del resum.
@@ -1042,7 +1070,149 @@ async function inicia() {
   carregaJSON(dia, "parlament.json", ["parlament"]);
   carregaJSON(dia, "loteries.json", ["loteries"]);
 }
+// -----------------------------------------------------------------------------
+// PLENS DE LA BISBAL (24.11.2026): el directe del canal de l'Ajuntament, l'arxiu
+// dels plens amb el reproductor de YouTube i la cerca per punts. Dades:
+// plens/plens.json (workflow plens.yml) i, per a cada ple que el bot de plens ja
+// ha transcrit, plens/index/<vídeo>.json (punts de l'ordre del dia amb l'hora
+// d'inici, declaracions destacades i transcripció amb els temps).
+// -----------------------------------------------------------------------------
+const PLENS = { dades: null, index: {}, carregats: false };
+const CANAL_PLENS = "https://www.youtube.com/@ajuntamentdelabisbaldempor3226/streams";
+const segHms = s => { s = Math.max(0, Math.floor(s || 0)); return [Math.floor(s / 3600), Math.floor(s % 3600 / 60), s % 60].map(n => String(n).padStart(2, "0")).join(":"); };
+const durPle = s => !s ? "" : s >= 3600 ? `${Math.floor(s / 3600)} h ${String(Math.floor(s % 3600 / 60)).padStart(2, "0")} min` : `${Math.max(1, Math.floor(s / 60))} min`;
+const senseAccents = t => String(t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const dataPle = p => p.data ? dataCa(p.data) : "";
+
+function reprodueixPle(id, s, obre) {
+  const det = document.getElementById("ple-" + id);
+  if (!det) return;
+  if (obre !== false) det.open = true;
+  const caixa = det.querySelector(".ple-video");
+  caixa.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0${s != null ? "&autoplay=1&start=" + Math.floor(s) : ""}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Reproductor del ple"></iframe>`;
+  if (s != null) caixa.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function obreDirecte(autoplay) {
+  const d = PLENS.dades || {}, caixa = document.getElementById("pleDirecteVideo");
+  if (!caixa) return;
+  const src = d.directe && d.directe.id ? `https://www.youtube.com/embed/${d.directe.id}?rel=0${autoplay ? "&autoplay=1" : ""}`
+    : d.canal_id ? `https://www.youtube.com/embed/live_stream?channel=${d.canal_id}${autoplay ? "&autoplay=1" : ""}` : "";
+  if (!src) { window.open(CANAL_PLENS, "_blank", "noopener"); return; }
+  caixa.innerHTML = `<iframe src="${src}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" title="Directe del ple"></iframe>`;
+}
+
+function fitxaPle(p) {
+  const ix = PLENS.index[p.id];
+  const punts = ix && Array.isArray(ix.punts) ? ix.punts : [];
+  const llista = punts.length ? `<ul class="ple-punts">${punts.map(pt => `<li>
+      <button class="ple-salt" data-ple="${esc(p.id)}" data-s="${pt.s ?? 0}">${pt.s != null ? `<span class="t">${segHms(pt.s)}</span>` : ""}${esc(pt.titol)}</button>
+      ${(pt.declaracions || []).length ? `<ul class="ple-decl">${pt.declaracions.map(dc => `<li><button class="ple-salt" data-ple="${esc(p.id)}" data-s="${dc.s ?? 0}"><span class="t">${segHms(dc.s)}</span>«${esc(dc.text)}» — ${esc(dc.qui)}</button></li>`).join("")}</ul>` : ""}
+    </li>`).join("")}</ul>`
+    : `<p class="pista-plega">${p.index ? "Carregant els punts…" : "Encara no hi ha els punts d'aquest ple (els deixa el bot de plens quan el transcriu)."}</p>`;
+  return `<details class="fitxa plegable" id="ple-${esc(p.id)}" data-id="${esc(p.id)}">
+    <summary><h3>${esc(p.titol || "Ple")}</h3><span class="resum-mun">${[dataPle(p), durPle(p.durada), punts.length ? punts.length + " punts" : ""].filter(Boolean).join(" · ")}</span></summary>
+    <div class="ple-video"></div>
+    ${llista}
+    <p class="pista-plega"><a href="https://www.youtube.com/watch?v=${esc(p.id)}" target="_blank" rel="noopener">Obre'l a YouTube</a></p>
+  </details>`;
+}
+
+function pintaPlens() {
+  const sec = document.getElementById("plens"), d = PLENS.dades || { plens: [] };
+  const plens = d.plens || [];
+  const directe = d.directe;
+  const capDirecte = directe
+    ? `<div class="ple-directe"><span class="en-directe"><span class="tdg-boleta-avui"></span>${directe.estat === "previst" ? "Ple previst" : "En directe"}: ${esc(directe.titol)}</span></div><div class="ple-video" id="pleDirecteVideo"></div>`
+    : `<div class="ple-directe"><button class="ple-boto" id="pleDirecteBoto">▶️ Directe del canal de l'Ajuntament</button><a class="ple-boto" href="${CANAL_PLENS}" target="_blank" rel="noopener">Canal a YouTube</a></div><div class="ple-video" id="pleDirecteVideo"></div>`;
+  const ambIndex = plens.filter(p => p.index).length;
+  const cerca = `<div class="ple-cerca"><input type="search" id="pleCerca" placeholder="Cerca als plens: punts, declaracions o el que s'hi diu" aria-label="Cerca als plens"></div>
+    <p class="font" id="pleCercaNota">${ambIndex ? `Cerca per punts a ${ambIndex} ${ambIndex === 1 ? "ple" : "plens"}; als altres, només pel títol.` : "De moment, només pel títol: els punts i la transcripció hi seran quan el bot de plens en deixi l'índex."}</p>
+    <div class="ple-resultats" id="pleResultats"></div>`;
+  const recents = plens.slice(0, 6), vells = plens.slice(6);
+  sec.innerHTML = `<h2>🏛️ Plens de la Bisbal</h2>${capDirecte}${cerca}` +
+    (plens.length ? recents.map(fitxaPle).join("") + (vells.length ? `<details class="anteriors"><summary class="pista-plega" style="cursor:pointer;color:var(--accent)">Plens anteriors (${vells.length})</summary>${vells.map(fitxaPle).join("")}</details>` : "")
+      : `<p class="buit">Encara no hi ha la llista dels plens: es genera un cop al dia.</p>`) +
+    (d.actualitzat ? `<p class="font" style="margin-top:10px">Llista revisada el ${esc(quan(d.actualitzat))}.</p>` : "");
+
+  if (directe) {
+    obreDirecte(false);
+    // En directe, el bloc puja a dalt de tot.
+    const main = document.querySelector("main");
+    if (main.firstElementChild !== sec) main.prepend(sec);
+  } else {
+    const b = document.getElementById("pleDirecteBoto");
+    if (b) b.onclick = () => obreDirecte(true);
+  }
+  sec.querySelectorAll("details.fitxa[data-id]").forEach(det => det.addEventListener("toggle", () => {
+    if (det.open && !det.querySelector(".ple-video iframe")) reprodueixPle(det.dataset.id, null, false);
+  }));
+  const inp = document.getElementById("pleCerca");
+  let temps = null;
+  inp.oninput = () => { clearTimeout(temps); temps = setTimeout(() => cercaPlens(inp.value), 250); };
+}
+
+// Clic a un punt, una declaració o un resultat: el vídeo salta en aquell moment.
+document.addEventListener("click", ev => {
+  const b = ev.target.closest(".ple-salt, .ple-resultat");
+  if (!b || !b.dataset.ple) return;
+  ev.preventDefault();
+  const det = document.getElementById("ple-" + b.dataset.ple);
+  if (det && det.closest("details.anteriors")) det.closest("details.anteriors").open = true;
+  reprodueixPle(b.dataset.ple, Number(b.dataset.s) || 0);
+});
+
+function marca(text, q) {
+  const net = String(text || ""), n = senseAccents(net), i = n.indexOf(q);
+  if (i < 0) return esc(net.slice(0, 160));
+  const ini = Math.max(0, i - 60), fi = Math.min(net.length, i + q.length + 100);
+  return (ini ? "…" : "") + esc(net.slice(ini, i)) + "<mark>" + esc(net.slice(i, i + q.length)) + "</mark>" + esc(net.slice(i + q.length, fi)) + (fi < net.length ? "…" : "");
+}
+
+function cercaPlens(text) {
+  const caixa = document.getElementById("pleResultats");
+  const q = senseAccents(text.trim());
+  if (q.length < 3) { caixa.innerHTML = ""; return; }
+  const res = [];
+  for (const p of (PLENS.dades || {}).plens || []) {
+    const quin = `${dataPle(p) || esc(p.titol)}`;
+    const ix = PLENS.index[p.id];
+    if (senseAccents(p.titol).includes(q)) res.push({ p, s: 0, html: `<span class="ple-on">${esc(p.titol)}</span>` });
+    if (!ix) continue;
+    for (const pt of ix.punts || []) {
+      if (senseAccents(pt.titol + " " + (pt.text || "")).includes(q))
+        res.push({ p, s: pt.s || 0, html: `<span class="ple-on">${quin} · ${segHms(pt.s)} · ${esc(pt.titol)}</span><br>${marca(pt.text || pt.titol, q)}` });
+    }
+    for (const t of ix.transcripcio || []) {
+      if (senseAccents(t.text).includes(q))
+        res.push({ p, s: t.s || 0, html: `<span class="ple-on">${quin} · ${segHms(t.s)}${t.qui ? " · " + esc(t.qui) : ""}</span><br>${marca(t.text, q)}` });
+    }
+  }
+  caixa.innerHTML = res.length
+    ? res.slice(0, 60).map(r => `<button class="ple-resultat" data-ple="${esc(r.p.id)}" data-s="${r.s}">${r.html}</button>`).join("") +
+      (res.length > 60 ? `<p class="font">I ${res.length - 60} resultats més: afina la cerca.</p>` : "")
+    : `<p class="buit">Cap resultat.</p>`;
+}
+
+async function carregaPlens() {
+  try { PLENS.dades = await obtenir("plens/plens.json"); } catch (e) { PLENS.dades = { plens: [] }; }
+  pintaPlens();
+  // Els índexs (punts i transcripció) dels plens que ja els tenen.
+  const ambIndex = (PLENS.dades.plens || []).filter(p => p.index);
+  await Promise.all(ambIndex.map(async p => {
+    try { PLENS.index[p.id] = await obtenir(`plens/index/${p.id}.json`); } catch (e) {}
+  }));
+  if (ambIndex.length) {
+    const oberts = new Set([...document.querySelectorAll("#plens details[open]")].map(d => d.id));
+    const q = (document.getElementById("pleCerca") || {}).value || "";
+    pintaPlens();
+    oberts.forEach(id => { const d = document.getElementById(id); if (d) d.open = true; });
+    if (q) { document.getElementById("pleCerca").value = q; cercaPlens(q); }
+  }
+}
+
 inicia();
+carregaPlens();
 </script>
 <script src="dates-ca.js?v=3"></script>
 </body>

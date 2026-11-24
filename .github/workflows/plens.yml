@@ -1,0 +1,52 @@
+# Plens de la Bisbal — La TdG redacció · 24.11.2026
+# Desa a plens/plens.json els plens del canal de YouTube de l'Ajuntament (i els
+# índexs per punts que deixa el bot de plens a les releases de latdg/plens), per
+# al bloc «Plens» de La TdG redacció i el canal del ple de la sala de control.
+# Un cop al dia; els dimarts al vespre, cada 10 minuts (per saber si hi ha ple
+# en directe). També es pot llançar a mà.
+name: Plens de la Bisbal (La TdG redacció)
+
+on:
+  schedule:
+    - cron: "23 5 * * *"
+    - cron: "*/10 17-23 * * 2"
+  push:
+    branches: [main]
+    paths: [plens/actualitza.py, .github/workflows/plens.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: plens-redaccio
+  cancel-in-progress: false
+
+jobs:
+  plens:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests yt-dlp
+      - name: Llista dels plens
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python plens/actualitza.py
+      - name: Desa
+        run: |
+          git config user.name "La TdG (plens)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add plens/plens.json 2>/dev/null || true
+          [ -d plens/index ] && git add plens/index
+          if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
+          git commit -qm "Plens de la Bisbal"
+          for intent in 1 2 3 4 5 6; do
+            git push -q origin HEAD:main && exit 0
+            sleep $((intent * 5))
+            git pull -q --rebase origin main || { git rebase --abort; exit 1; }
+          done
+          echo "No s'han pogut pujar els canvis"; exit 1

@@ -348,8 +348,25 @@ async function carregaLlistes() {
       aplicaCorreccions(LLISTES[t].canals);
     } catch (e) { LLISTES[t] = { canals: [], error: true }; }
   }
+  await afegeixCanalPle();
   omplAmbits(); pinta();
   carregaMon();
+}
+
+// 24.11.2026: el ple de l'Ajuntament de la Bisbal, com una cadena més de Catalunya (directe del
+// canal de YouTube de l'Ajuntament). L'identificador del canal el desa el workflow plens.yml.
+async function afegeixCanalPle() {
+  if (!LLISTES.tv || LLISTES.tv.error) return;
+  try {
+    const r = await fetch(`../plens/plens.json?v=${Date.now()}`, { cache: "no-store" });
+    if (!r.ok) return;
+    const d = await r.json();
+    if (!d.canal_id) return;
+    LLISTES.tv.canals.unshift({ n: "Ple de l'Ajuntament de la Bisbal d'Empordà", a: "Cataluña", p: "Spain", _t: "tv",
+      o: [{ f: "youtube", u: `https://www.youtube.com/channel/${d.canal_id}/live` }],
+      w: "https://www.youtube.com/@ajuntamentdelabisbaldempor3226/streams", x: ["EMB"],
+      l: "../escuts/17022-petit.png" });
+  } catch (e) {}
 }
 
 // Valor de cada canal al desplegable: els d'Espanya, pel seu àmbit; els de fora, pel país.

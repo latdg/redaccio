@@ -40,6 +40,12 @@ def data_del_titol(titol):
     return ""
 
 
+def titol_net(titol):
+    """Canvi 24.11.2026: les dates dels títols, en format dd.mm.aaaa («24/11/2026» -> «24.11.2026»)."""
+    return re.sub(r"\b(\d{1,2})[/-](\d{1,2})[/-](\d{4})\b",
+                  lambda m: "%02d.%02d.%s" % (int(m.group(1)), int(m.group(2)), m.group(3)), titol or "")
+
+
 def llegir_actual():
     try:
         return json.loads(FITXER.read_text(encoding="utf-8"))
@@ -137,6 +143,9 @@ def main():
 
     for vid, p in per_id.items():
         p["index"] = (INDEXOS / (vid + ".json")).exists()
+        p["titol"] = titol_net(p.get("titol"))
+    if directe:
+        directe["titol"] = titol_net(directe.get("titol"))
 
     plens = sorted(per_id.values(), key=lambda p: (p.get("data") or "", p["id"]), reverse=True)
     ara = datetime.datetime.now(ZoneInfo("Europe/Madrid"))

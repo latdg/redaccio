@@ -107,7 +107,9 @@ def copiar_index(video_id, url_api):
 
 def main():
     actual = llegir_actual()
-    per_id = {p["id"]: p for p in actual.get("plens", [])}
+    # Canvi 24.11.2026: còpia de cada ple, perquè els canvis (com «index») no toquin
+    # també «actual» i el script no es pensi que no hi ha res de nou.
+    per_id = {p["id"]: dict(p) for p in actual.get("plens", [])}
     canal_id = actual.get("canal_id", "")
     directe = None
     avisos = []

@@ -1,10 +1,16 @@
 {
- "generat": "2026-11-25T01:23:12+00:00",
+ "generat": "2026-11-25T15:30:01+00:00",
  "font": "https://tauler.seu-e.cat/inici?idEns=1720570005",
- "items": [],
+ "items": [
+  {
+   "titol": "Dades cens mes d'octubre",
+   "link": "https://tauler.seu-e.cat/detall?idEns=1720570005&idEdicte=1720570005_752167",
+   "data": "2026-11-25"
+  }
+ ],
  "darrer": {
-  "titol": "EXPOSICIÓ PÚBLICA NOMBRE ELECTORS",
-  "link": "https://tauler.seu-e.cat/detall?idEns=1720570005&idEdicte=1720570005_735070",
-  "data": "2026-10-06"
+  "titol": "Dades cens mes d'octubre",
+  "link": "https://tauler.seu-e.cat/detall?idEns=1720570005&idEdicte=1720570005_752167",
+  "data": "2026-11-25"
  }
 }

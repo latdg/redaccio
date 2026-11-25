@@ -14,7 +14,7 @@
    "titol": "Ple de l'Ajuntament de la Bisbal d'Empordà - 03.11.2026",
    "data": "2026-11-03",
    "durada": 82,
-   "index": false
+   "index": true
   },
   {
    "id": "mcizBQX-um4",
@@ -500,5 +500,5 @@
    "index": false
   }
  ],
- "actualitzat": "24.11.2026 23.04"
+ "actualitzat": "25.11.2026 09.20"
 }

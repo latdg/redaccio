@@ -90,6 +90,7 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
 .canal span.nom{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.92rem}
 .canal small{display:block;color:var(--suau);font-size:.72rem;font-weight:400}
 .canal.web{opacity:.6}
+.canal.vt img{width:64px;object-fit:cover}
 .inicials{display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);font-size:.85rem}
 .historial{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .historial li{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--linia);padding:6px 0;font-size:.92rem}
@@ -159,6 +160,7 @@ pre{background:var(--fons);border:1px solid var(--linia);border-radius:8px;paddi
       <div class="fila" id="editorCanal" hidden style="margin-top:10px;padding:10px;border:1px solid var(--linia);border-radius:10px">
         <label class="fila" style="gap:6px;font-size:.9rem">On va <select id="corAmbit"></select></label>
         <label class="fila" style="gap:6px;font-size:.9rem" id="corCatBox">Categoria <select id="corCat"></select></label>
+        <input type="text" id="corCatNova" hidden maxlength="40" placeholder="Nom de la categoria nova" style="max-width:240px">
         <label class="fila" style="gap:6px;font-size:.9rem"><input type="checkbox" id="corAmaga"> Amaga-la de la llista</label>
         <button type="button" id="corDesa">Desa</button>
         <button type="button" class="suau" id="corOriginal">Torna a com era</button>
@@ -284,8 +286,11 @@ const CATEGORIES_CA = { animation: "Animació", auto: "Motor", business: "Econom
   family: "Família", general: "Generalistes", interactive: "Interactius", kids: "Infantils", legislative: "Parlaments",
   lifestyle: "Estil de vida", movies: "Cinema", music: "Música", news: "Informatius", outdoor: "Natura i aventura",
   public: "Públiques", relax: "Relax", religious: "Religioses", science: "Ciència", series: "Sèries", shop: "Teletenda",
-  sports: "Esports", travel: "Viatges", weather: "Temps", undefined: "Sense categoria" };
-const nomCategoria = k => CATEGORIES_CA[k] || k;
+  sports: "Esports", travel: "Viatges", weather: "Temps", laguait: "📼 Videoteca de L'aguait", undefined: "Sense categoria" };
+// 28.11.2026: categories creades a mà des de «✏️ Classifica». Es desen a correccions.json com a
+// entrades «*categoria|<nom>» → {k: <clau>} (les llegeix carregaCorreccions).
+let CATS_PROPIES = {};
+const nomCategoria = k => CATEGORIES_CA[k] || CATS_PROPIES[k] || k;
 // Àmbits temàtics de TDTChannels (Espanya) → categoria.
 const CAT_AMBIT = { "Generalistas": "general", "Informativos": "news", "Deportivos": "sports", "Infantiles": "kids", "Musicales": "music" };
 const categoriaDe = c => c._k || c.k || CAT_AMBIT[c.a] || "undefined";
@@ -336,6 +341,12 @@ async function carregaCorreccions() {
     const r = await fetch(`correccions.json?v=${Date.now()}`, { cache: "no-store" });
     if (r.ok) { const d = await r.json(); CORRECCIONS = { tv: d.tv || {}, radio: d.radio || {} }; }
   } catch (e) {}
+  llegeixCatsPropies();
+}
+function llegeixCatsPropies() {
+  CATS_PROPIES = {};
+  for (const [clau, v] of Object.entries(CORRECCIONS.tv || {}))
+    if (clau.startsWith("*categoria|") && v && v.k) CATS_PROPIES[v.k] = clau.slice(11);
 }
 
 async function carregaLlistes() {
@@ -350,6 +361,7 @@ async function carregaLlistes() {
     } catch (e) { LLISTES[t] = { canals: [], error: true }; }
   }
   await afegeixCanalPle();
+  await afegeixVideoteca();
   omplAmbits(); pinta();
   // 24.11.2026: tdt/?canal=ple obre directament el ple (enllaç de La TdG redacció i de La TdG plens).
   if (new URLSearchParams(location.search).get("canal") === "ple") {
@@ -374,6 +386,24 @@ async function afegeixCanalPle() {
     LLISTES.tv.canals.unshift({ n: "Ple de l'Ajuntament de la Bisbal d'Empordà", a: "Cataluña", p: "Spain", _t: "tv", ple: true, o,
       w: "https://www.youtube.com/@ajuntamentdelabisbaldempor3226/streams", x: ["EMB"],
       l: "../escuts/17022-petit.png" });
+  } catch (e) {}
+}
+
+// 28.11.2026: Videoteca de L'aguait. Els vídeos de L'aguait TV (tdt/aguait.json, el desa cada dia el
+// workflow «TDT i ràdio» amb tdt/aguait.py) entren a la llista de televisió com a categoria pròpia,
+// a Catalunya. Només surten quan es tria la categoria (o amb la cerca), perquè no omplin la llista.
+let AGUAIT_ACTUALITZAT = null;
+async function afegeixVideoteca() {
+  if (!LLISTES.tv || LLISTES.tv.error) return;
+  try {
+    const r = await fetch(`aguait.json?v=${Date.now()}`, { cache: "no-store" });
+    if (!r.ok) return;
+    const d = await r.json();
+    const vids = (d.videos || []).filter(v => v.y).map(v => ({ n: v.n, a: "Cataluña", p: "Spain", _t: "tv", vt: 1, k: "laguait", d: v.d,
+      o: [{ f: "youtube", u: `https://www.youtube.com/watch?v=${v.y}` }], w: v.w, l: `https://i.ytimg.com/vi/${v.y}/mqdefault.jpg` }));
+    aplicaCorreccions(vids);
+    LLISTES.tv.canals.push(...vids);
+    AGUAIT_ACTUALITZAT = d.actualitzat || null;
   } catch (e) {}
 }
 
@@ -411,7 +441,7 @@ function omplAmbits() {
   for (const c of ll.canals) {
     if (c._amaga || c.mort) continue;
     const k = clauAmbit(c), cat = categoriaDe(c);
-    if (!catTriada || cat === catTriada) ambits.set(k, (ambits.get(k) || 0) + 1);
+    if (catTriada ? cat === catTriada : !c.vt) ambits.set(k, (ambits.get(k) || 0) + 1);
     if (tv && (abans === "*tots" || abans === "*pref" || abans === k || (abans === "*ES" && esDEspanya(c)))) cats.set(cat, (cats.get(cat) || 0) + 1);
   }
   sel.innerHTML = "";
@@ -486,6 +516,7 @@ function pinta() {
     if (amb === "*pref") return pref.has(clauCanal(TIPUS, c));
     if (c.mort) return false;
     if (cat && cat !== "*totes" && categoriaDe(c) !== cat) return false;
+    if (c.vt && (!cat || cat === "*totes")) return false;
     if (amb === "*tots") return true;
     if (amb === "*ES") return esDEspanya(c);
     return clauAmbit(c) === amb;
@@ -495,6 +526,7 @@ function pinta() {
     const ops = c.o.filter(o => reproduible(o, c._t));
     let etiqueta = "";
     if (!ops.length) { b.classList.add("web"); etiqueta = "Només a la seva web"; }
+    else if (c.vt) { b.classList.add("vt"); etiqueta = `📼 L'aguait TV${c.d ? " · " + c.d : ""}`; }
     else if (ops.every(o => o.f === "youtube")) etiqueta = "YouTube · no es grava";
     if (actual && actual.c === c) b.classList.add("actiu");
     const nom = document.createElement("span"); nom.className = "nom"; nom.textContent = (pref.has(clauCanal(TIPUS, c)) ? "⭐ " : "") + c.n;
@@ -512,6 +544,7 @@ function pinta() {
   let peu = q ? `${llista.length} resultats a tot arreu (tele i ràdio)` : `${llista.length} ${TIPUS === "tv" ? "cadenes" : "emissores"}`;
   if (quan) peu += ` · TDTChannels actualitzada ${elDia(quan[0])} a les ${quan[1] || ""} h`;
   if (TIPUS === "tv" || q) peu += mon ? ` · iptv-org (món) ${elDia(mon[0])} a les ${mon[1] || ""} h` : MON_ESTAT === "carregant" ? " · carregant les cadenes del món…" : " · ❌ no s'han pogut llegir les cadenes del món";
+  if (cat === "laguait" && AGUAIT_ACTUALITZAT) peu += ` · L'aguait TV ${elDia(AGUAIT_ACTUALITZAT.split(" ")[0])}`;
   $("peuLlista").textContent = peu;
 }
 $("mesCanals").onclick = () => { LIMIT += PAS; pinta(); };
@@ -762,15 +795,40 @@ $("classifica").onclick = () => {
   opcionsAmbit($("corAmbit"), c._t, clauAmbit(c));
   const cs = $("corCat"); cs.innerHTML = "";
   $("corCatBox").hidden = c._t !== "tv";
-  for (const [k, n] of Object.entries(CATEGORIES_CA).sort((a, b) => (a[0] === "undefined") - (b[0] === "undefined") || a[1].localeCompare(b[1], "ca"))) {
+  for (const [k, n] of Object.entries({ ...CATEGORIES_CA, ...CATS_PROPIES }).sort((a, b) => (a[0] === "undefined") - (b[0] === "undefined") || a[1].localeCompare(b[1], "ca"))) {
     const o = document.createElement("option"); o.value = k; o.textContent = n; cs.append(o);
   }
+  // 28.11.2026: es pot crear una categoria nova.
+  const nova = document.createElement("option"); nova.value = "*nova"; nova.textContent = "➕ Categoria nova…"; cs.append(nova);
   cs.value = categoriaDe(c);
+  if (!cs.value) cs.value = "undefined";
+  $("corCatNova").value = ""; $("corCatNova").hidden = true;
   $("corAmaga").checked = !!c._amaga;
   $("corNota").textContent = `Ara és a: ${esDEspanya(c) ? "Espanya · " + (clauAmbit(c) === "cc:ES" ? "altres cadenes" : nomAmbit(clauAmbit(c))) : nomPais(clauAmbit(c).slice(3))}${c._amb || c._k || c._amaga ? " (classificada a mà)" : ""}.`;
   ed.hidden = false;
 };
 $("corTanca").onclick = () => { $("editorCanal").hidden = true; };
+$("corCat").onchange = () => { const n = $("corCatNova"); n.hidden = $("corCat").value !== "*nova"; if (!n.hidden) n.focus(); };
+// 28.11.2026: desa una categoria nova (correccions.json, «*categoria|<nom>») i en torna la clau.
+// La clau només pot tenir lletres de la «a» a la «z» (és el que deixa passar la passarel·la).
+async function desaCategoriaNova(nom) {
+  const net = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const ja = Object.entries({ ...CATEGORIES_CA, ...CATS_PROPIES }).find(([, n]) => net(n) === net(nom));
+  if (ja) return ja[0];
+  const base = ("u" + net(nom).replace(/[^a-z]/g, "")).slice(0, 28);
+  let k = base, i = 0;
+  while (CATEGORIES_CA[k] || CATS_PROPIES[k]) k = base + "abcdefghijklmnopqrstuvwxyz"[Math.floor(i / 26) % 26] + "abcdefghijklmnopqrstuvwxyz"[i++ % 26];
+  let d = null;
+  try {
+    const r = await fetch(`${PASSARELLA}/corregeix`, { method: "POST", headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify({ tipus: "tv", clau: "*categoria|" + nom, k }) });
+    d = await r.json().catch(() => null);
+  } catch (e) {}
+  if (!d || !d.ok) throw new Error(d && d.error ? d.error : "no s'ha pogut desar la categoria nova");
+  CORRECCIONS.tv["*categoria|" + nom] = { k };
+  llegeixCatsPropies();
+  return k;
+}
 async function desaCorreccio(c, cos) {
   $("corDesa").disabled = $("corOriginal").disabled = true; $("corNota").textContent = "Desant…";
   let d = null, r = null;
@@ -786,9 +844,21 @@ async function desaCorreccio(c, cos) {
   $("corNota").textContent = "✅ Desat. Es manté encara que la llista s'actualitzi (als altres aparells es veu d'aquí a un o dos minuts).";
   if (c._t === TIPUS) { omplAmbits(); pinta(); }
 }
-$("corDesa").onclick = () => {
+$("corDesa").onclick = async () => {
   const c = actual && actual.c; if (!c) return;
-  const ambit = $("corAmbit").value, k = c._t === "tv" ? $("corCat").value : "", amaga = $("corAmaga").checked;
+  const ambit = $("corAmbit").value, amaga = $("corAmaga").checked;
+  let k = c._t === "tv" ? $("corCat").value : "";
+  if (k === "*nova") {
+    const nom = $("corCatNova").value.replace(/[|\r\n\t]+/g, " ").replace(/\s+/g, " ").trim();
+    if (!nom) { $("corNota").textContent = "Escriu el nom de la categoria nova."; $("corCatNova").focus(); return; }
+    $("corNota").textContent = "Creant la categoria…"; $("corDesa").disabled = true;
+    try { k = await desaCategoriaNova(nom); }
+    catch (e) { $("corDesa").disabled = false; $("corNota").textContent = "❌ " + e.message; return; }
+    $("corDesa").disabled = false;
+    const cs = $("corCat");
+    if (![...cs.options].some(o => o.value === k)) { const o = document.createElement("option"); o.value = k; o.textContent = nomCategoria(k); cs.insertBefore(o, cs.lastElementChild); }
+    cs.value = k; $("corCatNova").hidden = true;
+  }
   const kOriginal = c.k || CAT_AMBIT[c.a] || "undefined";
   const cos = { ambit: ambit === ambitOriginal(c) ? "" : ambit, k: k && k !== kOriginal ? k : "", amaga };
   if (!cos.ambit && !cos.k && !cos.amaga) { desaCorreccio(c, { esborra: true }); return; }

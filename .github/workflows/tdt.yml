@@ -3,6 +3,7 @@
 # i còpia dels logotips nous a tdt/logos/ (els que ja hi són no es tornen a baixar).
 # 14.11.2026: i la programació (tdt/epg.json); a les altres hores, només la programació.
 # 22.11.2026: a la mateixa hora (04.17), també la llista del món d'iptv-org (tdt/mon.json).
+# 28.11.2026: i els vídeos de L'aguait TV (tdt/aguait.json), per a la Videoteca de L'aguait.
 name: La TdG sala de control audiovisual (llistes de TDT i ràdio)
 
 on:
@@ -26,12 +27,13 @@ jobs:
       - run: pip install requests
       - name: Baixa i desa
         run: |
-          if [ "${{ github.event.schedule }}" = "47 10,16,22 * * *" ]; then python tdt/actualitza.py epg; else python tdt/actualitza.py; fi
+          if [ "${{ github.event.schedule }}" = "47 10,16,22 * * *" ]; then python tdt/actualitza.py epg; else python tdt/actualitza.py; python tdt/aguait.py; fi
           git config user.name "La TdG (TDT)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tdt/tv.json tdt/radio.json tdt/logos
           [ -f tdt/epg.json ] && git add tdt/epg.json
           [ -f tdt/mon.json ] && git add tdt/mon.json
+          [ -f tdt/aguait.json ] && git add tdt/aguait.json
           if git diff --cached --quiet; then echo "Sense canvis"; exit 0; fi
           git commit -qm "Llistes i programació de TDT i ràdio"
           for intent in 1 2 3 4 5 6; do

@@ -649,13 +649,18 @@ setInterval(carregaEPG, 3 * 3600e3);
 let actual = null;   // { c, tipus, ops, op }
 let HLS = null;
 const ORDRE_GEO = { CAT: 0, SP: 1 };
-// 28.11.2026: cadenes que s'obren amb el senyal HD per defecte (si en tenen).
-const OBRE_EN_HD = new Set(["TV3"]);
+// 28.11.2026: si una cadena té senyal HD, aquest és el primer i el que s'obre per defecte.
+// Compta com a HD: «HD», «FHD», «UHD», «4K» o una resolució de 720 línies o més (720p, 1080i, 2160p…).
+const esHD = o => {
+  const r = String(o.r || "").trim();
+  if (/^(HD|FHD|UHD|4K)$/i.test(r)) return true;
+  const m = r.match(/^(\d{3,4})[pi]$/i);
+  return !!m && +m[1] >= 720;
+};
 
 function obre(c) {
-  const hd = OBRE_EN_HD.has(c.n);
   const ops = c.o.filter(o => reproduible(o, c._t)).map((o, i) => ({ ...o, i }))
-    .sort((a, b) => (a.f === "youtube") - (b.f === "youtube") || (hd ? (b.r === "HD") - (a.r === "HD") : 0) || (ORDRE_GEO[a.g] ?? 2) - (ORDRE_GEO[b.g] ?? 2) || a.i - b.i);
+    .sort((a, b) => (a.f === "youtube") - (b.f === "youtube") || esHD(b) - esHD(a) || (ORDRE_GEO[a.g] ?? 2) - (ORDRE_GEO[b.g] ?? 2) || a.i - b.i);
   actual = { c, tipus: c._t || TIPUS, ops, op: null };
   $("reproductor").hidden = false;
   const t = $("titolCanal"); t.innerHTML = ""; const b = document.createElement("b"); b.textContent = c.n; t.append(logo(c), b);

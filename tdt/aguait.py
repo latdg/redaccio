@@ -5,12 +5,13 @@ control els mostri com una categoria més («📼 Videoteca de L'aguait»), amb 
 i la gravació a l'ordinador de casa.
 
 La llista sencera la dona yt-dlp sense baixar res, en l'ordre del canal (del més nou al més vell).
-La data de publicació surt del canal RSS de YouTube (els 15 últims) i queda desada a aguait.json; els
-vídeos més vells no en tenen (YouTube no deixa demanar la fitxa de cada vídeo des de GitHub).
+La data de publicació surt de l'API de YouTube (secret YOUTUBE_API_KEY, només per als vídeos que encara
+no en tenen) i, si no hi ha clau, del canal RSS de YouTube (els 15 últims). Queda desada a aguait.json.
 
 Si YouTube no respon, no es toca el fitxer que ja hi ha.
 """
 import json
+import os
 import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
@@ -45,6 +46,27 @@ def llista_canal():
     return (vids if ok else None), canal_id
 
 
+def dates_api(ids):
+    """Data de publicació amb l'API de YouTube (secret YOUTUBE_API_KEY), de 50 en 50: {id: "dd.mm.aaaa"}."""
+    clau = os.environ.get("YOUTUBE_API_KEY", "").strip()
+    if not clau or not ids:
+        return {}
+    out = {}
+    for i in range(0, len(ids), 50):
+        try:
+            r = requests.get("https://www.googleapis.com/youtube/v3/videos", timeout=30,
+                             params={"part": "snippet", "id": ",".join(ids[i:i + 50]), "key": clau,
+                                     "fields": "items(id,snippet/publishedAt)"})
+            r.raise_for_status()
+            for it in r.json().get("items", []):
+                pub = it["snippet"]["publishedAt"].replace("Z", "+00:00")
+                out[it["id"]] = datetime.fromisoformat(pub).astimezone(MAD).strftime("%d.%m.%Y")
+        except Exception as e:
+            print(f"  · API de YouTube: {e}")
+            break
+    return out
+
+
 def dates_rss(canal_id):
     """Dates exactes dels 15 últims vídeos (canal RSS de YouTube): {id: "dd.mm.aaaa"}."""
     if not canal_id or not canal_id.startswith("UC"):
@@ -76,6 +98,8 @@ def main():
         print("❌ No s'ha pogut llegir el canal de YouTube de L'aguait: no es toca res.")
         return 0
     exactes = dates_rss(canal_id)
+    sense = [y for y in vids if y not in exactes and not abans.get(y, {}).get("d")]
+    exactes.update(dates_api(sense))
     videos, falten = [], 0
     for y, v in vids.items():
         vell = abans.get(y, {})
@@ -87,7 +111,7 @@ def main():
             nou["d"] = d
         videos.append(nou)
     if falten:
-        print(f"  · {falten} vídeos sense data (només es coneix la dels que surten al canal RSS)")
+        print(f"  · {falten} vídeos sense data (cal el secret YOUTUBE_API_KEY)")
     ara = datetime.now(MAD)
     FITXER.write_text(json.dumps({"actualitzat": ara.strftime("%d.%m.%Y %H.%M"), "canal": CANAL, "videos": videos},
                                  ensure_ascii=False, indent=0) + "\n", encoding="utf-8")

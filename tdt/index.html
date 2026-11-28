@@ -389,8 +389,8 @@ async function afegeixCanalPle() {
   } catch (e) {}
 }
 
-// 28.11.2026: Videoteca de L'aguait. Els vídeos de L'aguait TV (tdt/aguait.json, el desa cada dia el
-// workflow «TDT i ràdio» amb tdt/aguait.py) entren a la llista de televisió com a categoria pròpia,
+// 28.11.2026: Videoteca de L'aguait. Els vídeos del canal de YouTube de L'aguait TV (@laguaitlb;
+// tdt/aguait.json, el desa cada dia el workflow «TDT i ràdio» amb tdt/aguait.py) entren a la llista de televisió com a categoria pròpia,
 // a Catalunya. Només surten quan es tria la categoria (o amb la cerca), perquè no omplin la llista.
 let AGUAIT_ACTUALITZAT = null;
 async function afegeixVideoteca() {
@@ -400,7 +400,7 @@ async function afegeixVideoteca() {
     if (!r.ok) return;
     const d = await r.json();
     const vids = (d.videos || []).filter(v => v.y).map(v => ({ n: v.n, a: "Cataluña", p: "Spain", _t: "tv", vt: 1, k: "laguait", d: v.d,
-      o: [{ f: "youtube", u: `https://www.youtube.com/watch?v=${v.y}` }], w: v.w, l: `https://i.ytimg.com/vi/${v.y}/mqdefault.jpg` }));
+      o: [{ f: "youtube", u: `https://www.youtube.com/watch?v=${v.y}` }], w: v.w || `https://www.youtube.com/watch?v=${v.y}`, l: `https://i.ytimg.com/vi/${v.y}/mqdefault.jpg` }));
     aplicaCorreccions(vids);
     LLISTES.tv.canals.push(...vids);
     AGUAIT_ACTUALITZAT = d.actualitzat || null;

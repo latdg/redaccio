@@ -1,95 +1,105 @@
 """Videoteca de L'aguait — La TdG sala de control audiovisual · 28.11.2026
 
-Desa a tdt/aguait.json els vídeos de L'aguait TV (https://laguait.cat/categoria/tv/) perquè la
-sala de control els mostri com una categoria més («📼 Videoteca de L'aguait»), amb el reproductor
-de YouTube i la gravació a l'ordinador de casa.
+Desa a tdt/aguait.json els vídeos del canal de YouTube de L'aguait TV (@laguaitlb) perquè la sala de
+control els mostri com una categoria més («📼 Videoteca de L'aguait»), amb el reproductor de YouTube
+i la gravació a l'ordinador de casa.
 
-La llista d'articles surt de l'API de WordPress de laguait.cat (categoria «tv», id 125). L'adreça
-del vídeo no hi és (el tema la desa a part), i per això es llegeix la pàgina de cada article, només
-la primera vegada: els que ja són a aguait.json no es tornen a demanar.
+La llista sencera (vídeos i directes) la dona yt-dlp sense baixar res; les dates exactes dels
+vídeos nous surten del canal RSS de YouTube (els 15 últims), i la resta, la data aproximada que
+dona yt-dlp. Els vídeos ja desats es conserven encara que una lectura falli: la llista només creix
+(si un vídeo desapareix del canal, també en desapareix).
 
-Si laguait.cat no respon, no es toca el fitxer que ja hi ha.
+Si YouTube no respon, no es toca el fitxer que ja hi ha.
 """
-import html
 import json
 import re
 import sys
-from datetime import datetime
+import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import requests
+import yt_dlp
 
-API = "https://laguait.cat/wp-json/wp/v2"
-CATEGORIA_TV = 125
+CANAL = "https://www.youtube.com/@laguaitlb"
 FITXER = Path(__file__).resolve().parent / "aguait.json"
-H = {"User-Agent": "Mozilla/5.0 (LaTdG-redaccio; latdg@laguait.cat)"}
-YT = re.compile(r"(?:youtube(?:-nocookie)?\.com/(?:embed/|watch\?v=|live/|shorts/)|youtu\.be/)([\w-]{11})")
+MAD = ZoneInfo("Europe/Madrid")
 
 
-def articles():
-    """Tots els articles de la categoria TV: [(id, data, enllaç, títol)], del més nou al més vell."""
-    tots, pagina = [], 1
-    while True:
-        r = requests.get(f"{API}/posts", params={"categories": CATEGORIA_TV, "per_page": 100, "page": pagina,
-                                                 "_fields": "id,date,link,title"}, headers=H, timeout=60)
-        if r.status_code == 400 and pagina > 1:   # passat de l'última pàgina
-            break
+def llista_canal():
+    """{id: {"n": títol, "d": "dd.mm.aaaa" o None}} de les pestanyes Vídeos i Directes; i l'id del canal."""
+    opcions = {"quiet": True, "no_warnings": True, "extract_flat": "in_playlist", "skip_download": True,
+               "extractor_args": {"youtubetab": {"approximate_date": [""]}}}
+    vids, canal_id, ok = {}, None, False
+    with yt_dlp.YoutubeDL(opcions) as ydl:
+        for pestanya in ("videos", "streams"):
+            try:
+                info = ydl.extract_info(f"{CANAL}/{pestanya}", download=False)
+            except Exception as e:
+                print(f"  · {pestanya}: {e}")
+                continue
+            ok = True
+            canal_id = canal_id or info.get("channel_id") or info.get("id")
+            for e in info.get("entries") or []:
+                if not e or not e.get("id") or e.get("live_status") in ("is_upcoming", "is_live"):
+                    continue
+                d = None
+                if e.get("timestamp"):
+                    d = datetime.fromtimestamp(e["timestamp"], timezone.utc).astimezone(MAD).strftime("%d.%m.%Y")
+                elif e.get("upload_date"):
+                    u = e["upload_date"]; d = f"{u[6:8]}.{u[4:6]}.{u[:4]}"
+                vids[e["id"]] = {"n": (e.get("title") or "").strip(), "d": d}
+    return (vids if ok else None), canal_id
+
+
+def dates_rss(canal_id):
+    """Dates exactes dels 15 últims vídeos (canal RSS de YouTube): {id: "dd.mm.aaaa"}."""
+    if not canal_id or not canal_id.startswith("UC"):
+        return {}
+    try:
+        r = requests.get(f"https://www.youtube.com/feeds/videos.xml?channel_id={canal_id}", timeout=30)
         r.raise_for_status()
-        lot = r.json()
-        tots += [(a["id"], a["date"], a["link"], html.unescape(re.sub(r"<[^>]+>", "", a["title"]["rendered"])).strip()) for a in lot]
-        if len(lot) < 100 or pagina >= int(r.headers.get("X-WP-TotalPages", pagina)):
-            break
-        pagina += 1
-    return tots
-
-
-def video_de(enllac):
-    """Identificador de YouTube del vídeo de l'article (el primer que surt a la pàgina) o None."""
-    r = requests.get(enllac, headers=H, timeout=60)
-    r.raise_for_status()
-    m = YT.search(r.text)
-    return m.group(1) if m else None
+        ns = {"a": "http://www.w3.org/2005/Atom", "yt": "http://www.youtube.com/xml/schemas/2015"}
+        out = {}
+        for e in ET.fromstring(r.content).findall("a:entry", ns):
+            vid, pub = e.findtext("yt:videoId", "", ns), e.findtext("a:published", "", ns)
+            if vid and pub:
+                out[vid] = datetime.fromisoformat(pub).astimezone(MAD).strftime("%d.%m.%Y")
+        return out
+    except Exception as e:
+        print(f"  · RSS: {e}")
+        return {}
 
 
 def main():
     abans = {}
     if FITXER.exists():
         try:
-            abans = {v["id"]: v for v in json.loads(FITXER.read_text(encoding="utf-8")).get("videos", [])}
+            abans = {v["y"]: v for v in json.loads(FITXER.read_text(encoding="utf-8")).get("videos", [])}
         except Exception:
             abans = {}
-    try:
-        llista = articles()
-    except Exception as e:
-        print(f"❌ No s'ha pogut llegir l'API de laguait.cat: {e}")
+    vids, canal_id = llista_canal()
+    if not vids:
+        print("❌ No s'ha pogut llegir el canal de YouTube de L'aguait: no es toca res.")
         return 0
-    if not llista:
-        print("❌ L'API de laguait.cat ha tornat la llista buida: no es toca res.")
-        return 0
-    videos, nous, sense = [], 0, 0
-    for id_, data, enllac, titol in llista:
-        v = abans.get(id_)
-        if v and v.get("y"):
-            v.update(n=titol, w=enllac)
-        else:
-            try:
-                y = video_de(enllac)
-            except Exception as e:
-                print(f"  · {enllac}: {e}")
-                continue
-            if not y:
-                sense += 1
-                continue
-            nous += 1
-            v = {"id": id_, "y": y, "n": titol, "w": enllac}
-        d = data[:10].split("-")
-        v["d"] = f"{d[2]}.{d[1]}.{d[0]}"
-        videos.append(v)
-    ara = datetime.now(ZoneInfo("Europe/Madrid"))
-    FITXER.write_text(json.dumps({"actualitzat": ara.strftime("%d.%m.%Y %H.%M"), "videos": videos},
+    exactes = dates_rss(canal_id)
+    videos = []
+    for y, v in vids.items():
+        vell = abans.get(y, {})
+        # La data exacta (RSS) mana; si no, la que ja estava desada; si no, l'aproximada de yt-dlp.
+        d = exactes.get(y) or vell.get("d") or v["d"]
+        nou = {"y": y, "n": v["n"] or vell.get("n", ""), "d": d}
+        if y in exactes or vell.get("dx"):
+            nou["dx"] = 1
+        videos.append(nou)
+    clau = lambda v: tuple(reversed(v["d"].split("."))) if v.get("d") and re.fullmatch(r"\d\d\.\d\d\.\d{4}", v["d"]) else ("0",)
+    videos.sort(key=clau, reverse=True)
+    ara = datetime.now(MAD)
+    FITXER.write_text(json.dumps({"actualitzat": ara.strftime("%d.%m.%Y %H.%M"), "canal": CANAL, "videos": videos},
                                  ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
-    print(f"✅ {len(videos)} vídeos de L'aguait TV ({nous} de nous; {sense} articles sense vídeo de YouTube)")
+    nous = len([v for v in videos if v["y"] not in abans])
+    print(f"✅ {len(videos)} vídeos de L'aguait TV ({nous} de nous)")
     return 0
 
 

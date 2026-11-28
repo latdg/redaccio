@@ -3,7 +3,7 @@
 # i còpia dels logotips nous a tdt/logos/ (els que ja hi són no es tornen a baixar).
 # 14.11.2026: i la programació (tdt/epg.json); a les altres hores, només la programació.
 # 22.11.2026: a la mateixa hora (04.17), també la llista del món d'iptv-org (tdt/mon.json).
-# 28.11.2026: i els vídeos de L'aguait TV (tdt/aguait.json), per a la Videoteca de L'aguait.
+# 28.11.2026: i els vídeos del canal de YouTube de L'aguait TV (tdt/aguait.json), per a la Videoteca de L'aguait.
 name: La TdG sala de control audiovisual (llistes de TDT i ràdio)
 
 on:
@@ -11,6 +11,8 @@ on:
     - cron: "17 4 * * *"
     - cron: "47 10,16,22 * * *"
   workflow_dispatch:
+    inputs:
+      nomes_aguait: { description: "1 = només la Videoteca de L'aguait", required: false, default: "0" }
 
 permissions:
   contents: write
@@ -24,10 +26,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests
+      - run: pip install requests yt-dlp
       - name: Baixa i desa
         run: |
-          if [ "${{ github.event.schedule }}" = "47 10,16,22 * * *" ]; then python tdt/actualitza.py epg; else python tdt/actualitza.py; python tdt/aguait.py; fi
+          if [ "${{ inputs.nomes_aguait }}" = "1" ]; then python tdt/aguait.py; elif [ "${{ github.event.schedule }}" = "47 10,16,22 * * *" ]; then python tdt/actualitza.py epg; else python tdt/actualitza.py; python tdt/aguait.py; fi
           git config user.name "La TdG (TDT)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tdt/tv.json tdt/radio.json tdt/logos

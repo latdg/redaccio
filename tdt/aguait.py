@@ -4,15 +4,13 @@ Desa a tdt/aguait.json els vídeos del canal de YouTube de L'aguait TV (@laguait
 control els mostri com una categoria més («📼 Videoteca de L'aguait»), amb el reproductor de YouTube
 i la gravació a l'ordinador de casa.
 
-La llista sencera (vídeos i directes) la dona yt-dlp sense baixar res; les dates exactes dels
-vídeos nous surten del canal RSS de YouTube (els 15 últims), i la resta, la data aproximada que
-dona yt-dlp. Els vídeos ja desats es conserven encara que una lectura falli: la llista només creix
-(si un vídeo desapareix del canal, també en desapareix).
+La llista sencera la dona yt-dlp sense baixar res, en l'ordre del canal (del més nou al més vell).
+La data de publicació surt del canal RSS de YouTube (els 15 últims) o de la fitxa de cada vídeo, que
+es demana només la primera vegada: la data queda desada a aguait.json.
 
 Si YouTube no respon, no es toca el fitxer que ja hi ha.
 """
 import json
-import re
 import sys
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
@@ -28,12 +26,11 @@ MAD = ZoneInfo("Europe/Madrid")
 
 
 def llista_canal():
-    """{id: {"n": títol, "d": "dd.mm.aaaa" o None}} de les pestanyes Vídeos i Directes; i l'id del canal."""
-    opcions = {"quiet": True, "no_warnings": True, "extract_flat": "in_playlist", "skip_download": True,
-               "extractor_args": {"youtubetab": {"approximate_date": [""]}}}
+    """{id: {"n": títol}} de la pestanya Vídeos, del més nou al més vell; i l'id del canal."""
+    opcions = {"quiet": True, "no_warnings": True, "extract_flat": "in_playlist", "skip_download": True}
     vids, canal_id, ok = {}, None, False
     with yt_dlp.YoutubeDL(opcions) as ydl:
-        for pestanya in ("videos", "streams"):
+        for pestanya in ("videos",):
             try:
                 info = ydl.extract_info(f"{CANAL}/{pestanya}", download=False)
             except Exception as e:
@@ -44,13 +41,16 @@ def llista_canal():
             for e in info.get("entries") or []:
                 if not e or not e.get("id") or e.get("live_status") in ("is_upcoming", "is_live"):
                     continue
-                d = None
-                if e.get("timestamp"):
-                    d = datetime.fromtimestamp(e["timestamp"], timezone.utc).astimezone(MAD).strftime("%d.%m.%Y")
-                elif e.get("upload_date"):
-                    u = e["upload_date"]; d = f"{u[6:8]}.{u[4:6]}.{u[:4]}"
-                vids[e["id"]] = {"n": (e.get("title") or "").strip(), "d": d}
+                vids[e["id"]] = {"n": (e.get("title") or "").strip()}
     return (vids if ok else None), canal_id
+
+
+def data_exacta(y):
+    """Data de publicació d'un vídeo (dd.mm.aaaa), demanada a YouTube un sol cop per vídeo."""
+    with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "skip_download": True}) as ydl:
+        info = ydl.extract_info(f"https://www.youtube.com/watch?v={y}", download=False, process=False)
+    u = info.get("upload_date")
+    return f"{u[6:8]}.{u[4:6]}.{u[:4]}" if u else None
 
 
 def dates_rss(canal_id):
@@ -84,17 +84,23 @@ def main():
         print("❌ No s'ha pogut llegir el canal de YouTube de L'aguait: no es toca res.")
         return 0
     exactes = dates_rss(canal_id)
-    videos = []
+    videos, falten = [], 0
     for y, v in vids.items():
         vell = abans.get(y, {})
-        # La data exacta (RSS) mana; si no, la que ja estava desada; si no, l'aproximada de yt-dlp.
-        d = exactes.get(y) or vell.get("d") or v["d"]
-        nou = {"y": y, "n": v["n"] or vell.get("n", ""), "d": d}
-        if y in exactes or vell.get("dx"):
-            nou["dx"] = 1
+        d = exactes.get(y) or vell.get("d")
+        if not d:
+            try:
+                d = data_exacta(y)
+            except Exception as e:
+                print(f"  · {y}: {e}")
+        if not d:
+            falten += 1
+        nou = {"y": y, "n": v["n"] or vell.get("n", "")}
+        if d:
+            nou["d"] = d
         videos.append(nou)
-    clau = lambda v: tuple(reversed(v["d"].split("."))) if v.get("d") and re.fullmatch(r"\d\d\.\d\d\.\d{4}", v["d"]) else ("0",)
-    videos.sort(key=clau, reverse=True)
+    if falten:
+        print(f"  · {falten} vídeos sense data (es tornarà a provar demà)")
     ara = datetime.now(MAD)
     FITXER.write_text(json.dumps({"actualitzat": ara.strftime("%d.%m.%Y %H.%M"), "canal": CANAL, "videos": videos},
                                  ensure_ascii=False, indent=0) + "\n", encoding="utf-8")

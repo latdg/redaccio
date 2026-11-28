@@ -649,10 +649,13 @@ setInterval(carregaEPG, 3 * 3600e3);
 let actual = null;   // { c, tipus, ops, op }
 let HLS = null;
 const ORDRE_GEO = { CAT: 0, SP: 1 };
+// 28.11.2026: cadenes que s'obren amb el senyal HD per defecte (si en tenen).
+const OBRE_EN_HD = new Set(["TV3"]);
 
 function obre(c) {
+  const hd = OBRE_EN_HD.has(c.n);
   const ops = c.o.filter(o => reproduible(o, c._t)).map((o, i) => ({ ...o, i }))
-    .sort((a, b) => (a.f === "youtube") - (b.f === "youtube") || (ORDRE_GEO[a.g] ?? 2) - (ORDRE_GEO[b.g] ?? 2) || a.i - b.i);
+    .sort((a, b) => (a.f === "youtube") - (b.f === "youtube") || (hd ? (b.r === "HD") - (a.r === "HD") : 0) || (ORDRE_GEO[a.g] ?? 2) - (ORDRE_GEO[b.g] ?? 2) || a.i - b.i);
   actual = { c, tipus: c._t || TIPUS, ops, op: null };
   $("reproductor").hidden = false;
   const t = $("titolCanal"); t.innerHTML = ""; const b = document.createElement("b"); b.textContent = c.n; t.append(logo(c), b);

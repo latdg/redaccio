@@ -5,8 +5,8 @@ control els mostri com una categoria més («📼 Videoteca de L'aguait»), amb 
 i la gravació a l'ordinador de casa.
 
 La llista sencera la dona yt-dlp sense baixar res, en l'ordre del canal (del més nou al més vell).
-La data de publicació surt del canal RSS de YouTube (els 15 últims) o de la fitxa de cada vídeo, que
-es demana només la primera vegada: la data queda desada a aguait.json.
+La data de publicació surt del canal RSS de YouTube (els 15 últims) i queda desada a aguait.json; els
+vídeos més vells no en tenen (YouTube no deixa demanar la fitxa de cada vídeo des de GitHub).
 
 Si YouTube no respon, no es toca el fitxer que ja hi ha.
 """
@@ -45,14 +45,6 @@ def llista_canal():
     return (vids if ok else None), canal_id
 
 
-def data_exacta(y):
-    """Data de publicació d'un vídeo (dd.mm.aaaa), demanada a YouTube un sol cop per vídeo."""
-    with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True, "skip_download": True}) as ydl:
-        info = ydl.extract_info(f"https://www.youtube.com/watch?v={y}", download=False, process=False)
-    u = info.get("upload_date")
-    return f"{u[6:8]}.{u[4:6]}.{u[:4]}" if u else None
-
-
 def dates_rss(canal_id):
     """Dates exactes dels 15 últims vídeos (canal RSS de YouTube): {id: "dd.mm.aaaa"}."""
     if not canal_id or not canal_id.startswith("UC"):
@@ -89,18 +81,13 @@ def main():
         vell = abans.get(y, {})
         d = exactes.get(y) or vell.get("d")
         if not d:
-            try:
-                d = data_exacta(y)
-            except Exception as e:
-                print(f"  · {y}: {e}")
-        if not d:
             falten += 1
         nou = {"y": y, "n": v["n"] or vell.get("n", "")}
         if d:
             nou["d"] = d
         videos.append(nou)
     if falten:
-        print(f"  · {falten} vídeos sense data (es tornarà a provar demà)")
+        print(f"  · {falten} vídeos sense data (només es coneix la dels que surten al canal RSS)")
     ara = datetime.now(MAD)
     FITXER.write_text(json.dumps({"actualitzat": ara.strftime("%d.%m.%Y %H.%M"), "canal": CANAL, "videos": videos},
                                  ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
